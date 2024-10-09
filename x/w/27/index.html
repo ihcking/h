@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>紫极测速网_网速测试_一键测速网_4G5G测速_全球宽带测速_www.gree020.cn</title>
+    <meta name="description" content="一个轻量级的HTML5网速测试网站，电信移动联通宽带在线测速Speedtest">
+    <link href="favicon.ico" rel="shortcut icon">
+	<link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/speedtest.css?v=1.2" rel="stylesheet">
+</head>
+
+<body>
+    <div class="botron text-center">
+        <div class="center">
+            <span style="font-size:35px;height:40px;line-height:5px;color:#168eea">
+                <img src="/css/logo.png" height="40">双恒网络测速网_www.gree020.cn
+            </span>
+            <div id="scrollDiv">
+                <ul>
+                    <li>节点收藏功能已上线，点击节点ID右边心形即可</li>
+                    <li>已经修复了所有BUG，点击网站底部下载</li>
+                    <li>智能多线采用安装包下载测速，若影响测速可切换节点</li>
+                </ul>
+            </div>
+            <div id="above"></div>
+			<div class="speedcenter" style="width: 100%;">
+            <div class="mdashboard" id="mdashboard" style="height: 432px;">
+                <div id="dashboard" style="height: 100%; margin: 0px 10px 0px 10px; -webkit-tap-highlight-color: transparent; user-select: none; background-color: transparent;" _echarts_instance_="ec_1591063959141">
+                    <div style="position: relative; overflow: hidden; width: 414px; height: 294px;">
+                        <canvas width="1242" height="882" data-zr-dom-id="zr_0" style="position: absolute; left: 0px; top: 0px; width: 414px; height: 294px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <p>
+            <input type="button" id="btn_speed" class="btn btn-primary" value="准备中..." onclick="startnet(3)" disabled="disabled">
+            </p>
+        </div>
+        <div id="below"></div>
+        <div class="dropdown" id="displaylist" style="display:none">
+            <p>
+            <select id="speedlist" name="speedlist" class="btn dropdown-toggle" onchange="change()"></select>
+            </p>
+            <p>
+                <input type="button" class="btn btn-primary btn-sm" value="全球节点" onclick="remove();serverslist('all')">
+                <input type="button" class="btn btn-primary btn-sm" value="国内节点" onclick="remove();serverslist('cn')">
+                <input type="button" class="btn btn-primary btn-sm" value="指定节点" onclick="other(2)">
+            </p>
+        </div>
+        </div>
+        <div>
+            <br/>
+            <br/>
+            <p>©2022 www.gree020.cn All Rights Reserved. <a href="https://www.gree020.cn/">资源下载</a></p>
+        </div>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script src="./js/layer.min.js"></script>
+    <script src="./js/speedtest.js?v=1.4"></script>
+    <script>
+		function autoscroll(obj){$(obj).find("ul:first").animate({marginTop:"-25px"},1111,function(){$(this).css("marginTop","0px").find("li:first").appendTo(this)})}$(document).ready(function(){setInterval('autoscroll("#scrollDiv")',6666)})
+	</script>
+</body>
+</html>

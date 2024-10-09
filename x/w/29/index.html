@@ -1,0 +1,336 @@
+<html><head><base href="https://把考试叫号系统改成面试叫号系统，把学生列表改成人员列表">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>面试叫号系统</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.css" rel="stylesheet" />
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+    }
+    .left-panel, .right-panel {
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .left-panel {
+        width: 60%;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .right-panel {
+        width: 40%;
+        background-color: #ecf0f1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    h1, h2 {
+        color: #2c3e50;
+        text-align: center;
+    }
+    #currentPerson {
+        font-size: 80px;
+        color: #3498db;
+        margin: 20px 0;
+        text-align: center;
+        word-wrap: break-word;
+        max-width: 100%;
+    }
+    #currentPerson .label {
+        font-size: 40px;
+        color: #2c3e50;
+    }
+    #nextPerson {
+        font-size: 40px;
+        margin: 10px 0;
+        text-align: center;
+    }
+    #nextPerson .next-name {
+        color: #f39c12;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+    button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 5px;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
+    button:hover {
+        background-color: #2980b9;
+    }
+    #shuffleButton {
+        background-color: #2ecc71;
+    }
+    #shuffleButton:hover {
+        background-color: #27ae60;
+    }
+    #speakButton {
+        background-color: #9b59b6;
+    }
+    #speakButton:hover {
+        background-color: #8e44ad;
+    }
+    #queueList {
+        margin-top: 20px;
+        column-count: 3;
+        column-gap: 20px;
+        flex-grow: 1;
+    }
+    .queue-item {
+        background-color: white;
+        margin: 0 0 10px;
+        padding: 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        break-inside: avoid-column;
+        cursor: move;
+    }
+    .queue-item:hover {
+        background-color: #e0e0e0;
+    }
+    .completed {
+        color: #27ae60;
+        font-weight: bold;
+    }
+    #fileInput {
+        display: none;
+    }
+    #message {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #e74c3c;
+        text-align: center;
+    }
+    .right-panel-buttons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .right-panel-buttons button {
+        margin: 0 10px;
+    }
+    .sortable-ghost {
+        opacity: 0.4;
+    }
+    #shortcutInfo {
+        font-size: 14px;
+        color: #7f8c8d;
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+    <div class="left-panel">
+        <h1>面试叫号系统</h1>
+        <div id="currentPerson"><span class="label">当前：</span>准备开始</div>
+        <div id="nextPerson"></div>
+        <div class="button-group">
+            <button id="nextButton" title="下一位"><i class="fas fa-chevron-right"></i></button>
+            <button id="speakButton" title="语音播报"><i class="fas fa-volume-up"></i></button>
+        </div>
+        <div id="shortcutInfo">快捷键：→ (右箭头) 下一位</div>
+    </div>
+    <div class="right-panel">
+        <h2>人员列表</h2>
+        <div class="right-panel-buttons">
+            <button id="importButton" title="导入名单"><i class="fas fa-file-import"></i></button>
+            <button id="shuffleButton" title="随机排序"><i class="fas fa-random"></i></button>
+        </div>
+        <div id="queueList"></div>
+        <div id="message"></div>
+        <input type="file" id="fileInput" accept=".txt">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script>
+        let queue = [];
+        let completedPersons = [];
+        let currentIndex = -1;
+        let isProcessing = false;
+        let isShuffled = false;
+
+        function updateDisplay() {
+            const queueList = $('#queueList');
+            queueList.empty();
+            queue.forEach((person, index) => {
+                const item = $('<div>')
+                    .addClass('queue-item')
+                    .text(`${index + 1}. ${person}`)
+                    .attr('data-index', index);
+                queueList.append(item);
+            });
+
+            completedPersons.forEach((person) => {
+                const item = $('<div>')
+                    .addClass('queue-item completed')
+                    .text(person);
+                queueList.append(item);
+            });
+
+            if (currentIndex >= 0 && currentIndex < queue.length) {
+                $('#currentPerson').html(`<span class="label">当前：</span>${queue[currentIndex]}`);
+                if (currentIndex + 1 < queue.length) {
+                    $('#nextPerson').html(`请 <span class="next-name">${queue[currentIndex + 1]}</span> 做准备`);
+                } else {
+                    $('#nextPerson').text('');
+                }
+            } else {
+                $('#currentPerson').html('<span class="label">当前：</span>准备开始');
+                $('#nextPerson').text('');
+            }
+
+            $('#nextButton').prop('disabled', currentIndex >= queue.length - 1 || isProcessing);
+
+            if (isShuffled) {
+                $('#message').text('已随机排序，请面试者注意自己的面试顺序').show();
+            }
+        }
+
+        function speakText(text) {
+            return new Promise(resolve => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.onend = resolve;
+                speechSynthesis.speak(utterance);
+            });
+        }
+
+        async function speakOnce(text) {
+            await speakText(text);
+        }
+
+        async function nextPerson() {
+            if (isProcessing) return;
+            if (currentIndex < queue.length - 1) {
+                isProcessing = true;
+                if (currentIndex >= 0) {
+                    completedPersons.push(queue[currentIndex]);
+                    queue.splice(currentIndex, 1);
+                }
+                currentIndex = 0;  // Always set to 0 as we're removing the previous person
+                updateDisplay();
+                const personName = queue[currentIndex];
+                await speakOnce(`请${personName}进入面试室。`);
+                isProcessing = false;
+                updateDisplay();
+            } else {
+                alert('所有人员已完成面试');
+            }
+        }
+
+        function shuffleQueue() {
+            for (let i = queue.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [queue[i], queue[j]] = [queue[j], queue[i]];
+            }
+            currentIndex = -1;
+            isShuffled = true;
+            updateDisplay();
+        }
+
+        async function speakCurrent() {
+            if (isProcessing) return;
+            if (currentIndex >= 0 && currentIndex < queue.length) {
+                isProcessing = true;
+                const personName = queue[currentIndex];
+                await speakOnce(`请${personName}进入面试室。`);
+                isProcessing = false;
+                updateDisplay();
+            }
+        }
+
+        $('#nextButton').on('click', nextPerson);
+
+        $('#shuffleButton').on('click', shuffleQueue);
+        $('#speakButton').on('click', speakCurrent);
+
+        $('#importButton').on('click', function() {
+            $('#fileInput').click();
+        });
+
+        $('#fileInput').on('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    queue = content.split('\n').filter(name => name.trim() !== '');
+                    completedPersons = [];
+                    currentIndex = -1;
+                    isShuffled = false;
+                    updateDisplay();
+                    initSortable();
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        $(document).on('click', '.queue-item', async function() {
+            if (isProcessing) return;
+            const clickedIndex = $(this).attr('data-index');
+            if (clickedIndex !== undefined) {
+                isProcessing = true;
+                currentIndex = parseInt(clickedIndex);
+                updateDisplay();
+                const personName = queue[currentIndex];
+                await speakOnce(`请${personName}进入面试室。`);
+                isProcessing = false;
+                updateDisplay();
+            }
+        });
+
+        function initSortable() {
+            const queueList = document.getElementById('queueList');
+            new Sortable(queueList, {
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: function(evt) {
+                    const oldIndex = evt.oldIndex;
+                    const newIndex = evt.newIndex;
+                    const movedItem = queue.splice(oldIndex, 1)[0];
+                    queue.splice(newIndex, 0, movedItem);
+                    if (currentIndex === oldIndex) {
+                        currentIndex = newIndex;
+                    } else if (oldIndex < currentIndex && newIndex >= currentIndex) {
+                        currentIndex--;
+                    } else if (oldIndex > currentIndex && newIndex <= currentIndex) {
+                        currentIndex++;
+                    }
+                    updateDisplay();
+                }
+            });
+        }
+
+        // Add keyboard shortcut
+        $(document).on('keydown', function(e) {
+            if (e.key === "ArrowRight") {
+                nextPerson();
+            }
+        });
+
+        updateDisplay();
+        initSortable();
+    </script>
+</body></html>

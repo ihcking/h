@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微信名片</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+  .card {
+      background-color: #ffffff;
+      width: 320px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+  .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 15px;
+    }
+
+  .name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2d2d2d;
+    }
+
+  .info {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+  .qr-code {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+    }
+
+  .add-friend {
+      display: block;
+      width: 200px;
+      margin: 20px auto;
+      padding: 10px 15px;
+      background-color: #07c160;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+  .add-friend:hover {
+      background-color: #05a850;
+    }
+
+  .share-button {
+      display: block;
+      width: 200px;
+      margin: 10px auto;
+      padding: 10px 15px;
+      background-color: #4267b2;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+  .share-button:hover {
+      background-color: #365899;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <img class="avatar" src="1.jpg" alt="头像">
+    <h2 class="name">你的名字</h2>
+    <p class="info">微信号：<span class="wechat-green">your_wechat_id</span></p>
+    <img class="qr-code" src="1.jpg" alt="微信二维码">
+    <a href="https://wa.me/your_wechat_id" target="_blank" class="add-friend">添加好友</a>
+    <a href="javascript:void(0)" onclick="shareOnWeChat()" class="share-button">分享名片</a>
+  </div>
+
+  <script>
+    function shareOnWeChat() {
+      if (navigator.share) {
+        navigator.share({
+          title: '我的微信名片',
+          text: '这是我的微信名片，快来添加我吧！',
+          url: window.location.href
+        })
+        .then(() => console.log('分享成功'))
+        .catch((error) => console.log('分享失败', error));
+      } else {
+        alert('你的浏览器不支持 Web Share API。');
+      }
+    }
+  </script>
+</body>
+
+</html>

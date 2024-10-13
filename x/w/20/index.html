@@ -1,50 +1,118 @@
-﻿<!DOCTYPE html>
-<html>
-<head lang="en">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="apple-touch-fullscreen" content="YES">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,target-densitydpi=device-dpi">
-<meta name="format-detection" content="telephone=no">
-<title>声鉴卡</title>
-<link rel="stylesheet" href="assets/lz-icon.css">
-<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">
-<link href="assets/index.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微信名片</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+  .card {
+      background-color: #ffffff;
+      width: 320px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+  .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 15px;
+    }
+
+  .name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2d2d2d;
+    }
+
+  .info {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+  .qr-code {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+    }
+
+  .add-friend {
+      display: block;
+      width: 200px;
+      margin: 20px auto;
+      padding: 10px 15px;
+      background-color: #07c160;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+  .add-friend:hover {
+      background-color: #05a850;
+    }
+
+  .share-button {
+      display: block;
+      width: 200px;
+      margin: 10px auto;
+      padding: 10px 15px;
+      background-color: #4267b2;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+  .share-button:hover {
+      background-color: #365899;
+    }
+  </style>
 </head>
+
 <body>
-<div class="container soundWrap" style="display:block">
-  <div class="page1" style="display:block">
-    <input class="name-input" maxlength="10" type="text" placeholder="给自己起个好听的名字 更多免费资源尽在双恒网络">
-    <div class="sel-boy sex"><img src="assets/boy.png" alt="0"></div>
-    <div class="sel-girl sex active"><img src="assets/girl.png" alt="1"></div>
-    <div class="discrBtn"></div>
-    <img class="lizhi-icon" src="assets/logo.png" alt="www.gree020.cn"> </div>
-  <div class="page2" style="display:none"> <img class="p2_1 pa" src="assets/text.png" alt=""> <span class="progress_tit">Time</span>
-    <div class="progress-wrap">
-      <div class="progressing" style="width:0"></div>
-    </div>
-    <div class="secondText">0s</div>
-    <img class="p2_2 pa" src="assets/luyinji.png" alt=""> <img class="p2_3 pa" src="assets/songkai.png" alt=""> <img src="assets/luyin.png" alt="正在录音" class="recording">
-    <div class="record_btn pa" ontouchstart="jishu()" ontouchend="ting()"> <img src="assets/anzhu.png" alt=""> </div>
-    <img class="p2_4 pa" src="assets/wenan.png" alt="">
-    <div class="alert1"> <img class="alert_bg alert1_bg" src="assets/fenxi.png" alt=""> <img class="success_bg" src="assets/chenggong.png" alt=""> <img class="reset_bg" src="assets/huannicheng.png" alt="">
-      <div class="loading"></div>
-      <div class="look_result" onClick="_hmt.push([&quot;_trackEvent&quot;,&quot;查看结果&quot;,&quot;点击&quot;])"></div>
-      <div class="reset1" onClick="_hmt.push([&quot;_trackEvent&quot;,&quot;重新录制&quot;,&quot;点击&quot;])"></div>
-      <div class="cancal-btn"></div>
-    </div>
-    <div class="alert2" style="display:none"> <img class="alert_bg" src="assets/jibao.png" alt="">
-      <div class="reset"></div>
-      <div class="cancal-btn"></div>
-    </div>
+  <div class="card">
+    <img class="avatar" src="1.jpg" alt="头像">
+    <h2 class="name">你的名字</h2>
+    <p class="info">微信号：<span class="wechat-green">your_wechat_id</span></p>
+    <img class="qr-code" src="1.jpg" alt="微信二维码">
+    <a href="https://wa.me/your_wechat_id" target="_blank" class="add-friend">添加好友</a>
+    <a href="javascript:void(0)" onclick="shareOnWeChat()" class="share-button">分享名片</a>
   </div>
-</div>
-<div class="page3" id="page3" style="display:none">
-  <div class="tip">长按图片保存，分享到朋友圈</div>
-  <img class="shareImg" id="shareImg" style="display:block" src="" alt=""> </div>
-  <script type="text/javascript" src="assets/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="assets/index.js"></script>
-<div class="msgbox" style="position: fixed; left: 0px; top: 40%; height: 10%; width: 100%; text-align: center; color: white; z-index: 99999999; line-height: 10%; display: none;"><span style="padding: 2.5% 8%; border-radius: 6px; font-family: 微软雅黑; font-size: 24px; background-color: rgba(0, 0, 0, 0.498039);">请输入名字</span></div>
-<script language="javascript" type="text/javascript" src="http://js.users.51.la/18759442.js"></script>
+
+  <script>
+    function shareOnWeChat() {
+      if (navigator.share) {
+        navigator.share({
+          title: '我的微信名片',
+          text: '这是我的微信名片，快来添加我吧！',
+          url: window.location.href
+        })
+        .then(() => console.log('分享成功'))
+        .catch((error) => console.log('分享失败', error));
+      } else {
+        alert('你的浏览器不支持 Web Share API。');
+      }
+    }
+  </script>
 </body>
+
 </html>

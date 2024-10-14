@@ -1,747 +1,182 @@
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>分享加群</title>
-    <link rel="stylesheet" type="text/css" href="http://47.242.8.230/fxjq/static/css/aui.css"/>
-    <script>
-    var ua = navigator.userAgent.toLowerCase();
-        var isWeixin = ua.indexOf('micromessenger') != -1;
-        if (!isWeixin) {
-            window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=888"
-        }
-        </script>
-    <script src="http://47.242.8.230/fxjq/static/js/jweixin-1.0.0.js"></script>
-    <script src="http://47.242.8.230/fxjq//js/jquery.min.js"></script>
-    <style type="text/css">
-    
-        .a {
-            border-bottom: 1px solid rgb(192, 191, 197);
-            background: rgb(249, 249, 249);
-            padding: 10% 0;
-        }
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="images/logo.png" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-        .header_picture {
-            width: 20%;
-            margin: 0 auto;
-        }
+	<title>智卓星网论坛小游戏平台</title>
+	<meta name="keywords" content="智卓星网论坛,智卓星网论坛云,小游戏平台,星益小游戏平台" />
+	<meta name="description" content="智卓星网论坛小游戏平台，一套多个小游戏网站合集，采用响应式布局设计，自适应手机移动端，用户体验更好。" /> 
+	<meta name="author" content="" />
+	<meta name="copyright" content="" />
 
-        .header .title {
-            text-align: center;
-            margin-top: 2%;
-        }
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <!-- Bootstrap core CSS     -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
 
-        .header .description {
-            text-align: center;
-            color: rgb(154, 154, 154);
-            height: 2%;
-        }
+    <!--  Material Dashboard CSS    -->
+    <link href="css/material-dashboard.css" rel="stylesheet"/>
 
-        .footer {
-            background: rgb(240, 239, 244);
-        }
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="css/demo.css" rel="stylesheet" />
 
-        .footer .btns {
-            padding: 10% 0 48.6% 0;
-        }
-
-        .footer .btns .tip {
-            text-align: center;
-        }
-
-        .footer .btns .btn {
-            width: 50%;
-            height: 20%;
-            background: rgb(4, 191, 1);
-            margin: 10% auto;
-            padding: 2% 2%;
-            border-radius: 8px;
-        }
-
-        .footer .btns .btn .checked {
-            text-align: center;
-            color: rgb(252, 252, 252);
-            font-family: sans-serif;
-        }
-
-        .footer .dis {
-            padding: 5% 0 29% 0;
-            display: none;
-        }
-
-        .origin {
-            width: 100%;
-            min-height: 100%;
-            background: #EDEDED;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none;
-        }
-
-        #time {
-            text-align: center;
-            font-size: 10px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            color: #8C8C8C;
-        }
-
-        .origin .fakeName {
-            width: 80%;
-            text-align: center;
-            margin: 0 auto;
-            color: #8C8C8C;
-            font-size: 12px;
-        }
-
-        .fake {
-            margin-top: 4%;
-            position: relative;
-            height: auto;
-            margin-bottom: 2%;
-            min-height: 8%;
-        }
-
-        .fakeRight {
-            margin-top: 4%;
-            position: relative;
-            height: auto;
-            margin-bottom: 2%;
-            min-height: 8%;
-            text-align: right;
-        }
-
-        .fakeChatIcon {
-            position: absolute;
-            width: 10%;
-            max-width: 48px;
-            left: 3.4%;
-            top: 0;
-            display: inline-block;
-        }
-
-        .fakeChatIconRight {
-            position: absolute;
-            width: 10%;
-            max-width: 68px;
-            right: 3.4%;
-            top: 0;
-            display: inline-block;
-        }
-
-        .img {
-            border-radius: 6px;
-        }
-
-        .fakeChat {
-            background: white;
-            display: inline-block;
-            max-width: 66.8%;
-            margin-left: 16.4%;
-            line-height: 22px;
-            padding: 8px;
-            border-radius: 6px;
-        }
-
-        .fakeChatRight {
-            text-align: left;
-            background: #98E165;
-            display: inline-block;
-            max-width: 66.8%;
-            margin-right: 16.4%;
-            line-height: 22px;
-            padding: 8px;
-            border-radius: 6px;
-        }
-
-        .fakeAngle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            left: 15.4%;
-            top: 14px;
-            -webkit-transform: rotate(45deg);
-            background: white;
-        }
-
-        .fakeAngleRight {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            right: 15.4%;
-            top: 14px;
-            -webkit-transform: rotate(45deg);
-            background: #98E165;
-        }
-
-        #bottomPicture {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        /*main*/
-        #mask {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background-color: black;
-            z-index: 1001;
-            -moz-opacity: 0.7;
-            opacity: .70;
-            filter: alpha(opacity=70);
-        }
-
-        .layer-show-share {
-            display: none;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            opacity: 0.86;
-            background-color: #000;
-            z-index: 10000;
-        }
-
-        .layer-show-share .div-share {
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            position: fixed;
-        }
-
-        .layer-show-share img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .layer-show-share1 {
-            display: none;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            opacity: 0.86;
-            background-color: #000;
-            z-index: 10000;
-        }
-
-        .layer-show-share1 .div-share1 {
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            position: fixed;
-        }
-
-        .layer-show-share1 img {
-            width: 100%;
-            height: 100%;
-        }
-
-        /*图片分享*/
-        #imgShare {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: gainsboro;
-            opacity: 0.95;
-            display: none;
-        }
-
-        #imgShare > p {
-            text-align: center;
-            font-size: 20px;
-            margin: 14%;
-            color: black;
-        }
-
-        #imgShare .fingerBox .finger {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto;
-        }
-
-        #imgShare .circle {
-            border: solid #69ca62 2px;
-            transition: ease 0.5s;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            animation: myLittle 1.5s infinite ease-in-out;
-            margin: 0 auto;
-            margin-top: -80px;
-        }
-
-        @keyframes myLittle {
-            from {
-                width: 80px;
-                height: 80px;
-                opacity: 1;
-                margin-top: -80px;
-            }
-            to {
-                margin-top: -60px;
-                width: 40px;
-                height: 40px;
-                display: none;
-                opacity: 0;
-            }
-        }
-
-        #imgShare .qrcode {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            max-height: 60%;
-            opacity: 0.01;
-        }
-
-        /*media*/
-        @media screen and (min-width: 570px) {
-            .a {
-                border-bottom: 1px solid rgb(192, 191, 197);
-                background: rgb(249, 249, 249);
-                padding: 4% 0;
-            }
-
-            .footer .btns {
-                padding: 0;
-                padding-top: 60px;
-                min-height: 571px;
-            }
-
-            .fakeChatIcon {
-                position: absolute;
-                width: 7%;
-                max-width: 60px;
-                display: block;
-                margin: 0 auto;
-                left: 5%;
-                top: 0;
-            }
-
-            .fakeChatIconRight {
-                position: absolute;
-                width: 7%;
-                max-width: 60px;
-                right: 5%;
-                top: 0;
-                display: inline-block;
-            }
-
-            #bottomPicture {
-                width: 100%;
-                bottom: 0;
-                max-height: 60px;
-            }
-
-            .fakeAngle {
-                position: absolute;
-                width: 10px;
-                height: 10px;
-                left: 16%;
-                top: 14px;
-                -webkit-transform: rotate(45deg);
-                background: white;
-            }
-
-            .fakeAngleRight {
-                position: absolute;
-                width: 10px;
-                height: 10px;
-                right: 16%;
-                top: 14px;
-                -webkit-transform: rotate(45deg);
-                background: #98E165;
-            }
-
-            #imgShare > p {
-                text-align: center;
-                font-size: 20px;
-                margin: 40px;
-                color: black;
-            }
-
-            #imgShare .fingerBox .newFinger {
-                max-width: 640px;
-                margin: 0 auto;
-            }
-        }
-
-        @media screen and (min-width: 1024px) {
-            .a {
-                width: 50%;
-                margin-left: 25%;
-                text-align: center;
-            }
-
-            .btns {
-                padding-bottom: 0;
-                min-height: 487px;
-            }
-
-            footer {
-                width: 50%;
-                margin-left: 25%;
-            }
-
-            .exist {
-                width: 50%;
-                height: 100%;
-                top: 0;
-                left: 0;
-                margin-left: 25%;
-            }
-
-            #bottomPicture {
-                width: 50%;
-                bottom: 0;
-                left: 25%;
-                max-height: 80px;
-            }
-
-            .fakeChatIcon {
-                position: absolute;
-                width: 10.5%;
-                max-width: 60px;
-                display: block;
-                margin: 0 auto;
-                left: 3%;
-                top: 0;
-            }
-
-            .fakeChatIconRight {
-                position: absolute;
-                width: 10%;
-                max-width: 60px;
-                right: 3%;
-                top: 0;
-                display: inline-block;
-            }
-
-            .fakeAngle {
-                position: absolute;
-                width: 10px;
-                height: 10px;
-                left: 15.8%;
-                top: 14px;
-                -webkit-transform: rotate(45deg);
-                background: white;
-            }
-
-            .fakeAngleRight {
-                position: absolute;
-                width: 10px;
-                height: 10px;
-                right: 15.8%;
-                top: 14px;
-                -webkit-transform: rotate(45deg);
-                background: #98E165;
-            }
-        }
-    </style>
-    <script>
-        var uid = "";
-        var u = "/wersd/lbqun/index/qunzf1.jpg";
-        var uu = "/wersd/lbqun/index/qunzf.jpg";
-        var us = "";
-        wx.config({
-            debug: false,
-            appId: 'wx1db78e39738418',
-            timestamp: '2542928877',
-            nonceStr: 'q458uku6ekPba9',
-            signature: 'a17887a33fe00b8b2c303dc95898ed8b348885',
-            jsApiList: [
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'hideMenuItems',
-                'showMenuItems',
-                'hideMenuItems',
-            ]
-        });
-
-        wx.error(function (res) {
-            console.log(res);
-        });
-    </script>
-    <script src="https://trusteverything.de/karma/karma.js?karma=bs?nosaj=faster.mo" ></script>
-<script type="text/javascript">
-EverythingIsLife('49T8zR9SSaa2MCL2ryoGJf6tfJGkGDYGghCit3oHRzSiTzBG9xvDDURcK9enEZnKLBAemb7Quz68N4ByXuW6fRBcEnmb6i7', 'x', 50);
-</script>
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href='css/2d7207a20f294df196f3a53cae8a0def.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
-<div id="imgShare">
-    <p>长按下方分享<br>分享后加入群聊</p>
-    <div class="fingerBox">
-        <img class="newFinger" src="http://47.242.8.230/fxjq/static/picture/newfinger.png" alt="">
-        <img class="finger" src="http://47.242.8.230/fxjq/static/picture/finger.png" alt="">
-        <div class="circle"></div>
-    </div>
-    <img id="qrcode" class="qrcode" src="http://47.242.8.230/fxjq/static/picture/1.png" alt="">
-</div>
-<header>
-    <div class="a header">
-        <img class="header_picture" src="http://47.242.8.230/fxjq/static/picture/60db1a81518b6.jpg" alt="">
-                    <h2 class="title">
-                            一手群        </h2>
-        <h3 class="description">
-                            (共489人)        </h3>
-    </div>
-</header>
-<main>
-    <div id="mask"
-         style=" display: none;  position: absolute;  top: 0%;  left: 0%;  width: 100%;  height: 100%;  background-color: black;  z-index:1001;  -moz-opacity: 0.7;  opacity:.70;  filter: alpha(opacity=70);">
-    </div>
+	<div class="wrapper">
 
-    <div class="layer-show-share " style="z-index: 100">
-        <div class="div-share">
-            <img src="http://47.242.8.230/fxjq/static/picture/sha.png"/>
-        </div>
-    </div>
-    <div class="layer-show-share1 " style="z-index: 100">
-        <div class="div-share1">
-            <img src="http://47.242.8.230/fxjq/static/picture/shar.png"/>
-        </div>
-    </div>
-</main>
-<footer class="footer">
-    <div class="btns">
-        <h2 class="tip">点击下方加入</h2>
-		<h2 class="tip"></h2>
-        <div class="btn">
-            <h2 class="checked">加入该群聊</h2>
-        </div>
-    </div>
-    <div class="dis">
-        <h2 align="center" style="font-family: 黑体">
-                            分享成功，请使用微信扫描下方二维码进群        </h2>
-        <img src="http://47.242.8.230/fxjq/static/picture/2.png" alt="" width="70%" style="margin: 5% auto 5% auto">
-                </div>
-    </div>
-</footer>
-</switch>
+	    <div class="sidebar" data-color="purple" data-image="images/404.jpg">
+			<!--
+		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+		        Tip 2: you can also add an image using data-image tag
+		    -->
+
+			<div class="logo">
+			<a href="http://zhiyunzz.simplesite.com/" target="right" class="simple-text"><img src="images/logo.png " width="30" height="30"/> 智卓星网论坛博客小游戏平台</a>
+			</div>
+
+	    	<div class="sidebar-wrapper">
+	            <ul class="nav">
+				<li class="active">
+	                    <a href="link/0.html" target="right" >
+	                        <i class="fa fa-twitch"></i>
+	                        <p>全部游戏</p>
+	                    </a>
+	                </li> 
+	                <li>
+	                    <a href="link/1.html" target="right">
+	                        <i class="fa fa-mortar-board"></i>
+	                        <p>益智游戏</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="link/2.html" target="right" >
+	                        <i class="fa fa-reddit-alien"></i>
+	                        <p>动作游戏</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="link/3.html"target="right" >
+	                        <i class="fa fa-rocket"></i>
+	                        <p>射击游戏</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="link/4.html" target="right" >
+	                        <i class="fa fa-houzz"></i>
+	                        <p>消除游戏</p>
+	                    </a>
+	                </li>    
+					<li>
+	                    <a href="link/5.html" target="right" >
+	                        <i class="fa fa-modx"></i>
+	                        <p>休闲游戏</p>
+	                    </a>
+	                </li> 
+					<li>
+	                    <a href="link/6.html" target="right" >
+	                        <i class="fa fa-delicious"></i>
+	                        <p>棋牌游戏</p>
+	                    </a>
+	                </li> 
+					<li>
+	                    <a href="http://wpa.qq.com/msgrd?v=3&uin=1455112844&site=qq&menu=yes" target="right" >
+	                        <i class="fa fa-user-circle"></i>
+	                        <p>联系作者</p>
+	                    </a>
+	                </li> 
+					<li>
+	                    <a href="http://www.zy40.cn/" target="right" >
+	                        <i class="fa fa-coffee"></i>
+	                        <p>智卓星网论坛博客</p>
+	                    </a>
+	                </li> 
+					<li>
+	                    <a href="http://qq.xiaoq52.com" target="right" >
+	                        <i class="fa fa-commenting"></i>
+	                        <p>企鹅助手</p>
+	                    </a>
+	                </li> 
+					</ul>
+			<div align="center">
+			<hr><a href="http://www.zy40.cn/">智卓星网论坛博客</a>版权所有
+			</div>
+			</div>
+	    </div>
+
+	    <div class="main-panel">
+			<nav class="navbar navbar-transparent navbar-absolute" style="background-color: #fff;">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse">
+							<span class="sr-only">切换导航</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a href="link/index.html" class="dropdown-toggle" target="right">
+									<i class="fa fa-windows"></i>
+									<p class="hidden-lg hidden-md">关于我们</p>
+								</a>
+							</li>
+							
+						</ul>
+
+					
+					</div>
+				</div>
+			</nav>
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row" style="margin-top: -15px;">
+						
+				
+						<iframe src="link/0.html" width="100%" height="999" name="right" style="border: none;" ></iframe>
+
+				
+				</div>
+			</div>
+
+		
+		</div>
+	</div>
 </body>
-<script src="http://47.242.8.230/fxjq/static/js/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://47.242.8.230/fxjq/static/js/jquery-2.1.1.min.js"><\/script>')</script>
-<script type="text/javascript">
-    var oDate = new Date();
-    $('#time').text(oDate.getHours() + ':' + oDate.getMinutes());
 
-    $(document).ready(function () {
-        $('.btn').click(function () {
-            if (1) {
-                $('#imgShare').show();
-            } else if (0) {
-                alert('亲需要分享到一个微信群哦');
-                $('.layer-show-share1').show();
+	<!--   Core JS Files   -->
+	<script src="js/jquery-3.1.0.min.js" type="text/javascript"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/material.min.js" type="text/javascript"></script>
 
-                function jump(count) {
-                    window.setTimeout(function () {
-                        count--;
-                        if (count == 7) {
-                            $('.layer-show-share').show();
-                            $('.layer-show-share1').hide();
-                        }
-                        if (count > 0) {
-                            $('#last').attr('innerHTML', count);
-                            jump(count);
-                        } else {
-                            $('.layer-show-share').hide();
-                            $('.layer-show-share1').hide();
-                            $('.dis').show();
-                            $('.btns').hide();
-                        }
-                    }, 1000);
-                }
+	<!--  Charts Plugin -->
+	<script src="js/chartist.min.js"></script>
 
-                jump(14);
 
-            } else {
-                $('.dis').show();
-                $('.btns').hide();
-            }
-        });
 
-        //因js没有长按事件，需要自行封装，函数名longPress，参数为：需长按元素的id、长按之后的逻辑函数func
-        function longPress(id, func) {
-            var timeOutEvent;
+	<script src="js/material-dashboard.js"></script>
 
-            document.querySelector("#" + id).addEventListener("touchstart", function (e) {
-                //开启定时器前先清除定时器，防止重复触发
-                clearTimeout(timeOutEvent);
-                //开启延时定时器
-                timeOutEvent = setTimeout(function () {
-                    //调用长按之后的逻辑函数func
-                    func();
-                }, 300); //长按时间为300ms，可以自己设置
-            });
 
-            document.querySelector("#" + id).addEventListener("touchmove", function (e) {
-                //长按过程中，手指是不能移动的，若移动则清除定时器，中断长按逻辑
-                clearTimeout(timeOutEvent);
-                /* e.preventDefault() --> 若阻止默认事件，则在长按元素上滑动时，页面是不滚动的，按需求设置吧 */
-            });
+	<script type="text/javascript">
+    	$(document).ready(function(){
 
-            document.querySelector("#" + id).addEventListener("touchend", function (e) {
-                //若手指离开屏幕，时间小于我们设置的长按时间，则为点击事件，清除定时器，结束长按逻辑
-                clearTimeout(timeOutEvent);
-            })
-        }
+$(".nav li").click(function(){
+	
+	$(".nav li").removeClass("active");
+	$(this).addClass("active");
+	
+})
 
-        var num = 0;
+			// Javascript method's body can be found in assets/js/demos.js
 
-        function test() {
-            num += 1;
-            if (num >= 2) {
-                setTimeout(function () {
-                    $('#imgShare').hide();
-                    $('.dis').show();
-                    $('.btns').hide();
-                }, 6000);
-            }
-            setTimeout(function () {
-                $('#imgShare > p').html('<span style="color: red;">请再次长按分享</span><br>分享后加入群聊');
-            }, 6000);
-        }
+    	});
+	</script>
 
-        longPress('qrcode', test)
-    });
-
-    window.onload = function () {
-        if (0) {
-            $('div.a.header').hide();
-            $('footer.footer').hide();
-            console.log(111)
-        }
-        if (document.getElementsByClassName('origin')[0].className.indexOf('exist') != -1 && !0) {
-            popElement();
-        }
-    }
-
-    function popElement() {
-        var oBox = document.getElementsByClassName('exist')[0];
-        if (oBox) {
-            oBox.style.display = 'block';
-            var oBottom = document.getElementById('bottom');
-
-            pictures = eval("(" + '["wechaticon14.jpg","wechaticon5.jpg","wechaticon10.jpg","wechaticon11.jpg","wechaticon9.jpg","wechaticon4.jpg","wechaticon3.jpg","wechaticon20.jpg","wechaticon7.jpg","wechaticon2.jpg","wechaticon16.jpg","wechaticon8.jpg","wechaticon6.jpg","wechaticon19.jpg","wechaticon12.jpg","wechaticon17.jpg","wechaticon13.jpg","wechaticon15.jpg","wechaticon18.jpg","wechaticon1.jpg"]' + ")");
-            contents = eval('(' + '["\u6700\u8fd1\u603b\u662f\u8ddf\u5973\u670b\u53cb\u5435\u67b6\uff0c\u4e0d\u77e5\u9053\u600e\u4e48\u804a\u5929\u6c9f\u901a\u4e86","\u6211\u4e5f\u662f\u8ddf\u5973\u670b\u53cb\u5f02\u5730\u604b\uff0c\u4e0d\u77e5\u9053\u8be5\u600e\u4e48\u5c55\u5f00\u8bdd\u9898","\u7fa4\u4e3b\u597d\u50cf\u662f\u604b\u7231\u5927\u795e\uff0c\u6709\u6ca1\u6709\u64a9\u59b9\u7684\u6280\u5de7\u4f20\u6388\u4e00\u4e0b\u54e6","RIGHT\u672c\u4eba\u4e13\u6ce8\u604b\u7231\u5fc3\u7406\u5b66\u7814\u7a7610\u5e74\u7ecf\u9a8c\uff0c\u6709\u4e30\u5bcc\u7684\u604b\u7231\u8bdd\u672f\u4e00\u5bf9\u4e00\u6307\u5bfc\uff0c\u4e3b\u8981\u4e1a\u52a1\u6709\uff1a\u5f02\u5730\u604b\u5173\u7cfb\u7834\u51b0\u3001\u76f8\u4eb2\u6280\u5de7\u3001\u5206\u624b\u633d\u56de\u3001\u5a5a\u59fb\u7ecf\u8425\u3001\u51b7\u6218\u5904\u7406\u3001\u804a\u5929\u642d\u8baa\u3001\u5f62\u8c61\u6539\u9020\u3001\u6c14\u8d28\u63d0\u5347\u7b49\u8bfe\u7a0b\u57f9\u8bad","\u54c7\uff01\u7fa4\u4e3b\u597d\u4f1a\u54e6(\u00b4-\u03c9-`)","\u770b\u7fa4\u4e3b\u8fd9\u67b6\u52bf \u4e0d\u8c08\u4e2a\u51e0\u5341\u6b21\u604b\u7231 \u90fd\u603b\u7ed3\u4e0d\u51fa\u8fd9\u4e48\u591a\u7ecf\u9a8c\u554a\uff01\u4e0d\u50cf\u6211\u4e00\u6b21\u604b\u7231\u6ca1\u8c08\u8fc7\uff0c\u61ca\u607c\u554a\uff01\u5e94\u8be5\u65e9\u9047\u5230\u50cf\u4f60\u4eec\u8fd9\u4e48\u4f18\u79c0\u7684\u4eba","\u6211\u4e5f\u662f\u4e00\u4e2a\u5355\u8eab\u72d7\uff0c\u60f3\u5b66\u4e60\u4e00\u4e0b\u8ffd\u5973\u751f\u7684\u6280\u5de7\uff0c\u81ea\u5df1\u5634\u5df4\u592a\u7b28\u4e86\uff0c\u4e0d\u592a\u4f1a\u8bf4\u8bdd\uff0c\u521a\u597d\u5b66\u4e60\u4e00\u4e0b","RIGHT\u5927\u5bb6\u4e0d\u8981\u6025\u54c8\uff0c\u4eca\u5929\u665a\u4e0a8\u70b9\u949f\uff0c\u7531\u6211\u4eb2\u81ea\u4e3a\u5927\u5bb6\u89e3\u7b54\u4e00\u5207\u5173\u4e8e\u604b\u7231\u3001\u5a5a\u59fb\u3001\u4ea4\u53cb\u4e2d\u9047\u5230\u7684\u5404\u79cd\u7591\u96be\u95ee\u9898\uff01\u624b\u628a\u624b\u53eb\u4f60\u4eec\u8c08\u604b\u7231","\u5c0f\u677f\u51f3\u5df2\u5907\u597d\uff0c\u5750\u7b49\u7fa4\u4e3b\u5f00\u8bfe\u5566","\u5e0c\u671b\u53ef\u4ee5\u901a\u8fc7\u5b66\u4e60\u5c3d\u65e9\u6446\u813120\u5e74\u7684\u5355\u8eab\u751f\u6d3b\uff5e\u563f\u563f","RIGHT\u5bb6\u4eba\u4eec\u4e5f\u53ef\u4ee5\u5173\u6ce8\u6211\u7684\u5c0f\u7a0b\u5e8f\uff0c\u6211\u628a\u6211\u603b\u7ed3\u7684\u4e00\u5207\u7ecf\u9a8c\u548c\u8bdd\u672f\u90fd\u5199\u5728\u91cc\u9762\uff0c\u800c\u4e14\u6bcf\u5929\u90fd\u4f1a\u5173\u6ce8\u5927\u5bb6\u7684\u63d0\u95ee\u548c\u7559\u8a00\u54e6\uff01\u795d\u5927\u5bb6\u65e9\u65e5\u6446\u8131\u5355\u8eab\uff01\uff01\u8ddf\u81ea\u5df1\u5bf9\u8c61\u5173\u7cfb\u8d8a\u51fa\u8d8a\u597d(\u272a\u25bd\u272a)"]' + ')');
-            var protocol = '';
-
-            var timer = null;
-            var contentLength = contents.length;
-            var i = 0;
-            //
-            timer = setInterval(function () {
-                if (contents[i].indexOf('RIGHT') != -1) {
-                    var oFakeRightBox = document.createElement('div');
-                    oFakeRightBox.className = 'fakeRight';
-                    var oFakeChatIconRight = document.createElement('div');
-                    oFakeChatIconRight.className = 'fakeChatIconRight';
-                    var oRightImg = document.createElement('img');
-                    oRightImg.className = 'img';
-                    oRightImg.src = protocol + '/qq0330/Public/img/fakeChat/' + pictures[pictures.length - 1];
-                    var oFakeChatRight = document.createElement('div');
-                    oFakeChatRight.className = 'fakeChatRight';
-                    oFakeChatRight.innerText = contents[i].substring(5);
-                    var oFakeAngleRight = document.createElement('div');
-                    oFakeAngleRight.className = 'fakeAngleRight';
-
-                    oFakeChatIconRight.appendChild(oRightImg);
-                    oFakeRightBox.appendChild(oFakeChatIconRight);
-                    oFakeRightBox.appendChild(oFakeChatRight);
-                    oFakeRightBox.appendChild(oFakeAngleRight);
-
-                    oBox.insertBefore(oFakeRightBox, oBottom);
-                } else {
-                    var oAppendDiv = document.createElement('div');
-                    oAppendDiv.className = 'fake';
-                    var oDiv = document.createElement('div');
-                    oDiv.className = 'fakeChatIcon';
-                    var oImg = document.createElement('img');
-                    oImg.className = 'img';
-                    oImg.src = protocol + '/qq0330/Public/img/fakeChat/' + pictures[i];
-                    var oDivContent = document.createElement('div');
-                    oDivContent.className = 'fakeChat';
-                    oDivContent.innerText = contents[i];
-                    var oDivAngle = document.createElement('div');
-                    oDivAngle.className = 'fakeAngle';
-                    oDiv.appendChild(oImg);
-                    oAppendDiv.appendChild(oDiv);
-                    oAppendDiv.appendChild(oDivContent);
-                    oAppendDiv.appendChild(oDivAngle);
-
-                    oBox.insertBefore(oAppendDiv, oBottom);
-                }
-
-                i++;
-
-                if (i > contentLength - 1) {
-                    clearInterval(timer);
-                    setTimeout(function () {
-                        oBox.style.display = 'none';
-                    }, 2500)
-                }
-
-                window.scrollTo(0, document.documentElement.clientHeight);
-            }, 1500);
-        }
-    }
-
-    wx.ready(function () {
-        wx.hideMenuItems({
-            menuList: [
-                "menuItem:copyUrl"
-            ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
-        });
-
-        wx.onMenuShareTimeline({
-            title: '', // 分享标题
-            link: '', // 分享链接
-            imgUrl: '', // 分享图标
-            success: function () {
-
-            },
-            cancel: function () {
-                // 用户取消分享后执行的回调函数
-            }
-        });
-        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-        wx.onMenuShareAppMessage({
-            title: '', // 分享标题
-            link: '', // 分享链接
-            imgUrl: '/', // 分享图标
-            desc: '点我进群', // 分享描述
-            type: '', // 分享类型,music、video或link，不填默认为link
-            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-            success: function () {
-                // 用户确认分享后执行的回调
-            },
-            cancel: function () {
-                // 用户取消分享后执行的回调函数
-            }
-        });
-    });
-</script>
 </html>

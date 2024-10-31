@@ -1,0 +1,69 @@
+body, html{height: 100%;background: #f4f4f4;}
+a, b, i, sav, em{display: block; font-style: normal; font-weight: normal;}
+.hide{display: none;}
+.tips{font-size: 20px; display: inline-block; color: #fff; padding:0 2px; margin:-13px 0 0 -18px;-webkit-transform: scale(0.5);  transform: scale(0.5);  -webkit-transform-origin: 100% 100%; transform-origin: 100% 100%; }
+.yellowbg{background: #ffa201;}
+.main{ height:calc(100% - 64px); height:-webkit-calc(100% - 64px);  overflow: auto; -webkit-overflow-scrolling: touch;}
+/* 任务详情 */
+/*双 恒 网 络-ww w.Gre E02 0.cn--一个优 质 的 源 码下载 站 */
+.msg{width: 100%; display: inline-block; vertical-align: top; margin: 0; background: #FFF; height: 80px;}
+.msg div:first-child{margin: 0 15px 0 10px;}
+.msg div > span{padding-left: 5px;}
+.summary{margin-top: 10px; min-height: 60px; color: #666; width: 100%; background: #FFF;}
+.summary div:first-child{margin: 0 15px; height: 80px;}
+.summary b{float: left; width: 68px;}
+.summary b img{width: 60px; margin: 10px 0 5px 0; border-radius: 10px;}
+.summary i{float: left; width: calc(100% - 68px); padding-top: 10px;}
+.summary i p{font-size: 12px; color: #888;}
+.summary i p:first-child{font-size: 14px; color: #252525;}
+.banner-div{ padding: 0 10px; background: #fff;}
+.banner{margin: 10px 0; background: #FFF; overflow-x: auto; overflow-y: hidden !important; white-space: nowrap;}
+.banner img{width: 33.33333%; margin: 10px 0 10px 2%; background-size: 100% 100%; display: inline-block;}
+.banner img:first-child{margin-left: 0;}
+.guild{width: 100%; display: inline-block; vertical-align: top; margin-bottom: 10px; background: #FFF}
+.guild:last-child{margin-bottom: 10px;}
+.guild-title{height: 35px; line-height: 35px; margin: 0 15px; background: #FFF; color: #252525; position: relative}
+.guild-title:after{content: ""; position: absolute; bottom: 0; left: 0; right: 0; border-bottom: 1px solid #ddd; -webkit-transform: scaleY(.5); -webkit-transform-origin: 0 0;}
+.guild-title a{float: right; color: #ff9f01;}
+.guild-title a img{width: 18px; margin-top: 7px;}
+.guild-title a:active{color: #ff9f01;}
+.guild-con{min-height: 55px; background: #FFF; margin: 0 15px; line-height: 25px; color: #666; font-size: 12px; padding: 5px 0;}
+.guild-con img{width: 100%;}
+.guild-con em{color: #ff9f01; display: inline-block !important;}
+.guild-con p textarea{width: 100%; height: 60px; border: solid 1px #ebebeb; padding: 5px 0; text-indent: 10px; font-size: 12px; color: #888;}
+.footer{ position: fixed; width: 100%; height: 64px; line-height: 64px; left: 0; bottom: 0; padding: 0 10px; background: #fff;}
+.footer a{ width: 100%; height: 44px; border: none; background: #22AD38; text-align: center; font-size: 14px; color: #fff; border-radius: 10px; line-height: 44px; margin-top: 10px;}
+.footer a:hover{ color: #fff;}
+.footer a:visited{ color: #fff;}
+.footer a:active{ opacity: 0.7}
+.tips-div{ position: fixed; z-index: 1; width: 100%; height: 100%; left: 0; top: 0; background: #fff;}
+.tips-div img{ width: 100%;}
+
+/* 图片浏览器 */
+.mui-preview-image.mui-fullscreen{position: fixed; z-index: 20; background-color: #000;}
+.mui-preview-header,
+.mui-preview-footer{position: absolute; width: 100%; left: 0; z-index: 10;}
+.mui-preview-header{height: 44px; top: 0;}
+.mui-preview-footer{height: 50px; bottom: 0px;}
+.mui-preview-header .mui-preview-indicator{display: block; line-height: 25px; color: #fff; text-align: center; margin: 15px auto 4px; width: 70px; background-color: rgba(0, 0, 0, 0.4); border-radius: 12px; font-size: 16px;}
+.mui-preview-image{display: none; -webkit-animation-duration: 0.5s; animation-duration: 0.5s; -webkit-animation-fill-mode: both; animation-fill-mode: both;}
+.mui-preview-image.mui-preview-in{-webkit-animation-name: fadeIn; animation-name: fadeIn;}
+.mui-preview-image.mui-preview-out{background: none; -webkit-animation-name: fadeOut; animation-name: fadeOut;}
+.mui-preview-image.mui-preview-out .mui-preview-header,
+.mui-preview-image.mui-preview-out .mui-preview-footer{display: none;}
+.mui-zoom-scroller{display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-align: center; -webkit-align-items: center; align-items: center; -webkit-box-pack: center; -webkit-justify-content: center; justify-content: center; left: 0; right: 0; bottom: 0; top: 0; width: 100%; height: 100%; margin: 0; -webkit-backface-visibility: hidden;}
+.mui-zoom{-webkit-transform-style: preserve-3d; transform-style: preserve-3d;}
+.mui-slider .mui-slider-group .mui-slider-item img{width: auto; height: auto; max-width: 100%; max-height: 100%;}
+.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img{width: 100%;}
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item{display: inline-table;}
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img{display: table-cell; vertical-align: middle;}
+.mui-preview-loading{position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none;}
+.mui-preview-loading.mui-active{display: block;}
+.mui-preview-loading .mui-spinner-white{position: absolute; top: 50%; left: 50%; margin-left: -25px; margin-top: -25px; height: 50px; width: 50px;}
+.mui-preview-image img.mui-transitioning{-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease; transition: transform 0.5s ease, opacity 0.5s ease;}
+.weui_btn_dialog.primary{ color:#22AD38}
+@-webkit-keyframes fadeIn{0%{opacity: 0;} 100%{opacity: 1;}}
+@keyframes fadeIn{0%{opacity: 0;} 100%{opacity: 1;}}
+@-webkit-keyframes fadeOut{0%{opacity: 1;} 100%{opacity: 0;}}
+@keyframes fadeOut{0%{opacity: 1;} 100%{opacity: 0;}}
+p img{max-width: 100%; height: auto;}

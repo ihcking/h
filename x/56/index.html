@@ -1,413 +1,242 @@
-﻿<!doctype html>
-<html class="no-js" lang="en">
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta charset="utf-8">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="KeyWords" content="lonelystar,植物大战僵尸,网页版,JS植物大战僵尸,PVZ,JSPVZ,JS版,Javascript">
+<meta name="Description" content="JavaScript版的植物大战僵尸">
+<title>植物大战僵尸Javascript版-有啦资源网www.ylcom.net</title>
+<style type="text/css">
+body{-moz-user-select:none}
+td{font-family: 宋体; font-size: 12px}
+div{left:0}
+span{cursor:default}
+span,div,h2,h3{padding:0;margin:0}
+td.HandBookZombie{background: url(images/interface/Almanac_ZombieWindow2.png) no-repeat; width:20%; height:16%; text-align:center}
+#DivTeach{
+filter:"alpha(opacity=90)"; /* IE 8 */
+filter:alpha(opacity=90); /* IE 4-7 */
+opacity:.9; /* FireFox,Safari(WebKit),Opera */
+-moz-opacity:.9; /* FireFox<3.5 */
+position:absolute;width:900px;height:50px;top:530px;left:0;z-index:100;text-align: center; font-family: 幼圆; font-size: 20pt; font-weight: bold; color: #FFFFFF; background-color: #5B432E}
+.WindowFrame{position:absolute;width:900px;height:600px;OVERFLOW: hidden;border:3px outset ;}
+#dFlagMeterTitleB{position:absolute;color:#000; font-size: 18pt;font-weight:bold;width:343px;top:15px;left:-5px}
+#dFlagMeterTitleB span{position:absolute;color:#F93;font-size: 18pt;font-weight: bold;width:343px;top:-1px;left:-1px;}
 
-        <!-- Page Title Here -->
-        <title>我的小项目 gree020.cn提供下载</title>
-		
-              <!-- Disable screen scaling-->
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, user-scalable=0">
+#dSurfaceBack{position:absolute;display:none;top:0;width:900px;height:600px;z-index:255}
+#dHelp{width:614px;height:399px;background:url(images/Help.png);position:absolute;display:none;left:143px;top:100px}
+#dSelectLevel{position:absolute;width:100%;height:100%;font-weight:bold;display:none}
+#dOptionsMenuBack{position:absolute;text-align:center;left:244px;top:60px;width:412px;height:483px;display:none;background:url(images/OptionsMenuback32.png);_background:url(images/OptionsMenuback8.png)}
+.TitleBigContainer{position:relative;width:220px;margin:120px auto 0 auto;height:240px;overflow:hidden}
+.TitleSmallContainer{position:relative;width:100%;line-height:35px;color:#FFF;font-size:16px}
+.SmallLevel{float:left;cursor:pointer;width:50%}
+.BigLevel{float:left;color:#FC6;font-size:20px;width:100%;height:40px}
+.OptionsMenuButton,.OptionsMenuButtonDown{background:url(images/OptionsBackButton32.png);_background:url(images/OptionsBackButton8.png);float:left;font-family:黑体;font-size:32px;cursor:pointer;width:360px;height:100px;margin-left:26px;display:inline;color:#FC6}
+.OptionsMenuButton{background-position:0 0}
+.OptionsMenuButtonDown{background-position:0 100}
+.OptionsMenuButtonSpan{height:100px;line-height:100px;cursor:pointer}
 
-        <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
-        
-        <!-- Initializer -->
-        <link rel="stylesheet" href="./css/normalize.css">        
-        
-        <!-- Web fonts and Web Icons -->
-        <link rel="stylesheet" href="./css/pageloader.css">
-        <link rel="stylesheet" href="./fonts/opensans/stylesheet.css">
-        <link rel="stylesheet" href="./fonts/asap/stylesheet.css">
-        <link rel="stylesheet" href=" https://cdn.bootcss.com/ionicons/1.5.2/css/ionicons.min.css">
-        
-        <!-- Vendor CSS style -->
-        <link rel="stylesheet" href="./css/foundation.min.css">
-        <link rel="stylesheet" href="./js/vendor/jquery.fullPage.css">
-        <link rel="stylesheet" href="./js/vegas/vegas.min.css">
-        
-		<!-- Main CSS files -->
-        <link rel="stylesheet" href="./css/main.css">
-        <link rel="stylesheet" href="./css/main_responsive.css">
-        <link rel="stylesheet" href="./css/style-font1.css">
-        <link href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei" rel="stylesheet" type="text/css">
-        <script src="./js/vendor/modernizr-2.7.1.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/gh/yremp/yremp-js@1.5/sakura.js"></script>
-		<style type="text/css">
-		/**普通指针样式**/
-		body{cursor:url(https://hexo-1251213061.cos.ap-beijing.myqcloud.com/x/dorcandy.cur),default;}//默认鼠标效果
-		/**链接指针样式**/
-		a:hover{cursor:url(https://hexo-1251213061.cos.ap-beijing.myqcloud.com/x/pointer.cur),pointer;}//链接选择效果
-		</style>
-    </head>
-    <body id="menu" class="alt-bg">
-        <!--[if lt IE 8]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
-        <!-- Site config : put launching date here
-             data-date="01/31/2015 23:00:00"        Launching date
-             data-date-timezone="+0"                Lanching date time zone
--->
-        
-        
-        <!-- Page Loader -->
-        <div class="page-loader" id="page-loader">
-            <div><i class="ion ion-loading-d"></i><p>欢迎来到这里~</p></div>
-        </div>
-        <!-- BEGIN OF site header Menu -->
-		<!-- Add "material" class for a material design style -->
-		<header class="header-top">
-<!--		<header class="header-top material">-->
-			<div class="logo">
-				<a href="#home">
-				<!--左上角图标LOGO-->
-				<!--获取QQ头像代码，将QQ号(30748681)换成你自己的就行了-->
-					<img src="http://q1.qlogo.cn/g?b=qq&nk=30748681&s=100" alt="Logo Brand">
-				</a>
+#dPCard img{left:0;width:70px;height:42px}
+#dPCard .span1{cursor:pointer;width:70px;height:42px;float:left;margin:8px 0 0 2px;position:relative;} 
+#dPCard .span2{cursor:pointer;text-align:center;position:absolute;left:40px;top:27px;font-family:Fixedsys;font-size:9pt}
+#dCardList div{position:relative;cursor:pointer;padding:0;height:60px}
+#dCardList span{cursor:pointer;position:absolute;left:66px;top:40px;width:34px;height:20px;font-family:Fixedsys;font-size:11pt}
+#dCardList img{position:absolute;width:100px;height:60px}
+.SelectModal{color: #FC6; font-weight: bold;cursor:pointer;background: url(images/interface/Button.png) no-repeat center;text-align:center;height:43px;width:115px}
+.Menu{float:left;text-align:center;line-height:41px;font-weight:bold;font-family:黑体;color:#00CB08;height:41px;width:113px;background:url(images/interface/Button.png)}
+#imgSF{position:absolute;cursor:pointer;z-index:254}
+#PointerUD{position:absolute;z-index:50}
+#dTitle{display:none;position:absolute;left:100;background-color:#FFD;width:150px;font-size:12px;text-align:center;line-height:1.5;border:1px solid #000;padding:3px;z-index:254}
+#dAll img,#dFlagMeter img{position:absolute;border-style:none}
+#dProcess{text-align:center;border: 1px solid #FFF;background-color:#000;color:#FFF;position:absolute;left:130px;top:50px;width:640px;height:500px;display:none;z-index:250;padding:10px;*padding:10px 5px 10px 2px}
+#dProcess img{margin:5px 0}
+#dProcess h2{font-size:16px;margin:0 10px;color:#E80}
+#dProcess h3{font-size:12px}
+#dProcess2{overflow:auto;line-height:18px;font-size:12px;text-align:left;width:100%;*width:96%;height:450px}
+#dLink{position:absolute;left:5px;top:610px;width:500px;height:50px}
+#dLink div{float:left;margin-right:10px}
+
+.Tom1{left:0;top:0;width:86px;height:91px;background:url(images/interface/Tombstones.png) no-repeat}
+.Tom2{position:absolute;left:0;top:0;width:86px;height:91px;background:url(images/interface/Tombstone_mounds.png) no-repeat}
+</style>
+<script src="js/Cfunction.js" type="text/javascript"></script>
+<script src="js/CPlants.js" type="text/javascript"></script>
+<script src="js/CZombie.js" type="text/javascript"></script>
+<script id="JSPVZ" type="text/javascript"></script>
+<script id="JSProcess" type="text/javascript"></script>
+</head>
+<body id="dBody" topmargin="0" leftmargin="0" oncontextmenu="return false" ondragstart="return false" onselectstart="return false" bgcolor="#008080">
+
+<!--进度条-->
+<div id="dFlagMeter" style="visibility:hidden;position:absolute;z-index:255;left:50px;top:280px;width:500px;height:40px">
+	<div id="dFlagMeterTitle" style="position:absolute;text-align:right"><div id="dFlagMeterTitleB"><span id="sFlagMeterTitleF"></span></div></div>
+	<div id="dFlagMeterContent" style="position:absolute;left:344px;width:157px;height:40px">
+		<img id="imgFlagMeterEmpty" border="0" src="images/interface/FlagMeterEmpty.png" style="top: 17px">
+		<img id="imgFlagMeterFull" border="0" src="images/interface/FlagMeterFull.png" style="top: 17px;clip:rect(0,auto,auto,157px)">
+		<img id="imgFlag1" src="images/interface/FlagMeterParts2.png" style="left: 10px; top: 14px;display:none">
+		<img id="imgFlag2" src="images/interface/FlagMeterParts2.png" style="left: 40px; top: 14px;display:none">
+		<img id="imgFlag3" src="images/interface/FlagMeterParts2.png" style="left: 70px; top: 14px;display:none">
+		<img id="imgFlag4" src="images/interface/FlagMeterParts2.png" style="left: 100px; top: 14px;display:none">
+		<img id="imgGQJC" src="images/interface/FlagMeterLevelProgress.png" style="left: 35px; top: 29px;display:block">
+		<img id="imgFlagHead" src="images/interface/FlagMeterParts1.png" style="left: 139px; top: 13px">
+	</div>
+</div>
+
+<!--选项界面-->
+<div id="dSurface" class="WindowFrame" style="display:none;z-index:255">
+	<div id="iSurfaceBackground">
+		<map name="FPMap0">
+			<area href="javascript:void(0)" shape="rect" coords="641, 466, 724, 527" onClick="ShowOptions()">
+			<area href="javascript:void(0)" shape="rect" coords="718, 512, 790, 558" onClick="ShowHelp()">
+			<area href="javascript:void(0)" shape="rect" coords="800, 495, 879, 548" onClick="SetNone($('dSurface'))">
+		</map>
+		<img src="images/surface.png" usemap="#FPMap0" border="0">
+		<div style="position: absolute;background:url('images/SelectorScreenStartAdventur.png');left:474px;top:80px;width:331px;height:146px;cursor:pointer" onMouseOver="this.style.backgroundPosition='bottom'" onMouseOut="this.style.backgroundPosition='top'" onClick="ShowLevel()"></div>
+		<div style="position: absolute;background:url('images/SelectorScreenSurvival.png');left:474px;top:203px;width:313px;height:131px;cursor:pointer" onMouseOver="this.style.backgroundPosition='bottom'" onMouseOut="this.style.backgroundPosition='top'" onClick="ShowMiniGame()"></div>
+	</div>
+	<div id="dSurfaceBack">
+		<div id="dHelp" onClick="HiddenHelp()"></div>
+		<div id="dOptionsMenuback">
+			<div id="dOptionsMenu" style="line-height:40px;position:absolute;width:100%;height:100%;display:none;font-weight:bold">
+				<div style="margin-top:150px;height:40px"><input type="checkbox" id="cAutoSun" value="1" onChange="CheckAutoSun(this)"><label for="cAutoSun" id="lAutoSun" style="color:#FFF">自动拾取阳光</label></div>
+				<div class="BigLevel" style="cursor:pointer" onClick="SelectModal(oS.Lvl)">重新开始</div>
+				<div class="BigLevel" style="cursor:pointer" onClick="HiddenOptions();SelectModal(0);SetBlock($('dSurface'),$('iSurfaceBackground'))">返回菜单</div>
+				<div class="OptionsMenuButton" style="margin-top:108px" onMouseDown="OptionsMenuDown(this,$('sOptionsMenu'))" onMouseUp="OptionsMenuUP(this,$('sOptionsMenu'));HiddenOptions()"><span id="sOptionsMenu" class="OptionsMenuButtonSpan">返回游戏</span></div>
 			</div>
-            <div class="menu clearfix">
-                <a href="https://www.gree020.cn"><span style="color:#FFD700;">自定义</span></a>
-				<a href="https://www.gree020.cn">自定义</a>
-                <a href="#contact">找到我</a>
-            </div>
-		</header>
-		<nav class="quick-link count-6 nav-left">
-			<ul id="qmenu">
-				<li data-menuanchor="home">
-					<a href="#home">🎪
-					</a>
-					<span class="title">欢迎页面</span>
-				</li>
-				<li data-menuanchor="when">
-					<a href="#when">🍰
-					</a>
-					<span class="title">吃蛋糕啦</span>
-				</li>
-				<li data-menuanchor="register">
-					<a href="#register">🌏
-					</a>
-					<span class="title">站点一览</span>
-				</li>
-				<li data-menuanchor="about-us">
-					<a href="#about-us">👒
-					</a>
-					<span class="title">聊聊天</span>
-				</li>
-				<li data-menuanchor="contact">
-					<a href="#contact">📧
-					</a>
-					<span class="title">联系我</span>
-				</li>
-			</ul>
-		</nav>
-        <!-- END OF Quick nav icons at left -->
-        
-
-
-        <!-- BEGIN OF site cover -->
-        <div class="page-cover" id="home">
-		
-            <!-- Cover Background -->
-            <div class="cover-bg pos-abs full-size bg-img" data-image-src="img/1495974356790.jpg"></div>
-
-            <!-- BEGIN OF Slideshow Background -->
-            <div class="cover-bg pos-abs full-size slide-show">
-			<!--本地图片的话占加载资源，是所以我就上传到图床啦，下面都是远程图片链接-->
-			
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974355466/1495974355466.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974500801/1495974500801.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974356790/1495974356790.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974367777/1495974367777.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974498292/1495974498292.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974351291/1495974351291.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974370919/1495974370919.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974462151/1495974462151.jpg'></i>
-				<i class='img' data-src='https://imgs.aixifan.com/live/1495974467947/1495974467947.jpg'></i>
-
-
-
-			</div>
-            <!-- END OF Slideshow Background -->
-			
-			<!-- Solid color as filter or as background -->
-			
-            <div class="cover-bg pos-abs full-size bg-color" data-bgcolor="rgba(51, 2, 48, 0.12)"></div>
-        </div>
-        <!--END OF site Cover -->
-        
-        <!-- BEGIN OF site main content content here -->
-        <main class="page-main" id="mainpage">             
-            
-			<!-- Begin of home page -->
-			<div class="section page-home page page-cent" id="s-home">
-				<!-- Logo -->
-				<div class="logo-container">
-				<!--获取QQ头像代码，将QQ号(30748681)换成你自己的就行了-->
-					<img class="h-logo" src="http://q1.qlogo.cn/g?b=qq&nk=30748681&s=100" alt="Logo">
+			<div id="dSelectLevel">
+				<div class="TitleBigContainer">
+					<div id="dTitleSmallContainer" class="TitleSmallContainer" style="display:none">
+						<div id="dBigLvl1">
+							<div class="BigLevel">&nbsp;&nbsp;&nbsp;第一大关&nbsp;&nbsp;&nbsp;<span style="cursor:pointer" onClick="SetNone($('dBigLvl1'));SetBlock($('dBigLvl2'))" title="点击进入到第二大关">>></span></div>
+							<div onClick="SelectModal(1)" class="SmallLevel">第一关</div>
+							<div onClick="SelectModal(2)" class="SmallLevel">第二关</div>
+							<div onClick="SelectModal(3)" class="SmallLevel">第三关</div>
+							<div onClick="SelectModal(4)" class="SmallLevel">第四关</div>
+							<div onClick="SelectModal(5)" class="SmallLevel">第五关</div>
+							<div onClick="SelectModal(6)" class="SmallLevel">第六关</div>
+							<div onClick="SelectModal(7)" class="SmallLevel">第七关</div>
+							<div onClick="SelectModal(8)" class="SmallLevel">第八关</div>
+							<div onClick="SelectModal(9)" class="SmallLevel">第九关</div>
+							<div onClick="SelectModal(10)" class="SmallLevel">第十关</div>
+						</div>
+						<div id="dBigLvl2" style="display:none">
+							<div class="BigLevel"><span style="cursor:pointer" onClick="SetNone($('dBigLvl2'));SetBlock($('dBigLvl1'))" title="点击进入到第一大关"><<</span>&nbsp;&nbsp;&nbsp;第二大关&nbsp;&nbsp;&nbsp;</div>
+							<div onClick="SelectModal(11)" class="SmallLevel">第一关</div>
+							<div onClick="SelectModal(12)" class="SmallLevel">第二关</div>
+						</div>
+					</div>
+					<div id="dMiniSmallContainer" class="TitleSmallContainer" style="display:none">
+						<div class="BigLevel">小游戏模式</div>
+						<div onClick="SelectModal('StrongLevel')" class="SmallLevel" style="width:100%">超乎寻常的压力！</div>
+						<div onClick="SelectModal('TestUHeart')" class="SmallLevel" style="width:100%">你的心脏够强劲吗？</div>
+						<div onClick="SelectModal('ZombieRun')" class="SmallLevel" style="width:100%">僵尸快跑！</div>
+						<div onClick="SelectModal('PovertyOfTheSoil')" class="SmallLevel" style="width:100%">贫瘠之地</div>
+						<div onClick="SelectModal('MassGrave')" class="SmallLevel" style="width:100%">乱葬岗</div>
+					</div>
 				</div>
-				<!-- Content -->
-				<section class="content">
-					
-					<header class="header">
-						<div class="h-left">
-							<h2 title="点这里~">
-	<a href="#/"><span style="color:#FFFFFF;">我的</span><strong><span style="color:#FFFFFF;">小站</span></strong></a>
-</h2>
-						</div>
-						<div class="h-right">
-							<h3>记录 着<br>一点一滴</h3>
-							<h4 class="subhead"><a href="#when">Come on！！& Love me！</a></h4>
-						</div>
-					</header>
-				</section>
-				<!-- Scroll down button -->
-                <footer class="p-footer p-scrolldown">
-                    <a href="#when">
-                        <div class="arrow-d">
-							<div class="before">你&nbsp;是&nbsp;否</div>
-							<div class="after">在&nbsp;期&nbsp;待&nbsp;着</div>
-							<div class="circle"></div>
-						</div>
-                    </a>                        
-                </footer>
+				<div class="OptionsMenuButton" style="margin-top:20px" onMouseDown="OptionsMenuDown(this,$('sLevelMenu'))" onMouseUp="OptionsMenuUP(this,$('sLevelMenu'));HiddenLevel();HiddenMiniGame()"><span id="sLevelMenu" class="OptionsMenuButtonSpan">返&nbsp;&nbsp;&nbsp;&nbsp;回</span></div>
 			</div>
-			<!-- End of home page -->
-            
-            <!-- Begin of timer page -->
-            <div class="section page-when page page-cent" id="s-when">
-                <section class="content">
-                    <div class="clock clock-countdown">
-						<div class="site-config"
-							 data-date="02/19/2024 00:00:00" 
-							 data-date-timezone="+0"
-							 ></div>
-						<header class="header">
-							🎂 距离<strong> 我</strong>的生日还剩下 🎉
-						</header>
-                        <div class="elem-left">
-                            <div class="digit hours">00</div>
-                            <div class="text">时</div>
-                        </div>						
-                        <div class="elem-center">
-							<!-- Optional text at top or image logo -->
-							<!--<span class="text top">here in</span>-->
-							<!-- Optional logo at top -->
-							<!--获取QQ头像代码，将QQ号(30748681)换成你自己的就行了-->
-							<span class="text top"><img class="img" alt="Logo" src="http://q1.qlogo.cn/g?b=qq&nk=30748681&s=100"></span>
-                            <div class="digit days">000</div>
-                            <div class="text">日</div>
-                        </div>
-                        <div class=" elem-right">
-                            <div class="digit minutes">00</div>
-                            <div class="text">分</div>
-                        </div>
-						
-						<!-- second knob here -->
-						<div class="second">
-							<input class="knob container" 
-								   id="second-knob"
-								  	data-width="400"
-								  	data-height="400"
-								 data-displayInput=false
-									data-fgColor="#fff"
-									data-bgColor="rgba(255,255,255,0)"
-									data-thickness=".07"
-								 	value="0"
-									data-displayPrevious=true
-								   data-max="6000"
-								   />
-						</div>
-                    </div>                   
-                    
-                </section>                
-                <footer class="p-footer p-scrolldown">
-                    <a href="#register">
-                        <div class="arrow-d">
-							<div class="before">节&nbsp;日</div>
-							<div class="after">快&nbsp;乐</div>
-							<div class="circle"></div>
-						</div>
-                    </a>                        
-                </footer>
-            </div>
-            <!-- End of timer page -->
-            
-            <!-- Begin of register page -->
-            <div class="section page-register page page-cent " id="s-register">
-                <section class="content">
-                    <header class="p-title">
-                        <h3><span style="color:#FFFFFF;">🍭 站点一览</span></h3>
-                    </header>
-                    <div>
-						<article class="text">
-                        <p><a href="https://www.gree020.cn" target="_blank"><span style="color:#FFFFFF;">🍉 测试：  其实也是闲着没事</span></a></p>	
-                        <p><a href="https://www.gree020.cn" target="_blank"><span style="color:#FFFFFF;">🍓 测试：想什么呢~</span></a></p>	
-                        <p><a href="https://www.gree020.cn" target="_blank"><span style="color:#FFFFFF;">🍋 测试:也不知道些什么好呢~</span></a></p>
-						<!--将QQ号30748681改成你自己的别人点击就会跳转联系你-->
-                        <p><a href="https://www.gree020.cn" target="_blank"><span style="color:#FFFFFF;">🍒 联系我获取更多</span></a></p>
-                        <form id="mail-subscription" class="form magic send_email_form" method="get" action="ajaxserver/serverfile.php">
-                            <p class="invite center">点击上方的链接来联系我~</p>
-                        </form>
-                    </div>
-                </section>
-                <footer class="p-footer p-scrolldown">
-                    <a href="#about-us">
-                        <div class="arrow-d">
-							<div class="before">超&nbsp;级&nbsp;帅&nbsp;气&nbsp;的</div>
-							<div class="after">我&nbsp;的&nbsp;网站</div>
-							<div class="circle"></div>
-						</div>
-                    </a>                        
-                </footer>
-            </div>
-            <!-- End of register page -->
-            
-            <!-- Begin of about us page -->
-            <div class="section page-about page page-cent" id="s-about-us">
-                <section class="content">
-                    <header class="p-title">
-                        <h3>🍬 关于我</h3>
-						<h2>想与 <span class="bold">我</span> 一起愉快的 <span class="bold">深入♂交流</span> 嘛</h2>
-                    </header>
-                    <article class="text">
-                        <p>&emsp;&emsp;黑夜是个好名字，既简单又可爱，当然也很好记就是有些绕口
-                            所以来访单朋友称呼我『大帅比』就可以啦~我是不会在意的啦~</p>
-                        <p>&emsp;&emsp;	 结束啦，目前也只有这么多啦</p>
-                    </article>
-<!-- 聊天样式 -->					
-<!-- Left -->
-<div class="sender">
-  <div>
-    <img src="http://q1.qlogo.cn/g?b=qq&nk=30748681&s=100">
-  </div>
-  <div>
-    <div class="left_triangle"></div>
-    <span><span style="color:#E56600;">&nbsp;魔镜魔镜，世界上最帅的人是谁？&nbsp;</span></span>
-  </div>
+		</div>
+	</div>
 </div>
-<!-- Right -->
-<div class="receiver">
-  <div>
-    <img src="http://q1.qlogo.cn/g?b=qq&nk=30748681&s=100">
-  </div>
-  <div>
-    <div class="right_triangle"></div>
-    <span><span style="color:#4C33E5;">那当然是<span style="color:#E53333;">你这位大帅比</span>啦~</span><span style="color:#4C33E5;"></span><br /></span>
-  </div>
+
+<!--主界面EDAll-->
+<div class="WindowFrame" id="dAll" style="position:absolute;left:0;top:0;width:900px;background-color:#000">
+	<!--背景图片-->
+	<div style="position:absolute;width:1400px;height:600px;display:none;z-index:0" id="tGround"></div>
+	<!--左边卡片列-->
+	<div id="dCardList" style="visibility:hidden;position:absolute;left:500px;top:0;width:100px;overflow:visible;z-index:254"></div>
+	<!--出场僵尸显示-->
+	<div id="dZombie" style="position:absolute;width:335px;height:600px;left:1065px;top:0;z-index:1"></div>
+	<!--选择卡片-->
+	<div id="dSelectCard" align=center style="display:none;position:absolute;left:600px;top:0;width:465px;height:600px;z-index:1;background: url('images/interface/SeedChooser_Background.png') no-repeat">
+		<div style="text-align:center;line-height:35px;font-size: 12pt;color:#FC6;height:35px;width:100%;top:0;font-family:新宋体;font-weight: bold">选择你的植物</div>
+		<div id="dPCard" style="position:relative;width:96%;height:455px;"></div>
+		<div style="width:100%;height:40px;line-height:40px;text-align:center;margin-top:10px">
+			<input onClick="ResetSelectCard()" type="button" value="重选" name="btnReset" id="btnReset" style="width: 65; height: 35; border-left: 3px solid #85411C; border-right: 3px solid #4E250C; border-top: 3px solid #85411C; border-bottom: 3px solid #4E250C; background-color: #602D11; color:#FC6; font-weight:bold; font-size:14px;cursor:pointer">
+			<input onClick="LetsGO()" type="button" value="GO!" disabled="disabled" name="btnOK" id="btnOK" style="width: 65; height: 35; border-left: 3px solid #85411C; border-right: 3px solid #4E250C; border-top: 3px solid #85411C; border-bottom: 3px solid #4E250C; background-color: #602D11; color:#888; font-weight:bold; font-size:14px;cursor:pointer">
+		</div>
+	</div>
+	<!--阳光和铲子-->
+	<div id="dTop" style="position:absolute;left:605px;top:561px;height:35px;width:123px;display:none;z-index:1;">
+		<div id="dSunNum" style="background:url('images/interface/SunBack.png') no-repeat;position:absolute;width:123px;height:35px"><span id="sSunNum" style="text-align:center;position:absolute;top:4px;left:43px;width:68px;font-family:Verdana;font-weight:bold;font-size:18pt"></span></div>
+		<div id="tdShovel" style="position:absolute;width:71px;height:35px;left:130px;background: url('images/interface/ShovelBack.png') no-repeat;visibility:hidden"><img id="imgShovel" src="images/interface/Shovel.png" onMouseDown="ChoseShovel(event)"></div>
+	</div>
 </div>
-<!-- 聊天样式over -->
-                </section>
-                <footer class="p-footer p-scrolldown">
-                    <a href="#contact">
-                        <div class="arrow-d">
-							<div class="before">ScarletDor</div>
-							<div class="after">爱&nbsp;酷&nbsp;码</div>
-							<div class="circle"></div>
-						</div>
-                    </a>                        
-                </footer>
-            </div>
-            <!-- End of about us page -->
-                
-            <!-- Begin of Contact page   -->
-            <div class="section page-contact page page-cent" id="s-contact">
-				<!-- Begin of contact information -->
-					<section class="content">
-						<header class="p-title">
-							<h3>💖 联系我呀~</h3>
-						</header>
-						<!-- Begin Of Page SubSction -->
-						<div class="contact">
-							<div class="row">
-								<div class="medium-6 columns left">
-									<ul>
-										<li>
-											<h4>Email</h4>
-											<p><a href="mailto://1234@mail.com">1234@mail.com</a></p>
-										</li>
-										<li>
-											<h4>Weibo</h4>
-											<p><a href="#">自定义</a></p>
-										</li>
-										<li>
-											<h4>QQ</h4>
-											<p><a href="http://wpa.qq.com/msgrd?v=3&uin=30748681&site=qq&menu=yes" target="_blank">30748681</a></p>
-										</li>
-									</ul>
-								</div>
-								<div class="medium-6 columns social-links right">
-									<ul>
 
-										<!-- legal notice -->
-										<li class="show-for-medium-up">
-											<h4>新发现</h4>
-											<p><a href="#">自定义</a></p>
-										</li>
-										<li  class="show-for-medium-up">
-											<h4>寻觅踪迹</h4>
-											<!-- Begin of Social links -->
-											<div class="socialnet">
-												<a href="#"><i class="ion ion-social-facebook"></i></a>
-												<a href="#"><i class="ion ion-social-instagram"></i></a>
-												<a href="#"><i class="ion ion-social-twitter"></i></a>
-												<a href="#"><i class="ion ion-social-pinterest"></i></a>
-												<a href="#"><i class="ion ion-social-tumblr"></i></a>
-											</div>
-											<!-- End of Social links -->
-										</li>
-										<li>
-											<p><img src="http://q1.qlogo.cn/g?b=qq&nk=30748681&s=100" alt="Logo" class="logo"></p>
-											<p class="small">本站 by <strong><a href="#">爱酷</a></strong>. All right reserved 2020</p>
-										</li>
-									</ul>
+<!--菜单-->
+<div id="dMenu" style="display:none;position:absolute;cursor:pointer;width:226px;height:41px;left:677px;z-index:254">
+	<div id="dMenu0" class="Menu" onClick="PauseGame(this)">暂 停</div>
+	<div id="dMenu1" class="Menu" onClick="ClickMenu()">菜 单</div>
+</div>
 
-								</div>
-							</div>
-						</div>
-						<!-- End of page SubSection -->
-					</section>
-            </div>
-            <!-- End of Contact page  -->   
-        
-        </main>
+<!--图鉴-->
+<div id="dHandBook" style="display:none;position:absolute;z-index:255" class="WindowFrame">
+<table border="0" width="800" cellspacing="0" cellpadding="0" background="images/interface/Almanac_IndexBack.jpg" height="600">
+	<tr>
+		<td height="88" align="center" style="font-size: 32px; font-weight: bold; font-family: 黑体;" colspan="3">	图鉴——索引</td>
+	</tr>
+	<tr>
+		<td align="center" width="400" height="473">
+		<img border="0" src="images/Plants/SunFlower/SunFlower.gif" width="73" height="74"><br>
+		<br>
+		<br>
+		<br>
+		<input type="button" value="查看植物" name="btnViewPlant" id="btnViewPlant" style="cursor:pointer;width: 113; height: 41; border-left: 3px solid #85411C; border-right: 3px solid #4E250C; border-top: 3px solid #85411C; border-bottom: 3px solid #4E250C; background-color: #8F431B; color:#FFCC66; font-weight:bold; font-size:14pt; font-family:幼圆" onClick="ViewProducePlant()"><br>
+		<br>
+&nbsp;</td>
+		<td align="center" width="400" height="473" colspan="2">
+		<img border="0" src="images/Zombies/Zombie/Zombie.gif" width="149" height="130"><br>
+&nbsp;<table border="0" width="113" background="images/interface/Button.png" height="41" cellspacing="0" cellpadding="0">
+			<tr>
+				<td style="cursor:pointer;font-weight:bold; font-size:14pt; font-family:幼圆; color:#00F500" align="center" onClick="ViewProduceZombie()">查看僵尸</td>
+			</tr>
+		</table>
+		<p><br>
+		<br>
+&nbsp;</td>
+	</tr>
+	<tr>
+		<td align="center" width="400">
+		　</td>
+		<td align="center" width="238">
+		　</td>
+		<td align="center" width="162">
+		<table border="0" width="89" cellspacing="0" cellpadding="0" height="26">
+			<tr>
+				<td background="images/interface/Almanac_CloseButton.png" style="cursor:pointer" onMouseOver="this.style.backgroundImage='url(images/interface/Almanac_CloseButtonHighlight.png)'" onMouseOut="this.style.backgroundImage='url(images/interface/Almanac_CloseButton.png)'" onClick="SetNone($('dHandBook'))" align="center">
+				<font color="#000080" style="font-size: 9pt;">关闭</font></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</div>
 
-        <!-- END OF site main content content here -->  
-		
+<!--获得新植物-->
+<div id="dNewPlant" style="display:none;position:absolute;width:800px;height:600px;background:url(images/interface/AwardScreen_Back.jpg) no-repeat">
+	<div id="dNewPlantTitle" style="position:absolute;left:50%;text-align:center;margin-left:-250px;color: #FC6; font-size: 20px;height:90px;line-height:90px; font-weight: bold; width:500px">你获得了一棵新的植物！</div>
+	<div style="position:absolute;top:100px;width:800px;height:191px;line-height:191px;text-align:center">
+		<img id="iNewPlantCard" border="0">
+	</div>
+	<br>
+	<div id="dNewPlantName" style="position:absolute;position:absolute;top:291px;text-align:center;left:50%;margin-left:-150px;width:300px;height:55px;font-family: 宋体; font-size: 20px; color: #FC6; font-weight: bold;line-height:55px">abc</div>
+	<br><br><br>
+	<div id="dNewPlantTooltip" style="position:absolute;left:50%;top:400px;text-align:center;margin-left:-140px;width:280px;font-weight: bold;font-family: 宋体; font-size: 12px;color:#232323">abc</div>
+	<br><br><br><br><br><br>
+	<input type="button" value="下一关！" name="btnNextLevel" id="btnNextLevel" style="position:absolute;cursor:pointer;width: 113; height: 41; border-left: 3px solid #85411C; border-right: 3px solid #4E250C; border-top: 3px solid #85411C; border-bottom: 3px solid #4E250C; background-color: #8F431B; color:#FC6; font-weight:bold; font-size:14px; font-family:幼圆; left:344; top:507">
+</div>
 
-<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
-        
-        <!-- All Javascript plugins goes here -->
-        <script src="./js/vendor/jquery-1.11.2.min.js"></script>
-		<!-- All vendor scripts -->
-        <script src="./js/vendor/all.js"></script>
-		
-		<!-- Detailed vendor scripts -->
-        <!--<script src="./js/vendor/jquery.fullPage.min.js"></script>
-        <script src="./js/vendor/jquery.slimscroll.min.js"></script>
-        <script src="./js/vendor/jquery.knob.min.js"></script>
-        <script src="./js/vegas/vegas.min.js"></script>
-        <script src="./js/jquery.maximage.js"></script>
-        <script src="./js/okvideo.min.js"></script>-->
-		
-		<!-- Downcount JS -->
-        <script src="./js/jquery.downCount.js"></script>
-		
-		<!-- Form script -->
-        <script src="./js/form_script.js"></script>
-        
-		<!-- Javascript main files -->
-        <script src="./js/main.js"></script>
-         
+<!--开发进度显示-->
+<div id="dProcess">
+	<div id="dProcess2"><span id="sFailed" style="line-height:30px;font-size:16px;color:#FF0;font-weight:bold">未成功从作者网站上加载到进度文件<br>如果互联网未连接或者作者网站无法成功打开则无法查看最新进度显示！</span></div>
+	<br>
+	<input type="button" value="关闭" onClick="SetNone($('dProcess'))" style="cursor:pointer;width: 113px; height: 30px; border-left: 3px solid #85411C; border-right: 3px solid #4E250C; border-top: 3px solid #85411C; border-bottom: 3px solid #4E250C; background-color: #8F431B; color:#FC6; font-weight:bold; font-size:14px; font-family:幼圆">
+</div>
 
-        <!-- Google Analytics: Uncomment and change UA-XXXXX-X to be your site"s ID. -->
-        <!--<script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src="//www.google-analytics.com/analytics.js";
-            r.parentNode.insertBefore(e,r)}(window,document,"script","ga"));
-            ga("create","UA-XXXXX-X");ga("send","pageview");
-        </script>-->
-    </body>
+<script type="text/javascript">
+//初始化系统对象，载入关卡
+LoadLvl();
+
+</script>
+
+</body>
 </html>

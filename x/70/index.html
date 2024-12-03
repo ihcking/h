@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>双恒网络-万年历</title>
+<link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" />
+<style>
+.mt-1{margin-top:1rem;}.mt-p5{margin-top:.5rem;}.ptb-p5{padding:.5rem 0;}.flex{display:flex;justify-content:center;}.flex-start{justify-content:flex-start;}.flex-basis{flex-basis:auto !important;}.flex-item{text-align:center;flex-basis:0;align-items:center;cursor:pointer;}.text-left{text-align:left;}.flex-grow{flex-grow:1;}.flex-grow-4{flex-grow:4;}.minitxt{font-size:.7rem;color:#666;}.rizhu{color:#5fb878;}.border-b{border-bottom:1px solid #ccc;}.flex-item.select{color:#fff;background:#f03;border-radius:50%;}.grey .flex-item{color:#ccc;}.weekend{color:#f03;}.month{color:#ff5722;}.solarterm{color:#29f;}.my-quote{margin-bottom:0;padding:0;padding-left:10px;}.branches{color:#098;padding:.1rem .2rem;border:1px solid #098;border-radius:50%;cursor:pointer;}.branches.select{color:#fff;background:#095;}.bold{font-weight:bold;}.bazi{font-size:1.5rem;font-weight:bold;align-self:center;}.canggan{font-size:.8rem;font-weight:normal;}.jin{color:#fd7c04;}.mu{color:#008000;}.shui{color:#0000ff;}.huo{color:#ff0000;}.tu{color:#995001;}.liuyi{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;list-style:none;word-break:keep-all;float:left;}.bg-f2{background:#f2f2f2;}
+</style>
+<script src="data/layui.js"></script>
+<script src="data/vue.js"></script>
+<script src="data/axios.min.js"></script>
+</head>
+<body>
+<div id="app" class="layui-container">
+<div class="layui-row mt-1">
+<div class="layui-col-xs12"></div>
+<div class="layui-col-xs12">
+<div class="layui-btn-group">
+<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" @click="sub_year"><i class="layui-icon layui-icon-left"></i></button>
+<button type="button" class="layui-btn layui-btn-primary layui-btn-xs">{{year}} 年</button>
+<button type="button" class="layui-btn layui-btn-primary layui-btn-xs"@click="add_year"><i class="layui-icon layui-icon-right"></i></button>
+</div>
+<div class="layui-btn-group">
+<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" @click="sub_month"><i class="layui-icon layui-icon-left"></i></button>
+<button type="button" class="layui-btn layui-btn-primary layui-btn-xs">{{month}} 月</button>
+<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" @click="add_month"><i class="layui-icon layui-icon-right"></i></button>
+</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bold">
+<div class="flex-item flex-grow flex weekend">日</div>
+<div class="flex-item flex-grow flex">一</div>
+<div class="flex-item flex-grow flex">二</div>
+<div class="flex-item flex-grow flex">三</div>
+<div class="flex-item flex-grow flex">四</div>
+<div class="flex-item flex-grow flex">五</div>
+<div class="flex-item flex-grow flex weekend">六</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b" v-for="(items, index) in calendar" :key="index">
+<div class="flex-item flex-grow flex" :class="{grey: item.mouth != month}" v-for="(item, index) in items" :key="index" @click="set_day(item)">
+<div class="flex-item minitxt" :class="{month: item.shengx.slice(-2) == '初一', solarterm: item.jq != ''}">{{item.shengx.slice(-2) == '初一' ? item.shengx.slice(-4, -2): (item.jq ? item.jq : item.shengx.slice(-2))}}</div>
+<div class="flex-item bold" :class="{select: item.day == day && item.mouth == month, weekend: item.week == 0 || item.week == 6}">{{item.day < 10 ? '0' + item.day : item.day}}</div>
+<div class="flex-item minitxt rizhu">{{item.rgz}}</div>
+</div>
+</div>
+<div class="layui-col-xs12 mt-p5"><blockquote class="layui-elem-quote my-quote">时辰</blockquote></div>
+<div class="layui-col-xs1 mt-p5" v-for="(item, index) in branches"><span class="branches" :class="{select: time == item}" @click="set_time(item)">{{item}}</span></div>
+
+<div class="layui-col-xs12 mt-p5"><blockquote class="layui-elem-quote my-quote">八字排盘</blockquote></div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bold">
+<div class="flex-item flex-grow flex">四柱</div>
+<div class="flex-item flex-grow flex">年柱</div>
+<div class="flex-item flex-grow flex">月柱</div>
+<div class="flex-item flex-grow flex">日元</div>
+<div class="flex-item flex-grow flex">时柱</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
+<div class="flex-item flex-grow flex bold">十神</div>
+<div class="flex-item flex-grow flex" v-for="item in tiangan" :class="[item.color]">{{item.shishen}}</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b">
+<div class="flex-item flex-grow flex bold">天干</div>
+<div class="flex-item flex-grow flex bazi" v-for="item in tiangan" :class="[item.color]">{{item.text}}</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
+<div class="flex-item flex-grow flex bold">地支</div>
+<div class="flex-item flex-grow flex bazi" v-for="item in dizhi" :class="[item.color]">
+<div>{{item.text}}</div>
+</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b">
+<div class="flex-item flex-grow flex bold">藏干</div>
+<div class="flex-item flex-grow canggan" v-for="item in dizhi" :class="[item.color]">
+<div v-for="canggan in item.canggan" :class="[canggan.color]">{{canggan.text}}({{canggan.shishen}})</div>
+</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
+<div class="flex-item flex-grow flex bold">空亡</div>
+<div class="flex-item flex-grow flex" v-for="item in kongwang">{{item}}</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b">
+<div class="flex-item flex-grow flex bold">纳音</div>
+<div class="flex-item flex-grow flex" v-for="item in nayin">{{item}}</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
+<div class="flex-item flex-grow flex bold">神煞</div>
+<div class="flex-item flex-grow" v-for="items in shensha">
+<div v-for="item in items">{{item}}</div>
+</div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b">
+<div class="flex-item flex-grow flex bold">八字强弱</div>
+<div class="flex-item flex-grow-4 text-left"><span class="liuyi" v-for="item in geju">&nbsp;{{item}}&nbsp;</span></div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
+<div class="flex-item flex-grow flex bold">天干留意</div>
+<div class="flex-item flex-grow-4 text-left"><span class="liuyi" v-for="item in tianganhechong">&nbsp;{{item}}&nbsp;</span></div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b">
+<div class="flex-item flex-grow flex bold">地支留意</div>
+<div class="flex-item flex-grow-4 text-left"><span class="liuyi" v-for="item in dizhihechong">&nbsp;{{item}}&nbsp;</span></div>
+</div>
+<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
+<div class="flex-item flex-grow flex bold">称骨算命</div>
+<div class="flex-item flex-grow-4 text-left"><div v-for="item in chenggu">&nbsp;{{item}}&nbsp;</div></div>
+</div>
+</div>
+</div>
+<script>
+var app=new Vue({el:'#app',data:{year:new Date().getFullYear(),month:new Date().getMonth()+1,day:new Date().getDate(),time:'卯',branches:['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'],monthData:[],solarterms:[],calendar:[],eightCharacter:null},methods:{sub_year(){--this.year
+this.init_month()},add_year(){++this.year
+this.init_month()},sub_month(){this.month=--this.month<1?12:this.month
+this.month==12?this.sub_year():this.init_month()},add_month(){this.month=++this.month>12?1:this.month
+this.month==1?this.add_year():this.init_month()},set_day(item){this.day=item.day
+if(this.month!=item.mouth){this.month=item.mouth
+this.init_month()}else{this.init_time()}},set_time(item){this.time=item
+this.init_time()},init_month(){that=this
+axios.post('http://zydx.win/wnlAPI.php',"ID=1&year="+this.year+"&month="+this.month).then(function(response){calendar=[[],[],[],[],[],[]]
+response.data.forEach(function(item,i){calendar[Math.floor(i/7)].push(item)})
+that.monthData=response.data
+that.calendar=calendar})
+this.init_time()},
+init_time(){that=this
+hour={'子':'00','丑':'01','寅':'03','卯':'05','辰':'07','巳':'09','午':'11','未':'13','申':'15','酉':'17','戌':'19','亥':'21'},axios.post('http://zydx.win/wnlAPI.php',"ID=2&year="+this.year+"&month="+this.month+"&day="+this.day+"&hour="+hour[this.time]+'&minute=1').then(function(response){that.eightCharacter=response.data})}},computed:{tiangan(){return this.eightCharacter?this.eightCharacter.bazi.tiangan:[]},dizhi(){return this.eightCharacter?this.eightCharacter.bazi.dizhi:[]},kongwang(){return this.eightCharacter?this.eightCharacter.bazi.kongwang:[]},nayin(){return this.eightCharacter?this.eightCharacter.bazi.nayin:[]},shensha(){return this.eightCharacter?this.eightCharacter.bazi.shensha:[]},geju(){return this.eightCharacter?this.eightCharacter.bazi.geju:[]},tianganhechong(){return this.eightCharacter?this.eightCharacter.bazi.tianganhechong:[]},dizhihechong(){return this.eightCharacter?this.eightCharacter.bazi.dizhihechong:[]},chenggu(){return this.eightCharacter?this.eightCharacter.bazi.chenggu:[]}},created(){this.init_month()},})
+</script>
+</body>
+</html>

@@ -1,128 +1,208 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>双恒网络-万年历</title>
-<link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" />
-<style>
-.mt-1{margin-top:1rem;}.mt-p5{margin-top:.5rem;}.ptb-p5{padding:.5rem 0;}.flex{display:flex;justify-content:center;}.flex-start{justify-content:flex-start;}.flex-basis{flex-basis:auto !important;}.flex-item{text-align:center;flex-basis:0;align-items:center;cursor:pointer;}.text-left{text-align:left;}.flex-grow{flex-grow:1;}.flex-grow-4{flex-grow:4;}.minitxt{font-size:.7rem;color:#666;}.rizhu{color:#5fb878;}.border-b{border-bottom:1px solid #ccc;}.flex-item.select{color:#fff;background:#f03;border-radius:50%;}.grey .flex-item{color:#ccc;}.weekend{color:#f03;}.month{color:#ff5722;}.solarterm{color:#29f;}.my-quote{margin-bottom:0;padding:0;padding-left:10px;}.branches{color:#098;padding:.1rem .2rem;border:1px solid #098;border-radius:50%;cursor:pointer;}.branches.select{color:#fff;background:#095;}.bold{font-weight:bold;}.bazi{font-size:1.5rem;font-weight:bold;align-self:center;}.canggan{font-size:.8rem;font-weight:normal;}.jin{color:#fd7c04;}.mu{color:#008000;}.shui{color:#0000ff;}.huo{color:#ff0000;}.tu{color:#995001;}.liuyi{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;list-style:none;word-break:keep-all;float:left;}.bg-f2{background:#f2f2f2;}
-</style>
-<script src="data/layui.js"></script>
-<script src="data/vue.js"></script>
-<script src="data/axios.min.js"></script>
-</head>
-<body>
-<div id="app" class="layui-container">
-<div class="layui-row mt-1">
-<div class="layui-col-xs12"></div>
-<div class="layui-col-xs12">
-<div class="layui-btn-group">
-<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" @click="sub_year"><i class="layui-icon layui-icon-left"></i></button>
-<button type="button" class="layui-btn layui-btn-primary layui-btn-xs">{{year}} 年</button>
-<button type="button" class="layui-btn layui-btn-primary layui-btn-xs"@click="add_year"><i class="layui-icon layui-icon-right"></i></button>
-</div>
-<div class="layui-btn-group">
-<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" @click="sub_month"><i class="layui-icon layui-icon-left"></i></button>
-<button type="button" class="layui-btn layui-btn-primary layui-btn-xs">{{month}} 月</button>
-<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" @click="add_month"><i class="layui-icon layui-icon-right"></i></button>
-</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bold">
-<div class="flex-item flex-grow flex weekend">日</div>
-<div class="flex-item flex-grow flex">一</div>
-<div class="flex-item flex-grow flex">二</div>
-<div class="flex-item flex-grow flex">三</div>
-<div class="flex-item flex-grow flex">四</div>
-<div class="flex-item flex-grow flex">五</div>
-<div class="flex-item flex-grow flex weekend">六</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b" v-for="(items, index) in calendar" :key="index">
-<div class="flex-item flex-grow flex" :class="{grey: item.mouth != month}" v-for="(item, index) in items" :key="index" @click="set_day(item)">
-<div class="flex-item minitxt" :class="{month: item.shengx.slice(-2) == '初一', solarterm: item.jq != ''}">{{item.shengx.slice(-2) == '初一' ? item.shengx.slice(-4, -2): (item.jq ? item.jq : item.shengx.slice(-2))}}</div>
-<div class="flex-item bold" :class="{select: item.day == day && item.mouth == month, weekend: item.week == 0 || item.week == 6}">{{item.day < 10 ? '0' + item.day : item.day}}</div>
-<div class="flex-item minitxt rizhu">{{item.rgz}}</div>
-</div>
-</div>
-<div class="layui-col-xs12 mt-p5"><blockquote class="layui-elem-quote my-quote">时辰</blockquote></div>
-<div class="layui-col-xs1 mt-p5" v-for="(item, index) in branches"><span class="branches" :class="{select: time == item}" @click="set_time(item)">{{item}}</span></div>
-
-<div class="layui-col-xs12 mt-p5"><blockquote class="layui-elem-quote my-quote">八字排盘</blockquote></div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bold">
-<div class="flex-item flex-grow flex">四柱</div>
-<div class="flex-item flex-grow flex">年柱</div>
-<div class="flex-item flex-grow flex">月柱</div>
-<div class="flex-item flex-grow flex">日元</div>
-<div class="flex-item flex-grow flex">时柱</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
-<div class="flex-item flex-grow flex bold">十神</div>
-<div class="flex-item flex-grow flex" v-for="item in tiangan" :class="[item.color]">{{item.shishen}}</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b">
-<div class="flex-item flex-grow flex bold">天干</div>
-<div class="flex-item flex-grow flex bazi" v-for="item in tiangan" :class="[item.color]">{{item.text}}</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
-<div class="flex-item flex-grow flex bold">地支</div>
-<div class="flex-item flex-grow flex bazi" v-for="item in dizhi" :class="[item.color]">
-<div>{{item.text}}</div>
-</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b">
-<div class="flex-item flex-grow flex bold">藏干</div>
-<div class="flex-item flex-grow canggan" v-for="item in dizhi" :class="[item.color]">
-<div v-for="canggan in item.canggan" :class="[canggan.color]">{{canggan.text}}({{canggan.shishen}})</div>
-</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
-<div class="flex-item flex-grow flex bold">空亡</div>
-<div class="flex-item flex-grow flex" v-for="item in kongwang">{{item}}</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b">
-<div class="flex-item flex-grow flex bold">纳音</div>
-<div class="flex-item flex-grow flex" v-for="item in nayin">{{item}}</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
-<div class="flex-item flex-grow flex bold">神煞</div>
-<div class="flex-item flex-grow" v-for="items in shensha">
-<div v-for="item in items">{{item}}</div>
-</div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b">
-<div class="flex-item flex-grow flex bold">八字强弱</div>
-<div class="flex-item flex-grow-4 text-left"><span class="liuyi" v-for="item in geju">&nbsp;{{item}}&nbsp;</span></div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
-<div class="flex-item flex-grow flex bold">天干留意</div>
-<div class="flex-item flex-grow-4 text-left"><span class="liuyi" v-for="item in tianganhechong">&nbsp;{{item}}&nbsp;</span></div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b">
-<div class="flex-item flex-grow flex bold">地支留意</div>
-<div class="flex-item flex-grow-4 text-left"><span class="liuyi" v-for="item in dizhihechong">&nbsp;{{item}}&nbsp;</span></div>
-</div>
-<div class="layui-col-xs12 flex ptb-p5 border-b bg-f2">
-<div class="flex-item flex-grow flex bold">称骨算命</div>
-<div class="flex-item flex-grow-4 text-left"><div v-for="item in chenggu">&nbsp;{{item}}&nbsp;</div></div>
-</div>
-</div>
-</div>
-<script>
-var app=new Vue({el:'#app',data:{year:new Date().getFullYear(),month:new Date().getMonth()+1,day:new Date().getDate(),time:'卯',branches:['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'],monthData:[],solarterms:[],calendar:[],eightCharacter:null},methods:{sub_year(){--this.year
-this.init_month()},add_year(){++this.year
-this.init_month()},sub_month(){this.month=--this.month<1?12:this.month
-this.month==12?this.sub_year():this.init_month()},add_month(){this.month=++this.month>12?1:this.month
-this.month==1?this.add_year():this.init_month()},set_day(item){this.day=item.day
-if(this.month!=item.mouth){this.month=item.mouth
-this.init_month()}else{this.init_time()}},set_time(item){this.time=item
-this.init_time()},init_month(){that=this
-axios.post('http://zydx.win/wnlAPI.php',"ID=1&year="+this.year+"&month="+this.month).then(function(response){calendar=[[],[],[],[],[],[]]
-response.data.forEach(function(item,i){calendar[Math.floor(i/7)].push(item)})
-that.monthData=response.data
-that.calendar=calendar})
-this.init_time()},
-init_time(){that=this
-hour={'子':'00','丑':'01','寅':'03','卯':'05','辰':'07','巳':'09','午':'11','未':'13','申':'15','酉':'17','戌':'19','亥':'21'},axios.post('http://zydx.win/wnlAPI.php',"ID=2&year="+this.year+"&month="+this.month+"&day="+this.day+"&hour="+hour[this.time]+'&minute=1').then(function(response){that.eightCharacter=response.data})}},computed:{tiangan(){return this.eightCharacter?this.eightCharacter.bazi.tiangan:[]},dizhi(){return this.eightCharacter?this.eightCharacter.bazi.dizhi:[]},kongwang(){return this.eightCharacter?this.eightCharacter.bazi.kongwang:[]},nayin(){return this.eightCharacter?this.eightCharacter.bazi.nayin:[]},shensha(){return this.eightCharacter?this.eightCharacter.bazi.shensha:[]},geju(){return this.eightCharacter?this.eightCharacter.bazi.geju:[]},tianganhechong(){return this.eightCharacter?this.eightCharacter.bazi.tianganhechong:[]},dizhihechong(){return this.eightCharacter?this.eightCharacter.bazi.dizhihechong:[]},chenggu(){return this.eightCharacter?this.eightCharacter.bazi.chenggu:[]}},created(){this.init_month()},})
-</script>
-</body>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>空凤网 空气凤梨爱好者联盟 AIRPLANT.NET</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+		<meta name="keywords" content="空气凤梨,空凤目录,空气凤梨协会,airplant"/>
+		<meta name="description" content="致力于空气凤梨研究学习，打造中国空气凤梨爱好者联盟"/>
+		<link rel="stylesheet" href="static/style/public/common.css">
+		<link rel="stylesheet" href="static/style/index/index.css">
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<div class="inner">
+					<div class="mod-head">
+						<div class="bd">
+							<div class="logo">
+								<a href="/"><img src="static/image/public/logo.png" alt="空凤网" height="135"></a>
+							</div>
+							<div class="info">
+								<h2>空凤网</h2>
+								<p>中国空气凤梨爱好者联盟</p>
+							</div>
+							<menu>
+								<li class="active"><a href="./index.html">首页</a></li>
+								<li><a href="./product.html">精品</a></li>
+								<li><a href="./knowledge.html">养护</a></li>
+								<li><a href="./about.html">关于</a></li>
+							</menu>
+						</div>
+					</div>
+				</div>
+			</header>
+			<div class="container">
+				<div class="inner">
+					<div class="mod-panel">
+						<div class="hd"><h3>兴趣社区</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="https://tieba.baidu.com/f?kw=空气凤梨" target="_blank" rel="nofollow">空气凤梨吧</a></li>
+								<li><a href="https://tieba.baidu.com/f?kw=空凤" target="_blank" rel="nofollow">空凤吧</a></li>
+								<li><a href="http://www.tbg.org.tw/tbgweb/cgi-bin/forums.cgi?forum=20" target="_blank" rel="nofollow">塔内植物园</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>QQ交流群</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="//shang.qq.com/wpa/qunwpa?idkey=57d22323c696c35baf3513567dc36f64f09d236afa3b45488492c1a9d2c1319b" target="_blank" rel="nofollow">空气凤梨萌傻交流群<span>540033365</span></a></li>
+								<li><a href="//shang.qq.com/wpa/qunwpa?idkey=0ee49acd4403142363f4010a7ccd884dba018b5f268eebc733a62bc985305cbe" target="_blank" rel="nofollow">菩提凤梨园花友群<span>33412618</span></a></li>
+								<li><a href="//shang.qq.com/wpa/qunwpa?idkey=0697ae84d789ad350197521d820c7ddb053ef28f5e436bc77e3a58c0a4521eea" target="_blank" rel="nofollow">SANMU TILLANDSIA<span>589855268</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">绿领园--空气凤梨<span>160496118</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">弧度3-空气凤梨<span>378533761</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">空气凤梨～空凤网<span>318713250</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">嘟嘟的莫名其妙<span>317674210</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">布丁的花园-空气凤梨<span>660505739</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">T • 空气凤梨·空凤<span>1407676</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">空气凤梨和大家<span>259400903</span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>淘宝新手店</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="https://tillandsia-kqfl.taobao.com/" target="_blank" rel="nofollow">菩提凤梨园</a></li>
+								<li><a href="https://shop62213671.taobao.com/" target="_blank" rel="nofollow">虎虎园艺</a></li>
+								<li><a href="https://kqfljd.taobao.com/" target="_blank" rel="nofollow">空气凤梨基地</a></li>
+								<li><a href="https://kfly520.jiyoujia.com/" target="_blank" rel="nofollow">空凤来仪</a></li>
+								<li><a href="https://shop105116929.taobao.com/" target="_blank" rel="nofollow">忘言园艺</a></li>
+								<li><a href="https://shop349305202.taobao.com/" target="_blank" rel="nofollow">兔子的空气凤梨</a></li>
+								<li><a href="https://shop68121420.taobao.com/" target="_blank" rel="nofollow">兰魁热带雨林馆</a></li>
+								<li><a href="https://shop400479551.taobao.com/" target="_blank" rel="nofollow">茂野空气凤梨园子</a></li>
+								<li><a href="https://shop300448392.taobao.com/" target="_blank" rel="nofollow">昧影空气凤梨</a></li>
+								<li><a href="https://shop535331790.taobao.com/" target="_blank" rel="nofollow">空凤沐昂</a></li>
+								<li><a href="https://jiyoujia152122496.jiyoujia.com/shop/view_shop.htm" target="_blank" rel="nofollow">空凤故事</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>淘宝玩家店</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="https://shop58007433.taobao.com/" target="_blank" rel="nofollow">SANMU TILLANDSIA</a></li>
+								<li><a href="https://shop59347052.taobao.com/" target="_blank" rel="nofollow">花千色萌肉</a></li>
+								<li><a href="https://shop511258752.taobao.com/" target="_blank" rel="nofollow">宇宇空凤</a></li>
+								<li><a href="https://kqfl-lly.taobao.com/" target="_blank" rel="nofollow">绿领园</a></li>
+								<li><a href="https://sjdyt.taobao.com/" target="_blank" rel="nofollow">水镜的阳台</a></li>
+								<li><a href="https://shop145923120.taobao.com/" target="_blank" rel="nofollow">Tillandsia弧度3</a></li>
+								<li><a href="https://shop326887483.taobao.com/" target="_blank" rel="nofollow">布丁的花园</a></li>
+								<li><a href="https://shop123014511.taobao.com/" target="_blank" rel="nofollow">嘟嘟的莫名其妙</a></li>
+								<li><a href="https://shop140243259.taobao.com/" target="_blank" rel="nofollow">彩凤灵犀空气凤梨</a></li>
+								<li><a href="https://shop519888006.taobao.com/" target="_blank" rel="nofollow">栩栩空凤</a></li>
+								<li><a href="https://hfqft.taobao.com/" target="_blank" rel="nofollow">青枫堂</a></li>
+								<li><a href="https://shop63228273.taobao.com/" target="_blank" rel="nofollow">空凤也疯狂</a></li>
+								<li><a href="https://shop62517890.taobao.com/" target="_blank" rel="nofollow">空凤之家</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>小红书<h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="https://www.xiaohongshu.com/user/profile/616c04cf000000001f03f2b6" target="_blank" rel="nofollow">万俟俊的空凤花园</a></li>
+								<li><a href="https://www.xiaohongshu.com/user/profile/606752470000000001002170" target="_blank" rel="nofollow">空凤老男人</a></li>
+								<li><a href="https://www.xiaohongshu.com/user/profile/600aca9c000000000100a28a" target="_blank" rel="nofollow">是灰灰啊</a></li>
+								<li><a href="https://www.xiaohongshu.com/user/profile/58a0a3d56a6a6914fab1b61b" target="_blank" rel="nofollow">雲初Chu</a></li>
+								<li><a href="https://www.xiaohongshu.com/user/profile/6425a44b000000000b02a23d" target="_blank" rel="nofollow">FUUN 有凤</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>哔哩哔哩</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="https://space.bilibili.com/3403063" target="_blank" rel="nofollow">万俟俊的空凤花园</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>抖音</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="https://www.douyin.com/user/MS4wLjABAAAAykQlqTG-b7NC8XEejAwSo75-o8_44lJxPZM91xkfv0HghMdvjXa0RXTJQiVDqcan" target="_blank" rel="nofollow">万俟俊的空凤花园</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>微信公众号</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">熊猫空凤<span>airplantpanda</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">迷情空凤<span>itillandsia</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">水镜的花园<span>Till-sj</span></a></li>
+								<li><a href="javascript:;" target="_blank" rel="nofollow">空气凤梨和我<span>airplantandme</span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>空凤园子</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="http://www.rainforestflora.com/" target="_blank" rel="nofollow">雨林<span>Rainforest Flora</span></a></li>
+								<li><a href="http://www.airplant.com/" target="_blank" rel="nofollow">国际<span>Tillandsia International</span></a></li>
+								<li><a href="https://www.birdrocktropicals.com/" target="_blank" rel="nofollow">鸟岩<span>Bird Rock Tropicals</span></a></li>
+								<li><a href="https://tropiflora.com/" target="_blank" rel="nofollow">热带<span>Tropiflora</span></a></li>
+								<li><a href="http://plantaflor.com/" target="_blank" rel="nofollow">P家<span>Plantaflor</span></a></li>
+								<li><a href="https://wholesaletillandsias.com/" target="_blank" rel="nofollow">戴维斯农场<span>Davis Farms</span></a></li>
+								<li><a href="http://www.kaktus-koehres.de/shop/" target="_blank" rel="nofollow">德国KK</a></li>
+								<li><a href="https://airplanthub.com/" target="_blank" rel="nofollow">Air Plant Hub</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>组织机构</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="http://www.bsi.org/" target="_blank" rel="nofollow">国际凤梨协会<span>BCR</span></a></li>
+								<li><a href="http://fcbs.org/" target="_blank" rel="nofollow">佛罗里达凤梨社团理事会<span>FCBS</span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>Facebook</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="https://www.facebook.com/rainforestflora/" target="_blank" rel="nofollow">Rainforest Flora, Inc.</a></li>
+								<li><a href="https://www.facebook.com/pachara.orchids/" target="_blank" rel="nofollow">Pachara Orchids</a></li>
+								<li><a href="https://www.facebook.com/CYC.Tillandsia.Hybrids/" target="_blank" rel="nofollow">CYC Tillandsia</a></li>
+								<li><a href="https://www.facebook.com/tillandsia.catwalk/" target="_blank" rel="nofollow">Tillandsia Catwalk</a></li>
+								<li><a href="https://www.facebook.com/Elaine-Airplant-Garden-584086871748664/" target="_blank" rel="nofollow">Elaine Airplant Garden</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mod-panel">
+						<div class="hd"><h3>其他</h3></div>
+						<div class="bd">
+							<ul>
+								<li><a href="http://registry.bsi.org/?genus=TILLANDSIA" target="_blank" rel="nofollow">空凤注册目录<span>BCR</span></a></li>
+								<li><a href="http://fcbs.org/pictures/Tillandsia.htm" target="_blank" rel="nofollow">空凤目录<span>FCBS</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer>
+				<div class="inner">
+					<div class="mod-foot">
+						<div class="bd">
+							<p>Copyright &copy; 2024 <a href="/">AIRPLANT.NET</a></p>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+		<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?ffb0503043c1116336d83c5d05d7958a";
+		  var s = document.getElementsByTagName("script")[0];
+		  s.parentNode.insertBefore(hm, s);
+		})();
+		</script>
+	</body>
 </html>

@@ -1,1139 +1,372 @@
-<!DOCTYPE html>
-<!--[if IE 7]><html class="lt-ie8 lt-ie9 lt-ie10 ie7"><![endif]-->
-<!--[if IE 8]><html class="lt-ie9 lt-ie10 ie8"><![endif]-->
-<!--[if IE 9]><html class="lt-ie10 ie9"><![endif]-->
-<!--[if gt IE 9]><!-->
-<html><!--<![endif]-->
-
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>万年历，给你最好的时间服务</title>
-    <meta name="description" content="">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, user-scalable = no,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="cleartype" content="on">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="renderer" content="webkit">
-    <style>
-        @font-face {
-            font-family: 'Android-number-Regular';
-            src: url('http://www.51wnl.com/webcalandar/img_new/Android-number-Regular.eot');
-            src:
-                url('http://www.51wnl.com/webcalandar/img_new/Android-number-Regular.eot?') format('embedded-opentype'),
-                url('http://www.51wnl.com/webcalandar/img_new/Android-number-Regular.woff') format('woff'),
-                url('static/font/Android-number-Regular.ttf') format('truetype'),
-                url('http://www.51wnl.com/webcalandar/img_new/Android-number-Regular.svg') format('svg');
-            font-weight: normal;
-            font-style: normal;
-        }
-    </style>
-    <link rel="stylesheet" href="static/css/normalize.css">
-    <link rel="stylesheet" href="static/css/index1.css">
-    <!--[if lt IE 9]>
-        <link rel="stylesheet" href="css_new/ie.css"/>
-    <![endif]-->
-    <script>
-        var method;
-        var noop = function () { };
-        var methods = [
-            'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-            'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-            'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-            'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
-        ];
-        var length = methods.length;
-        var console = (window.console = window.console || {});
-        while (length--) {
-            method = methods[length];
-            // Only stub undefined methods.
-            if (!console[method]) {
-                console[method] = noop;
-            }
-        }
-    </script>
-    <script type="text/javascript" src="static/js/api.js"></script>
-    <script type="text/javascript" src="static/js/SearchInfoWindow_min.js"></script>
-    <link rel="stylesheet" href="static/css/SearchInfoWindow_min.css">
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "//hm.baidu.com/hm.js?337839218bd67a04a685d08d5b67d616";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
+<!doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width,user-scalable=no, initial-scale=1">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<title>古典水墨风健康养生类网站静态html模板 - AB模板网</title>
+<link rel="stylesheet" href="css/swiper.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/app_web.css">
+<meta name="author" content="order by www.adminbuy.cn">
+<script type="text/javascript" src="js/jquery1.12.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.3.js"></script>
+<script type="text/javascript" src="js/swiper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 </head>
 
-<body class="loadingHidden">
-    <div class="main">
-        <div class="topBanner">
-            <!--<div class="topNav">-->
-            <!--<a class="indexLink" href="#">首页</a>-->
-            <!--<span class="spliteContent">|</span>-->
-            <!--<a class="mongthViewLink" href="#">万年历</a>-->
-            <!--</div>-->
-            <div class="wnlIcon"></div>
+<body>
 
-            <a class="downloadBtn" href="javascript:void(0)">下载万年历</a>
+<!--头部  -->
 
-
-            <div class="userContent">
-                <div class="userLoginContent hidden">
-                    <a class="loginBtn" style="color:#eaeaea;" href="javascript:void(0)"><span style="color:#eaeaea;">登录</span></a>
-                    <span class="spliteContent hidden">|</span>
-                    <a class="registerBtn hidden" href="javascript:void(0)">注册</a>
-                </div>
-                <div class="userLogoutContent hidden">
-                    <span class="username"></span>
-                    <span class="spliteContent1">|</span>
-                    <a class="settingBtn" href="javascript:void(0)">设置</a>
-                    <span class="spliteContent1">|</span>
-                    <a class="logoutBtn" href="javascript:void(0)">退出</a>
-                </div>
-            </div>
-            <div class="userContent">
-                <div class="userVip">购买会员</div>
-            </div>
-
-        </div>
-        <div class="quickLoginContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="boxArrowTop"></div>
-            <div class="loginPanel panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel">
-                    <div class="panelConent">
-                        <div class="chooseTabs">
-                            <div class="chooseQuickLogin active chooseTab">快捷登录</div>
-                            <div class="chooseSpan"></div>
-                            <div class="chooseWechatLogin chooseTab">微信登录</div>
-                        </div>
-                        <div class="quickLoginContainer">
-                            <!-- <div class="inputConent">
-                               <input type="text" class="usernameTxt" id="quickLoginPhoneNumber" placeholder="手机号码"/>
-                               <div class="errorTip usernameTip"></div>
-                            </div>
-                            <div class="inputConent">
-                                <input type="text" class="quickValidateCodeTxt" id="quickValidateCodeTxt" placeholder="请输入右侧验证码"/>
-                                <img class="quickValidateImg" src="" alt="验证码">
-                            </div>
-                            <div class="inputConent">
-                               <input type="text" class="usernameTxt" placeholder="请输入短信验证码"/>
-                               <div class="errorTip usernameTip"></div>
-                               <div class="getMessageCode">获取验证码</div>
-                            </div>
-                           <div class="loginErrorDesc"></div>
-                           <a class="loginConfirmBtn" href="javascript:void(0)">登录</a> -->
-                            <div>
-                                <iframe id="quickloginiframe" src="" style="width: 100%;height: 268px;overflow: hidden;border:none;outline: none;margin:0;padding: 0;"></iframe>
-                            </div>
-                            <div class="loginBtns">
-                                <a class="qqLoginBtn LoginBtn" href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100294478&redirect_uri=http://www.51wnl.com/api/qqloginhandler.ashx?from=newweb">QQ登录</a>
-                                <a class="weiboLoginBtn LoginBtn" href="https://api.weibo.com/oauth2/authorize?client_id=1803073172&redirect_uri=http://www.51wnl.com/api/sinaloginhandler.ashx?from=newweb&response_type=code">新浪登录</a>
-                                <div class="userCenterLoginBtn LoginBtn">账号登录</div>
-                            </div>
-                        </div>
-                        <div class="wechatLoginContainer hidden">
-                            <div style="width:100%;text-align: center;font-size: 15px;line-height: 19px;padding: 10px 0 0 0;font-weight: bolder;color:#333;">
-                                手机扫码，安全登录</div>
-                            <div class="iframeContainer">
-                                <!-- <iframe class="loginIframe"
-                                    src="https://open.weixin.qq.com/connect/qrconnect?appid=wx56254671d2e2d8c3&redirect_uri=https%3a%2f%2fservice.51wnl.com%2fauth%2fcallback&response_type=code&scope=snsapi_login&state=eyJyZXRVcmwiOiJodHRwOi8vd3d3LjUxd25sLmNvbS93ZWJjYWxhbmRhci9pbmRleC5odG1sIiwicGxhdGVmb3JtIjoiV2VjaGF0T3BlbiJ9&href=https://www.51wnl.com/webcalandar/css_new/wechatIframe.css"></iframe>
-                             -->
-                                <iframe class="loginIframe" src=""></iframe>
-
-                            </div>
-                            <div style="text-align: center;font-size: 15px;padding: 0;color:#999;margin-top: 14px;z-index:3;position:absolute;bottom: 68px;width: 90%;">
-                                请使用微信扫描二维码登录</div>
-                            <div class="loginBtns">
-                                <a class="qqLoginBtn LoginBtn" href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100294478&redirect_uri=http://www.51wnl.com/api/qqloginhandler.ashx?from=newweb">QQ登录</a>
-                                <a class="weiboLoginBtn LoginBtn" href="https://api.weibo.com/oauth2/authorize?client_id=1803073172&redirect_uri=http://www.51wnl.com/api/sinaloginhandler.ashx?from=newweb&response_type=code">新浪登录</a>
-                                <div class="userCenterLoginBtn LoginBtn">账号登录</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 购买会员 -->
-        <div class="quickVipContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="boxArrowTop"></div>
-            <div class="buyVip panel">
-                <div class="modalPanel vipModal">
-                    <img class="quickvip" src="static/picture/buy-vip.png" alt="">
-                    <img class="toBuyVip" src="static/picture/to-buy.png" alt="">
-
-
-
-                </div>
-            </div>
-        </div>
-        <div class="loginContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="boxArrowTop"></div>
-            <div class="loginPanel panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel">
-                    <div class="panelConent">
-
-                        <div class="loginMainContent">
-                            <div class="mainContainerTitle">
-                                <span class="backToQuickLogin">
-                                    < 返回</span>
-                                        账号登录
-                            </div>
-                            <div class="inputConent">
-                                <input style="display: none">
-                                <input type="text" class="usernameTxt" placeholder="用户名" autocomplete="off">
-                                <div class="errorTip usernameTip"></div>
-                            </div>
-                            <div class="inputConent">
-                                <input style="display: none">
-                                <input type="password" class="pwdTxt" placeholder="密码" autocomplete="off">
-                                <div class="errorTip pwdTip"></div>
-                            </div>
-                            <div class="loginErrorDesc"></div>
-                            <a class="loginConfirmBtn" href="javascript:void(0)">确定</a>
-                            <a class="forgetAccountBnt" href="javascript:void(0)">忘记账号密码?</a>
-                        </div>
-                        <div class="forgetContent">
-                            <div class="mainContainerTitle">
-                                <span class="backToQuickLogin">
-                                    < 返回</span>密码找回
-                            </div>
-                            <div class="inputConent">
-                                <input style="display: none">
-                                <input type="text" class="forgetEmailTxt" placeholder="邮箱地址" autocomplete="off">
-                            </div>
-                            <div class="inputConent">
-                                <input style="display: none">
-                                <input type="text" class="forgetValidateCodeTxt" placeholder="验证码" autocomplete="off">
-                                <img class="forgetValidateImg" src="static/picture/JpegImage.jpg" alt="验证码">
-                            </div>
-                            <div class="forgetErrorDesc"></div>
-                            <a class="forgetConfirmBtn" href="javascript:void(0)">确定</a>
-                            <a class="loginAccountBnt" href="javascript:void(0)">登录</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="registerContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="registerPanel panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel">
-                    <div class="panelConent">
-                        <div class="registerMain">
-                            <div class="registerTitle">新用户注册</div>
-                            <div class="inputConent">
-                                <input type="text" class="registerUsernameTxt" placeholder="用户名">
-                                <div class="errorTip registerUsernameTip"></div>
-                            </div>
-                            <div class="errorDesc usernameErrorDesc"></div>
-                            <div class="inputConent">
-                                <input type="password" class="registerPwdTxt" placeholder="密码">
-                                <div class="errorTip registerPwdTip"></div>
-                            </div>
-                            <div class="errorDesc pwdErrorDesc"></div>
-                            <div class="inputConent">
-                                <input type="password" class="registerConfirmPwdTxt" placeholder="确认密码">
-                                <div class="errorTip registerConfirmPwdTip"></div>
-                            </div>
-                            <div class="errorDesc confirmPwdErrorDesc"></div>
-                            <div class="inputConent">
-                                <input type="text" class="emailTxt" placeholder="邮箱地址">
-                                <div class="errorTip emailTip"></div>
-                            </div>
-                            <div class="errorDesc emailErrorDesc"></div>
-                            <div class="inputConent">
-                                <input type="text" class="validateCodeTxt" placeholder="验证码">
-                                <img class="registerValidateImg" src="static/picture/JpegImage.jpg" alt="验证码">
-                            </div>
-                            <div class="errorDesc validateCodeErrorDesc"></div>
-                            <div class="registerBtnContent">
-                                <a class="registerCancleBtn" href="javascript:void(0)">取消</a>
-                                <a class="registerConfirmBtn" href="javascript:void(0)">确认</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="settingContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="boxArrowTop"></div>
-            <div class="settingPanel panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel">
-                    <div class="panelConent">
-                        <div class="settingChooseContent">
-                            <a class="changePwdBtn active" href="javascript:void(0)">修改密码</a>
-                            <a class="changeEmailBtn" href="javascript:void(0)">修改邮箱</a>
-                        </div>
-                        <div class="changePwdContent">
-                            <div class="inputConent">
-                                <input type="password" class="oldPwdTxt" placeholder="旧密码">
-                                <!--<div class="errorTip oldPwdTip"></div>-->
-                            </div>
-                            <div class="inputConent">
-                                <input type="password" class="newPwdTxt" placeholder="新密码">
-                                <!--<div class="errorTip newPwdTip"></div>-->
-                            </div>
-                            <div class="inputConent">
-                                <input type="password" class="confirmNewPwdTxt" placeholder="确认密码">
-                                <!--<div class="errorTip confirmNewPwdTip"></div>-->
-                            </div>
-                            <div class="inputConent">
-                                <input type="text" class="changePwdValidateCodeTxt" placeholder="验证码">
-                                <img class="changePwdValidateImg" src="static/picture/JpegImage.jpg" alt="验证码">
-                            </div>
-                            <div class="errorDesc changePwdErrorDesc"></div>
-                            <div class="changePwdBtnContent">
-                                <a class="changePwdCancleBtn" href="javascript:void(0)">取消</a>
-                                <a class="changePwdConfirmBtn" href="javascript:void(0)">确认</a>
-                            </div>
-                        </div>
-                        <div class="changeEmailContent hidden">
-                            <div class="oldEmailContent">
-                                <span class="emailTitle">原邮箱</span>
-                                <span class="oldEmail"></span>
-                            </div>
-                            <div class="inputConent">
-                                <input type="text" class="newEmailTxt" placeholder="新邮箱">
-                            </div>
-                            <div class="inputConent">
-                                <input type="text" class="newEmailValidateCodeTxt" placeholder="验证码">
-                                <img class="newEmailValidateImg" src="static/picture/JpegImage.jpg" alt="验证码">
-                            </div>
-                            <div class="errorDesc changeEmailErrorDesc"></div>
-                            <div class="changePwdBtnContent">
-                                <a class="changeEmailCancleBtn" href="javascript:void(0)">取消</a>
-                                <a class="changeEmailConfirmBtn" href="javascript:void(0)">确认</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="downloadContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="downloadPanel">
-                <img class="qrcodeImg" src="static/picture/qrcode.png" alt="万年历下载二维码">
-                <div class="downloadTxt">手机扫描二维码</div>
-                <div class="downloadTxt">免费下载万年历</div>
-            </div>
-        </div>
-        <div class="calendarContent">
-            <div class="dayView">
-                <div class="dayViewNav">
-                    <div class="dayViewNavContent">
-                        <a class="dayViewNavItem dayViewBtn active" href="javascript:void(0)">日历</a>
-                        <a class="dayViewNavItem remindBtn" href="javascript:void(0)">提醒</a>
-                    </div>
-                </div>
-                <div class="dayViewContent">
-                    <div class="dayInfoContent">
-                        <div class="yearMonth"></div>
-                        <div class="dayCount"></div>
-                        <div class="lumarInfo1"></div>
-                        <div class="lumarInfo2"></div>
-                        <div class="festivalInfo"></div>
-                        <div class="yiViewContent">
-                            <div class="yiImg"></div>
-                            <div class="dayViewYiDescContent">加载中...</div>
-                        </div>
-                        <div class="jiViewContent">
-                            <div class="jiImg"></div>
-                            <div class="dayViewJiDescContent">加载中...</div>
-                        </div>
-                        <div class="pzbjImg lunarImg">彭祖百忌</div>
-                        <div class="pzbj lunatTxt">加载中...</div>
-                        <div class="lunarImg">吉神宜趋</div>
-                        <div class="jsyq lunatTxt">加载中...</div>
-                        <div class="lunarImg">凶神宜忌</div>
-                        <div class="xsyj lunatTxt">加载中...</div>
-                        <div style="width: 58%; float: left; display:inline;display:inline-block;display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;display: flex;">
-                            <span class="lunarImg" style="width: 42px;float: left;">冲煞</span>
-                            <span class="cs lunatTxt" style="float: left;padding: 0;padding-top: 24px;width: 102px;">加载中...</span>
-                        </div>
-                        <div style="width: 42%; float: left; display:inline;display:inline-block;display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;display: flex;">
-                            <span class="lunarImg" style="margin-left: 10px;float: left;width: 42px;">五行</span>
-                            <span class="wx lunatTxt" style="float: left;padding: 0;padding-top: 24px;width: 60px;">加载中...</span>
-                        </div>
-                    </div>
-                    <div class="remindContent hidden">
-                        <div class="searchContent">
-                            <input type="search" class="searchInput" placeholder="搜索关键字">
-                            <a class="searchConfirmBtn" href="javascript:void(0)">搜索</a>
-                        </div>
-                        <a class="remindLink tempRemindLink hidden" href="javascript:void(0)"></a>
-                        <div class="remindItem tempRemindItem hidden">
-                            <div class="remindDate">
-                                <span class="remindDay"></span>
-                                <span class="remindWeek"></span>
-                                <span class="remindYear"></span>
-                            </div>
-                            <div class="dayRemindList"></div>
-                        </div>
-                        <div class="remindList"></div>
-                        <div style="position: absolute;bottom: 1px;background:#FFF;border-top: 1px solid #eaeaea;margin-left: 0;right: 0px;padding-left: 10px;">
-                            <a class="preveMonthRemind" href="javascript:void(0)">上个月</a>
-                            <a class="nextMonthRemind" href="javascript:void(0)">下个月</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="monthView">
-                <div class="topContent">
-                    <a class="todayBtn" style="visibility: hidden;" href="javascript:void(0)"></a>
-
-                    <div class="monthNumTitle">
-                        <a class="prevBtn" href="javascript:void(0)"></a>
-                        <span class="dateTxt"></span>
-                        <a class="nextBtn" href="javascript:void(0)"></a>
-                    </div>
-
-                    <a class="jieriBtn" href="javascript:void(0)">放假安排</a>
-                    <a class="jieqiBtn" href="javascript:void(0)">农历节气</a>
-                    <a class="fangjiaBtn" href="javascript:void(0)">节日大全</a>
-                </div>
-                <div class="vacationContent modal hidden">
-                    <div class="contentMask"></div>
-                    <div class="boxArrowTop"></div>
-                    <div class="vacationListPanel panel">
-                        <div class="repeatImg lRepeat"></div>
-                        <div class="repeatImg tRepeat"></div>
-                        <div class="repeatImg rRepeat"></div>
-                        <div class="repeatImg bRepeat"></div>
-                        <div class="radiusImg ltRadius"></div>
-                        <div class="radiusImg rtRadius"></div>
-                        <div class="radiusImg lfRadius"></div>
-                        <div class="radiusImg rfRadius"></div>
-                        <div class="modalPanel">
-                            <div class="panelConent">
-                                <div class="vacationTitle">2023公休放假安排</div>
-                                <div class="jieriList">
-                                    <div class="jieriLine">
-                                        <a href="javascript:void(0)" class="jieriColumn" data-year="2023" data-month="1" data-day="1">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">元旦</div>
-                                                <div class="jieriDay">12月31日~1月2日</div>
-                                            </div>
-                                        </a>
-                                        <a href="javascript:void(0)" class="jieriColumn" data-year="2023" data-month="1" data-day="22">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">春节</div>
-                                                <div class="jieriDay">1月21日~27日</div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="jieriLine">
-                                        <a href="javascript:void(0)" class="jieriColumn" data-year="2023" data-month="4" data-day="5">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">清明节</div>
-                                                <div class="jieriDay">4月5日</div>
-                                            </div>
-                                        </a>
-                                        <a href="javascript:void(0)" class="jieriColumn" data-year="2023" data-month="5" data-day="1">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">劳动节</div>
-                                                <div class="jieriDay">4月29日~5月3日</div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="jieriLine">
-                                        <a href="javascript:void(0)" class="jieriColumn" data-year="2023" data-month="6" data-day="22">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">端午节</div>
-                                                <div class="jieriDay">6月22日~24日</div>
-                                            </div>
-                                        </a>
-                                        <a href="javascript:void(0)" class="jieriColumn" data-year="2023" data-month="9" data-day="29">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">中秋节/国庆节</div>
-                                                <div class="jieriDay">9月29日~10月6日</div>
-                                            </div>
-                                        </a>
-                                        <!-- <a href="javascript:void(0)" class="jieriColumn" data-year="2020" data-month="10" data-day="1">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">国庆节</div>
-                                                <div class="jieriDay">10月1日~10月8日</div>
-                                            </div>
-                                        </a> -->
-                                    </div>
-                                    <!-- <div class="jieriLine">
-                                        <a href="javascript:void(0)" class="jieriColumn" data-year="2022" data-month="10" data-day="1">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieriName">国庆节</div>
-                                                <div class="jieriDay">10月1日~7日</div>
-                                            </div>
-                                        </a>
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="jieqiContent modal hidden">
-                    <div class="contentMask"></div>
-                    <div class="boxArrowTop"></div>
-                    <div class="jieqiListPanel panel">
-                        <div class="repeatImg lRepeat"></div>
-                        <div class="repeatImg tRepeat"></div>
-                        <div class="repeatImg rRepeat"></div>
-                        <div class="repeatImg bRepeat"></div>
-                        <div class="radiusImg ltRadius"></div>
-                        <div class="radiusImg rtRadius"></div>
-                        <div class="radiusImg lfRadius"></div>
-                        <div class="radiusImg rfRadius"></div>
-                        <div class="modalPanel">
-                            <div class="panelConent">
-                                <div class="jieqiTitle">二十四节气</div>
-                                <div class="jieqiList">
-                                    <div class="jieqiLine">
-                                        <a class="jieqiClumn  jieqiItemLink" href="javascript:void(0)" data-index="2">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">立春</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn  jieqiItemLink" href="javascript:void(0)" data-index="3">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">雨水</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="4">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">惊蛰</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="5">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">春分</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="jieqiLine">
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="6">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">清明</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="7">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">谷雨</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="8">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">立夏</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="9">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">小满</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="jieqiLine">
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="10">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">芒种</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="11">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">夏至</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="12">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">小暑</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="13">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">大暑</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="jieqiLine">
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="14">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">立秋</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="15">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">处暑</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="16">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">白露</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="17">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">秋分</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="jieqiLine">
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="18">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">寒露</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="19">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">霜降</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="20">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">立冬</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="21">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">小雪</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="jieqiLine">
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="22">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">大雪</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="23">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">冬至</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="0">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">小寒</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                        <a class="jieqiClumn jieqiItemLink" href="javascript:void(0)" data-index="1">
-                                            <div class="tableCellWrapper">
-                                                <div class="jieqiName">大寒</div>
-                                                <div class="jieqiDay"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="fangjiaContent modal hidden">
-                    <div class="contentMask"></div>
-                    <div class="boxArrowTop"></div>
-                    <div class="vacationListPanel panel">
-                        <div class="repeatImg lRepeat"></div>
-                        <div class="repeatImg tRepeat"></div>
-                        <div class="repeatImg rRepeat"></div>
-                        <div class="repeatImg bRepeat"></div>
-                        <div class="radiusImg ltRadius"></div>
-                        <div class="radiusImg rtRadius"></div>
-                        <div class="radiusImg lfRadius"></div>
-                        <div class="radiusImg rfRadius"></div>
-                        <div class="modalPanel">
-                            <div class="panelConent">
-                                <div class="vacationTitle">节日大全</div>
-                                <div class="vacationList" id="fangjiaList">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="monthContent">
-                    <div class="weekList">
-                        <div class="week weekKind">日</div>
-                        <div class="week">一</div>
-                        <div class="week">二</div>
-                        <div class="week">三</div>
-                        <div class="week">四</div>
-                        <div class="week">五</div>
-                        <div class="week lastWeekIndex weekKind">六</div>
-                    </div>
-                    <div class="monthDayList">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footContent">
-            <a class="weiboContent" target="_blank" href="http://weibo.com/51wnl">已关注22万</a>
-            <a class="qqContent" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=f0f832e5f143c4825ec1ce2c5d5e75c5e45af7276e5765ef590f0932c1618b48">加入QQ群</a>
-            <a class="contactLink" href="javascript:void(0)">联系我们</a>
-            <a class="spliteLine">|</a>
-            <a class="aboutLink" href="javascript:void(0)">关于我们</a>
-            <div class="beianContent">
-                <div class="beian">公安局备案编号: 50010601500922</div>
-                <a href=" https://beian.miit.gov.cn">
-                    <div class="icp">@2010-2023 ICP: 渝ICP备17001599号-1</div>
-                </a>
-            </div>
-            <div class="beianContent hidden">
-                <div class="beian">公安局备案编号: 50019002503536</div>
-                <a href=" https://beian.miit.gov.cn">
-                    <div class="icp">@2010-2023 ICP: 渝ICP备17001599号-1</div>
-                </a>
-            </div>
-            <!-- <div class="friendLinkContent">
-                <div class="linkTxt">友情链接</div>
-                <a class="friendLink1 friendLink" target="_blank" href="http://www.xiazaiba.com/" value="下载吧"><div class="friendLinkAfter hidden">下载吧</div></a>
-                <a class="friendLink2 friendLink" target="_blank" href="http://www.25pp.com" value="PP下载"><div class="friendLinkAfter hidden">PP下载</div></a>
-                <a class="friendLink3 friendLink" target="_blank" href="http://sc.hiapk.com/Download.aspx?aid=209&sc=1" value="安卓市场"><div class="friendLinkAfter hidden">安卓市场</div></a>
-                <a class="friendLink4 friendLink" target="_blank" href="http://dl.sj.91.com/business/91soft/91assistant_Andphone181.apk" value="91助手"><div class="friendLinkAfter hidden">91助手</div></a>
-            </div> -->
-        </div>
-        <div class="addRemindContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="boxArrowLfet hidden"></div>
-            <div class="boxArrowRight hidden"></div>
-            <div class="addRemindDiv panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel remindInnerContent">
-                    <div class="panelConent">
-                        <textarea class="remindTxt" placeholder="新增提醒"></textarea>
-                        <div class="allDayContent">
-                            <div class="tipTxt">全天</div>
-                            <div class="allDayRadio"></div>
-                        </div>
-                        <div class="lunarSelectContent">
-                            <div class="tipTxt">公历农历</div>
-                            <div class="ui-select lunarUISselect">
-                                <span class="selectTxt">公历</span>
-                                <span class="selectIcon"></span>
-                                <select class="lunarSelect" name="lunarSelect" id="lunarSelect">
-                                    <option value="0">公历</option>
-                                    <option value="1">农历</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="remindTimeContent">
-                            <div class="tipTxt">提醒时间</div>
-                            <div class="remindTime">
-                                <div class="remindDateControl">
-                                    <div class="ui-select sYearUISselect">
-                                        <span class="selectTxt"></span>
-                                        <span class="selectIcon"></span>
-                                        <select class="sYear"></select>
-                                    </div>
-                                    <div class="ui-select sMonthUISselect">
-                                        <span class="selectTxt"></span>
-                                        <span class="selectIcon"></span>
-                                        <select class="sMonth"></select>
-                                    </div>
-                                    <div class="ui-select sDayUISselect">
-                                        <span class="selectTxt"></span>
-                                        <span class="selectIcon"></span>
-                                        <select class="sDay"></select>
-                                    </div>
-                                </div>
-                                <div class="lunarDateContent hidden">
-                                    <div class="ui-select lunarYearUISselect">
-                                        <span class="selectTxt"></span>
-                                        <span class="selectIcon"></span>
-                                        <select class="lunarYear"></select>
-                                    </div>
-                                    <div class="ui-select lunarMonthUISselect">
-                                        <span class="selectTxt"></span>
-                                        <span class="selectIcon"></span>
-                                        <select class="lunarMonth"></select>
-                                    </div>
-                                    <div class="ui-select lunarDayUISselect">
-                                        <span class="selectTxt"></span>
-                                        <span class="selectIcon"></span>
-                                        <select class="lunarDay"></select>
-                                    </div>
-                                </div>
-                                <div class="ui-select hourUISselect">
-                                    <span class="selectTxt"></span>
-                                    <span class="selectIcon"></span>
-                                    <select name="select-native" class="addRemindHourSelect">
-                                        <option value="0">0时</option>
-                                        <option value="1">1时</option>
-                                        <option value="2">2时</option>
-                                        <option value="3">3时</option>
-                                        <option value="4">4时</option>
-                                        <option value="5">5时</option>
-                                        <option value="6">6时</option>
-                                        <option value="7">7时</option>
-                                        <option value="8">8时</option>
-                                        <option value="9">9时</option>
-                                        <option value="10">10时</option>
-                                        <option value="11">11时</option>
-                                        <option value="12">12时</option>
-                                        <option value="13">13时</option>
-                                        <option value="14">14时</option>
-                                        <option value="15">15时</option>
-                                        <option value="16">16时</option>
-                                        <option value="17">17时</option>
-                                        <option value="18">18时</option>
-                                        <option value="19">19时</option>
-                                        <option value="20">20时</option>
-                                        <option value="21">21时</option>
-                                        <option value="22">22时</option>
-                                        <option value="23">23时</option>
-                                    </select>
-                                </div>
-                                <div class="ui-select minuteUISselect">
-                                    <span class="selectTxt"></span>
-                                    <span class="selectIcon"></span>
-                                    <select name="select-native" class="addRemindMinuteSelect"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <a class="moreEditLink" href="javascript:void(0)">完整编辑</a>
-                        <div class="moreEditContent hidden">
-                            <div class="prevContent">
-                                <div class="preveTipContent">
-                                    <div class="tipTxt">提前提醒</div>
-                                    <div class="preveTip preveTip1">
-                                        <span class="preveTipTxt preveTipTxt1">不提前提醒</span>
-                                        <span class="selectIcon"></span>
-                                    </div>
-                                </div>
-                                <div class="prevSlideContent">
-                                    <div class="prevSlideNav">
-                                        <a class="prevTimeLink1" data-time="15" data-string="15分" data-index="1" href="javascript:void(0)">
-                                            <div class="prevScaleLink">15分</div>
-                                        </a>
-                                        <a class="prevTimeLink2" data-time="30" data-string="30分" data-index="2" href="javascript:void(0)">
-                                            <div class="prevScaleLink">30分</div>
-                                        </a>
-                                        <a class="prevTimeLink3" data-time="60" data-string="1小时" data-index="3" href="javascript:void(0)">
-                                            <div class="prevScaleLink">1小时</div>
-                                        </a>
-                                        <a class="prevTimeLink4" data-time="1440" data-string="1天" data-index="4" href="javascript:void(0)">
-                                            <div class="prevScaleLink">1天</div>
-                                        </a>
-                                        <a class="prevTimeLink5" data-time="4320" data-string="3天" data-index="5" href="javascript:void(0)">
-                                            <div class="prevScaleLink">3天</div>
-                                        </a>
-                                        <a class="prevTimeLink6" data-time="1" data-string="自定" data-index="6" href="javascript:void(0)">
-                                            <div class="prevScaleLink">自定</div>
-                                        </a>
-                                    </div>
-                                    <div class="prevSlidePanel">
-                                        <div class="ui-select customerDayUISselect">
-                                            <span class="selectTxt"></span>
-                                            <span class="selectIcon"></span>
-                                            <select class="customerDaySelect"></select>
-                                        </div>
-                                        <div class="ui-select customerHourUISselect">
-                                            <span class="selectTxt"></span>
-                                            <span class="selectIcon"></span>
-                                            <select class="customerHourSelect"></select>
-                                        </div>
-                                        <div class="ui-select customerMinUISselect">
-                                            <span class="selectTxt"></span>
-                                            <span class="selectIcon"></span>
-                                            <select class="customerMinSelect"></select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="repeatContent">
-                                <div class="preveTipContent repeatTipContent">
-                                    <div class="tipTxt">重复提醒</div>
-                                    <div class="preveTip repeatTip">
-                                        <span class="preveTipTxt repeatTipTxt">不重复提醒</span>
-                                        <span class="selectIcon"></span>
-                                    </div>
-                                </div>
-                                <div class="repeatSlidePanel">
-                                    <div class="repeatSlideNav">
-                                        <a class="yearRepeatLnk" href="javascript:void(0)">每年</a>
-                                        <a class="monthRepeatLnk" href="javascript:void(0)">按月</a>
-                                        <a class="weekRepeatLnk" href="javascript:void(0)">按周</a>
-                                        <a class="dayRepeatLnk" href="javascript:void(0)">按天</a>
-                                    </div>
-                                    <div class="repeatSecondContent">
-                                        <div class="repeatMonthContent repeatSecondItem">
-                                            <div class="ui-select repeatMonthUISselect">
-                                                <span class="selectTxt"></span>
-                                                <span class="selectIcon"></span>
-                                                <select class="repeatMonthSelect"></select>
-                                            </div>
-                                        </div>
-                                        <div class="repeatWeekContent repeatSecondItem">
-                                            <a class="repeatWeekLink7" data-index="0" href="javascript:void(0)">周日</a>
-                                            <a class="repeatWeekLink1" data-index="1" href="javascript:void(0)">周一</a>
-                                            <a class="repeatWeekLink2" data-index="2" href="javascript:void(0)">周二</a>
-                                            <a class="repeatWeekLink3" data-index="3" href="javascript:void(0)">周三</a>
-                                            <a class="repeatWeekLink4" data-index="4" href="javascript:void(0)">周四</a>
-                                            <a class="repeatWeekLink5" data-index="5" href="javascript:void(0)">周五</a>
-                                            <a class="repeatWeekLink6" data-index="6" href="javascript:void(0)">周六</a>
-                                        </div>
-                                        <div class="repeatDayContent repeatSecondItem">
-                                            <div class="ui-select repeatDayUISselect">
-                                                <span class="selectTxt"></span>
-                                                <span class="selectIcon"></span>
-                                                <select class="repeatDaySelect"></select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="noteTxaContent">
-                                <div class="tipTxt">备注</div>
-                                <textarea class="noteTxa" placeholder="无"></textarea>
-                            </div>
-
-                        </div>
-                        <div class="userClientTip">
-                            注：在万年历手机客户端登陆同一账号，使用同步功能，便能在手机上进行提醒。
-                        </div>
-                        <div class="confirmBtnContent">
-                            <a class="deleteBtn hidden" href="javascript:void(0)">删除</a>
-                            <a class="saveBtn" href="javascript:void(0)">保存</a>
-                            <div class="spliteColumn"></div>
-                            <a class="cancelBtn" href="javascript:void(0)">取消</a>
-                            <div class="loadingIcon hidden"></div>
-                        </div>
-                    </div>
-                    <div class="initPanelContent">
-                        <div class="initialTitle"></div>
-                        <div class="initialDate"></div>
-                        <div class="initialTime"></div>
-                        <div class="initialRepeat hidden"></div>
-                        <div class="initialNote hidden"></div>
-                        <div class="confirmBtnContent">
-                            <a class="deleteBtn hidden" href="javascript:void(0)">删除</a>
-                            <a class="saveBtn" href="javascript:void(0)">保存</a>
-                            <div class="spliteColumn"></div>
-                            <a class="editBtn" href="javascript:void(0)">编辑</a>
-                            <div class="loadingIcon hidden"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="remindListContent modal hidden">
-            <div class="contentMask"></div>
-            <!--<div class="boxArrowTop"></div>-->
-            <div class="remindListPanel panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel">
-                    <div class="panelConent">
-                        <div class="remindListDate">
-                            <span class="remindSDate"></span>
-                            <span class="remindLDate"></span>
-                        </div>
-                        <a class="remindTitleItem tempRemindTitleItem hidden" href="javascript:void(0)">
-                            <div class="roundPoint"></div>
-                            <div class="itemTitle"></div>
-                            <div class="itemTime"></div>
-                        </a>
-                        <div class="remindTitleList"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="contactContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="contactPanel panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel">
-                    <div class="panelConent">
-                        <div class="aboutTitle">
-                            联系我们
-                        </div>
-                        <div class="contactInfo1">
-                            如果想对可兰达科技有更多的了解，请与我们联系
-                        </div>
-                        <div class="contactInfo2">
-                            <div class="emailContact">support@youloft.com</div>
-                            <div class="telContact">023 - 8875 6859</div>
-                        </div>
-                        <div class="addressContent" style="width: 360px;">中国-重庆市-渝北区-人和街道洪湖西路24号B栋9楼</div>
-                        <div id="mymap" style="width: 600px;height: 230px;"></div>
-                        <script>
-                            // 百度地图API功能
-                            var map = new BMap.Map('mymap');
-                            var poi = new BMap.Point(106.5073, 29.613723);
-                            map.centerAndZoom(poi, 16);
-                            map.enableScrollWheelZoom();
-                            map.setCurrentCity("重庆");
-                            var content = '重庆可兰达科技有限公司成立于2010年，是一家专注移动互联网产品研发的高科技创新企业。';
-
-                            //创建检索信息窗口对象
-                            var searchInfoWindow = null;
-                            searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
-                                title: "重庆可兰达科技",      //标题
-                                width: 290,             //宽度
-                                height: 55,              //高度
-                                panel: "panel",         //检索结果面板
-                                enableAutoPan: false,     //自动平移
-                                searchTypes: [
-                                    BMAPLIB_TAB_SEARCH,   //周边检索
-                                    BMAPLIB_TAB_TO_HERE,  //到这里去
-                                    BMAPLIB_TAB_FROM_HERE //从这里出发
-                                ]
-                            });
-                            var marker = new BMap.Marker(poi); //创建marker对象
-                            marker.enableDragging(); //marker可拖拽
-                            marker.addEventListener("click", function (e) {
-                                searchInfoWindow.open(marker);
-                            });
-                            map.addOverlay(marker); //在地图中添加marker
-                            window.setTimeout(function () { map.panBy(305, 165); }, 1000);
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="aboutContent modal hidden">
-            <div class="contentMask"></div>
-            <div class="aboutPanel panel">
-                <div class="repeatImg lRepeat"></div>
-                <div class="repeatImg tRepeat"></div>
-                <div class="repeatImg rRepeat"></div>
-                <div class="repeatImg bRepeat"></div>
-                <div class="radiusImg ltRadius"></div>
-                <div class="radiusImg rtRadius"></div>
-                <div class="radiusImg lfRadius"></div>
-                <div class="radiusImg rfRadius"></div>
-                <div class="modalPanel">
-                    <div class="panelConent">
-                        <div class="aboutTitle">
-                            关于我们
-                        </div>
-                        <div class="aboutTxt">
-                            <b style="font-size: 13px;color: #151515">重庆可兰达科技有限公司，是一家专注移动互联网产品研发的高科技创新企业，是隶属于香港优路科技有限公司旗下的全资子公司。</b><br>
-                            <b style="font-size: 13px;color: #151515">公司主要产品万年历App在2014年08月获猎豹移动（美国上市公司CMCM）投资，于2014年12月成立可兰达科技，专注研发运营万年历产品。万年历App，在iOS平台日历工具类占据领先位置，Android平台排名靠前，目前已超过2亿用户量，日活1000万以上。</b><br>
-                            未来发展：万年历App将以中国传统文化为切入点，搭建相应的产品矩阵，和高净值用户社区体系，进一步完善从线上到线下的盈利闭环。万年历用户过两亿，用户需求将会有更广度的开拓，将用户行为进行分析，挖掘更深层次的用户价值。同时运营亿级流量，打造精准分发和投放的移动互联网流量平台，结合个性化推荐打造特色电商平台。公司现有核心团队近100人，其中核心技术研发人员占比超过80%，平均年龄26岁。<br>
-                            <b style="font-size: 13px;color: #151515">我们年轻，但我们专注。</b><br>
-                            <b style="font-size: 13px;color: #151515">我们有着朝气与梦想，我们坚信一定能够在移动互联网的浪潮中为着共同梦想不断的奋斗、成才、成功！！</b>
-                        </div>
-                        <div class="aboutTxt hidden">
-                            <b style="font-size: 13px;color: #151515">重庆可兰贵科技有限公司是一家专注移动互联网产品研发的高科技创新企业。</b><br>
-                            <b style="font-size: 13px;color: #151515">公司主要产品万年历App于2009年在苹果App
-                                Store上线，是将中国的传统历法和西方星学进行结合，传承传统非物质文化。产品现已拥有3亿用户，在iOS平台日历工具类应用中占据领先位置，在Android排名靠前。</b><br>
-                            未来发展：万年历App将以中国传统文化为切入点，搭建相应的产品矩阵，和高净值用户社区体系，进一步完善从线上到线下的盈利闭环。万年历用户过三亿，用户需求将会有更广度的开拓，将用户行为进行分析，挖掘更深层次的用户价值。同时运营亿级流量，打造精准分发和投放的移动互联网流量平台。<br>
-                            <b style="font-size: 13px;color: #151515">我们年轻，但我们专注。</b><br>
-                            <b style="font-size: 13px;color: #151515">我们有着朝气与梦想，我们坚信一定能够在移动互联网的浪潮中为着共同梦想不断的奋斗、成才、成功！！</b>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<nav class="navbar navbar-inverse navbar-fixed-top app_top_b">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt=""></a> </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="index.html">网站首页</a></li>
+        <li><a href="pinp.html">品牌文化</a></li>
+        <li><a href="chanp.html">产品中心</a></li>
+        <li><a href="peix.html">培训课程</a></li>
+        <li><a href="news.html">新闻中心</a></li>
+        <li><a href="zhaos.html">招商加盟</a></li>
+        <li><a href="lianx.html">联系我们</a></li>
+      </ul>
     </div>
+    <!--/.nav-collapse --> 
+    
+  </div>
+</nav>
+<div class="knag_top"></div>
 
-    <!-- 新增不同渠道替换公司名称 -->
+<!-- banner -->
+
+<div class="shouye_qiehuant">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><a href="#"><img src="images/banner.jpg" alt=""></a></div>
+    <div class="swiper-slide"><a href="#"><img src="images/banner1.jpg" alt=""></a></div>
+  </div>
+  
+  <!-- Add Pagination -->
+  
+  <div class="swiper-pagination"></div>
+</div>
+
+<!-- Initialize Swiper --> 
+
+<script>
+
+var swiper = new Swiper('.shouye_qiehuant', {
+
+	pagination: {
+
+	el: '.swiper-pagination',
+
+	},
+
+});
+
+</script> 
+
+<!-- 品牌文化 -->
+
+<div class="pingp_wenh">
+  <div class="px1200"> 
+    
+    <!-- bt -->
+    
+    <div class="shouye_biapt shouye_biapt_ge">
+      <div class="qian">品</div>
+      <div class="nimen_ge">
+        <p>品 牌 文 化</p>
+        <span>Brand culture</span> </div>
+    </div>
+    <div class="nimen_gea">
+      <p> 《黄帝内经》曰：“阳气者，若天与日，失其所，则折寿而不彰。”就是说人体的阳气，就像天上的太阳一样重要。没有了太阳，世界上的万物将无法生存；没有了阳气，人就会减损寿命或夭折，所以人体离不开阳气就像万物离不开太阳一样。 </p>
+      <p> 《黄帝内经》曰：“阳气者，若天与日，失其所，则折寿而不彰。”就是说人体的阳气，就像天上的太阳一样重要。没有了太阳，世界上的万物将无法生存；没有了阳气，人就会减损寿命或夭折，所以人体离不开阳气就像万物离不开太阳一样。 </p>
+      <p>阳气者，若天与日，失其所，则折寿而不彰。阳气者，若天与日，失其所，则折寿而不彰。阳气者，若天与日，失其所，则折寿而不彰。阳气者，若天与日，失其所，则折寿而不彰。</p>
+      <a href="#">查看全部+</a> </div>
+    
+    <!-- 产品推荐 -->
+    
+    <div class="shouye_biapt shouye_biapt_ge shouye_biapt_ge_A">
+      <div class="qian">产</div>
+      <div class="nimen_ge">
+        <p>产 品 推 荐</p>
+        <span>product</span> </div>
+    </div>
+    <div class="yao_meng">
+      <div> <a href="javascript:;" class="no">仪器</a> <a href="javascript:;">水果酵素</a> <a href="javascript:;">精华液</a> <a href="javascript:;">按摩膏</a> <a href="javascript:;">仪器仪器</a> <a href="javascript:;">水果酵素</a> <a href="javascript:;">精华液</a> 
+        <script>
+
+					$(function(){
+
+						$(".yao_meng a").mousedown(function(){
+
+							$(".yao_meng a").removeClass("no")
+
+							$(this).addClass("no")
+
+						})
+
+					})
+
+				</script> 
+      </div>
+    </div>
+    <div class="nimen_nimen_Ge">
+      <ul>
+        <li><a href="#"> <img src="images/cp_img.jpg" alt="">
+          <p>益力舒活按摩膏</p>
+          </a></li>
+        <li><a href="#"> <img src="images/cp_img1.jpg" alt="">
+          <p>益力舒活按摩膏益力舒活按摩膏益力舒活按摩按摩膏益力舒活按摩膏</p>
+          </a></li>
+        <li><a href="#"> <img src="images/cp_img2.jpg" alt="">
+          <p>益力舒活按摩膏</p>
+          </a></li>
+        <li><a href="#"> <img src="images/cp_img3.jpg" alt="">
+          <p>益力舒活按摩膏</p>
+          </a></li>
+        <li><a href="#"> <img src="images/cp_img4.jpg" alt="">
+          <p>益力舒活按摩膏</p>
+          </a></li>
+        <li><a href="#"> <img src="images/cp_img5.jpg" alt="">
+          <p>益力舒活按摩膏</p>
+          </a></li>
+      </ul>
+    </div>
+    
+    <!--  --> 
+    
+  </div>
+</div>
+
+<!-- 培训课程 -->
+
+<div class="peixun_kecheng">
+  <div class="px1200">
+    <div class="shouye_biapt paixun_bt">
+      <div class="qian">培</div>
+      <div class="nimen_ge">
+        <p>培 训 课 程</p>
+        <span>Train</span> </div>
+      <a href="#">MORE+</a> </div>
+    <div class="peixun_kec">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="peixunkec_k"> <a href="images/movie.mp4"> <img src="images/ship_img.jpg" alt="">
+            <p>养生培训</p>
+            <span>善养生者：“上养神智，中养形态，下杨筋骨”也就是说,真正的养生,不单单养身,更要滋养我们的心神不单单养身,更要滋养我们的心神</span> </a> </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="peixunkec_k"> <a href="images/movie.mp4"> <img src="images/ship_img1.jpg" alt="">
+            <p>养生培训</p>
+            <span>善养生者：“上养神智，中养形态，下杨筋骨”也就是说,真正的养生,不单单养身,更要滋养我们的心神不单单养身,更要滋养我们的心神</span> </a> </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="peixunkec_k"> <a href="images/movie.mp4"> <img src="images/ship_img2.jpg" alt="">
+            <p>养生培训</p>
+            <span>善养生者：“上养神智，中养形态，下杨筋骨”也就是说,真正的养生,不单单养身,更要滋养我们的心神不单单养身,更要滋养我们的心神</span> </a> </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="peixunkec_k"> <a href="images/movie.mp4"> <img src="images/ship_img.jpg" alt="">
+            <p>养生培训</p>
+            <span>善养生者：“上养神智，中养形态，下杨筋骨”也就是说,真正的养生,不单单养身,更要滋养我们的心神不单单养身,更要滋养我们的心神</span> </a> </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="peixunkec_k"> <a href="images/movie.mp4"> <img src="images/ship_img1.jpg" alt="">
+            <p>养生培训</p>
+            <span>善养生者：“上养神智，中养形态，下杨筋骨”也就是说,真正的养生,不单单养身,更要滋养我们的心神不单单养身,更要滋养我们的心神</span> </a> </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="peixunkec_k"> <a href="images/movie.mp4"> <img src="images/ship_img2.jpg" alt="">
+            <p>养生培训</p>
+            <span>善养生者：“上养神智，中养形态，下杨筋骨”也就是说,真正的养生,不单单养身,更要滋养我们的心神不单单养身,更要滋养我们的心神</span> </a> </div>
+        </div>
+      </div>
+      
+      <!-- Add Pagination -->
+      
+      <div class="swiper-pagination"></div>
+    </div>
+    
+    <!-- Initialize Swiper --> 
+    
     <script>
-        const isKLG = window.location.href.includes('appklg.com');
-        console.log('isKLG', isKLG);
-        const contactInfo1 = document.querySelector('.contactInfo1')
-        const beianContent = document.getElementsByClassName('beianContent')
-        const aboutTxt = document.getElementsByClassName('aboutTxt')
-        if (isKLG) {
-            contactInfo1.innerHTML = contactInfo1.innerHTML
-                .replace(/可兰达/g, '可兰贵')
 
-            beianContent[0].classList.add('class', 'hidden')
-            beianContent[1].classList.remove('class', 'hidden')
-            aboutTxt[0].classList.add('class', 'hidden')
-            aboutTxt[1].classList.remove('class', 'hidden')
-        }
-    </script>
+		var swiper = new Swiper('.peixun_kec', {
 
 
-    <script type="text/javascript" src="static/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="static/js/YJData.js"></script>
-    <script type="text/javascript" src="static/js/JXData.js"></script>
-    <script type="text/javascript" src="static/js/underscore.js"></script>
-    <!--<script type="text/javascript" src="js_new/plugin/kernelCalendar.js"></script>-->
-    <script type="text/javascript" src="static/js/md5.js"></script>
-    <!--<script type="text/javascript" src="js_new/plugin/json2.js"></script>-->
-    <script type="text/javascript" src="static/js/plugin.js"></script>
-    <script type="text/javascript" src="static/js/index.js"></script>
-    <!-- <script type="text/javascript" src="js_new/index.min.js"></script> -->
+
+			slidesPerView: 3,
+
+			spaceBetween: 10,
+
+			pagination: {
+
+			el: '.swiper-pagination',
+
+			clickable: true,
+
+			},
+
+			autoplay: {
+
+			delay: 3000,
+
+			stopOnLastSlide: false,
+
+			disableOnInteraction: true,
+
+			},
+
+		});
+
+		</script> 
+  </div>
+</div>
+
+<!-- 新闻 -->
+
+<div class="news_shouyek">
+  <div class="px1200">
+    <div class="lest_nimen">
+      <div class="news_list">
+        <div class="shouye_biapt shouye_biapt_ge shang_ege">
+          <div class="qian">新</div>
+          <div class="nimen_ge">
+            <p>新 闻 中 心</p>
+            <span>news</span> </div>
+        </div>
+        <div class="news_limian_k">
+          <div class="left"> 
+            
+            <!-- Swiper -->
+            
+            <div class="img_swipes">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"><a href="#"><img src="images/news_img.jpg" alt=""></a></div>
+                <div class="swiper-slide"><a href="#"><img src="images/news_img.jpg" alt=""></a></div>
+                <div class="swiper-slide"><a href="#"><img src="images/news_img.jpg" alt=""></a></div>
+              </div>
+              
+              <!-- Add Pagination -->
+              
+              <div class="swiper-pagination"></div>
+            </div>
+            <script>
+
+							var swiper = new Swiper('.img_swipes', {
+
+							pagination: {
+
+								el: '.swiper-pagination',
+
+							},
+
+							});
+
+						</script> 
+          </div>
+          <div class="list_news">
+            <ul>
+              <li><a href="#">
+                <p>这几样“换血食物”，吃一次就让就让..</p>
+                <span>胡萝卜中含有的山奈酚、槲皮素等，可以降血脂和增加冠状动脉血液流量；它含有的钾盐，有助于改善血管化。胡萝卜中含有的山奈酚、槲皮素等，可以降血脂和增加冠状动脉血液流量；它含有的钾盐，有助于改善血管化。</span></a></li>
+              <li><a href="#">武汉24小时  争分夺秒 为患者打开了一扇生</a></li>
+              <li><a href="#">火线上激扬青春力量</a></li>
+              <li><a href="#">党旗下，一群白衣战士庄严宣誓</a></li>
+              <li><a href="#">外媒高度评价中国疫情防控举措</a></li>
+              <li><a href="#">武汉24小时  争分夺秒 为患者打开了一扇生</a></li>
+              <li><a href="#">火线上激扬青春力量</a></li>
+              <li><a href="#">外媒高度评价中国疫情防控举措</a></li>
+              <li><a href="#">世卫专家：各国防控疫情不必从零开的城市</a></li>
+              <li><a href="#">党旗下，一群白衣战士庄严宣誓</a></li>
+              <li><a href="#">外媒高度评价中国疫情防控举措</a></li>
+              <li><a href="#">世卫专家：各国防控疫情不必从零开的城市</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="div_right">
+        <div class="shouye_biapt shouye_biapt_ge shang_ege">
+          <div class="qian">联</div>
+          <div class="nimen_ge">
+            <p>联 系 我 们</p>
+            <span>Contact us</span> </div>
+        </div>
+        <ul>
+          <li> <img src="images/lianx.jpg" alt="">
+            <div class="img"> <img src="images/jian_img.png" alt="">
+              <p>我们在这：<span>贵州省某某路上</span></p>
+            </div>
+          </li>
+          <li> <img src="images/lianx1.jpg" alt="">
+            <div class="img"> <img src="images/jian_img1.png" alt="">
+              <p>我们电话：<span>办公总机：400-888-8888<br>
+                座机：0555-8888888</span></p>
+            </div>
+          </li>
+          <li> <img src="images/lianx2.jpg" alt="">
+            <div class="img"> <img src="images/jian_img2.png" alt="">
+              <p>申请加盟：<span>在线申请加盟我们会及时联系您</span></p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- footer -->
+
+<div class="footer">
+  <div class="top px1200">
+    <ul>
+      <h2>品牌文化</h2>
+      <li><a href="#">公司简介</a></li>
+      <li><a href="#">发展历程</a></li>
+      <li><a href="#">发展历程</a></li>
+    </ul>
+    <ul>
+      <h2>产品中心</h2>
+      <li><a href="#">养生茶系列</a></li>
+      <li><a href="#">养生茶系列</a></li>
+      <li><a href="#">养生茶系列</a></li>
+      <li><a href="#">中医堂</a></li>
+    </ul>
+    <ul>
+      <h2>新闻中心</h2>
+      <li><a href="#">公司新闻</a></li>
+      <li><a href="#">行业新闻</a></li>
+      <li><a href="#">养生知识</a></li>
+    </ul>
+    <ul>
+      <h2>加入我们</h2>
+      <li><a href="#">加入我们</a></li>
+    </ul>
+    <ul>
+      <h2>练习我们</h2>
+      <li><a href="#">练习我们</a></li>
+      <li><a href="#">在线留言</a></li>
+    </ul>
+    <div class="erweim">
+      <div> <img src="images/erm.jpg" alt="">
+        <p>关注微信公众号</p>
+      </div>
+      <div> <img src="images/erm.jpg" alt="">
+        <p>关注微信公众号</p>
+      </div>
+    </div>
+  </div>
+  <div class="baian"> 京ICP备：888888号 黔ICP证：B2-1223333号 <a href="http://www.adminbuy.cn" target="_blank">企业网站模板</a></div>
+</div>
 </body>
-
 </html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时天气卡片 gree020.cn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .weather-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .weather-card h1 {
+            font-size: 1.5em;
+            color: #333;
+            margin: 0 0 10px;
+        }
+        .weather-card p {
+            font-size: 1em;
+            color: #555;
+            margin: 5px 0;
+        }
+        .weather-card .weather-info {
+            font-size: 1.2em;
+            color: #222;
+            margin: 15px 0;
+        }
+        .weather-card .tip {
+            font-size: 0.9em;
+            color: #666;
+            margin: 10px 0;
+        }
+        .weather-card .footer {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 20px;
+        }
+        .weather-card .loading {
+            font-size: 0.9em;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-card">
+        <h1>实时天气卡片</h1>
+        <p id="location">📍 <strong>加载中...</strong></p>
+        <p id="date">📅 <strong>加载中...</strong></p>
+        <p id="time">⏰ <strong>加载中...</strong></p>
+        <div class="weather-info">
+            <p>🌡️ 天气状况：<strong id="weather-status">加载中...</strong></p>
+            <p>🌡️ 温度：<strong id="temperature">加载中...</strong>℃</p>
+            <p>💧 湿度：<strong id="humidity">加载中...</strong>%</p>
+            <p>💨 风向：<strong id="wind-direction">加载中...</strong></p>
+            <p>💨 风力：<strong id="wind-power">加载中...</strong></p>
+        </div>
+        <p class="tip">加载中...</p>
+        <div class="footer">
+            <p id="data-source">数据来源：<strong>加载中...</strong></p>
+            <p id="report-time">报告时间：<strong>加载中...</strong></p>
+        </div>
+        <div class="loading">正在加载实时天气数据...</div>
+    </div>
+
+    <script>
+        // 获取天气数据的API
+        const API_URL = "https://api.fenx.top/api/getWeather";
+
+        // 获取当前时间
+        function getCurrentTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString();
+            const date = now.toLocaleDateString();
+            document.getElementById("time").querySelector("strong").textContent = time;
+            document.getElementById("date").querySelector("strong").textContent = date;
+        }
+
+        // 更新天气数据
+        async function fetchWeatherData() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                if (data.code === 200) {
+                    const weather = data.data.weather;
+                    const location = `${data.data.province} ${data.data.city}`;
+                    const reportTime = new Date(data.data.weather.reporttime).toLocaleString();
+
+                    // 更新卡片内容
+                    document.getElementById("location").querySelector("strong").textContent = location;
+                    document.getElementById("weather-status").textContent = weather.weather;
+                    document.getElementById("temperature").textContent = weather.temp;
+                    document.getElementById("humidity").textContent = weather.humidity;
+                    document.getElementById("wind-direction").textContent = weather.winddirection;
+                    document.getElementById("wind-power").textContent = weather.windpower;
+                    document.getElementById("data-source").querySelector("strong").textContent = data.data.ip;
+                    document.getElementById("report-time").querySelector("strong").textContent = reportTime;
+                    document.querySelector(".tip").textContent = "阴天也有它的独特魅力，适合静下心来，享受一段宁静的时光。";
+                    document.querySelector(".loading").style.display = "none";
+                } else {
+                    throw new Error("Failed to fetch weather data");
+                }
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+                document.querySelector(".loading").textContent = "加载失败，请稍后重试。";
+            }
+        }
+
+        // 初始化
+        fetchWeatherData();
+        setInterval(fetchWeatherData, 600000); // 每10分钟更新一次天气数据
+        setInterval(getCurrentTime, 1000); // 每秒更新时间
+    </script>
+</body>
+</html>

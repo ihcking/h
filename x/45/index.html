@@ -1,136 +1,719 @@
-<html lang="en">
+<!doctype html>
+<html>
+	<head>
+    <title>朋友圈转发截图生成工具 - 微信朋友圈截图模拟器</title>
+    <meta name="keywords" content="朋友圈转发截图生成工具,微信朋友圈截图模拟器,朋友圈转发点赞生成截图工具,朋友圈装逼图片在线制作,微信朋友圈装逼生成器大全" />
+    <meta name="description" content="朋友圈转发截图生成工具,微信朋友圈截图模拟器,朋友圈转发点赞生成截图工具,朋友圈装逼图片在线制作,微信朋友圈装逼生成器大全。" /> 
+		<meta charset="utf-8">
+		<meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+		<meta content="TransparentLC" name="author">
+		<meta content="no-siteapp" http-equiv="Cache-Control">
+		<meta content="no-transform" http-equiv="Cache-Control">
+		<link href="css/mdui.min.css"
+		rel="stylesheet">
+		<link href="css/style.min.css"
+		rel="stylesheet">
+		<script>
+			new URL(location.href).searchParams.has("debug") && (document.write('<scr' + 'ipt src="https://cdn.jsdelivr.net/npm/eruda"></scr' + 'ipt>'), document.write('<scr' + 'ipt>eruda.init()</scr' + 'ipt>'))
+		</script>
+	</head>
+	<body class="mdui-appbar-with-toolbar mdui-theme-accent-pink mdui-theme-primary-indigo">
+		<header class="mdui-appbar mdui-appbar-fixed">
+			<div class="mdui-color-theme mdui-toolbar">
+            <span class="mdui-typo-title">朋友圈转发截图生成工具</span>
+				<div class="mdui-toolbar-spacer">
+				</div>
+				<a class="mdui-btn mdui-btn-icon" mdui-tooltip="{content:'关于'}" mdui-dialog="{target:'#about'}">
+					<i class="mdui-icon material-icons">
+						info_outline
+					</i>
+				</a>
+				<a href="https://www.gree020.cn" class="mdui-btn mdui-ripple mdui-btn-icon mdui-ripple-white"
+				mdui-tooltip="{content:'查看 GitHub'}">
+					<svg class="mdui-icon" style="width:24px;height:24px" viewBox="0 0 36 36">
+						<path clip-rule="evenodd" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4c-0.2-0.4-0.7-2.1,0.2-4.3c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,0,2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5C34.3,8.7,27,1.4,18,1.4z"
+						fill="#fff" fill-rule="evenodd" />
+					</svg>
+				</a>
+			</div>
+		</header>
+		<div class="mdui-container">
+			<div class="mdui-row">
+				<div class="mdui-col-sm-10 mdui-col-xs-8">
+					<div class="mdui-textfield">
+						<label class="mdui-textfield-label">
+							用户名
+						</label>
+						<input id="configName" type="text" class="mdui-textfield-input">
+					</div>
+				</div>
+				<div class="mdui-col-xs-4 mdui-col-sm-2">
+					<div class="mdui-textfield">
+						<label class="mdui-textfield-label">
+							&nbsp;
+						</label>
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configAvatar&#34;).click()">
+							选择头像
+						</button>
+						<input id="configAvatar" type="file" style="display:none">
+					</div>
+				</div>
+			</div>
+			<div class="mdui-textfield">
+				<label class="mdui-textfield-label">
+					正文
+				</label>
+				<textarea class="mdui-textfield-input" id="configText">
+				</textarea>
+			</div>
+			<div class="mdui-textfield">
+				<label class="mdui-textfield-label">
+					截图类型
+				</label>
+			</div>
+			<div class="mdui-row">
+				<div class="mdui-col-xs-6">
+					<label class="mdui-radio">
+						<input id="configTypeText" type="radio" name="group" checked>
+						<i class="mdui-radio-icon">
+						</i>
+						纯文字
+					</label>
+				</div>
+				<div class="mdui-col-xs-6">
+					<label class="mdui-radio">
+						<input id="configTypeWebsite" type="radio" name="group">
+						<i class="mdui-radio-icon">
+						</i>
+						分享网页/公众号文章
+					</label>
+				</div>
+				<div class="mdui-col-xs-6">
+					<label class="mdui-radio">
+						<input id="configTypeSingleImage" type="radio" name="group">
+						<i class="mdui-radio-icon">
+						</i>
+						图片（单张）
+					</label>
+				</div>
+				<div class="mdui-col-xs-6">
+					<label class="mdui-radio">
+						<input id="configTypeMultiImage" type="radio" name="group">
+						<i class="mdui-radio-icon">
+						</i>
+						图片（九宫格）
+					</label>
+				</div>
+			</div>
+			<div id="configWebsite" style="display:none">
+				<div class="mdui-textfield">
+					<label class="mdui-textfield-label">
+						网页标题
+					</label>
+					<input id="configArticleTitle" type="text" class="mdui-textfield-input"
+					value="还不会用Google的你，就要被时代淘汰了">
+				</div>
+				<div class="mdui-row">
+					<div class="mdui-col-xs-6">
+						<button class="mdui-btn mdui-btn-block mdui-text-color-theme-accent mdui-ripplet"
+						onclick="document.getElementById(&#34;configArticleIcon&#34;).click()">
+							上传网页图标
+						</button>
+						<input id="configArticleIcon" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-6">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="getArticleInfo()">
+							自动获取公众号文章标题/封面图
+						</button>
+					</div>
+				</div>
+			</div>
+			<div id="configSingleImage" style="display:none">
+				<div class="mdui-row">
+					<div class="mdui-col-xs-6">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetSingleImage&#34;).click()">
+							上传图片
+						</button>
+					</div>
+					<div class="mdui-col-xs-6">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="addPlayIcon()">
+							添加视频播放图标
+						</button>
+					</div>
+				</div>
+				<input id="configSetSingleImage" type="file" style="display:none">
+			</div>
+			<div id="configMultiImage" style="display:none">
+				<div class="mdui-m-y-1">
+					请按图片 1 - 9 的顺序添加图片～
+					<br>
+					如果只需要显示一张图片，建议选择“图片（单张）”。
+				</div>
+				<div class="mdui-row">
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage1&#34;).click()">
+							上传图片 1
+						</button>
+						<input id="configSetMultiImage1" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage2&#34;).click()">
+							上传图片 2
+						</button>
+						<input id="configSetMultiImage2" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage3&#34;).click()">
+							上传图片 3
+						</button>
+						<input id="configSetMultiImage3" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage4&#34;).click()">
+							上传图片 4
+						</button>
+						<input id="configSetMultiImage4" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage5&#34;).click()">
+							上传图片 5
+						</button>
+						<input id="configSetMultiImage5" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage6&#34;).click()">
+							上传图片 6
+						</button>
+						<input id="configSetMultiImage6" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage7&#34;).click()">
+							上传图片 7
+						</button>
+						<input id="configSetMultiImage7" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage8&#34;).click()">
+							上传图片 8
+						</button>
+						<input id="configSetMultiImage8" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-4">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configSetMultiImage9&#34;).click()">
+							上传图片 9
+						</button>
+						<input id="configSetMultiImage9" type="file" style="display:none">
+					</div>
+					<div class="mdui-col-xs-12">
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="clearMultiImage()">
+							清空所有图片
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="mdui-textfield">
+				<label class="mdui-textfield-label">
+					定位
+				</label>
+				<input id="configLocation" type="text" class="mdui-textfield-input" value="">
+			</div>
+			<div class="mdui-textfield">
+				<label class="mdui-textfield-label">
+					转发出处
+				</label>
+				<input id="configApp" type="text" class="mdui-textfield-input" value="">
+				<div class="mdui-textfield-helper">
+					设置为“视频号 · ○○○”时将以链接的浅蓝色显示
+				</div>
+			</div>
+			<div class="mdui-row">
+				<div class="mdui-textfield mdui-col-xs-6">
+					<label class="mdui-textfield-label">
+						发表日期
+					</label>
+					<input id="configPostDate" type="date" class="mdui-textfield-input">
+				</div>
+				<div class="mdui-textfield mdui-col-xs-3">
+					<label class="mdui-textfield-label">
+						发表时间
+					</label>
+					<input id="configPostTimeHour" type="number" class="mdui-textfield-input"
+					min="0" max="23">
+				</div>
+				<div class="mdui-textfield mdui-col-xs-3">
+					<label class="mdui-textfield-label">
+						&nbsp;
+					</label>
+					<input id="configPostTimeMinute" type="number" class="mdui-textfield-input"
+					min="0" max="59">
+				</div>
+				<div class="mdui-textfield mdui-col-xs-6">
+					<label class="mdui-textfield-label">
+						截图日期
+					</label>
+					<input id="configScreenshotDate" type="date" class="mdui-textfield-input">
+				</div>
+				<div class="mdui-textfield mdui-col-xs-3">
+					<label class="mdui-textfield-label">
+						截图时间
+					</label>
+					<input id="configScreenshotTimeHour" type="number" class="mdui-textfield-input"
+					min="0" max="23">
+				</div>
+				<div class="mdui-textfield mdui-col-xs-3">
+					<label class="mdui-textfield-label">
+						&nbsp;
+					</label>
+					<input id="configScreenshotTimeMinute" type="number" class="mdui-textfield-input"
+					min="0" max="59">
+				</div>
+				<div class="mdui-textfield mdui-col-sm-6 mdui-col-xs-4">
+					<label class="mdui-textfield-label">
+						点赞数
+					</label>
+					<input id="configLike" type="number" class="mdui-textfield-input" min="0">
+				</div>
+				<div class="mdui-col-xs-4 mdui-col-sm-3">
+					<div class="mdui-textfield">
+						<label class="mdui-textfield-label">
+							图片长度
+						</label>
+						<input id="configHeight" type="number" class="mdui-textfield-input" min="1920"
+						value="1920">
+					</div>
+				</div>
+				<div class="mdui-col-xs-4 mdui-col-sm-3">
+					<div class="mdui-textfield">
+						<label class="mdui-textfield-label">
+							&nbsp;
+						</label>
+						<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+						onclick="document.getElementById(&#34;configHeight&#34;).value=Math.round(document.body.clientHeight/document.body.clientWidth*1080)"
+						mdui-tooltip="{content:'图片宽度默认为 1080 像素，长度根据设备长宽比确定计算，可能和实际存在偏差'}">
+							自动设定
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="mdui-textfield">
+				<label class="mdui-textfield-label">
+					评论区
+				</label>
+			</div>
+			<div class="mdui-row">
+				<div class="mdui-col-xs-12">
+					<label class="mdui-checkbox">
+						<input id="configShowComment" type="checkbox" name="configShowComment"
+						onclick="document.getElementById(&#34;configCommentPreview&#34;).classList[this.checked?&#34;remove&#34;:&#34;add&#34;](&#34;mdui-hidden&#34;)">
+						<i class="mdui-checkbox-icon">
+						</i>
+						显示评论区
+					</label>
+				</div>
+				<div class="mdui-col-xs-12 mdui-hidden" id="configCommentPreview">
+					<div class="mdui-m-y-2 mdui-table-fluid">
+						<table class="mdui-table">
+							<thead>
+								<tr>
+									<th>
+										#
+									</th>
+									<th>
+										用户名
+									</th>
+									<th>
+										评论内容
+									</th>
+									<th>
+										时间
+									</th>
+								</tr>
+							</thead>
+							<tbody id="configCommentList">
+							</tbody>
+						</table>
+					</div>
+					<div class="mdui-row">
+						<div class="mdui-col-xs-6">
+							<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+							onclick="document.getElementById(&#34;configCommentName&#34;).value=randomName(),document.getElementById(&#34;configCommentAvatar&#34;).value=null"
+							mdui-dialog="{target:'#addComment'}">
+								添加评论
+							</button>
+						</div>
+						<div class="mdui-col-xs-6">
+							<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+							onclick="removeComment()">
+								删除评论
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mdui-textfield">
+				<label class="mdui-textfield-label">
+					通知栏
+				</label>
+			</div>
+			<div class="mdui-row">
+				<div class="mdui-col-xs-6">
+					<label class="mdui-checkbox">
+						<input id="configTopBarAppIcons" type="checkbox" name="configTopBarAppIcons">
+						<i class="mdui-checkbox-icon">
+						</i>
+						显示 APP 图标
+					</label>
+				</div>
+				<div class="mdui-col-xs-6">
+					<label class="mdui-checkbox">
+						<input id="configTopBarStatusIcons" type="checkbox" name="configTopBarStatusIcons">
+						<i class="mdui-checkbox-icon">
+						</i>
+						随机信号和电量
+					</label>
+				</div>
+			</div>
+			<div class="mdui-textfield">
+				<label class="mdui-textfield-label">
+					其他
+				</label>
+			</div>
+			<div class="mdui-row">
+				<div class="mdui-col-xs-6">
+					<label class="mdui-checkbox">
+						<input id="configUIWhite" type="checkbox" name="configUIWhite">
+						<i class="mdui-checkbox-icon">
+						</i>
+						使用 7.0 以上版本白色界面
+					</label>
+				</div>
+				<div class="mdui-col-xs-6">
+					<label class="mdui-checkbox">
+						<input id="configFirstAvatar" type="checkbox" name="configFirstAvatar">
+						<i class="mdui-checkbox-icon">
+						</i>
+						第一个头像固定为自己
+					</label>
+				</div>
+			</div>
+			<button class="mdui-btn mdui-ripple mdui-btn-block mdui-color-theme-accent mdui-m-t-2"
+			id="generate">
+				生成
+			</button>
+			<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent mdui-m-t-1"
+			mdui-dialog="{target:'#donate'}">
+				请小透明喝一瓶肥宅快乐水～(*´∀`)
+			</button>
+			<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent mdui-m-t-1"
+			onclick="copyGitLink()">
+				复制本工具的链接，分享给有需要的人(`ヮ´ )
+			</button>
+			<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent mdui-m-t-1"
+			onclick="localStorage.removeItem(&#34;config&#34;),localStorage.removeItem(&#34;avatar&#34;),mdui.snackbar({message:&#34;已清除～刷新后将使用默认设置&#34;})">
+				清除保存的设置信息
+			</button>
+			<div id="gitLink" style="display:none">
+				https://www.gree020.cn
+			</div>
+			<div id="fakeWechatMoment">
+				<div class="topBar" id="topBar">
+					<div id="topBarAppIcons">
+					</div>
+					<div style="flex-grow:1">
+					</div>
+					<img id="topBarIconWifi" class="topBarIcon">
+					<img id="topBarIconSignal" class="topBarIcon">
+					<img id="topBarIconBattery" class="topBarIcon">
+					<span id="topBarTime">
+					</span>
+				</div>
+				<div class="header" id="header">
+					<div style="width:40px">
+					</div>
+					<img style="width:auto;height:48px">
+					<div style="width:40px">
+					</div>
+					详情
+				</div>
+				<div class="main" id="main">
+					<div style="height:30px">
+					</div>
+					<div class="avatarOut">
+						<div class="squareImage avatarIn" id="avatar">
+						</div>
+					</div>
+					<div class="content">
+						<div class="name" id="name">
+						</div>
+						<div style="height:11px">
+						</div>
+						<div class="text" id="text">
+						</div>
+						<div class="article" id="article" style="display:none">
+							<div class="squareImage articleIcon" id="articleIcon" style="background-image:url(https://ae01.alicdn.com/kf/HTB1ci0Da5zxK1RjSspjq6AS.pXaD.jpg)">
+							</div>
+							<div class="articleTitle" id="articleTitle">
+							</div>
+						</div>
+						<div class="singleImage" id="singleImage" style="display:none">
+							<img id="image" class="image" src="https://ae01.alicdn.com/kf/HTB13rXuJCzqK1RjSZPxq6A4tVXae.jpg">
+						</div>
+						<div class="multiImage" id="multiImage" style="display:none">
+							<div class="squareImage multiImageBox" id="image1">
+							</div>
+							<div class="squareImage multiImageBox" id="image2">
+							</div>
+							<div class="squareImage multiImageBox" id="image3">
+							</div>
+							<div class="squareImage multiImageBox" id="image4">
+							</div>
+							<div class="squareImage multiImageBox" id="image5">
+							</div>
+							<div class="squareImage multiImageBox" id="image6">
+							</div>
+							<div class="squareImage multiImageBox" id="image7">
+							</div>
+							<div class="squareImage multiImageBox" id="image8">
+							</div>
+							<div class="squareImage multiImageBox" id="image9">
+							</div>
+						</div>
+						<div style="height:20px">
+						</div>
+						<div class="info">
+							<span id="location" style="color:#576b95">
+							</span>
+							<div style="height:20px">
+							</div>
+							<span id="time">
+							</span>
+							&nbsp;
+							<span style="color:#576b95">
+								删除
+							</span>
+						</div>
+						<img style="position:relative;display:inline-block;width:auto;height:42px;top:9px">
+					</div>
+					<div style="height:50px">
+					</div>
+					<img id="triangle" src="triangle.svg" width="40" height="16" style="position:relative;left:25px;top:5px">
+					<div class="like" id="like">
+						<img src="like.svg" width="32" height="32" style="position:relative;left:30px;top:43px;display:inline-block;vertical-align:top">
+						<div class="likeAvatarList" id="likeAvatarList">
+						</div>
+						<div style="height:17px">
+						</div>
+					</div>
+					<div class="like" id="comment" style="margin-top:1px">
+						<img src="commentlist.svg" width="32" height="32" style="position:relative;left:30px;top:45px;display:inline-block;vertical-align:top">
+						<div class="likeAvatarList" id="commentList">
+						</div>
+					</div>
+				</div>
+				<div class="footer" id="footer">
+					<div class="commentInput">
+						评论
+					</div>
+					<div style="width:22px;display:inline-block">
+					</div>
+					<img style="width:88px!important;height:88px!important">
+					<div style="width:40px;display:inline-block">
+					</div>
+					<div class="commentSend">
+						发送
+					</div>
+				</div>
+			</div>
+			<div class="mdui-m-y-2" style="text-align:center;line-height:1.5em">
+				<a href="https://www.gree020.cn/" style="text-decoration:none"
+				target="_blank">
+					<img src="https://img.shields.io/github/stars/TransparentLC/WechatMomentScreenshot.svg?style=social">
+				</a>
+				<br>
+                <span class="mdui-typo-caption-opacity">&copy;&nbsp;2022&nbsp;✨远方网络・工作室✨</span>
+			</div>
+			<div class="mdui-dialog" id="addComment">
+				<div class="mdui-dialog-title">
+					添加评论
+				</div>
+				<div class="mdui-dialog-content mdui-typo">
+					<div class="mdui-row">
+						<div class="mdui-col-sm-10 mdui-col-xs-8">
+							<div class="mdui-textfield">
+								<label class="mdui-textfield-label">
+									用户名
+								</label>
+								<input id="configCommentName" type="text" class="mdui-textfield-input"
+								value="">
+								<div class="mdui-textfield-helper">
+									默认的名字是随机生成的，未选择头像则会随机抽取一个头像。
+								</div>
+							</div>
+						</div>
+						<div class="mdui-col-xs-4 mdui-col-sm-2">
+							<div class="mdui-textfield">
+								<label class="mdui-textfield-label">
+									&nbsp;
+								</label>
+								<button class="mdui-btn mdui-ripple mdui-btn-block mdui-text-color-theme-accent"
+								onclick="document.getElementById(&#34;configCommentAvatar&#34;).click()">
+									上传头像
+								</button>
+								<input id="configCommentAvatar" type="file" style="display:none">
+							</div>
+						</div>
+						<div class="mdui-col-xs-12">
+							<div class="mdui-textfield">
+								<label class="mdui-textfield-label">
+									评论内容
+								</label>
+								<textarea class="mdui-textfield-input" id="configCommentText">
+								</textarea>
+							</div>
+						</div>
+						<div class="mdui-textfield mdui-col-xs-6">
+							<label class="mdui-textfield-label">
+								评论日期
+							</label>
+							<input id="configCommentDate" type="date" class="mdui-textfield-input">
+						</div>
+						<div class="mdui-textfield mdui-col-xs-3">
+							<label class="mdui-textfield-label">
+								评论时间
+							</label>
+							<input id="configCommentTimeHour" type="number" class="mdui-textfield-input"
+							min="0" max="23">
+						</div>
+						<div class="mdui-textfield mdui-col-xs-3">
+							<label class="mdui-textfield-label">
+								&nbsp;
+							</label>
+							<input id="configCommentTimeMinute" type="number" class="mdui-textfield-input"
+							min="0" max="59">
+						</div>
+						<div class="mdui-col-xs-12">
+							<div class="mdui-textfield">
+								<label class="mdui-textfield-label">
+									回复给……（可选）
+								</label>
+								<textarea class="mdui-textfield-input" id="configCommentReply">
+								</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mdui-dialog-actions">
+					<button class="mdui-btn mdui-ripple" mdui-dialog-close>
+						CANCEL
+					</button>
+					<button class="mdui-btn mdui-ripple" onclick="var avatarSrc=document.getElementById(&#34;configCommentAvatar&#34;).files[0]?window.URL.createObjectURL(document.getElementById(&#34;configCommentAvatar&#34;).files[0]):avatarURL[Math.floor(Math.random()*avatarURL.length)],configCommentDate=document.getElementById(&#34;configCommentDate&#34;).valueAsDate;configCommentDate.setHours(document.getElementById(&#34;configCommentTimeHour&#34;).value),configCommentDate.setMinutes(document.getElementById(&#34;configCommentTimeMinute&#34;).value),addComment(avatarSrc,document.getElementById(&#34;configCommentName&#34;).value,document.getElementById(&#34;configCommentText&#34;).value,configCommentDate,document.getElementById(&#34;configCommentReply&#34;).value)"
+					mdui-dialog-close>
+						OK
+					</button>
+				</div>
+			</div>
+			<div class="mdui-dialog" id="generatedPopup">
+				<div class="mdui-dialog-title">
+					生成完毕| ω・`)
+				</div>
+				<img id="generated">
+				<div class="mdui-m-y-2 mdui-typo-caption-opacity">
+					<p>
+						如果点击“保存”没有反应
+						<br>
+						请尝试长按/右键图片进行另存为操作(　ﾟ 3ﾟ)
+					</p>
+					<p>
+						当前使用的头像与设置已保存到本地
+						<br>
+						下次打开本工具将自动读取～
+					</p>
+				</div>
+				<div class="mdui-dialog-actions">
+					<a class="mdui-btn mdui-ripple" id="save">
+						保存
+					</a>
+					<button class="mdui-btn mdui-ripple" mdui-dialog-close>
+						关闭
+					</button>
+				</div>
+			</div>
+			<div class="mdui-dialog" id="about">
+				<div class="mdui-dialog-title">
+					关于
+				</div>
+				<div class="mdui-dialog-content mdui-typo">
+     <h4>这个小工具是什么？</h4>一个因为不喜欢也不想往朋友圈发某些不得不发的废文而做出来的摸鱼产物。
+     <h4>为什么生成的截图和我在手机上截的不一样？能不能做出 iOS 的样式？</h4>不同手机的界面总是有那么一点区别的，要和真正的截图完全一样……我也很难办啊！（摊手）
+     <h4>能不能生成纯文字/转发图片的截图？</h4>
+     <del>
+      懒得写样式，心情好的时候再加上～(*&acute;ω`*)
+     </del>
+     <br />已经可以生成啦～
+     <h4>生成图片后点击“保存”没有反应？</h4>也可以试试长按图片手动另存为呢(　ﾟ 3ﾟ)
+     <h4>关注我们</h4>
+     <ul>
+      <li>本站所有图片均为用户上传分享，如有侵权，请联系<a href="https://www.gree020.cn">远方</a>删除。</li>
 
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width,maximum-scale=1.0,minimum-scale=1.0'>
-    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-    <title>国庆红旗头像生成gree020.cn提供下载</title>
-    <style>
-        a:link {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        a:visited {
-            color: #fff;
-        }
-
-        #export {
-            display: none;
-            margin: 0 auto;
-            width: 250px;
-            height: 250px;
-            margin-top: 50px;
-            margin-bottom: 50px
-        }
-
-        .operation-btns .o-btn1 {
-            background-size: 11.6rem 4.325rem
-        }
-
-        .operation-btns .o-btn2 {
-            background-size: 11.6rem 3.75rem
-        }
-
-        center {
-            color: #fff;
-        }
-    </style>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-
-<body>
-    <div class="wrapper">
-        <img src="" alt="" class="img-load" style="width: 9.5rem; position: fixed; top: 0px; left: -9999px;">
-        <div class="operation-header">
-            <div class="h-title">
-
-            </div>
-        </div>
-        <div class="operation-box">
-            <a class="prev" onClick='changeHat()'></a>
-            <div class="operation-img">
-                <div class="cropper-content" id="content">
-                    <canvas class="" id='cvs'></canvas>
-                </div>
-            </div>
-            <a class="next" onClick='changeHat()'></a>
-        </div>
-        <img id='export' alt='国庆专属头像' src='' />
-        <div class="operation-btns">
-            <a class="o-btn1">
-                <input class="o-btn1" id='upload' type='file' onchange='viewer()' style='opacity: 0;'>
-            </a>
-            <a class="o-btn2" onClick='exportFunc()' style="display: none;">
-            </a>
-        </div>
-
-        <div class="operation-done">
-            <img src="https://mat1.gtimg.com/bbs/qqnewslite/20190924/act-done-happy.png" alt="" class="act-done-happy">
-        </div>
-        <div style="text-align: center;">
-            <p style="color:#99cc99">本站总访问 <span id="youke_site_pv"></span> 次</p>
-            <p><a style="color:#99cc99" href="https://www.y0m.cn" target="_blank">免费源码</a></p>
-        </div>
+     </ul>
     </div>
-    <div style='display: none'>
-        <img id='img' src='' alt='' />
-        <img class="hide" id="hat0" src="images/1.png" />
-        <img class="hide" id="hat1" src="images/1.png">
-        <img class="hide" id="hat2" src="images/2.png">
-        <img class="hide" id="hat3" src="images/3.png"><img class="hide" id="hat4" src="images/4.png"><img class="hide"
-            id="hat5" src="images/5.png"><img class="hide" id="hat6" src="images/6.png"><img class="hide" id="hat7"
-            src="images/7.png"><img class="hide" id="hat8" src="images/8.png"><img class="hide" id="hat9"
-            src="images/9.png"><img class="hide" id="hat10" src="images/10.png"><img class="hide" id="hat11"
-            src="images/11.png"><img class="hide" id="hat12" src="images/12.png"><img class="hide" id="hat13"
-            src="images/13.png"><img class="hide" id="hat14" src="images/14.png"><img class="hide" id="hat15"
-            src="images/15.png"><img class="hide" id="hat16" src="images/16.png"><img class="hide" id="hat17"
-            src="images/17.png"><img class="hide" id="hat18" src="images/18.png"><img class="hide" id="hat19"
-            src="images/19.png"><img class="hide" id="hat20" src="images/20.png"><img class="hide" id="hat21"
-            src="images/21.png"><img class="hide" id="hat22" src="images/22.png"><img class="hide" id="hat23"
-            src="images/23.png"><img class="hide" id="hat24" src="images/24.png"><img class="hide" id="hat25"
-            src="images/25.png"><img class="hide" id="hat26" src="images/26.png"><img class="hide" id="hat27"
-            src="images/27.png"><img class="hide" id="hat28" src="images/28.png"><img class="hide" id="hat29"
-            src="images/29.png"><img class="hide" id="hat30" src="images/30.png"><img class="hide" id="hat31"
-            src="images/31.png"><img class="hide" id="hat32" src="images/32.png"><img class="hide" id="hat33"
-            src="images/33.png"><img class="hide" id="hat34" src="images/34.png"><img class="hide" id="hat35"
-            src="images/35.png"><img class="hide" id="hat36" src="images/36.png"><img class="hide" id="hat37"
-            src="images/37.png"><img class="hide" id="hat38" src="images/38.png"><img class="hide" id="hat39"
-            src="images/39.png"><img class="hide" id="hat40" src="images/40.png"><img class="hide" id="hat41"
-            src="images/41.png"><img class="hide" id="hat42" src="images/42.png"><img class="hide" id="hat43"
-            src="images/43.png"><img class="hide" id="hat44" src="images/44.png"><img class="hide" id="hat45"
-            src="images/45.png"><img class="hide" id="hat46" src="images/46.png"><img class="hide" id="hat47"
-            src="images/47.png"><img class="hide" id="hat48" src="images/48.png"><img class="hide" id="hat49"
-            src="images/49.png"><img class="hide" id="hat50" src="images/50.png"><img class="hide" id="hat51"
-            src="images/51.png"><img class="hide" id="hat52" src="images/52.png"><img class="hide" id="hat53"
-            src="images/53.png"><img class="hide" id="hat54" src="images/54.png"><img class="hide" id="hat55"
-            src="images/55.png"><img class="hide" id="hat56" src="images/56.png"><img class="hide" id="hat57"
-            src="images/57.png"><img class="hide" id="hat58" src="images/58.png"><img class="hide" id="hat59"
-            src="images/59.png"><img class="hide" id="hat60" src="images/60.png"><img class="hide" id="hat61"
-            src="images/61.png"><img class="hide" id="hat62" src="images/62.png"><img class="hide" id="hat63"
-            src="images/63.png"><img class="hide" id="hat64" src="images/64.png"><img class="hide" id="hat65"
-            src="images/65.png"><img class="hide" id="hat66" src="images/66.png"><img class="hide" id="hat67"
-            src="images/67.png"><img class="hide" id="hat68" src="images/68.png"><img class="hide" id="hat69"
-            src="images/69.png"><img class="hide" id="hat70" src="images/70.png"><img class="hide" id="hat71"
-            src="images/71.png"><img class="hide" id="hat72" src="images/72.png"><img class="hide" id="hat73"
-            src="images/73.png"><img class="hide" id="hat74" src="images/74.png"><img class="hide" id="hat75"
-            src="images/75.png"><img class="hide" id="hat76" src="images/76.png"><img class="hide" id="hat77"
-            src="images/77.png"><img class="hide" id="hat78" src="images/78.png"><img class="hide" id="hat79"
-            src="images/79.png"><img class="hide" id="hat80" src="images/80.png"><img class="hide" id="hat81"
-            src="images/81.png"><img class="hide" id="hat82" src="images/82.png"><img class="hide" id="hat83"
-            src="images/83.png"><img class="hide" id="hat84" src="images/84.png"><img class="hide" id="hat85"
-            src="images/85.png"><img class="hide" id="hat86" src="images/86.png"><img class="hide" id="hat87"
-            src="images/87.png"><img class="hide" id="hat88" src="images/88.png"><img class="hide" id="hat89"
-            src="images/89.png"><img class="hide" id="hat90" src="images/90.png"><img class="hide" id="hat91"
-            src="images/91.png"><img class="hide" id="hat92" src="images/92.png"><img class="hide" id="hat93"
-            src="images/93.png"><img class="hide" id="hat94" src="images/94.png"><img class="hide" id="hat95"
-            src="images/95.png">
-    </div>
-    <script async src="//tongji.wx.cx/js"></script>
-    <script src="fabric.min.js"></script>
-    <script>
-        var _0xod6 = 'jsjiami.com.v6', _0xod6_ = ['‮_0xod6'], _0x10ac = [_0xod6, 'w4PCswEBWA==', 'w73CmG4JOA==', 'w6DDtzRJw5jChCo=', 'w57CtsO6w5Buw4krw51Nc2YgX1Y6GBVdWsKWblDDjMKAesK0wqLCv8OmZWDCisKICw==', 'w6Fcw6Np', 'worCozzColHCtw==', 'MMKme8KGGA==', 'BFw7w5c=', 'wrsuOXw=', 'w6zDvzM=', 'wrJxw41bTQ==', 'HyvCqcKVwoPCrcKSBcKBGsORwpLCqMK6w4xkwp8=', 'dnbCpGzCggxDwrgfwoNjwovCrVHDnHkS', 'woobGwTChg==', 'wqIoM23Dmg==', 'wpTClmfDkXU=', 'w5jCsy0efsOH', 'w7sAwoNmfg==', 'wpd7w5dMZg==', 'UsOBwqjChsKj', 'YsObBMO5cMOAfQ==', 'QMKDdsKKOg==', 'w443wqRNccOgwqolwrzDuhFDFVXChDBBwr0kw4cywpo=', 'Q8Klw43CpcKq', 'w4PCszA6ecOdKBg8FSwZwqfCtsK2w6UJ', 'w4jDhjRcw6M=', 'G1w7w4ZK', 'wrQlMw==', 'ACHCug==', 'wrEqDBXCuQ==', 'NcOhY8OJMQ==', 'T8KRw4TCosKi', 'w6x/wp3DtsK/', 'wqxCGnDDhg==', 'T8Kfw4HCh0XCqUQ=', 'w6jCuxNYWg==', 'wq5fw6toXcOa', 'Xk7CtMK5VMKjCh0cwq9DJxA=', 'Aloxw5c=', 'U1LCvsKoXg==', 'RcOKPcOBUQ==', 'w7jCiyFAZQ==', 'UsOfwpfDjw==', 'Q8Klw6rCpMKZYsKXZ8OWwpjCh2oFwpQ=', 'wqjDn8KiwoZz', 'TsKOw4jCh0E=', 'w6rChWQVMXxR', 'wq7DmcKLwrNa', 'w4vDo8OkwoU=', 'bsOpw5PDsMO5PQ==', 'TcOQwr/CjcKyw6Q=', 'w70lAGjCjA==', 'wpjDr8K4wql9', 'wp1yGmzDosOF', 'w613wqzDqsKe', 'AcKqw7I/w7A=', 'J8ORXcKcwqg=', 'f2jCu8KETA==', 'MQfCvcK5Rw==', 'SGDDjWZ+', 'wo1vw7JmZg==', 'AMKYTsKjPA==', 'DsObb8Kdwos=', 'CTfCoDkT', 'fyLCiWfDqQ==', 'w5oxPUvCjQ==', 'woDCogbCtFQ=', 'esOJSV3Dog==', 'wr3DjcKuwoNc', 'bMO6JMOTbg==', 'wq/CvyDCoknCu2Atw6I+w7AmEcOxw7syHsO1wqQLw5x+UQ==', 'w5gJw4/CoB8=', 'MMK/c8KCFsKJ', 'MBspwotb', 'wpTDtHdM', 'w4Fuw6wZMg==', 'MhDCoMKucg==', 'w4ESw4nCggQ=', 'w6s7d8Knw6E=', 'woxzD2LDqcOQ', 'wqvDpcKcwoBE', 'w5AVw7XCmwA=', 'wrXDonRFwoTCmWbChyx3w4s=', 'wpQJJDPCnQ==', 'wp12BGzDuA==', 'w5TCmlUuMQ==', 'WsOxTnDDuw7CiFx+w4LClsO6dhHCqsOB', 'd8KFVcKzFg==', 'KUFBw4bDkwYMwqfChy7DpsOCKz7CtsKcw4AWwqw3MG7Ch8K8H0gECVLDrkfCvQRKw6Z5JMKwBcK2f2fDhlgMw5QwZVA1WhvCslnCjsKow5rDqsKBR8OEJl7CpQ==', 'QRbCp13DjA==', 'PcKsw55Dwqo=', 'w503wqN8', 'O8KkZMKQBw==', 'wohww69+Wg==', 'wo1lHWPDog==', 'XcOAwonDhsOZ', 'woLCqnUFIMOPbxZmBU4Mw6PCo8Osw7Vc', 'AAR5wojClUVKw73DmQ==', 'Ggh3wojCkFg=', 'wo/Cv8Kiw48rwpQ4woI=', 'wrdpw7/Cohk=', 'BRzCjsKPZg==', 'w7fDmxNKw7U=', 'X8O5w4fDv8OO', 'w5jDjA/DowA=', 'DyHCs8KlwoPCr8KD', 'w6VgwqDDsMKyRMOT', 'w4XCrTMMwr0=', 'UcKVw5Y=', 'w6NRw4gkHg==', 'w6vCnmUKLw==', 'w69hwqjDrA==', 'wrVbw7dh', 'ccKVV8K/CDvDvcO9Ow==', 'SsOnVsKzPA==', 'TcOlW8K5LQ==', 'wodoDmo=', 'w7zCmsO6wqNHwrLDow==', 'eUnDhF9jJMO0', 'w7DDrCZaw5E=', 'cQDCsVnDt17Crw==', 'AMOEY8OS', 'w4o/SAJOwrsx', 'wq5Vw6I=', 'X8OrTmDDoAvCgg==', 'wr7DmcKpwoVk', 'w4sKw7LCuD8KwqE=', 'ScKtw6zCs8KIYsKXZ8OW', 'SsOlTGbDqijCgQ==', 'w58Xw7XCvzU=', 'w6fDgsK9wph3XWVAA2XDp0nCvMOlworCizDClmgjwqEDw7dOXcKCwoI7w7XDhcOPwqXCjQbCr8Kcwpx0YcKmbsKREsOGHg==', 'wpTDvTkXwqjDuMKjwqLDs8OJw48Lw7gCwoJAcMOHSCguw6zDvDsGwrfDo8O/N8ORKcKQH8OiCmvDusOOCcKiwo7DsMKVwqYvNG0gGsOq', 'C1Arw7dOf0TDnS0YbUrCgT4=', 'wr/Cq2DDt03CiTDClCrDlw==', 'WMKCw4HChFbCvg==', 'EA0Iwr57HsOsJU7CsGbCrlfCsA==', 'BVg4', 'wrDCr2DChA==', 'f8O5w4DDnsOyO8KDJMKKFA0=', 'S8OGwrs=', 'BsKlw7I=', 'fTrCjG3Dvw==', 'IcOHdsOxNw==', 'WMKRw6LCkcKV', 'eMOow4PDvMO5', 'AAR5wojClUU=', 'BDvCi8K1wr4=', 'w5AmUhZK', 'QMKZeMKANw==', 'CTvCk8Kuwok=', 'FxvCo8KtQw==', 'w5PDjQFNw6M=', 'w4B+RR5Mw7ki', 'w6pqwqDDpMKpQA==', 'CsOZbsKOwrc=', 'fgrCsU3DrFo=', 'IsK/Z8KN', 'UcKfw5/CjFDCog==', 'VlvCpcKOWcKyDhccw7ZjMSEu', 'JRfCuD4Cw7DCgg==', 'f8O/w4bDuMOwI8KuM8KVEgka', 'w53DvRPDky9Iw6bDhsOHFMOuwo/Dg8OH', 'wq90w7vCmgI=', 'dAbCs0/Dqw==', 'AFo4', 'AMKqw7NlwpvClQ==', 'w7RGw4k=', 'w5FkIMO1wprDpC5ew5zCj0DDoGA=', 'XsOcwpbDicOL', 'U8KdwpvDnsOOw6c=', 'w6pPTcKgw6TDpg==', 'PMKlesKA', 'wqYxO3DDhg==', 'LMKlw7F8wpvCgg==', 'w58ww5XCmjc=', 'CcOCw7JmAQ==', 'McOpw6Z2CA==', 'YynCql3DtA==', 'fMKIXcK9EDs=', 'IcK+bcKJFg==', 'cMKER8KqFC7DrQ==', 'w4cRw7fCrh4=', 'w4fCvyANfg==', 'ccK7ZsKpCg==', 'w5fCszA8esOWMQ89DQkywq3CnMK4w6gfZhdDRcO0', 'Y8O0wqTChMKx', 'f8Oow43Du8O5', 'EQNuwp3Cn01d', 'w6bDsihaw58=', 'wq4mAQbCucKO', 'egrCtk3DsEY=', 'NcKvYMKgH8Kew4MJMsObwpPCvTdlw5VWwrjDicOYw50Jw4Y=', 'jBsjiamiW.kfcOowm.vkrb6rLSHZk==']; if (function (_0x2879dc, _0x1c38c9, _0x3b2333) { function _0x3f37db(_0x478c2b, _0x35231e, _0x48acbc, _0xe835a7, _0x16a989, _0x3cd016) { _0x35231e = _0x35231e >> 0x8, _0x16a989 = 'po'; var _0x2868fa = 'shift', _0x1e7ec8 = 'push', _0x3cd016 = '‮'; if (_0x35231e < _0x478c2b) { while (--_0x478c2b) { _0xe835a7 = _0x2879dc[_0x2868fa](); if (_0x35231e === _0x478c2b && _0x3cd016 === '‮' && _0x3cd016['length'] === 0x1) { _0x35231e = _0xe835a7, _0x48acbc = _0x2879dc[_0x16a989 + 'p'](); } else if (_0x35231e && _0x48acbc['replace'](/[BWkfOwkrbrLSHZk=]/g, '') === _0x35231e) { _0x2879dc[_0x1e7ec8](_0xe835a7); } } _0x2879dc[_0x1e7ec8](_0x2879dc[_0x2868fa]()); } return 0x104d95; }; return _0x3f37db(++_0x1c38c9, _0x3b2333) >> _0x1c38c9 ^ _0x3b2333; }(_0x10ac, 0x112, 0x11200), _0x10ac) { _0xod6_ = _0x10ac['length'] ^ 0x112; }; function _0x2cbf(_0x5c1be0, _0x3f5026) { _0x5c1be0 = ~~'0x'['concat'](_0x5c1be0['slice'](0x1)); var _0x414af8 = _0x10ac[_0x5c1be0]; if (_0x2cbf['EeZRhi'] === undefined) { (function () { var _0x2608e9 = typeof window !== 'undefined' ? window : typeof process === 'object' && typeof require === 'function' && typeof global === 'object' ? global : this; var _0x5bc4af = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='; _0x2608e9['atob'] || (_0x2608e9['atob'] = function (_0x5a80ee) { var _0x4a4f1c = String(_0x5a80ee)['replace'](/=+$/, ''); for (var _0x4c04eb = 0x0, _0x1aab66, _0x557ac0, _0xa4c79f = 0x0, _0x2b0502 = ''; _0x557ac0 = _0x4a4f1c['charAt'](_0xa4c79f++); ~_0x557ac0 && (_0x1aab66 = _0x4c04eb % 0x4 ? _0x1aab66 * 0x40 + _0x557ac0 : _0x557ac0, _0x4c04eb++ % 0x4) ? _0x2b0502 += String['fromCharCode'](0xff & _0x1aab66 >> (-0x2 * _0x4c04eb & 0x6)) : 0x0) { _0x557ac0 = _0x5bc4af['indexOf'](_0x557ac0); } return _0x2b0502; }); }()); function _0x18ddb5(_0x180805, _0x3f5026) { var _0x5e24a5 = [], _0x540885 = 0x0, _0x213eab, _0x2fd714 = '', _0x415157 = ''; _0x180805 = atob(_0x180805); for (var _0x151d77 = 0x0, _0x43a967 = _0x180805['length']; _0x151d77 < _0x43a967; _0x151d77++) { _0x415157 += '%' + ('00' + _0x180805['charCodeAt'](_0x151d77)['toString'](0x10))['slice'](-0x2); } _0x180805 = decodeURIComponent(_0x415157); for (var _0xe58488 = 0x0; _0xe58488 < 0x100; _0xe58488++) { _0x5e24a5[_0xe58488] = _0xe58488; } for (_0xe58488 = 0x0; _0xe58488 < 0x100; _0xe58488++) { _0x540885 = (_0x540885 + _0x5e24a5[_0xe58488] + _0x3f5026['charCodeAt'](_0xe58488 % _0x3f5026['length'])) % 0x100; _0x213eab = _0x5e24a5[_0xe58488]; _0x5e24a5[_0xe58488] = _0x5e24a5[_0x540885]; _0x5e24a5[_0x540885] = _0x213eab; } _0xe58488 = 0x0; _0x540885 = 0x0; for (var _0x2fd541 = 0x0; _0x2fd541 < _0x180805['length']; _0x2fd541++) { _0xe58488 = (_0xe58488 + 0x1) % 0x100; _0x540885 = (_0x540885 + _0x5e24a5[_0xe58488]) % 0x100; _0x213eab = _0x5e24a5[_0xe58488]; _0x5e24a5[_0xe58488] = _0x5e24a5[_0x540885]; _0x5e24a5[_0x540885] = _0x213eab; _0x2fd714 += String['fromCharCode'](_0x180805['charCodeAt'](_0x2fd541) ^ _0x5e24a5[(_0x5e24a5[_0xe58488] + _0x5e24a5[_0x540885]) % 0x100]); } return _0x2fd714; } _0x2cbf['HNWyNZ'] = _0x18ddb5; _0x2cbf['rIougG'] = {}; _0x2cbf['EeZRhi'] = !![]; } var _0x28b754 = _0x2cbf['rIougG'][_0x5c1be0]; if (_0x28b754 === undefined) { if (_0x2cbf['wOkpIV'] === undefined) { _0x2cbf['wOkpIV'] = !![]; } _0x414af8 = _0x2cbf['HNWyNZ'](_0x414af8, _0x3f5026); _0x2cbf['rIougG'][_0x5c1be0] = _0x414af8; } else { _0x414af8 = _0x28b754; } return _0x414af8; }; var _0x13ba46 = function (_0x2c2717) { var _0x324c5c = { 'RJLRL': _0x2cbf('‮0', 'L4rC'), 'ZvBKl': function (_0x216f42, _0x247708) { return _0x216f42 === _0x247708; } }; var _0x26a520 = !![]; return function (_0x26ff54, _0x343ae6) { var _0x212b35 = _0x324c5c[_0x2cbf('‮1', 'oij*')][_0x2cbf('‫2', '3yDY')]('|'), _0x2cea22 = 0x0; while (!![]) { switch (_0x212b35[_0x2cea22++]) { case '0': var _0x3eb503 = _0x26a520 ? function () { if (_0x52c89d['koFAl'](_0x132b08, '‮') && _0x343ae6) { var _0x35171d = _0x343ae6['apply'](_0x26ff54, arguments); _0x343ae6 = null; return _0x35171d; } } : function (_0x2c2717) { }; continue; case '1': var _0x52c89d = { 'koFAl': function (_0x3907ba, _0x52b84a) { return _0x324c5c[_0x2cbf('‫3', 'dN5Y')](_0x3907ba, _0x52b84a); } }; continue; case '2': return _0x3eb503; case '3': var _0x132b08 = '‮'; continue; case '4': var _0x2c2717 = '‮'; continue; case '5': _0x26a520 = ![]; continue; }break; } }; }(); (function () { var _0x31e832 = { 'GCECM': _0x2cbf('‫4', 'fBXv'), 'SyxwT': function (_0x2ed9e7, _0x5d321a) { return _0x2ed9e7(_0x5d321a); }, 'NWbeW': function (_0x2b0bef, _0xa70cc0) { return _0x2b0bef + _0xa70cc0; }, 'RhAIP': _0x2cbf('‮5', 'pEqw'), 'JJjqs': function (_0x3fff20, _0x1c51d0) { return _0x3fff20(_0x1c51d0); }, 'ccufn': function (_0x2611f8) { return _0x2611f8(); } }; _0x13ba46(this, function () { var _0xa9cc9 = new RegExp(_0x31e832['GCECM']); var _0xfee95 = new RegExp(_0x2cbf('‮6', '0XiU'), 'i'); var _0x5997f8 = _0x31e832[_0x2cbf('‮7', 'uk$8')](_0x4b41da, 'init'); if (!_0xa9cc9['test'](_0x31e832['NWbeW'](_0x5997f8, _0x31e832[_0x2cbf('‫8', 'Oir4')])) || !_0xfee95[_0x2cbf('‫9', 'k9)f')](_0x5997f8 + _0x2cbf('‮a', '4m&t'))) { _0x31e832[_0x2cbf('‮b', 'h0fx')](_0x5997f8, '0'); } else { _0x31e832[_0x2cbf('‮c', '3yDY')](_0x4b41da); } })(); }()); var _0x5969e0 = function (_0x17245c) { var _0x31a7bc = { 'WOGFG': function (_0x441778, _0x307332) { return _0x441778 === _0x307332; } }; var _0x5a85ee = !![]; return function (_0x36e1e0, _0x5cbc25) { var _0x19dc2b = '‮'; var _0x36c5db = _0x5a85ee ? function () { if (_0x31a7bc['WOGFG'](_0x19dc2b, '‮') && _0x5cbc25) { var _0x5ee0fe = _0x5cbc25[_0x2cbf('‫d', 'NN1%')](_0x36e1e0, arguments); _0x5cbc25 = null; return _0x5ee0fe; } } : function (_0x17245c) { }; _0x5a85ee = ![]; var _0x17245c = '‮'; return _0x36c5db; }; }(); var _0x1f48ec = _0x5969e0(this, function () { var _0x11df1f = { 'HSAqC': _0x2cbf('‫e', 'g^E5'), 'rnLhm': function (_0x211a3e, _0x3ec164) { return _0x211a3e !== _0x3ec164; }, 'PiFxD': _0x2cbf('‫f', '0XiU'), 'bThuC': _0x2cbf('‫10', '0XiU'), 'TWkZo': function (_0x103705, _0x276473) { return _0x103705 === _0x276473; }, 'sETsA': _0x2cbf('‮11', 'hoTO'), 'SeshR': function (_0x415e3a, _0x25f435) { return _0x415e3a === _0x25f435; }, 'ADiac': '4|3|1|0|5|6|2' }; var _0x37970b = function () { }; var _0xed0720 = _0x11df1f[_0x2cbf('‫12', 'MIW*')](typeof window, _0x11df1f[_0x2cbf('‫13', 'V@qQ')]) ? window : typeof process === _0x11df1f['bThuC'] && _0x11df1f['TWkZo'](typeof require, _0x11df1f[_0x2cbf('‮14', 'L4rC')]) && _0x11df1f[_0x2cbf('‫15', 'H5m^')](typeof global, _0x11df1f[_0x2cbf('‮16', 'w8Y5')]) ? global : this; if (!_0xed0720[_0x2cbf('‫17', '0YF(')]) { _0xed0720[_0x2cbf('‮18', 'cJ^*')] = function (_0x37970b) { var _0x55a626 = _0x11df1f['HSAqC'][_0x2cbf('‮19', 'N*JQ')]('|'), _0x2de8d0 = 0x0; while (!![]) { switch (_0x55a626[_0x2de8d0++]) { case '0': return _0x2edbef; case '1': _0x2edbef[_0x2cbf('‫1a', '%4$g')] = _0x37970b; continue; case '2': var _0x2edbef = {}; continue; case '3': _0x2edbef[_0x2cbf('‮1b', ')xAG')] = _0x37970b; continue; case '4': _0x2edbef[_0x2cbf('‫1c', 'dN5Y')] = _0x37970b; continue; case '5': _0x2edbef[_0x2cbf('‫1d', 'cJ^*')] = _0x37970b; continue; case '6': _0x2edbef[_0x2cbf('‮1e', 'h0fx')] = _0x37970b; continue; case '7': _0x2edbef[_0x2cbf('‫1f', 'pEqw')] = _0x37970b; continue; case '8': _0x2edbef[_0x2cbf('‮20', 'f$o%')] = _0x37970b; continue; }break; } }(_0x37970b); } else { var _0x2da219 = _0x11df1f['ADiac'][_0x2cbf('‮21', 'f$o%')]('|'), _0x5321f1 = 0x0; while (!![]) { switch (_0x2da219[_0x5321f1++]) { case '0': _0xed0720['console'][_0x2cbf('‫22', '3yDY')] = _0x37970b; continue; case '1': _0xed0720[_0x2cbf('‮23', 'PtR4')][_0x2cbf('‮1b', ')xAG')] = _0x37970b; continue; case '2': _0xed0720[_0x2cbf('‫24', 'l)hr')][_0x2cbf('‮25', 'L4rC')] = _0x37970b; continue; case '3': _0xed0720[_0x2cbf('‮26', 'uk$8')][_0x2cbf('‫27', 'X8]Y')] = _0x37970b; continue; case '4': _0xed0720[_0x2cbf('‫28', 'KpKX')][_0x2cbf('‫29', 'h0fx')] = _0x37970b; continue; case '5': _0xed0720[_0x2cbf('‫2a', 'fBXv')][_0x2cbf('‮2b', 'mwkd')] = _0x37970b; continue; case '6': _0xed0720[_0x2cbf('‮2c', '*VZf')][_0x2cbf('‫2d', 'Rd61')] = _0x37970b; continue; }break; } } }); _0x1f48ec(); var timestamp = new Date()[_0x2cbf('‮2e', 'fBXv')](); document[_0x2cbf('‫2f', '*VZf')](_0x2cbf('‫30', 'mwkd') + timestamp + _0x2cbf('‫31', 'N*JQ')); var cvs = document[_0x2cbf('‮32', 'dtM2')]('cvs'); var ctx = cvs[_0x2cbf('‫33', 'DH6P')]('2d'); var exportImage = document['getElementById'](_0x2cbf('‫34', '%4$g')); var img = document[_0x2cbf('‮35', 'Kxxt')](_0x2cbf('‫36', 'dtM2')); var hat = _0x2cbf('‮37', 'DH6P'); var canvasFabric; window[_0x2cbf('‮38', 'H5m^')](function () { var _0x159fa2 = { 'tpjiO': function (_0x5ce32b, _0x4a7d00, _0x452222) { return _0x5ce32b(_0x4a7d00, _0x452222); }, 'oUSGg': _0x2cbf('‫39', '4Kst'), 'VbgML': _0x2cbf('‫3a', 'Oir4'), 'tDmGm': function (_0x51ba4e, _0xb8397c) { return _0x51ba4e == _0xb8397c; }, 'ttwke': function (_0x29202d, _0x24fb2a, _0x20a79d) { return _0x29202d(_0x24fb2a, _0x20a79d); }, 'huVcR': 'ned', 'yvtgk': function (_0x1b1bfd, _0x5061ae) { return _0x1b1bfd === _0x5061ae; }, 'TtLZO': function (_0x211485, _0x67eeb5) { return _0x211485 != _0x67eeb5; }, 'euNxe': function (_0x2df1c5, _0x19aed8, _0x3120d8) { return _0x2df1c5(_0x19aed8, _0x3120d8); }, 'BnkZa': function (_0x24b155, _0x2d1fc9, _0x1360cb) { return _0x24b155(_0x2d1fc9, _0x1360cb); }, 'WSFtW': function (_0x1f4a79, _0x2641bb, _0x43a9bb) { return _0x1f4a79(_0x2641bb, _0x43a9bb); }, 'nLPQt': function (_0xf7face, _0x35866f) { return _0xf7face > _0x35866f; }, 'Fgltd': function (_0x2bae34, _0xa44a5d) { return _0x2bae34 ^ _0xa44a5d; } }; function _0x357d17(_0x2a8e34, _0x389252) { return _0x2a8e34 + _0x389252; } var _0x593e7f = _0x159fa2['tpjiO'](_0x357d17, _0x159fa2[_0x2cbf('‮3b', 'uk$8')], _0x159fa2[_0x2cbf('‮3c', 'X8]Y')]), _0x782c95 = '‮'; if (_0x159fa2[_0x2cbf('‮3d', 'Rd61')](typeof _0xod6, _0x159fa2[_0x2cbf('‮3e', 'H5m^')](_0x357d17, _0x2cbf('‫3f', '0XiU'), _0x159fa2[_0x2cbf('‫40', '0YF(')])) && _0x159fa2[_0x2cbf('‮41', 'KpKX')](_0x782c95, '‮') || _0x159fa2[_0x2cbf('‫42', 'pEqw')](_0x159fa2[_0x2cbf('‫43', '0YF(')](_0x357d17, _0xod6, '‮'), _0x159fa2['euNxe'](_0x357d17, _0x159fa2[_0x2cbf('‫44', 'V@qQ')](_0x357d17, _0x159fa2[_0x2cbf('‫45', 'L4rC')](_0x357d17, _0x593e7f, _0x2cbf('‫46', 'KpKX')), _0x593e7f[_0x2cbf('‮47', 'cJ^*')]), '‮'))) { var _0x58c43b = []; while (_0x159fa2[_0x2cbf('‮48', 'yVDx')](_0x58c43b[_0x2cbf('‫49', 'uk$8')], -0x1)) { _0x58c43b[_0x2cbf('‫4a', '4m&t')](_0x159fa2['Fgltd'](_0x58c43b[_0x2cbf('‫4b', '%4$g')], 0x2)); } } _0x4b41da(); }, 0x7d0); var hatInstance; var screenWidth = document[_0x2cbf('‮4c', '%fz7')](_0x2cbf('‮4d', 's&7x'))[_0x2cbf('‫4e', 'H5m^')]; function viewer() { var _0xdb917a = { 'jsHPv': 'upload' }; var _0x36f1c1 = document[_0x2cbf('‫4f', 'w8Y5')](_0xdb917a[_0x2cbf('‫50', 'MIW*')])[_0x2cbf('‮51', 'uk$8')][0x0]; console[_0x2cbf('‮52', 'dtM2')](_0x36f1c1); var _0x14af1b = new FileReader(); if (_0x36f1c1) { _0x14af1b['readAsDataURL'](_0x36f1c1); _0x14af1b[_0x2cbf('‫53', 'Oir4')] = function (_0x3573f5) { img[_0x2cbf('‮54', ')xAG')] = _0x14af1b['result']; img['onload'] = function () { img2Cvs(img); }; }; } else { img['src'] = ''; } } function img2Cvs(_0x3e826d) { var _0x15b04e = { 'NpPBn': _0x2cbf('‮55', 'BQKf'), 'wUIQg': 'cvs', 'qFuwl': function (_0x5dc6f8, _0x1dcf1b) { return _0x5dc6f8 / _0x1dcf1b; }, 'otkeN': _0x2cbf('‫56', 'NN1%'), 'eVRsr': function (_0x393707) { return _0x393707(); }, 'BAunw': _0x2cbf('‫57', 'NN1%'), 'seExN': _0x2cbf('‮58', 'E!Yu'), 'XOhvn': _0x2cbf('‫59', '4m&t') }; var _0x276f0d = _0x15b04e['NpPBn'][_0x2cbf('‫5a', 'm$J6')]('|'), _0x4aed40 = 0x0; while (!![]) { switch (_0x276f0d[_0x4aed40++]) { case '0': canvasFabric = new fabric[(_0x2cbf('‫5b', 'Oir4'))](_0x15b04e[_0x2cbf('‫5c', '*VZf')], { 'width': screenWidth, 'height': screenWidth, 'backgroundImage': new fabric[(_0x2cbf('‫5d', 'WXqi'))](_0x3e826d, { 'scaleX': _0x15b04e[_0x2cbf('‮5e', 'WXqi')](screenWidth, _0x3e826d['width']), 'scaleY': _0x15b04e[_0x2cbf('‫5f', 'uk$8')](screenWidth, _0x3e826d[_0x2cbf('‫60', 'pEqw')]) }) }); continue; case '1': cvs[_0x2cbf('‫61', '4m&t')][_0x2cbf('‮62', 'pEqw')] = _0x15b04e[_0x2cbf('‮63', '*VZf')]; continue; case '2': cvs['width'] = _0x3e826d[_0x2cbf('‮64', 'g^E5')]; continue; case '3': _0x15b04e[_0x2cbf('‫65', 'pEqw')](changeHat); continue; case '4': document[_0x2cbf('‮66', 'g^E5')](_0x15b04e[_0x2cbf('‫67', '4Kst')])[0x0][_0x2cbf('‮68', 'H5m^')][_0x2cbf('‫69', '0XiU')] = _0x2cbf('‫6a', 'L4rC'); continue; case '5': cvs[_0x2cbf('‮6b', 'oij*')] = _0x3e826d[_0x2cbf('‮6c', 'uk$8')]; continue; case '6': document[_0x2cbf('‫6d', '4m&t')](_0x15b04e[_0x2cbf('‮6e', 'g^E5')])[0x0][_0x2cbf('‫6f', 'dN5Y')][_0x2cbf('‫70', 'L4rC')] = _0x15b04e['XOhvn']; continue; }break; } } function changeHat() { var _0xd1632b = { 'pKHTd': _0x2cbf('‫71', 'hoTO'), 'LXseW': function (_0x39b5b7, _0x908da4) { return _0x39b5b7 / _0x908da4; }, 'nnCWH': '#0b3a42', 'RRSnc': _0x2cbf('‫72', 'h0fx'), 'UARCO': _0x2cbf('‫73', 'fSc9'), 'TnBPB': _0x2cbf('‫74', '4m&t'), 'opBsR': _0x2cbf('‮75', 'dtM2'), 'UGaXq': _0x2cbf('‮76', 'm$J6'), 'BDruJ': function (_0x1c00ce, _0x3ebf75) { return _0x1c00ce + _0x3ebf75; }, 'cDKtZ': _0x2cbf('‫77', 'L4rC'), 'jpSub': function (_0x34d9d2, _0x32cf1f) { return _0x34d9d2 % _0x32cf1f; } }; var _0x535de2 = _0xd1632b[_0x2cbf('‮78', 'h0fx')][_0x2cbf('‫2', '3yDY')]('|'), _0xedca08 = 0x0; while (!![]) { switch (_0x535de2[_0xedca08++]) { case '0': if (hatInstance) { canvasFabric['remove'](hatInstance); } continue; case '1': hatInstance[_0x2cbf('‮79', '0YF(')]('tl', ![]); continue; case '2': hatInstance[_0x2cbf('‮7a', 'MfDL')]('tr', ![]); continue; case '3': hatInstance = new fabric['Image'](_0x1bc8e9, { 'top': 0x0, 'left': 0x0, 'scaleX': _0xd1632b[_0x2cbf('‮7b', 'oij*')](screenWidth, _0x1bc8e9[_0x2cbf('‮7c', 'm$J6')]), 'scaleY': _0xd1632b[_0x2cbf('‮7d', 'DH6P')](screenWidth, _0x1bc8e9[_0x2cbf('‫7e', 'g^E5')]), 'cornerColor': _0xd1632b['nnCWH'], 'cornerStrokeColor': _0xd1632b[_0x2cbf('‮7f', 'k9)f')], 'cornerStyle': _0xd1632b[_0x2cbf('‮80', 'h0fx')], 'transparentCorners': ![], 'rotatingPointOffset': 0x1e }); continue; case '4': _0x1bc8e9[_0x2cbf('‫81', '4Kst')][_0x2cbf('‮82', 'm8I]')] = _0xd1632b[_0x2cbf('‮83', 'pEqw')]; continue; case '5': hatInstance['setControlVisible']('mr', ![]); continue; case '6': var _0x4253da = document[_0x2cbf('‮84', 'k9)f')](_0xd1632b[_0x2cbf('‫85', 'Rd61')]); continue; case '7': document['getElementById'](hat)['style']['display'] = _0xd1632b['UGaXq']; continue; case '8': hatInstance[_0x2cbf('‫86', 'g^E5')]('mt', ![]); continue; case '9': hatInstance[_0x2cbf('‫86', 'g^E5')]('bl', ![]); continue; case '10': var _0x1bc8e9 = document['getElementById'](hat); continue; case '11': console[_0x2cbf('‫1a', '%4$g')](_0xd1632b[_0x2cbf('‫87', 'L4rC')](0x64, _0x1bc8e9[_0x2cbf('‫88', 'dtM2')])); continue; case '12': canvasFabric[_0x2cbf('‮89', 'm$J6')](hatInstance); continue; case '13': console[_0x2cbf('‮8a', '0YF(')](_0x1bc8e9[_0x2cbf('‫8b', 'oij*')]); continue; case '14': hat = _0xd1632b[_0x2cbf('‫8c', 'X8]Y')](_0xd1632b[_0x2cbf('‫8d', 'Rd61')], _0xd1632b[_0x2cbf('‮8e', 'cJ^*')](_0xd1632b[_0x2cbf('‫8f', '3yDY')](+hat[_0x2cbf('‫90', '%4$g')](_0xd1632b[_0x2cbf('‮91', 'U0f8')], ''), 0x1), _0x4253da[_0x2cbf('‫92', 'h0fx')])); continue; }break; } } function exportFunc() { var _0x10af1c = { 'CxJHM': _0x2cbf('‫93', '%fz7'), 'BlYVL': _0x2cbf('‫94', 'dtM2'), 'XdSoz': _0x2cbf('‫95', '%fz7'), 'urPYL': function (_0x131a94, _0x268237) { return _0x131a94(_0x268237); } }; document['getElementsByClassName'](_0x10af1c[_0x2cbf('‫96', 'm8I]')])[0x0][_0x2cbf('‫97', 'U0f8')]['display'] = _0x2cbf('‮98', 'NN1%'); document[_0x2cbf('‮84', 'k9)f')](_0x2cbf('‫99', 'Rd61'))[0x0][_0x2cbf('‫9a', 'mwkd')]['display'] = _0x10af1c['BlYVL']; cvs[_0x2cbf('‮9b', '%4$g')]['display'] = _0x10af1c['BlYVL']; exportImage[_0x2cbf('‫97', 'U0f8')][_0x2cbf('‮9c', 'dN5Y')] = _0x10af1c['XdSoz']; exportImage['src'] = canvasFabric['toDataURL']({ 'width': screenWidth, 'height': screenWidth }); _0x10af1c[_0x2cbf('‫9d', 'mwkd')](alert, '长按图片保存或分享'); } function _0x4b41da(_0x141fef) { var _0x351817 = { 'QeDii': function (_0x39bc71, _0x4ec197) { return _0x39bc71 + _0x4ec197; }, 'CDcCk': 'Function(arguments[0]+\x22', 'PJWKH': _0x2cbf('‫9e', 'hoTO'), 'RFgJr': _0x2cbf('‫9f', 'H5m^'), 'jhgSF': function (_0x3479f2, _0x3166a2) { return _0x3479f2(_0x3166a2); }, 'kxbiC': function (_0x32394b, _0x48bbaa) { return _0x32394b === _0x48bbaa; }, 'OUwiO': function (_0x2abb37, _0x4ac874) { return _0x2abb37 !== _0x4ac874; }, 'RRZFO': function (_0x1654b4, _0x1cf192) { return _0x1654b4 / _0x1cf192; }, 'jNQBH': _0x2cbf('‫a0', '4Kst'), 'OOvst': function (_0x2c7ccb, _0x388f89) { return _0x2c7ccb === _0x388f89; }, 'mMVMq': function (_0x30e377, _0x50095b) { return _0x30e377 % _0x50095b; }, 'pNGjR': function (_0x238e71, _0x44d8a6) { return _0x238e71(_0x44d8a6); }, 'xpiPP': function (_0x2c94de, _0x491a08) { return _0x2c94de(_0x491a08); } }; function _0x263e8e(_0x38585a) { var _0x294cdb = { 'vqyJh': function (_0x59d78d, _0x5f3acd) { return _0x351817['jhgSF'](_0x59d78d, _0x5f3acd); }, 'ihHui': function (_0x5b4121, _0x54b036) { return _0x5b4121 + _0x54b036; }, 'FMiNm': _0x351817['PJWKH'], 'GsUpL': function (_0x341855, _0x46ad8a) { return _0x351817[_0x2cbf('‫a1', 'qVQZ')](_0x341855, _0x46ad8a); }, 'IlyGu': _0x351817[_0x2cbf('‫a2', 'mwkd')] }; var _0x703ab4 = '‮‮'; if (_0x351817['kxbiC'](typeof _0x38585a, _0x2cbf('‮a3', '3yDY')) && _0x351817[_0x2cbf('‫a4', 'cJ^*')](_0x703ab4, '‮‮')) { var _0x14d014 = function () { var _0x288f6d = { 'tCzRi': function (_0x229bde, _0x31ece0) { return _0x229bde(_0x31ece0); }, 'NVjOy': function (_0x1a74a3, _0x3872c0) { return _0x351817[_0x2cbf('‫a5', 'aZlw')](_0x1a74a3, _0x3872c0); }, 'fFgTQ': _0x351817[_0x2cbf('‮a6', 'yVDx')], 'druNe': _0x351817['PJWKH'] }; (function (_0x4e2b1c) { return function (_0x4e2b1c) { return _0x288f6d['tCzRi'](Function, _0x288f6d[_0x2cbf('‮a7', '%fz7')](_0x288f6d['fFgTQ'], _0x4e2b1c) + _0x288f6d[_0x2cbf('‮a8', 'V@qQ')]); }(_0x4e2b1c); }(_0x351817[_0x2cbf('‮a9', 'l)hr')])('de')); }; return _0x14d014(); } else { if (_0x351817[_0x2cbf('‮aa', 'h0fx')](('' + _0x351817[_0x2cbf('‫ab', '4m&t')](_0x38585a, _0x38585a))[_0x351817[_0x2cbf('‮ac', 'yVDx')]], 0x1) || _0x351817[_0x2cbf('‫ad', 's&7x')](_0x351817[_0x2cbf('‮ae', 'uk$8')](_0x38585a, 0x14), 0x0)) { (function (_0x3d1ce9) { var _0x86e723 = { 'ffuiJ': function (_0x7eb26c, _0x3fc052) { return _0x294cdb[_0x2cbf('‫af', 'qVQZ')](_0x7eb26c, _0x3fc052); }, 'jHSZr': function (_0x46254f, _0xdfe26d) { return _0x294cdb[_0x2cbf('‫b0', 'fSc9')](_0x46254f, _0xdfe26d); }, 'plSkO': _0x294cdb[_0x2cbf('‫b1', 'fBXv')] }; return function (_0x3d1ce9) { return _0x86e723[_0x2cbf('‫b2', 'mwkd')](Function, _0x86e723[_0x2cbf('‫b3', 'm8I]')](_0x2cbf('‮b4', 'fSc9'), _0x3d1ce9) + _0x86e723[_0x2cbf('‫b5', '*VZf')]); }(_0x3d1ce9); }(_0x2cbf('‫b6', '4m&t'))('de'));; } else { (function (_0x1e52ff) { var _0x1f997e = { 'tPKiP': function (_0x47ea89, _0x382698) { return _0x47ea89(_0x382698); }, 'FZFHK': function (_0x1c2199, _0x59e045) { return _0x1c2199 + _0x59e045; }, 'gehYP': function (_0x299f2a, _0x4b09ae) { return _0x294cdb[_0x2cbf('‫b7', 'Kxxt')](_0x299f2a, _0x4b09ae); }, 'iwUIT': _0x294cdb['IlyGu'], 'nYXsk': _0x2cbf('‫b8', 'N*JQ') }; return function (_0x1e52ff) { return _0x1f997e['tPKiP'](Function, _0x1f997e[_0x2cbf('‮b9', ')xAG')](_0x1f997e[_0x2cbf('‫ba', 'V@qQ')](_0x1f997e[_0x2cbf('‮bb', '*VZf')], _0x1e52ff), _0x1f997e[_0x2cbf('‫bc', 'E!Yu')])); }(_0x1e52ff); }(_0x2cbf('‫bd', '3yDY'))('de'));; } } _0x351817[_0x2cbf('‮be', 'mwkd')](_0x263e8e, ++_0x38585a); } try { if (_0x141fef) { return _0x263e8e; } else { _0x351817[_0x2cbf('‮bf', '*VZf')](_0x263e8e, 0x0); } } catch (_0x34bd9d) { } }; _0xod6 = 'jsjiami.com.v6';
-    </script>
+				<div class="mdui-dialog-actions">
+					<button class="mdui-btn mdui-ripple" mdui-dialog-close>
+						OK
+					</button>
+				</div>
+			</div>
+			<div class="mdui-dialog" id="request">
+				<div class="mdui-dialog-title" id="requestResult">
+				</div>
+				<div class="mdui-dialog-content mdui-typo" id="requestResultContent">
+				</div>
+				<div class="mdui-dialog-actions">
+					<button class="mdui-btn mdui-ripple" mdui-dialog-close id="requestAction">
+						OK
+					</button>
+				</div>
+			</div>
+			<div class="mdui-dialog" id="donate">
+				<div class="mdui-dialog-title">
+					请远方喝一瓶肥宅快乐水～(*´∀`)
+				</div>
+				<div class="mdui-dialog-content mdui-typo">
+					<div style="text-align:center">
+						<div>
+							<img id="donateWechat" src="https://ae01.alicdn.com/kf/U9af9e1aec4164d69b84e4bcf41eb9057G.jpg"
+							width="30%">
+							<img id="donateAlipay" src="https://ae01.alicdn.com/kf/U846b4ca561eb4c79ae415e2782730c66P.jpg"
+							width="30%">
+						</div>
+						<span class="mdui-typo-caption-opacity">
+							扫一扫(`ε´ )
+							<br>
+							左：微信 右：支付宝
+						</span>
+					</div>
+				</div>
+				<div class="mdui-dialog-actions">
+					<button class="mdui-btn mdui-ripple" mdui-dialog-close>
+						OK
+					</button>
+				</div>
+			</div>
+		</div>
+		<script src="css/main.min.js"></script>
 </body>
-
 </html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="pixel-ratio-2 retina ios ios-11 ios-11-0 ios-gt-10 ios-gt-9 ios-gt-8 ios-gt-7 ios-gt-6" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>双恒导航 - 双恒网络</title>
+    <meta name="applicable-device" content="pc,mobile">
+    <meta content="webkit" name="renderer">
+    <meta content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link media="all" rel="shortcut icon" href="favicon.ico">
+    <meta name="keywords" content="双恒导航,双恒导航，娱乐资源网，双恒技术导航,QQ技术导航,导航天下,技术导航,娱乐网,QQ技术,QQ导航">
+    <meta name="description" content="双恒导航网搜集互联网各种优秀的网站网址">
+    <link media="all" rel="stylesheet" href="static/css/layui.css" type="text/css">
+    <link media="all" rel="stylesheet" href="static/css/index.css" type="text/css">
+    <link media="all" rel="stylesheet" href="static/css/sm.min.css" type="text/css">
+    <link media="all" rel="stylesheet" href="static/css/swiper.min.css" type="text/css">
+    <link media="all" rel="stylesheet" href="static/css/public.css" type="text/css">
+    <link media="all" rel="stylesheet" href="static/css/index_1.css" type="text/css">
+    <style></style>
+</head>
+<body>
+
+
+
+<div class="page-group">
+
+    <div class="page page-current">
+        <div class="content native-scroll">
+            <div class="indexHeader">
+                <div class="lo clearfix">
+                    <a class="logo" href="/">
+                        <img src="static/picture/2b0ae1c8-6cb8-4328-8891-96df574fa8a6.png" alt="logo" title="logo">
+                    </a>
+                    <a class="layui-icon layui-icon-app listBtn open-panel"></a>
+                </div>
+                <form action="/" class="indexSearch" onsubmit="return false">
+                    <i class="el-icon-search"></i>
+                    <input placeholder="输入您想百度搜索的内容" type="search">
+                    <ul class="selectKeyword"></ul>
+                </form>
+
+                <ul class="mTopGroup overflowx" id="web_group">
+                   <li class="goToTop"><a class="ani" href="javaScript:void(0)">在线观看视频</a></li>
+                </ul>
+            </div>
+            <div class="swiper-container swiper-container-horizontal swiper-container-ios">
+                <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+                    <div class="swiper-slide swiper-slide-active" style="width: 375px;">
+            <div class="container">
+    <div class="tool-ks-xjj layui-clear night-bg tool-main">
+        <div class="tit night-black">
+            <center>在线看快手小姐姐视频（如果播放失败或长时间加载请播放下一个）</center>
+        </div>
+        <center><video id="player" class="" src="https://www.xddh.cn/ks/video.php" controls webkit-playsinline playsinline></video></center>
+        <section id="buttons">
+            <center><button id="switch" class="btn layui-btn night-black">连续: 开</button></center>
+            <center><button id="next" class="btn layui-btn night-black">播放下一个</button></center>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    (function(window, document) {
+        if (top != self) {
+            window.top.location.replace(self.location.href);
+        }
+        var get = function(id) {
+            return document.getElementById(id);
+        }
+        var bind = function(element, event, callback) {
+            return element.addEventListener(event, callback);
+        }
+        var auto = true;
+        var player = get('player');
+        var randomm = function() {
+            player.src = 'https://www.xddh.cn/ks/video.php?_t=' + Math.random();
+            player.play();
+        }
+        bind(get('next'), 'click', randomm);
+        bind(player, 'error', function() {
+            randomm();
+        });
+        bind(get('switch'), 'click', function() {
+            auto = !auto;
+            this.innerText = '连续: ' + (auto ? '开' : '关');
+        });
+        bind(player, 'ended', function() {
+            if (auto) randomm();
+        });
+    })(window, document);
+</script>
+</div>
+</div>
+</div>
+
+            <div class="others">
+                <div class="titles">
+                    <h3>友情链接</h3>
+                </div>
+                <ul class="clearfix">
+                    <li><a href="http://wap.gree020.cn" target="_blank" title="">双恒网络</a></li>
+                    <li><a href="http://www.y0m.cn" target="_blank" title="免费虚拟空间">源代码</a></li>
+                   
+                </ul>
+            </div>
+            <!--底部-->
+            <div class="footer">
+    <div>
+        <a target="_self" href="http://h.gree020.cn">首页</a><a target="_self" href="d.html">收录</a><a target="_self" href="javascript:history.back(-1)">返回</a><a target="_self" href="g.html">合作</a>
+    </div>
+    <p>  琼ICP备2021007686号</p>
+
+    
+       
+
+    
+
+    <script type="text/javascript">
+        var domain = "xddh";
+    </script>
+
+    <!--百度推送-->
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</div>
+        </div>
+    </div>
+    <!-- 右侧展开 -->
+    <div class="panel panel-right panel-reveal">
+    <ul class="rightNav">
+        <li>
+            <a href="./" class="hover">
+                <img src="static/picture/ico1.png">
+                网站首页
+            </a>
+        </li>
+        <li>
+            <a data-id="162" href="d.html">
+                <img style="width:0.8rem;height:0.8rem;margin-left:0.15rem;" src="static/picture/ico2.png">
+                网站收录
+            </a>
+        </li>
+        <li>
+            <a href="g.html">
+                <img src="static/picture/ico7.png">
+                广告合作
+            </a>
+        </li>
+        <li>
+            <a href="http://wap.gree020.cn">
+                <img src="static/picture/ico3.png">
+                双恒网络
+            </a>
+        </li>
+        <li>
+            <a href="https://jq.qq.com/?_wv=1027&k=">
+                <img src="static/picture/ico5.png">
+                QQ交流群
+            </a>
+        </li>
+        <li>
+            <a href="javascript:history.back(-1)">
+                <img src="static/picture/ico4.png">
+                返回上页
+            </a>
+        </li>
+
+    </ul>
+    <div class="indexSet">
+        <h3>点击网站直接进入</h3>
+        <label class="label-switch">
+            <input checked="" type="checkbox">
+            <div class="checkbox"></div>
+        </label>
+    </div>
+</div>
+</div>
+
+
+
+
+
+<script type="text/javascript" src="static/js/layui.js"></script>
+<script src="static/js/zepto.min.js"></script>
+<script src="static/js/sm.min.js"></script>
+<script src="static/js/echarts.simple.min.js"></script>
+<script src="static/js/public.js"></script>
+<script src="static/js/index.js"></script>
+<script src="static/js/swiper.min.js"></script>
+<script src="static/js/publicad.js"></script>
+</div><div style="display: none"><script type="text/javascript" src="https://s9.cnzz.com/z_stat.php?id=1279824854&web_id=1279824854"></script>
+    </div>
+</body>
+</html>
+
+
+    

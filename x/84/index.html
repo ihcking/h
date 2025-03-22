@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御音阁 - 声动山河，音绘万象！</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+        
+        /* 头部导航 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1a2a3a;
+            text-decoration: none;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links a {
+            color: #1a2a3a;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            color: #ff8c42;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff8c42;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 4rem auto 2rem;
+            padding: 0 20px;
+        }
+        
+        /* 动画效果 */
+        .section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 标题样式 */
+        h1, h2, h3 {
+            color: #1a2a3a;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        /* 内容区域 */
+        .intro-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 时间线样式 */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 2.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3498db, #1a2a3a);
+            z-index: 1;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 4rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: #3498db;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+            z-index: 2;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+            }
+        }
+        
+        /* 成员展示 */
+        .core-members {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 576px) {
+            .core-members {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .core-members {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .member-card {
+            background-color: #e8f4f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .member-image {
+            width: 100%;
+            height: 150px;
+            background-color: #f0f0f0;
+        }
+        
+        .member-details {
+            padding: 1rem;
+        }
+        
+        .member-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-email {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+        }
+        
+        .contact-email:hover {
+            background-color: #2980b9;
+        }
+        
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f0f0;
+            margin-left: auto;
+            display: block;
+            margin-top: 0.5rem;
+        }
+        
+        /* 分支链接 */
+        .branches {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .branch-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            padding: 1rem;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .branch-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .branch-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #3498db;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #1a2a3a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3498db;
+        }
+        
+        .section-title {
+            text-align: center;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #3498db;
+            margin: 0.5rem auto;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .social-icons a {
+            margin: 0 0.5rem;
+            color: #3498db;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: #ff8c42;
+        }
+
+        /* Banner轮播 */
+        .banner-slider {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+        
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .banner-slide.active {
+            opacity: 1;
+        }
+        
+        .banner-caption {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+            padding: 20px 30px;
+            color: white;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+        
+        .banner-caption h2 {
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-caption p {
+            margin: 0;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .banner-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .banner-control.active {
+            background: white;
+        }
+        
+        .banner-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            transform: translateY(-50%);
+        }
+        
+        .banner-nav button {
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            transition: background 0.3s;
+        }
+        
+        .banner-nav button:hover {
+            background: white;
+        }
+        
+        /* 团队瞬间 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 4rem;
+        }
+        
+        .photo-item {
+            position: relative;
+            height: 0;
+            padding-bottom: 65%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            padding: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
+        
+        .photo-overlay h4 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .photo-overlay p {
+            margin: 8px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* 作品推荐 */
+        .recommendations {
+            margin-bottom: 4rem;
+        }
+        
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .recommendation-card {
+            background: #e8f4f9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .recommendation-image {
+            height: 200px;
+            background-color: #f0f0f0;
+        }
+        
+        .recommendation-details {
+            padding: 20px;
+        }
+        
+        .recommendation-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #1a2a3a;
+        }
+        
+        .recommendation-desc {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 18px;
+        }
+        
+        .recommendation-link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .recommendation-link:hover {
+            color: #ff8c42;
+        }
+        
+        .recommendation-link::after {
+            content: '→';
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .recommendation-link:hover::after {
+            transform: translateX(5px);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">御音阁</a>
+            <div class="nav-links">
+                <a href=".\index.html#">首页</a>			
+                <a href=".\index.html#intro">简介</a>
+				<a href=".\index.html#tuandui">风采</a>
+                <a href=".\index.html#members">成员</a>
+				<a href=".\index.html#zuopin">作品 </a>
+				<a href=".\index.html#history">历程</a>
+                <a href=".\index.html#branches">其他</a>
+				<a href=".\about.html">关于</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Banner轮播 -->
+    <div class="banner-slider">
+        <div class="banner-slide active" style="background-image: url('https://via.placeholder.com/1920x800/3498db/ffffff?text=御音阁+声音艺术')">
+            <div class="banner-caption">
+                <h2>声动山河🎙音绘万象</h2>
+                <p>用声音传递情感，用声音描绘世界</p>
+            </div>
+        </div>
+        <div class="banner-slide" style="background-image: url('https://via.placeholder.com/1920x800/e74c3c/ffffff?text=御音阁+精彩瞬间')">
+            <div class="banner-caption">
+                <h2>御音阁风采</h2>
+                <p>探索我们的声音世界</p>
+            </div>
+        </div>
+        <div class="banner-slide" style="background-image: url('https://via.placeholder.com/1920x800/2980b9/ffffff?text=御音阁+核心团队')">
+            <div class="banner-caption">
+                <h2>核心团队</h2>
+                <p>了解我们的声音艺术家</p>
+            </div>
+        </div>
+        
+        <div class="banner-controls">
+            <div class="banner-control active"></div>
+            <div class="banner-control"></div>
+            <div class="banner-control"></div>
+        </div>
+        
+        <div class="banner-nav">
+            <button class="banner-prev">&lt;</button>
+            <button class="banner-next">&gt;</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="intro" class="section">
+            <h1>御音阁简介</h1>
+            <div class="intro-content">
+                <p>御音阁是一个致力于用声音演绎万千世界的团队，长期纳新，欢迎有志之士加入我们！</p>
+                <p>我们专注于声音创作，通过声音传递情感，描绘出一幅幅生动的"声音画卷"。</p>
+                <p>我们的理念是"声动山河，音绘万象"，相信声音的力量可以跨越视觉的界限，触动人心，创造无限可能。</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 团队瞬间 -->
+        <section id="tuandui" class="section">
+            <h2 class="section-title">团队瞬间</h2>
+            <div class="photo-grid">
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片1')">
+                    <div class="photo-overlay">
+                        <h4>团队排练</h4>
+                        <p>成员们在录音室的专注瞬间</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片2')">
+                    <div class="photo-overlay">
+                        <h4>录音现场</h4>
+                        <p>捕捉声音创作的精彩瞬间</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片3')">
+                    <div class="photo-overlay">
+                        <h4>成员交流</h4>
+                        <p>创作讨论中的思维碰撞</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片4')">
+                    <div class="photo-overlay">
+                        <h4>团队活动</h4>
+                        <p>工作之余的轻松时光</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片5')">
+                    <div class="photo-overlay">
+                        <h4>声音制作</h4>
+                        <p>后期处理的精细操作</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片6')">
+                    <div class="photo-overlay">
+                        <h4>成果展示</h4>
+                        <p>完成作品的满足感</p>
+                    </div>
+                </div>
+				<div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片6')">
+                    <div class="photo-overlay">
+                        <h4>成果展示</h4>
+                        <p>完成作品的满足感</p>
+                    </div>
+                </div>
+				<div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片6')">
+                    <div class="photo-overlay">
+                        <h4>成果展示</h4>
+                        <p>完成作品的满足感</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="members" class="section">
+            <h2 class="section-title">核心成员</h2>
+            <div class="core-members">
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 作品推荐 -->
+        <section id="zuopin" class="recommendations section">
+            <h2 class="section-title">作品推荐</h2>
+            <div class="recommendation-grid">
+                <div class="recommendation-card">
+                    <div class="recommendation-image"></div>
+                    <div class="recommendation-details">
+                        <h3 class="recommendation-title">御音阁·考核本</h3>
+                        <p class="recommendation-desc">基础考核本，帮助新人快速适应声音创作</p>
+                        <a href="#" class="recommendation-link">了解更多</a>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="recommendation-image"></div>
+                    <div class="recommendation-details">
+                        <h3 class="recommendation-title">御音阁·早功本</h3>
+                        <p class="recommendation-desc">早功练习本，日常声音训练必备</p>
+                        <a href="#" class="recommendation-link">了解更多</a>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="recommendation-image"></div>
+                    <div class="recommendation-details">
+                        <h3 class="recommendation-title">御音阁·引导本</h3>
+                        <p class="recommendation-desc">新人引导本，开启声音之旅的指南</p>
+                        <a href="#" class="recommendation-link">了解更多</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="section">
+            <h2 class="section-title">发展历程</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>成立初期</h3>
+                    <p>团队初步组建，确定基本理念和方向</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2024年1月</h3>
+                    <p>发布基础考核本、早功练习本、新人引导本等作品</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2025年3月</h3>
+                    <p>持续发展，推出更多优秀作品和活动</p>
+                </div>
+            </div>
+        </section>
+        <section id="branches" class="section">
+            <h2 class="section-title">分支跳转</h2>
+            <div class="branches">
+			    <a href="https://hc.ihcking.com/" class="branch-link" target="_blank">
+                    <div class="branch-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>皇宸部落</h3>
+                </a>
+                <a href="#intro" class="branch-link">
+                    <div class="branch-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h3>团队简介</h3>
+                </a>
+                <a href="#members" class="branch-link">
+                    <div class="branch-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>核心成员</h3>
+                </a>
+                <a href="#" class="branch-link" target="_blank">
+                    <div class="branch-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>加入我们</h3>
+                </a>
+                
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 御音阁 - 声动山河，音绘万象！</p>
+        <div class="footer-links">
+            <a href="mailto:hx@ihcking.com">加入我们</a>
+            <a href="mailto:hx@ihcking.com">联系我们</a>
+            <a href="https://hc.ihcking.com/">皇宸部落</a>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动时导航栏效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // 滚动时section显示动画
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        });
+        
+        // 页面加载时检查section位置
+        window.addEventListener('load', function() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        });
+
+        // Banner轮播功能
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const controls = document.querySelectorAll('.banner-control');
+        const prevBtn = document.querySelector('.banner-prev');
+        const nextBtn = document.querySelector('.banner-next');
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            controls.forEach(control => control.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            controls[index].classList.add('active');
+            currentSlide = index;
+        }
+        
+        function nextSlide() {
+            let next = currentSlide + 1;
+            if (next >= slides.length) next = 0;
+            showSlide(next);
+        }
+        
+        function prevSlide() {
+            let prev = currentSlide - 1;
+            if (prev < 0) prev = slides.length - 1;
+            showSlide(prev);
+        }
+        
+        // 自动轮播
+        setInterval(nextSlide, 7000);
+        
+        // 控制按钮点击事件
+        controls.forEach((control, index) => {
+            control.addEventListener('click', () => showSlide(index));
+        });
+        
+        // 上下一张按钮
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+        
+        // 点击事件轮播
+        document.querySelector('.banner-slider').addEventListener('click', function(e) {
+            if (e.target.classList.contains('banner-slide')) {
+                showSlide(Array.from(slides).indexOf(e.target));
+            }
+        });
+    </script>
+</body>
+</html>

@@ -756,6 +756,48 @@
             font-size: 14px;
         }
 
+        /* 微信公众号二维码 */
+        .wechat-qrcode {
+            display: flex;
+            gap: 20px;
+        }
+
+        .wechat-qrcode-item {
+            text-align: center;
+            width: 120px; /* 设置容器为正方形 */
+        }
+
+        .wechat-qrcode-item img {
+            width: 120px; /* 设置二维码为正方形 */
+            height: 120px; /* 设置二维码为正方形 */
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* 媒体平台图标 */
+        .social-platforms {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-platforms a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-platforms a:hover {
+            background: var(--gradient-bg);
+            transform: translateY(-3px);
+        }
+
         /* 响应式设计 */
         @media (max-width: 992px) {
             .about-content {
@@ -845,7 +887,7 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptMy41LTljLjgzIDAgMS41LS42NyAxLjUtMS41UzE2LjMzIDggMTUuNSA4IDE0IDguNjcgMTQgOC41IDE0LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41em0tNyAwYy44MyAwIDEuNS0uNjcgMS41LTEuNVM5LjMzIDggOC41IDggOCA4LjY3IDggOC41IDggOSA4LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41eiIvPjwvc3ZnPg==" alt="Logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptMy41LTljLjgzIDAgMS41LS42NyAxLjUtMS41UzE2LjMzIDggMTUuNSA4IDE0IDguNjcgMTQgOC41IDE0LjUgOSAxNS41IDkgNVMyLjUgMS41IDEuNSAxLjV6Ii8+PC9zdmc+" alt="Logo">
                     <h1>御音阁</h1>
                 </div>
                 <ul class="nav-links">
@@ -956,13 +998,13 @@
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="团队照片2">
+                    <img src="https://images.unsplash.com/photo-1529156069894-067a036d83c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="团队照片2">
                     <div class="gallery-overlay">
                         <h3>录音室工作花絮</h3>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1529154346794-067a036d83c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="团队照片3">
+                    <img src="https://images.unsplash.com/photo-1529154346794-067a036d83ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="团队照片3">
                     <div class="gallery-overlay">
                         <h3>年度颁奖典礼</h3>
                     </div>
@@ -1289,6 +1331,16 @@
                     </ul>
                 </div>
                 <div class="footer-column">
+                    <h3>友链</h3>
+                    <ul>
+                        <li><a href="#">哔哩哔哩</a></li>
+                        <li><a href="#">微博</a></li>
+                        <li><a href="#">抖音</a></li>
+                        <li><a href="#">网易云音乐</a></li>
+                        <li><a href="#">喜马拉雅</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
                     <h3>联系我们</h3>
                     <ul>
                         <li><a href="#">📧 contact@yuyinge.com</a></li>
@@ -1298,11 +1350,29 @@
                 </div>
                 <div class="footer-column">
                     <h3>关注我们</h3>
-                    <div class="social-links">
-                        <a href="#"><i>微</i></a>
-                        <a href="#"><i>博</i></a>
-                        <a href="#"><i>抖</i></a>
-                        <a href="#"><i>B</i></a>
+                    <div class="wechat-qrcode">
+                        <div class="wechat-qrcode-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzhiMmQzMDAiPjxwYXRoIGQ9Ik0xMiAxOEM2IDggOCA2IDggMTJzNCA0IDQgNCA0LTQgNC00UzE2IDggMTIgOHptMCAyYy00IDAtOCA0LTggOCA4LTQgOC04IDgtOC00IDgtOC04em0yLTEwLjJjLjguOC44IDEuOC44IDIuNiAwIDEuOC0uOCAyLjZzLTEuOCAxLjYtMi42IDEuNi0yLjYuOC0xLjggMi42LS44IDIuNi0yLjYgMi42LTIuNi0uOC0yLjYtMS44LTIuNi0yLjZ6Ii8+PC9zdmc+" alt="微信公众号1">
+                            <p>御音阁公众号</p>
+                        </div>
+                        <div class="wechat-qrcode-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzdiNDM5NyI+PHBhdGggZD0iTTEyIDEyQzYgOC42NiA2IDYuODggNiA4LjY2czQuMzQgNiA2IDYgNi00LjM0IDYtNlMxOC4zNCA2IDEyIDZ6bTAgMmMtMi4yMSAwLTQgMS43OS00IDQgMCAyLjIxIDEuNzkgNCA0IDQgNC0xLjc5IDQtMS4xIDIgMiAyIDItMS4xIDItMiAxLjEtMiAyem0wIDJjLTEuMSAwLTIgMC45LTItMnMuOS0yIDItMiAyIDAuOSAyIDItMC45IDItMi0yem0wIDJjLTAuODIgMC0xLjUtMC42OC0xLjUtMS41czAuNjgtMS41IDEuNS0xLjUgMS41IDAuNjggMS41IDEuNS0wLjY4IDEuNS0xLjUgMnptMCAxLjVjMC0xLjEuNS0yIDItMnMyIDEuMSAyIDItMS4xIDItMiAxLjEtMiAyem0wLTEwLjJjLjggOC44LjggMS44LjggMi42IDAgMS44LS44IDIuNi0xLjggMi42cy0xLjggMS42LTIuNiAxLjYtMi42LS44LTIuNi0xLjgtMi42LTIuNnoiLz48L3N2Zz4=" alt="微信公众号2">
+                            <p>御音阁粉丝群</p>
+                        </div>
+                    </div>
+                    <div class="social-platforms">
+                        <a href="#" title="哔哩哔哩">
+                            <i>B</i>
+                        </a>
+                        <a href="#" title="微博">
+                            <i>微</i>
+                        </a>
+                        <a href="#" title="抖音">
+                            <i>抖</i>
+                        </a>
+                        <a href="#" title="网易云音乐">
+                            <i>云</i>
+                        </a>
                     </div>
                 </div>
             </div>

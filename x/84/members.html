@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>御音阁 - 成员查询</title>
+    <title>御音阁 - 成员信息查询</title>
     <style>
         /* 全局样式 */
         * {
@@ -114,9 +114,19 @@
             padding: 5px 0;
         }
 
-        /* 隐藏导航链接的下划线 */
         .nav-links a::after {
-            display: none;
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-bg);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         /* 页眉 */
@@ -190,190 +200,203 @@
             background: var(--gradient-bg);
         }
 
-        .search-controls {
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        .search-box {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-            justify-content: center;
+            margin-bottom: 20px;
         }
 
-        .search-input {
+        .search-box input {
             flex: 1;
-            min-width: 200px;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px 0 0 30px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
         }
 
-        .search-select {
-            flex: 0.5;
-            min-width: 150px;
+        .search-box input:focus {
+            border-color: var(--primary-color);
         }
 
-        .search-button {
-            flex: 0.5;
-            min-width: 150px;
-        }
-
-        .table-responsive {
-            margin-top: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .member-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .member-table th, .member-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .member-table th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-            color: var(--dark-color);
-        }
-
-        .member-table tr:hover {
-            background-color: #f8f9fa;
+        .search-box button {
+            padding: 12px 24px;
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
             cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
         }
 
-        .status-badge {
-            padding: 5px 10px;
-            border-radius: 20px;
+        .search-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(142, 45, 226, 0.4);
+        }
+
+        /* 成员信息卡片 */
+        .member-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px; /* 增加卡片间距 */
+            margin-top: 40px;
+        }
+
+        .member-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            background: var(--gradient-bg);
+            border: 1px solid rgba(142, 45, 226, 0.1);
+            position: relative;
+            color: white;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(142, 45, 226, 0.2);
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px; /* 加粗状态指示条 */
+            height: 100%;
+            border-radius: 15px 0 0 15px;
+            z-index: 1;
+        }
+
+        .member-card[data-status="在线"]::before {
+            background: #155724;
+        }
+
+        .member-card[data-status="离线"]::before {
+            background: #721c24;
+        }
+
+        .member-card[data-status="请假"]::before {
+            background: #856404;
+        }
+
+        .member-header {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .member-nickname {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .member-id {
+            font-size: 14px;
+            font-weight: bold; /* 加粗ID字体 */
+            color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .member-info {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            width: 60px;
+            flex-shrink: 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .info-value {
+            flex: 1;
+        }
+
+        .platform, .department {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
             font-size: 12px;
             font-weight: bold;
         }
 
-        .status-active {
-            background-color: #d4edda;
-            color: #155724;
+        .status.online {
+            background-color: rgba(21, 87, 36, 0.3);
+            color: white;
         }
 
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
+        .status.offline {
+            background-color: rgba(114, 28, 36, 0.3);
+            color: white;
         }
 
-        .status-inactive {
-            background-color: #f8d7da;
-            color: #721c24;
+        .status.leave {
+            background-color: rgba(133, 100, 4, 0.3);
+            color: white;
         }
 
-        /* 统计信息 */
-        .stats-section {
-            margin-bottom: 30px;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        .role, .works {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            color: white;
         }
 
-        .stats-container {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
+        .works a {
+            color: white;
+            text-decoration: none;
         }
 
-        .stat-card {
-            flex: 1;
-            min-width: 200px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        .works a:hover {
+            text-decoration: underline;
+        }
+
+        /* 无结果提示 */
+        .no-results {
             text-align: center;
-        }
-
-        .stat-card h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: var(--primary-color);
-        }
-
-        .stat-card p {
-            font-size: 14px;
-            color: #666;
-        }
-
-        /* 成员详情模态框 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            overflow: auto;
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 600px;
-            position: relative;
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            transition: color 0.3s ease;
-        }
-
-        .close-modal:hover {
-            color: var(--accent-color);
-        }
-
-        .member-detail {
-            margin-bottom: 20px;
-        }
-
-        .member-detail h3 {
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            font-size: 24px;
-        }
-
-        .detail-item {
-            display: flex;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            width: 100px;
-            font-weight: bold;
-            color: #666;
+            padding: 40px;
+            color: #777;
+            font-size: 16px;
         }
 
         /* 页脚 */
@@ -416,17 +439,8 @@
             transition: color 0.3s ease;
         }
 
-        /* 隐藏页脚链接的下划线 */
-        .footer-column ul li a::after {
-            display: none;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            font-size: 14px;
+        .footer-column ul li a:hover {
+            color: var(--gradient-bg);
         }
 
         /* 微信公众号二维码 */
@@ -471,6 +485,14 @@
             transform: translateY(-3px);
         }
 
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+
         /* 响应式设计 */
         @media (max-width: 992px) {
             .header-content h2 {
@@ -485,14 +507,6 @@
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
-            }
-            
-            .search-controls {
-                flex-direction: column;
-            }
-            
-            .stats-container {
-                flex-direction: column;
             }
         }
 
@@ -524,16 +538,7 @@
         .delay-3 {
             animation-delay: 0.6s;
         }
-		/* 增强版 - 确保覆盖其他样式 */
-        .nav-links a,
-        .footer-column ul li a {
-           text-decoration: none !important;
-        }
     </style>
-    <!-- 引入Bootstrap和DataTables的CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- 导航栏 -->
@@ -562,32 +567,8 @@
     <section class="header-banner">
         <div class="container">
             <div class="header-content">
-                <h2 class="fade-in">御音阁成员查询</h2>
-                <p class="fade-in delay-1">查询和管理御音阁的成员信息</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 统计信息 -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-container">
-                <div class="stat-card">
-                    <h3 id="totalMembers">0</h3>
-                    <p>总成员数</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="activeMembers">0</h3>
-                    <p>活跃成员</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="pendingMembers">0</h3>
-                    <p>请假成员</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="inactiveMembers">0</h3>
-                    <p>离线成员</p>
-                </div>
+                <h2 class="fade-in">御音阁成员信息查询</h2>
+                <p class="fade-in delay-1">查询社团成员信息，了解成员动态</p>
             </div>
         </div>
     </section>
@@ -596,136 +577,28 @@
     <section class="member-search-section">
         <div class="container">
             <div class="section-title">
-                <h2>成员查询</h2>
+                <h2>成员信息查询</h2>
             </div>
             
-            <div class="search-controls">
-                <div class="search-input">
-                    <input type="text" class="form-control" id="searchInput" placeholder="输入关键词搜索...">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="输入成员昵称、ID或作品名称...">
+                    <button id="search-button">查询</button>
                 </div>
-                <div class="search-select">
-                    <select class="form-select" id="platformFilter">
-                        <option value="">所有平台</option>
-                        <option>戏鲸</option>
-                        <option>其他</option>
-                    </select>
-                </div>
-                <div class="search-select">
-                    <select class="form-select" id="departmentFilter">
-                        <option value="">所有部门</option>
-                        <option>有声部</option>
-                        <option>技术部</option>
-                        <option>创作部</option>
-                    </select>
-                </div>
-                <div class="search-button">
-                    <button class="btn btn-success w-100" id="exportBtn">导出CSV</button>
-                </div>
+                <p>输入成员昵称  ID  作品名称进行查询。</p>
             </div>
 
-            <div class="table-responsive">
-                <table id="memberTable" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>昵称</th>
-                            <th>部门</th>
-                            <th>平台</th>
-                            <th>账号</th>
-                            <th>加入时间</th>
-                            <th>活跃状态</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>汐月</td>
-                            <td>有声部</td>
-                            <td>戏鲸</td>
-                            <td>7038005</td>
-                            <td>2025-04-01</td>
-                            <td><span class="status-badge status-active">正常</span></td>
-                        </tr>
-                        <tr>
-                            <td>咸鱼</td>
-                            <td>有声部</td>
-                            <td>戏鲸</td>
-                            <td>6671213</td>
-                            <td>2025-03-21</td>
-                            <td><span class="status-badge status-active">正常</span></td>
-                        </tr>
-                        <tr>
-                            <td>浮梦</td>
-                            <td>有声部</td>
-                            <td>戏鲸</td>
-                            <td>2394166</td>
-                            <td>2025-03-20</td>
-                            <td><span class="status-badge status-active">正常</span></td>
-                        </tr>
-                        <tr>
-                            <td>泠枫</td>
-                            <td>有声部</td>
-                            <td>戏鲸</td>
-                            <td>3392223</td>
-                            <td>2023-01-17</td>
-                            <td><span class="status-badge status-active">正常</span></td>
-                        </tr>
-                        <tr>
-                            <td>泠枫</td>
-                            <td>技术部</td>
-                            <td>戏鲸</td>
-                            <td>3392223</td>
-                            <td>2023-01-01</td>
-                            <td><span class="status-badge status-pending">请假</span></td>
-                        </tr>
-                        <tr>
-                            <td>泠枫</td>
-                            <td>创作部</td>
-                            <td>戏鲸</td>
-                            <td>3392223</td>
-                            <td>2023-01-01</td>
-                            <td><span class="status-badge status-inactive">离线</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div id="results-container">
+                <!-- 查询结果将在这里动态显示 -->
+                <div class="no-results" id="no-results">
+                    请输入关键词进行查询
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 成员详情模态框 -->
-    <div id="memberDetailModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <h3 id="detailName">成员详情</h3>
-            <div class="member-detail">
-                <div class="detail-item">
-                    <div class="detail-label">昵称:</div>
-                    <div id="detailNickname"></div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">部门:</div>
-                    <div id="detailDepartment"></div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">平台:</div>
-                    <div id="detailPlatform"></div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">账号:</div>
-                    <div id="detailAccount"></div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">加入时间:</div>
-                    <div id="detailJoinDate"></div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">活跃状态:</div>
-                    <div id="detailStatus"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- 页脚 -->
-    <footer id="contact">
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
@@ -806,115 +679,201 @@
         </div>
     </footer>
 
-    <!-- 引入脚本 -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
-        // 模态框关闭功能
-        const modal = document.getElementById('memberDetailModal');
-        const closeModal = document.getElementById('closeModal');
+        // 模拟成员数据
+        const members = [
+            {
+                id: "3392223",
+                nickname: "泠枫",
+                platform: "戏鲸",
+                department: "有声部",
+                joinDate: "2023-01-17", // 加入时间
+                status: "在线",
+                roles: ["配音演员", "编剧", "一体机"],
+                works: [
+                    { title: "【御音阁】新人引导本- 一体机", link: "https://www.aipiaxi.com/article-detail/245425" },
+                    { title: "【御音阁】萌新Pia戏本- 一体机", link: "https://www.aipiaxi.com/article-detail/502703" },
+                    { title: "【御音阁】早功练习本- 一体机", link: "https://www.aipiaxi.com/article-detail/215323" },
+                    { title: "【御音阁】基础考核本- 一体机", link: "https://www.aipiaxi.com/article-detail/121717" },
+                    { title: "【甜蜜系】黏人精的自我修养- 一体机", link: "https://www.aipiaxi.com/article-detail/130056" },
+					{ title: "【伤感系】穿透灵魂的悲伤- 一体机", link: "https://www.aipiaxi.com/article-detail/176859" },
+					{ title: "【治愈系】温暖悲伤的心灵- 一体机", link: "https://www.aipiaxi.com/article-detail/749238" }
+                ]
+            },
+            {
+                id: "2394166",
+                nickname: "浮梦",
+                platform: "戏鲸",
+                department: "有声部",
+                joinDate: "2025-03-20", // 加入时间
+                status: "在线",
+                roles: ["配音演员", ],
+                works: [
+                    { title: "《无》", link: "#" },
+                ]
+            },
+            {
+                id: "6671213",
+                nickname: "咸鱼",
+                platform: "戏鲸",
+                department: "有声部",
+                joinDate: "2025-03-21", // 加入时间
+                status: "在线",
+                roles: ["配音演员", ],
+                works: [
+                    { title: "《无》", link: "#" },
+                ]
+            },
+            {
+                id: "7038005",
+                nickname: "汐月",
+                platform: "戏鲸",
+                department: "有声部",
+                joinDate: "2025-04-01", // 加入时间
+                status: "在线",
+                roles: ["配音演员", ],
+                works: [
+                    { title: "《无》", link: "#" },
+                ]
+            },
 
-        closeModal.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
+        ];
 
-        window.addEventListener('click', function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        });
+        // 搜索框功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const resultsContainer = document.getElementById('results-container');
+            const noResults = document.getElementById('no-results');
 
-        // 初始化数据表格
-        $(document).ready(function() {
-            const table = $('#memberTable').DataTable({
-                paging: true,
-                pageLength: 10,
-                order: [[4, 'desc']], // 默认按加入时间降序排序
-                language: { 
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh.json' 
-                },
-                columnDefs: [{
-                    type: 'date', 
-                    targets: 4 // 指定加入时间列为日期类型
-                }]
+            // 搜索功能
+            searchButton.addEventListener('click', searchMembers);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchMembers();
+                }
             });
 
-            // 更新统计信息
-            function updateStatistics() {
-                // 总成员数
-                $('#totalMembers').text(table.rows().count());
-                
-                // 活跃成员
-                let activeCount = 0;
-                // 请假成员
-                let pendingCount = 0;
-                // 离线成员
-                let inactiveCount = 0;
-                
-                table.rows().every(function() {
-                    const status = this.data()[5].toLowerCase();
-                    if (status.includes('正常')) activeCount++;
-                    if (status.includes('请假')) pendingCount++;
-                    if (status.includes('离线')) inactiveCount++;
+            // 查询成员
+            function searchMembers() {
+                const query = searchInput.value.trim().toLowerCase();
+                if (!query) {
+                    noResults.textContent = '请输入关键词进行查询';
+                    resultsContainer.innerHTML = `<div class="no-results" id="no-results">请输入关键词进行查询</div>`;
+                    return;
+                }
+
+                // 检查是否匹配查询
+                function matchesQuery(member) {
+                    // 检查ID或昵称是否匹配
+                    if (member.id.includes(query) || member.nickname.toLowerCase().includes(query)) {
+                        return true;
+                    }
+                    
+                    // 检查作品是否匹配
+                    for (const work of member.works) {
+                        if (work.title.toLowerCase().includes(query)) {
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                }
+
+                const filteredMembers = members.filter(matchesQuery);
+
+                if (filteredMembers.length === 0) {
+                    noResults.textContent = '未找到匹配的成员';
+                    resultsContainer.innerHTML = `<div class="no-results" id="no-results">未找到匹配的成员</div>`;
+                    return;
+                }
+
+                // 清空结果容器
+                resultsContainer.innerHTML = '';
+                noResults.textContent = '';
+
+                // 创建成员卡片
+                filteredMembers.forEach(member => {
+                    const memberCard = document.createElement('div');
+                    memberCard.className = `member-card fade-in`;
+                    memberCard.dataset.status = member.status;
+                    memberCard.innerHTML = `
+                        <div class="member-header">
+                            <div class="member-nickname">${member.nickname}</div>
+                            <div class="member-id">ID: ${member.id}</div>
+                        </div>
+                        <div class="member-info">
+                            <div class="info-item">
+                                <span class="info-label">平台:</span>
+                                <span class="info-value">
+                                    <span class="platform">${member.platform}</span>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">部门:</span>
+                                <span class="info-value">
+                                    <span class="department">${member.department}</span>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">时间:</span>
+                                <span class="info-value">
+                                    ${member.joinDate}
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">状态:</span>
+                                <span class="info-value">
+                                    <span class="status ${member.status}">
+                                        ${member.status}
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">角色:</span>
+                                <span class="info-value">
+                                    ${member.roles.map(role => `<span class="role">${role}</span>`).join('')}
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">作品:</span>
+                                <span class="info-value">
+                                    ${member.works.map(work => `<a href="${work.link}" class="works">${work.title}</a>`).join('')}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(memberCard);
                 });
-                
-                $('#activeMembers').text(activeCount);
-                $('#pendingMembers').text(pendingCount);
-                $('#inactiveMembers').text(inactiveCount);
             }
 
-            // 实时搜索
-            $('#searchInput').on('keyup', function() {
-                table.search(this.value).draw();
-                updateStatistics();
-            });
-
-            // 平台筛选
-            $('#platformFilter').on('change', function() {
-                table.column(2).search(this.value).draw();
-                updateStatistics();
-            });
-
-            // 部门筛选
-            $('#departmentFilter').on('change', function() {
-                table.column(1).search(this.value).draw();
-                updateStatistics();
-            });
-
-            // 导出CSV
-            $('#exportBtn').click(function() {
-                const data = table.rows().data();
-                let csvContent = "昵称,部门,平台,账号,加入时间,状态\n";
-                
-                data.each(function(row) {
-                    csvContent += `${row[0]},${row[1]},${row[2]},${row[3]},${row[4]},${row[5].replace(/<[^>]+>/g, '')}\n`;
+            // 滚动动画
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                    }
                 });
-                
-                const blob = new Blob(["\ufeff"+csvContent], { type: 'text/csv;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = '御音阁成员数据.csv';
-                a.click();
+            }, {
+                threshold: 0.1
             });
 
-            // 行点击显示详情
-            $('#memberTable tbody').on('click', 'tr', function() {
-                const data = table.row(this).data();
-                $('#detailNickname').text(data[0]);
-                $('#detailDepartment').text(data[1]);
-                $('#detailPlatform').text(data[2]);
-                $('#detailAccount').text(data[3]);
-                $('#detailJoinDate').text(data[4]);
-                $('#detailStatus').html(data[5]);
-                $('#detailName').text(data[0] + ' - 成员详情');
-                modal.style.display = 'block';
+            fadeElements.forEach(element => {
+                observer.observe(element);
             });
 
-            // 初始化统计
-            updateStatistics();
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, 0.95)';
+                    header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.2)';
+                } else {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, 0.9)';
+                    header.style.boxShadow = '0 2px 20px rgba(255, 255, 255, 0.1)';
+                }
+            });
         });
     </script>
 </body>

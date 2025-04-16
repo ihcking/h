@@ -278,7 +278,7 @@
             color: white;
         }
 
-        /* 音乐播放器 */
+        /* 音频播放器 */
         .audio-player-container {
             width: 100%;
             background: #f0f0f0;
@@ -286,7 +286,6 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             margin: 20px 0;
-            height: 100px;
             position: sticky;
             top: 80px;
             z-index: 900;
@@ -296,13 +295,48 @@
             width: 100%;
             height: 100%;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             padding: 15px;
+        }
+
+        .audio-info {
+            margin-bottom: 10px;
+        }
+
+        .audio-info p {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient-progress);
+            border-radius: 5px;
+            width: 0;
+            transition: width 0.1s linear;
+        }
+
+        .time-display {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
         }
 
         .audio-controls {
             display: flex;
             align-items: center;
+            gap: 10px;
+            margin-top: 5px;
         }
 
         .audio-controls button {
@@ -324,49 +358,114 @@
             transform: scale(1.1);
         }
 
-        .audio-info {
-            flex-grow: 1;
-            margin: 0 20px;
+        .volume-control {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
         }
 
-        .download-btn {
+        .volume-control input {
+            width: 80px;
+            margin-left: 5px;
+        }
+
+        .playlist-toggle {
+            margin-left: auto;
             background: var(--gradient-bg);
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 6px 12px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
-            font-size: 14px;
         }
 
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(142, 45, 226, 0.5);
+        .playlist-toggle:hover {
+            transform: scale(1.1);
         }
 
-        .progress-container {
-            width: 100%;
-            height: 5px;
-            background-color: #ddd;
+        .playlist {
+            max-height: 0;
+            overflow-y: hidden;
+            transition: max-height 0.3s ease;
+            border: 1px solid #ddd;
             border-radius: 5px;
             margin-top: 10px;
+        }
+
+        .playlist.open {
+            max-height: 300px;
+        }
+
+        .playlist-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .playlist-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .playlist-item.active {
+            background-color: rgba(142, 45, 226, 0.1);
+            font-weight: bold;
+        }
+
+        /* 视频播放器 */
+        .video-player-container {
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
 
-        .progress-bar {
+        .video-player {
+            width: 100%;
+            background: #000;
+        }
+
+        .video-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: var(--gradient-progress);
-            border-radius: 5px;
-            width: 0;
-            transition: width 0.1s linear;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
         }
 
-        .time-display {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
+        .play-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-icon::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            margin-left: 5px;
         }
 
         /* 文字特效 */
@@ -667,15 +766,11 @@
             
             <div class="recruitment-content">
                 <div class="main-content">
-                    <!-- 音乐播放器 -->
+                    <!-- 音频播放器 -->
                     <div class="audio-player-container">
                         <div class="audio-player">
-                            <div class="audio-controls">
-                                <button id="play-btn" class="play-btn">▶</button>
-                                <button id="pause-btn" class="pause-btn">⬜</button>
-                            </div>
                             <div class="audio-info">
-                                <p>PIA戏背景音乐 - BGM</p>
+                                <p>音乐播放器</p>
                                 <div class="progress-container">
                                     <div class="progress-bar"></div>
                                 </div>
@@ -683,7 +778,40 @@
                                     <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
                                 </div>
                             </div>
-                            <a href="https://www.doubao.com/drive/s/195f571297685a3c" class="download-btn">下载</a>
+                            
+                            <div class="audio-controls">
+                                <button id="play-btn" class="play-btn">▶</button>
+                                <button id="pause-btn" class="pause-btn">⏸</button>
+                                <button id="stop-btn" class="stop-btn">⏹</button>
+                                <button id="rewind-btn" class="rewind-btn">⏪</button>
+                                <button id="forward-btn" class="forward-btn">⏩</button>
+                                
+                                <div class="volume-control">
+                                    <span>🔊</span>
+                                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.7">
+                                </div>
+                                
+                                <button id="playlist-toggle" class="playlist-toggle">📋</button>
+                            </div>
+                            
+                            <div id="playlist" class="playlist">
+                                <div class="playlist-item active" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">PIA戏背景音乐 - BGM</div>
+                                <div class="playlist-item" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">校园日常 - 背景音效</div>
+                                <div class="playlist-item" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">古风配乐 - 水墨江湖</div>
+                                <div class="playlist-item" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3">现代都市 - 繁华街道</div>
+                                <div class="playlist-item" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3">悬疑推理 - 密室逃脱</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 视频播放器 -->
+                    <div class="video-player-container">
+                        <video class="video-player" id="video-element" controls>
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg');">
+                            <div class="play-icon"></div>
                         </div>
                     </div>
 
@@ -856,11 +984,11 @@
                     <h3>关注我们</h3>
                     <div class="wechat-qrcode">
                         <div class="wechat-qrcode-item">
-                            <img src="./assets/img/xfdyh.jpg" alt="微信公众号1">
+                            <img src=".\assets\img\xfdyh.jpg" alt="微信公众号1">
                             <p>潇府订阅号</p>
                         </div>
                         <div class="wechat-qrcode-item">
-                            <img src="./assets/img/hcwfh.jpg" alt="微信公众号2">
+                            <img src=".\assets\img\hcwfh.jpg" alt="微信公众号2">
                             <p>皇宸服务号</p>
                         </div>
                     </div>
@@ -888,16 +1016,24 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 音乐播放器功能
-            const audio = new Audio('./assets/audition/御音阁-萌新本-BGM.mp3'); // 替换为实际的音频文件URL
+            // 音频播放器功能
+            const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); // 替换为实际的音频文件URL
             const playBtn = document.getElementById('play-btn');
             const pauseBtn = document.getElementById('pause-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const rewindBtn = document.getElementById('rewind-btn');
+            const forwardBtn = document.getElementById('forward-btn');
             const progressBar = document.querySelector('.progress-bar');
             const currentTimeDisplay = document.getElementById('current-time');
             const totalTimeDisplay = document.getElementById('total-time');
             const progressContainer = document.querySelector('.progress-container');
-
+            const volumeSlider = document.getElementById('volume-slider');
+            const playlistToggle = document.getElementById('playlist-toggle');
+            const playlist = document.getElementById('playlist');
+            const playlistItems = document.querySelectorAll('.playlist-item');
+            
             let isPlaying = false;
+            audio.volume = 0.7; // 默认音量
 
             // 格式化时间显示
             function formatTime(seconds) {
@@ -937,6 +1073,39 @@
                 }
             });
 
+            // 停止按钮
+            stopBtn.addEventListener('click', function() {
+                if (isPlaying) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    isPlaying = false;
+                    progressBar.style.width = '0%';
+                    currentTimeDisplay.textContent = '0:00';
+                    stopBtn.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        stopBtn.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            });
+
+            // 倒退3秒
+            rewindBtn.addEventListener('click', function() {
+                audio.currentTime = Math.max(0, audio.currentTime - 3);
+                rewindBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    rewindBtn.style.transform = 'scale(1)';
+                }, 300);
+            });
+
+            // 快进3秒
+            forwardBtn.addEventListener('click', function() {
+                audio.currentTime = Math.min(audio.duration, audio.currentTime + 3);
+                forwardBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    forwardBtn.style.transform = 'scale(1)';
+                }, 300);
+            });
+
             // 音频加载完成时更新总时长
             audio.addEventListener('loadedmetadata', function() {
                 totalTimeDisplay.textContent = formatTime(audio.duration);
@@ -958,6 +1127,85 @@
                 currentTimeDisplay.textContent = '0:00';
                 isPlaying = false;
             });
+
+            // 音量控制
+            volumeSlider.addEventListener('input', function() {
+                audio.volume = this.value;
+            });
+
+            // 播放队列切换
+            playlistToggle.addEventListener('click', function() {
+                playlist.classList.toggle('open');
+                playlistToggle.style.transform = playlist.classList.contains('open') ? 'scale(1.2)' : 'scale(1)';
+                setTimeout(() => {
+                    playlistToggle.style.transform = 'scale(1)';
+                }, 300);
+            });
+
+            // 播放队列功能
+            playlistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const audioSrc = this.getAttribute('data-src');
+                    audio.src = audioSrc;
+                    audio.load();
+                    audio.play();
+                    isPlaying = true;
+                    
+                    // 更新活跃项
+                    playlistItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 关闭播放列表
+                    playlist.classList.remove('open');
+                });
+            });
+
+            // 视频播放器功能
+            const videoElement = document.getElementById('video-element');
+            const videoPlayerContainer = document.querySelector('.video-player-container');
+            const videoCover = document.querySelector('.video-cover');
+
+            // 视频封面点击播放
+            videoCover.addEventListener('click', function() {
+                videoElement.play();
+                videoCover.style.display = 'none';
+            });
+
+            // 自动识别文件类型
+            function identifyFileType(url) {
+                const extension = url.split('.').pop().toLowerCase();
+                const audioExtensions = ['mp3', 'wav', 'ogg'];
+                const videoExtensions = ['mp4', 'avi', 'mov', 'webm'];
+
+                if (audioExtensions.includes(extension)) {
+                    return 'audio';
+                } else if (videoExtensions.includes(extension)) {
+                    return 'video';
+                } else {
+                    return 'unknown';
+                }
+            }
+
+            // 示例文件URL
+            const fileUrl = 'https://www.w3schools.com/html/mov_bbb.mp4'; // 替换为实际的文件URL
+
+            // 检查文件类型并初始化播放器
+            function initializePlayer() {
+                const fileType = identifyFileType(fileUrl);
+                
+                if (fileType === 'video') {
+                    videoElement.src = fileUrl;
+                    videoCover.style.display = 'flex';
+                } else if (fileType === 'audio') {
+                    audio.src = fileUrl;
+                    videoPlayerContainer.style.display = 'none';
+                } else {
+                    videoPlayerContainer.style.display = 'none';
+                }
+            }
+
+            // 初始化播放器
+            initializePlayer();
 
             // 下载按钮功能
             const downloadBtn = document.querySelector('.download-btn');

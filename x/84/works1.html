@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>御音阁 - 活动日历</title>
+    <title>御音阁 - 作品展示</title>
     <style>
         /* 全局样式 */
         * {
@@ -170,8 +170,8 @@
             max-width: 600px;
         }
 
-        /* 活动日历页面样式 */
-        .events-page {
+        /* 作品展示页面样式 */
+        .works-page {
             padding: 120px 0 50px;
         }
 
@@ -271,80 +271,173 @@
             color: white;
         }
 
-        /* 活动日历 */
-        .events-section {
-            padding: 50px 0;
+        /* 分类筛选 */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
         }
 
-        .event-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .filter-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .event-card {
-            display: flex;
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* 作品网格 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .work-card {
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
 
-        .event-card:hover {
-            transform: translateX(10px);
+        .work-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
-        .event-date {
-            min-width: 100px;
-            background: var(--gradient-bg);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .work-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .work-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .work-card:hover .work-image img {
+            transform: scale(1.1);
+        }
+
+        .work-info {
             padding: 20px;
+            position: relative;
         }
 
-        .event-date .day {
-            font-size: 32px;
-            font-weight: bold;
-        }
-
-        .event-date .month {
-            font-size: 16px;
-        }
-
-        .event-info {
-            padding: 20px;
-            flex: 1;
-        }
-
-        .event-info h3 {
+        .work-info h3 {
             font-size: 20px;
             margin-bottom: 10px;
-            color: var(--dark-color);
+            color: var(--primary-color);
         }
 
-        .event-info p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .event-info .event-meta {
+        .work-meta {
             display: flex;
-            gap: 20px;
+            justify-content: space-between;
+            margin-bottom: 15px;
             color: #888;
             font-size: 14px;
         }
 
-        .event-info .event-meta span {
+        .work-category-container {
             display: flex;
             align-items: center;
+            margin-bottom: 15px;
         }
 
-        .event-info .event-meta i {
-            margin-right: 5px;
+        .work-id {
+            background: rgba(142, 45, 226, 0.1);
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .work-category {
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .work-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .work-details {
+            margin: 15px 0;
+        }
+
+        .detail-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #666;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .work-description {
+            margin: 15px 0;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .view-details {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(142, 45, 226, 0.4);
+        }
+
+        .view-details:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.6);
+        }
+
+        /* 为按钮上方预留空间 */
+        .work-info::after {
+            content: '';
+            display: block;
+            clear: both;
+            height: 20px; /* 增加按钮上方的间距 */
         }
 
         /* 页脚 */
@@ -450,13 +543,14 @@
                 display: none;
             }
             
-            .event-card {
-                flex-direction: column;
+            .works-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
             
-            .event-date {
-                padding: 15px;
-                min-width: 100%;
+            .view-details {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 16px;
             }
         }
     </style>
@@ -479,6 +573,7 @@
                     <li><a href="members.html">成员查询</a></li>
                     <li><a href="about.html">关于我们</a></li>
                     <li><a href="recruitment.html#come">联系我们</a></li>
+					<li><a href="navigation.html">更多</a></li>
                 </ul>
             </nav>
         </div>
@@ -488,22 +583,22 @@
     <section class="header-banner">
         <div class="container">
             <div class="header-content">
-                <h2 class="fade-in">活动日历</h2>
-                <p class="fade-in delay-1">探索御音阁的活动安排，参与我们的精彩活动</p>
+                <h2 class="fade-in">作品展示</h2>
+                <p class="fade-in delay-1">探索御音阁的优秀作品，感受声音艺术的魅力</p>
             </div>
         </div>
     </section>
 
-    <!-- 活动日历页面 -->
-    <section class="events-page">
+    <!-- 作品展示页面 -->
+    <section class="works-page">
         <div class="container">
             <div class="section-title">
-                <h2>活动日历</h2>
+                <h2>作品展示</h2>
             </div>
             
-            <!-- 搜索功能 -->
+            <!-- 搜索框功能 -->
             <div class="search-container">
-                <input type="text" class="search-input" placeholder="搜索活动...">
+                <input type="text" class="search-input" placeholder="搜索作品ID、名称、作者或标签...">
                 <button class="search-btn">
                     <i>🔍</i> 搜索
                 </button>
@@ -511,57 +606,208 @@
             
             <!-- 快捷搜索标签 -->
             <div class="quick-search-tags">
-                <div class="quick-tag">社团招新</div>
-                <div class="quick-tag">社团活动</div>
-                <div class="quick-tag">创作活动</div>
-                <div class="quick-tag">培训课程</div>
-                <div class="quick-tag">线上活动</div>
+                <div class="quick-tag">新人引导本</div>
+                <div class="quick-tag">萌新Pia戏本</div>
+                <div class="quick-tag">黏人精的自我修养</div>
+                <div class="quick-tag">考核本</div>
+                <div class="quick-tag">古风读物</div>
+                <div class="quick-tag">戏曲合集</div>
             </div>
             
-            <!-- 活动列表 -->
-            <div class="events-section">
-                <div class="event-list">
-                    <div class="event-card" data-date="2023-06-15">
-                        <div class="event-date">
-                            <span class="day">15</span>
-                            <span class="month">六月</span>
-                        </div>
-                        <div class="event-info">
-                            <h3>《御音阁》社团招新</h3>
-                            <p>《御音阁》欢迎大家加入我们，长期纳新，不拒新！</p>
-                            <div class="event-meta">
-                                <span><i>⏰</i> 每天 不定时</span>
-                                <span><a href="https://yyg.ihcking.com/recruitment.html">📍 线上平台</a></span>
-                            </div>
-                        </div>
+            <!-- 分类筛选 -->
+            <div class="filter-container">
+                <button class="filter-btn active" data-category="all">全部作品</button>
+                <button class="filter-btn" data-category="pu">普本</button>
+                <button class="filter-btn" data-category="juqing">剧情歌</button>
+                <button class="filter-btn" data-category="kaohe">考核本</button>
+                <button class="filter-btn" data-category="dubu">读物本</button>
+                <button class="filter-btn" data-category="xiqu">戏曲本</button>
+            </div>
+            
+            <!-- 作品网格 -->
+            <div class="works-grid">
+                <!-- 作品1 -->
+                <div class="work-card" data-category="pu" data-id="001">
+                    <div class="work-image">
+                        <img src="./assets/img/御音阁招新.png" alt="作品1">
                     </div>
-                    <div class="event-card" data-date="2023-05-22">
-                        <div class="event-date">
-                            <span class="day">22</span>
-                            <span class="month">五月</span>
+                    <div class="work-info">
+                        <div class="work-category-container">
+                            <div class="work-id">#001</div>
+                            <div class="work-category">普本</div>
                         </div>
-                        <div class="event-info">
-                            <h3>《御音阁》社团活动</h3>
-                            <p>《御音阁》社团成员一起聊天，走本，交流！</p>
-                            <div class="event-meta">
-                                <span><i>⏰</i> 每天晚上 19:00-23:00</span>
-                                <span><a href="https://yyg.ihcking.com/recruitment.html">📍 线上平台</a></span>
-                            </div>
+                        <h3>【御音阁】新人引导本</h3>
+                        <div class="work-meta">
+                            <span>发布日期: 2023-06-15</span>
+                            <span>作者: 泠枫</span>
                         </div>
+                        <div class="work-details">
+                            <span class="detail-tag"><strong>字数:</strong> 5000字</span>
+                            <span class="detail-tag"><strong>风格:</strong> 轻松</span>
+                            <span class="detail-tag"><strong>角色:</strong> 2男1女</span>
+                        </div>
+                        <p class="work-description">新人引导本，欢迎大家使用！</p>
+                        <div class="work-tags">
+                            <span class="tag">御音阁</span>
+                            <span class="tag">社团</span>
+                            <span class="tag">新人</span>
+                            <span class="tag">引导</span>
+                        </div>
+                        <button class="view-details">查看详情</button>
                     </div>
-                    <div class="event-card" data-date="2023-04-10">
-                        <div class="event-date">
-                            <span class="day">10</span>
-                            <span class="month">四月</span>
+                </div>
+                
+                <!-- 作品2 -->
+                <div class="work-card" data-category="pu" data-id="002">
+                    <div class="work-image">
+                        <img src="./assets/img/gywm.png" alt="作品2">
+                    </div>
+                    <div class="work-info">
+                        <div class="work-category-container">
+                            <div class="work-id">#002</div>
+                            <div class="work-category">普本</div>
                         </div>
-                        <div class="event-info">
-                            <h3>《御音阁》社团创作</h3>
-                            <p>《御音阁》社团成员一起创作，完善社团剧本！</p>
-                            <div class="event-meta">
-                                <span><i>⏰</i> 每周六晚 20:00-22:00</span>
-                                <span><a href="https://yyg.ihcking.com/recruitment.html">📍 线上平台</a></span>
-                            </div>
+                        <h3>【御音阁】萌新Pia戏本</h3>
+                        <div class="work-meta">
+                            <span>发布日期: 2023-05-20</span>
+                            <span>作者: 苏瑶</span>
                         </div>
+                        <div class="work-details">
+                            <span class="detail-tag"><strong>字数:</strong> 3000字</span>
+                            <span class="detail-tag"><strong>风格:</strong> 萌系</span>
+                            <span class="detail-tag"><strong>角色:</strong> 1男2女</span>
+                        </div>
+                        <p class="work-description">萌新Pia戏本，欢迎大家使用！</p>
+                        <div class="work-tags">
+                            <span class="tag">御音阁</span>
+                            <span class="tag">社团</span>
+                            <span class="tag">萌新</span>
+                            <span class="tag">Pia戏</span>
+                        </div>
+                        <button class="view-details">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 作品3 -->
+                <div class="work-card" data-category="juqing" data-id="003">
+                    <div class="work-image">
+                        <img src="./assets/img\粘人精的自我修养.png" alt="作品3">
+                    </div>
+                    <div class="work-info">
+                        <div class="work-category-container">
+                            <div class="work-id">#003</div>
+                            <div class="work-category">剧情歌</div>
+                        </div>
+                        <h3>【甜蜜系】黏人精的自我修养</h3>
+                        <div class="work-meta">
+                            <span>发布日期: 2023-04-10</span>
+                            <span>作者: 白浅浅</span>
+                        </div>
+                        <div class="work-details">
+                            <span class="detail-tag"><strong>字数:</strong> 4000字</span>
+                            <span class="detail-tag"><strong>风格:</strong> 甜蜜</span>
+                            <span class="detail-tag"><strong>角色:</strong> 2男2女</span>
+                        </div>
+                        <p class="work-description">甜蜜系情感语录，欢迎大家使用！</p>
+                        <div class="work-tags">
+                            <span class="tag">语录</span>
+                            <span class="tag">情感</span>
+                            <span class="tag">电台稿</span>
+                            <span class="tag">甜蜜</span>
+                        </div>
+                        <button class="view-details">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 作品4 -->
+                <div class="work-card" data-category="kaohe" data-id="004">
+                    <div class="work-image">
+                        <img src="./assets/img/gywm.png" alt="作品4">
+                    </div>
+                    <div class="work-info">
+                        <div class="work-category-container">
+                            <div class="work-id">#004</div>
+                            <div class="work-category">考核本</div>
+                        </div>
+                        <h3>【御音阁】2023年度考核本</h3>
+                        <div class="work-meta">
+                            <span>发布日期: 2023-03-05</span>
+                            <span>作者: 陈子墨</span>
+                        </div>
+                        <div class="work-details">
+                            <span class="detail-tag"><strong>字数:</strong> 6000字</span>
+                            <span class="detail-tag"><strong>风格:</strong> 严肃</span>
+                            <span class="detail-tag"><strong>角色:</strong> 3男3女</span>
+                        </div>
+                        <p class="work-description">2023年度考核专用本，用于成员考核。</p>
+                        <div class="work-tags">
+                            <span class="tag">考核</span>
+                            <span class="tag">年度</span>
+                            <span class="tag">专用</span>
+                        </div>
+                        <button class="view-details">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 作品5 -->
+                <div class="work-card" data-category="dubu" data-id="005">
+                    <div class="work-image">
+                        <img src="./assets/img/gywm.png" alt="作品5">
+                    </div>
+                    <div class="work-info">
+                        <div class="work-category-container">
+                            <div class="work-id">#005</div>
+                            <div class="work-category">读物本</div>
+                        </div>
+                        <h3>【御音阁】古风读物精选</h3>
+                        <div class="work-meta">
+                            <span>发布日期: 2023-02-15</span>
+                            <span>作者: 泠枫</span>
+                        </div>
+                        <div class="work-details">
+                            <span class="detail-tag"><strong>字数:</strong> 8000字</span>
+                            <span class="detail-tag"><strong>风格:</strong> 古风</span>
+                            <span class="detail-tag"><strong>角色:</strong> 4男2女</span>
+                        </div>
+                        <p class="work-description">精选古风读物，感受传统文化的魅力。</p>
+                        <div class="work-tags">
+                            <span class="tag">古风</span>
+                            <span class="tag">读物</span>
+                            <span class="tag">精选</span>
+                            <span class="tag">文化</span>
+                        </div>
+                        <button class="view-details">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 作品6 -->
+                <div class="work-card" data-category="xiqu" data-id="006">
+                    <div class="work-image">
+                        <img src="./assets/img/gywm.png" alt="作品6">
+                    </div>
+                    <div class="work-info">
+                        <div class="work-category-container">
+                            <div class="work-id">#006</div>
+                            <div class="work-category">戏曲本</div>
+                        </div>
+                        <h3>【御音阁】经典戏曲合集</h3>
+                        <div class="work-meta">
+                            <span>发布日期: 2023-01-20</span>
+                            <span>作者: 苏瑶</span>
+                        </div>
+                        <div class="work-details">
+                            <span class="detail-tag"><strong>字数:</strong> 10000字</span>
+                            <span class="detail-tag"><strong>风格:</strong> 戏曲</span>
+                            <span class="detail-tag"><strong>角色:</strong> 5男4女</span>
+                        </div>
+                        <p class="work-description">收录多部经典戏曲作品，感受传统艺术的魅力。</p>
+                        <div class="work-tags">
+                            <span class="tag">戏曲</span>
+                            <span class="tag">经典</span>
+                            <span class="tag">合集</span>
+                            <span class="tag">传统</span>
+                        </div>
+                        <button class="view-details">查看详情</button>
                     </div>
                 </div>
             </div>
@@ -583,7 +829,7 @@
                     <li><a href="members.html">成员查询</a></li>
                     <li><a href="about.html">关于我们</a></li>
                     <li><a href="recruitment.html#come">联系我们</a></li>
-                    <li><a href="index.html">皇宸 · 潇府 · 御音阁</a></li>
+                    <li><a href="navigation.html">皇宸 · 潇府 · 御音阁</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -652,23 +898,49 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 分类筛选功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const workCards = document.querySelectorAll('.work-card');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // 筛选作品
+                    workCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
             // 搜索框功能
             const searchInput = document.querySelector('.search-input');
             const searchBtn = document.querySelector('.search-btn');
             
             function performSearch() {
                 const searchTerm = searchInput.value.toLowerCase();
-                console.log('搜索:', searchTerm);
                 
-                // 这里可以添加搜索逻辑
-                const eventCards = document.querySelectorAll('.event-card');
-                eventCards.forEach(card => {
+                workCards.forEach(card => {
                     const title = card.querySelector('h3').textContent.toLowerCase();
-                    const description = card.querySelector('p').textContent.toLowerCase();
-                    const meta = card.querySelector('.event-meta').textContent.toLowerCase();
+                    const tags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
+                    const category = card.querySelector('.work-category').textContent.toLowerCase();
+                    const workId = card.getAttribute('data-id');
+                    const details = Array.from(card.querySelectorAll('.detail-tag')).map(tag => tag.textContent.toLowerCase());
+                    const description = card.querySelector('.work-description').textContent.toLowerCase();
                     
-                    if (title.includes(searchTerm) || description.includes(searchTerm) || meta.includes(searchTerm)) {
-                        card.style.display = 'flex';
+                    if (title.includes(searchTerm) || tags.some(tag => tag.includes(searchTerm)) || 
+                        category.includes(searchTerm) || workId.includes(searchTerm) || details.some(detail => detail.includes(searchTerm)) || 
+                        description.includes(searchTerm)) {
+                        card.style.display = 'block';
                     } else {
                         card.style.display = 'none';
                     }
@@ -684,23 +956,12 @@
             
             // 快捷标签功能
             const quickTags = document.querySelectorAll('.quick-tag');
+            
             quickTags.forEach(tag => {
                 tag.addEventListener('click', function() {
                     searchInput.value = this.textContent;
                     performSearch();
                 });
-            });
-            
-            // 按日期排序活动
-            const eventCards = Array.from(document.querySelectorAll('.event-card'));
-            eventCards.sort((a, b) => {
-                return new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date'));
-            });
-            
-            const eventList = document.querySelector('.event-list');
-            eventList.innerHTML = '';
-            eventCards.forEach(card => {
-                eventList.appendChild(card);
             });
             
             // 平滑滚动

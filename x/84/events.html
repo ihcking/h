@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>御音阁 - 招新公告</title>
+    <title>御音阁 - 活动日历</title>
     <style>
         /* 全局样式 */
         * {
@@ -170,15 +170,14 @@
             max-width: 600px;
         }
 
-        /* 招新公告 */
-        .recruitment-section {
-            padding: 100px 0;
-            background-color: white;
+        /* 活动日历页面样式 */
+        .events-page {
+            padding: 120px 0 50px;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
         .section-title h2 {
@@ -200,94 +199,152 @@
             background: var(--gradient-bg);
         }
 
-        .recruitment-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .recruitment-content h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .recruitment-content p {
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        .recruitment-content ul {
-            margin-bottom: 20px;
-            padding-left: 20px;
-        }
-
-        .recruitment-content li {
-            margin-bottom: 10px;
-            color: #555;
+        /* 搜索框功能 */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 20px;
             position: relative;
-            padding-left: 20px;
         }
 
-        .recruitment-content li::before {
-            content: '•';
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 30px;
+            border: 2px solid #ddd;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(142, 45, 226, 0.3);
+        }
+
+        .search-btn {
             position: absolute;
-            left: 0;
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        .warning {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .warning strong {
-            color: #856404;
-        }
-
-        /* 微信公众号二维码 */
-        .wechat-qrcode {
-            display: flex;
-            gap: 20px;
-        }
-
-        .wechat-qrcode-item {
-            text-align: center;
-            width: 120px; /* 设置容器为正方形 */
-        }
-
-        .wechat-qrcode-item img {
-            width: 120px; /* 设置二维码为正方形 */
-            height: 120px; /* 设置二维码为正方形 */
-            background: white;
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        /* 媒体平台图标 */
-        .social-platforms {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-platforms a {
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) translateY(-3px);
+            box-shadow: 0 5px 15px rgba(142, 45, 226, 0.4);
+        }
+
+        /* 快捷搜索标签 */
+        .quick-search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .quick-tag {
+            padding: 6px 12px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .social-platforms a:hover {
+        .quick-tag:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 活动日历 */
+        .events-section {
+            padding: 50px 0;
+        }
+
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .event-card {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateX(10px);
+        }
+
+        .event-date {
+            min-width: 100px;
             background: var(--gradient-bg);
-            transform: translateY(-3px);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .event-date .day {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .event-date .month {
+            font-size: 16px;
+        }
+
+        .event-info {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .event-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .event-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .event-info .event-meta {
+            display: flex;
+            gap: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .event-info .event-meta span {
+            display: flex;
+            align-items: center;
+        }
+
+        .event-info .event-meta i {
+            margin-right: 5px;
         }
 
         /* 页脚 */
@@ -295,6 +352,7 @@
             background-color: var(--dark-color);
             color: white;
             padding: 50px 0 20px;
+            margin-top: 50px;
         }
 
         .footer-content {
@@ -334,6 +392,50 @@
             color: var(--gradient-bg);
         }
 
+        .wechat-qrcode {
+            display: flex;
+            gap: 20px;
+        }
+
+        .wechat-qrcode-item {
+            text-align: center;
+        }
+
+        .wechat-qrcode-item img {
+            width: 120px;
+            height: 120px;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .wechat-qrcode-item p {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .social-platforms {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-platforms a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-platforms a:hover {
+            background: var(--gradient-bg);
+            transform: translateY(-3px);
+        }
+
         .footer-bottom {
             text-align: center;
             padding-top: 20px;
@@ -343,49 +445,19 @@
         }
 
         /* 响应式设计 */
-        @media (max-width: 992px) {
-            .header-content h2 {
-                font-size: 32px;
-            }
-            
-            .header-content p {
-                font-size: 16px;
-            }
-        }
-
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
-        }
-
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+            
+            .event-card {
+                flex-direction: column;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .event-date {
+                padding: 15px;
+                min-width: 100%;
             }
-        }
-
-        .fade-in {
-            animation: fadeIn 1s ease forwards;
-            opacity: 0;
-        }
-
-        .delay-1 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-2 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-3 {
-            animation-delay: 0.6s;
         }
     </style>
 </head>
@@ -395,7 +467,7 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptMy41LTljLjgzIDAgMS41LS42NyAxLjUtMS41UzE2LjMzIDggMTUuNSA4IDE0IDguNjcgMTQgOC41IDE0LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41em0tNyAwYy44MyAwIDEuNS0uNjcgMS41LTEuNVM5LjMzIDggOC41IDggOCA4LjY3IDggOC41IDggOSA4LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41eiIvPjwvc3ZnPg==" alt="Logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptMy41LTljLjgzIDAgMS41LS42NyAxLjUtMS41UzE2LjMzIDggMTUuNSA4IDE0IDguNjcgMTQgOC41IDE0LjUgOSAxNS41IDkgNVMyLjUgMTUgMi41IDE1cy42NyAxLjUgMS41IDEuNXoiLz48L3N2Zz4=" alt="Logo">
                     <h1>御音阁</h1>
                 </div>
                 <ul class="nav-links">
@@ -407,6 +479,7 @@
                     <li><a href="members.html">成员查询</a></li>
                     <li><a href="about.html">关于我们</a></li>
                     <li><a href="recruitment.html#come">联系我们</a></li>
+					<li><a href="navigation.html">更多</a></li>
                 </ul>
             </nav>
         </div>
@@ -416,84 +489,81 @@
     <section class="header-banner">
         <div class="container">
             <div class="header-content">
-                <h2 class="fade-in">御音阁招新公告</h2>
-                <p class="fade-in delay-1">欢迎有志于配音艺术的你加入我们的大家庭！</p>
+                <h2 class="fade-in">活动日历</h2>
+                <p class="fade-in delay-1">探索御音阁的活动安排，参与我们的精彩活动</p>
             </div>
         </div>
     </section>
 
-    <!-- 招新公告 -->
-    <section class="recruitment-section">
+    <!-- 活动日历页面 -->
+    <section class="events-page">
         <div class="container">
             <div class="section-title">
-                <h2>招新公告</h2>
+                <h2>活动日历</h2>
             </div>
-            <div class="recruitment-content">
-                <h3>长期纳新，不拒新！</h3>
-				<p>主社：御音阁（ID：9925）</p>
-				<p>分社：御音阁·湖边小筑（ID：313002）</p>
-				<p>分社：御音阁·聆风学府（ID：688715）</p>
-                <p>御音阁是一个专注于Pia戏配音的兴趣社团，我们欢迎所有对有声艺术感兴趣的朋友加入我们的大家庭！</p>
-                
-                <div class="warning">
-                    <strong>小群体，无事生非，言语粗鲁，引战开瓜，请绕道而行！</strong>
-                </div>
-
-                <h3 class="fade-in">入社须知</h3>
-                <ul class="fade-in delay-1">
-                    <li>年龄要求18周岁以上；</li>
-                    <li>对有声艺术感兴趣，且愿意持之以恒；</li>
-                    <li>每天完成免费社团任务，保持稳定活跃度；</li>
-                    <li>凡进入【御音阁】的音友，不得与内部成员或社团以外的人员发生口角冲突，无事生非，引战开瓜，情节严重者直接移除，永不录用；</li>
-                    <li>社团任务可以领取声望值,声望值在权益中可以兑换头像框、补签卡、社团宝箱(钻戒、跑车、口红、金币等礼物)每周清群，社团活跃值为零将会获得“飞出社团机票一张”。</li>
-                </ul>
-
-                <h3 class="fade-in delay-2">晋级须知</h3>
-                <ul class="fade-in delay-3">
-                    <li>完成社团基础要求和任务；</li>
-                    <li>严禁同时加入其他社团组织；</li>
-                    <li>每天至少花十分钟时间在社团活动房交流；</li>
-                    <li>每周社团任务贡献度至少到225以上；</li>
-                    <li>周六晚上八点到十点需要参与社团活动；</li>
-                    <li>认真学习和完成社团任务，并学以致用。</li>
-                </ul>
-
-                <h3 class="fade-in">管理须知</h3>
-                <ul class="fade-in delay-1">
-                    <li>完成社团晋级要求和任务；</li>
-                    <li>拥有强烈的社团责任感和使命感；</li>
-                    <li>坚决拥护并积极完成社长所交待的任务；</li>
-                    <li>愿意花更多的时间和精力来发展社团；</li>
-                    <li>能妥善的处理社团相关事务，富有爱心，耐心和包容心；</li>
-                    <li>带领社团成员，每周至少完成一部优质创作任务。</li>
-                </ul>
-
-                <h3 class="fade-in delay-2">招募信息</h3>
-                <p class="fade-in delay-3">我们正在招募以下人才，期待你的加入！</p>
-                <ul>
-                    <li>编剧/作者</li>
-                    <li>设计/美工</li>
-                    <li>摄影/后期</li>
-                    <li>歌手/主持</li>
-                    <li>CV（配音演员）</li>
-                </ul>
-
-                <p>相遇就是缘分，希望大家可以一起娱乐开心，友好交流，互相帮助！</p>
-                <p>门槛虽不高，但想好了再申请，别说来就来，说走就走~ 矛盾、纠纷、引战、不当言论等行为自负，与社团无关！</p>
-
-                <h3 class="fade-in">联系我们</h3>
-                <p class="fade-in delay-1">如有任何问题请联系：</p>
-                <ul>
-                    <li>ID: 3392223</li>
-                    <li>微信/QQ: 3010662388</li>
-					<li><a href="#">hx@ihcking.com</a></li>
-                </ul>
-
-                <!-- 新增的申请加入我们模块 -->
-                <div id="come"style="margin-top: 50px; text-align: center;">
-                    <h3 class="fade-in">欢迎加入我们</h3>
-                    <p class="fade-in delay-1">准备好加入御音阁了吗？点击下方按钮填写申请表！</p>
-                    <a href="https://docs.qq.com/form/page/DR2RUaHhydUJpdGdE" class="btn fade-in delay-2">立即申请</a>
+            
+            <!-- 搜索功能 -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="搜索活动...">
+                <button class="search-btn">
+                    <i>🔍</i> 搜索
+                </button>
+            </div>
+            
+            <!-- 快捷搜索标签 -->
+            <div class="quick-search-tags">
+                <div class="quick-tag">社团招新</div>
+                <div class="quick-tag">社团活动</div>
+                <div class="quick-tag">创作活动</div>
+                <div class="quick-tag">培训课程</div>
+                <div class="quick-tag">线上活动</div>
+            </div>
+            
+            <!-- 活动列表 -->
+            <div class="events-section">
+                <div class="event-list">
+                    <div class="event-card" data-date="2023-06-15">
+                        <div class="event-date">
+                            <span class="day">15</span>
+                            <span class="month">六月</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>《御音阁》社团招新</h3>
+                            <p>《御音阁》欢迎大家加入我们，长期纳新，不拒新！</p>
+                            <div class="event-meta">
+                                <span><i>⏰</i> 每天 不定时</span>
+                                <span><a href="https://yyg.ihcking.com/recruitment.html">📍 线上平台</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-card" data-date="2023-05-22">
+                        <div class="event-date">
+                            <span class="day">22</span>
+                            <span class="month">五月</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>《御音阁》社团活动</h3>
+                            <p>《御音阁》社团成员一起聊天，走本，交流！</p>
+                            <div class="event-meta">
+                                <span><i>⏰</i> 每天晚上 19:00-23:00</span>
+                                <span><a href="https://yyg.ihcking.com/recruitment.html">📍 线上平台</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-card" data-date="2023-04-10">
+                        <div class="event-date">
+                            <span class="day">10</span>
+                            <span class="month">四月</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>《御音阁》社团创作</h3>
+                            <p>《御音阁》社团成员一起创作，完善社团剧本！</p>
+                            <div class="event-meta">
+                                <span><i>⏰</i> 每周六晚 20:00-22:00</span>
+                                <span><a href="https://yyg.ihcking.com/recruitment.html">📍 线上平台</a></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -514,7 +584,7 @@
                     <li><a href="members.html">成员查询</a></li>
                     <li><a href="about.html">关于我们</a></li>
                     <li><a href="recruitment.html#come">联系我们</a></li>
-                    <li><a href="index.html">皇宸 · 潇府 · 御音阁</a></li>
+                    <li><a href="navigation.html">皇宸 · 潇府 · 御音阁</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -582,22 +652,56 @@
 </footer>
 
     <script>
-        // 滚动动画
         document.addEventListener('DOMContentLoaded', function() {
-            const fadeElements = document.querySelectorAll('.fade-in');
+            // 搜索框功能
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
             
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase();
+                console.log('搜索:', searchTerm);
+                
+                // 这里可以添加搜索逻辑
+                const eventCards = document.querySelectorAll('.event-card');
+                eventCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    const meta = card.querySelector('.event-meta').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm) || meta.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
                     }
                 });
-            }, {
-                threshold: 0.1
+            }
+            
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
             });
             
-            fadeElements.forEach(element => {
-                observer.observe(element);
+            // 快捷标签功能
+            const quickTags = document.querySelectorAll('.quick-tag');
+            quickTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    searchInput.value = this.textContent;
+                    performSearch();
+                });
+            });
+            
+            // 按日期排序活动
+            const eventCards = Array.from(document.querySelectorAll('.event-card'));
+            eventCards.sort((a, b) => {
+                return new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date'));
+            });
+            
+            const eventList = document.querySelector('.event-list');
+            eventList.innerHTML = '';
+            eventCards.forEach(card => {
+                eventList.appendChild(card);
             });
             
             // 平滑滚动

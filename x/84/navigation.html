@@ -206,9 +206,31 @@
             font-weight: bold;
         }
 
-        /* 搜索栏 */
+        /* 搜索框 */
         .search-section {
             margin-bottom: 20px;
+        }
+
+        .search-options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .search-option-btn {
+            padding: 8px 15px;
+            margin: 0 5px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .search-option-btn.active {
+            background-color: var(--primary-color);
+            color: white;
         }
 
         .search-box {
@@ -309,7 +331,7 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-			margin-right: 80px;
+            margin-right: 80px;
         }
 
         .qrcode-container {
@@ -328,15 +350,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .link-card-link {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
         }
 
         /* 页脚 */
@@ -497,7 +510,7 @@
                     <li><a href="works1.html">作品展示</a></li>
                     <li><a href="members.html">成员查询</a></li>
                     <li><a href="about.html">关于我们</a></li>
-                    <li><a href="recruitment.html#come">联系我们</a></li>
+                    <li><a href="recruitment.html#come">加入我们</a></li>
 					<li><a href="navigation.html">更多</a></li>
                 </ul>
             </nav>
@@ -521,8 +534,12 @@
             <!-- 时间显示 -->
             <div class="time-display" id="current-time"></div>
             
-            <!-- 搜索框 -->
+            <!-- 搜索功能 -->
             <div class="search-section">
+                <div class="search-options">
+                    <button class="search-option-btn active" data-option="local">本地搜索</button>
+                    <button class="search-option-btn" data-option="global">全网搜索</button>
+                </div>
                 <div class="search-box">
                     <input type="text" class="search-input" placeholder="搜索网站或内容...">
                     <button class="search-button">搜索</button>
@@ -542,35 +559,100 @@
             </div>
             
             <!-- 网站卡片 -->
-            <div class="links-grid">
+            <div class="links-grid" id="links-grid">
                 
-                <div class="link-card">
+                <div class="link-card" data-name="皇宸" data-url="https://hc.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
                     <div class="qrcode-container">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://baidu.com/" alt="百度 QR Code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://hc.ihcking.com/" alt="皇宸 QR Code">
                     </div>
                     <div class="link-card-content">
-                        <a href="https://baidu.com/" target="_blank" class="link-title">百度</a>
+                        <a href="https://hc.ihcking.com/" target="_blank" class="link-title">皇宸</a>
                         <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
                     </div>
                 </div>
                 
-                <div class="link-card">
+                <div class="link-card" data-name="皇宸部落" data-url="https://hcbl.ihcking.com/" data-description="中文互联网高质量的问答社区和创作者聚集的原创内容平台。">
                     <div class="qrcode-container">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://zhihu.com/" alt="知乎 QR Code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://hcbl.ihcking.com/" alt="皇宸部落 QR Code">
                     </div>
                     <div class="link-card-content">
-                        <a href="https://zhihu.com/" target="_blank" class="link-title">知乎</a>
+                        <a href="https://hcbl.ihcking.com/" target="_blank" class="link-title">皇宸部落</a>
                         <div class="link-description">中文互联网高质量的问答社区和创作者聚集的原创内容平台。</div>
                     </div>
                 </div>
                 
-                <div class="link-card">
+                <div class="link-card" data-name="乾龙公会" data-url="https://qlgh.ihcking.com/" data-description="全球最大的代码托管平台，开发者可以在这里协作开发项目。">
                     <div class="qrcode-container">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://github.com/" alt="GitHub QR Code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://qlgh.ihcking.com/" alt="乾龙公会 QR Code">
                     </div>
                     <div class="link-card-content">
-                        <a href="https://github.com/" target="_blank" class="link-title">GitHub</a>
+                        <a href="https://qlgh.ihcking.com/" target="_blank" class="link-title">乾龙公会</a>
                         <div class="link-description">全球最大的代码托管平台，开发者可以在这里协作开发项目。</div>
+                    </div>
+                </div>
+				
+                <div class="link-card" data-name="卿城家族" data-url="https://qcjz.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
+                    <div class="qrcode-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://qcjz.ihcking.com/" alt="卿城家族 QR Code">
+                    </div>
+                    <div class="link-card-content">
+                        <a href="https://qcjz.ihcking.com/" target="_blank" class="link-title">卿城家族</a>
+                        <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
+                    </div>
+                </div>
+				
+                <div class="link-card" data-name="枫谷师门" data-url="https://fgsm.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
+                    <div class="qrcode-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://fgsm.ihcking.com/" alt="枫谷师门 QR Code">
+                    </div>
+                    <div class="link-card-content">
+                        <a href="https://fgsm.ihcking.com/" target="_blank" class="link-title">枫谷师门</a>
+                        <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
+                    </div>
+                </div>
+                <div class="link-card" data-name="潇府" data-url="https://xf.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
+                    <div class="qrcode-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://xf.ihcking.com/" alt="潇府 QR Code">
+                    </div>
+                    <div class="link-card-content">
+                        <a href="https://xf.ihcking.com/" target="_blank" class="link-title">潇府</a>
+                        <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
+                    </div>
+                </div>
+                <div class="link-card" data-name="逸阁" data-url="https://yg.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
+                    <div class="qrcode-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://yg.ihcking.com/" alt="逸阁 QR Code">
+                    </div>
+                    <div class="link-card-content">
+                        <a href="https://yg.ihcking.com/" target="_blank" class="link-title">逸阁</a>
+                        <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
+                    </div>
+                </div>
+                <div class="link-card" data-name="卿阁" data-url="https://qg.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
+                    <div class="qrcode-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://qg.ihcking.com/" alt="卿阁 QR Code">
+                    </div>
+                    <div class="link-card-content">
+                        <a href="https://qg.ihcking.com/" target="_blank" class="link-title">卿阁</a>
+                        <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
+                    </div>
+                </div>
+                <div class="link-card" data-name="枫阁" data-url="https://fg.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
+                    <div class="qrcode-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://fg.ihcking.com/" alt="枫阁 QR Code">
+                    </div>
+                    <div class="link-card-content">
+                        <a href="https://fg.ihcking.com/" target="_blank" class="link-title">枫阁</a>
+                        <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
+                    </div>
+                </div>
+                <div class="link-card" data-name="御音阁" data-url="https://yyg.ihcking.com/" data-description="全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。">
+                    <div class="qrcode-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://yyg.ihcking.com/" alt="御音阁 QR Code">
+                    </div>
+                    <div class="link-card-content">
+                        <a href="https://yyg.ihcking.com/" target="_blank" class="link-title">御音阁</a>
+                        <div class="link-description">全球最大的中文搜索引擎，提供网页、图片、视频等多种搜索服务。</div>
                     </div>
                 </div>
             </div>
@@ -591,7 +673,7 @@
                         <li><a href="works1.html">作品展示</a></li>
                         <li><a href="members.html">成员查询</a></li>
                         <li><a href="about.html">关于我们</a></li>
-                        <li><a href="recruitment.html#come">联系我们</a></li>
+                        <li><a href="recruitment.html#come">加入我们</a></li>
                         <li><a href="navigation.html">皇宸 · 潇府 · 御音阁</a></li>
                     </ul>
                 </div>
@@ -679,17 +761,71 @@
         setInterval(updateTime, 1000);
         updateTime();
         
-        // 搜索框交互
+        // 搜索功能
         const searchButton = document.querySelector('.search-button');
         const searchInput = document.querySelector('.search-input');
+        const searchOptionButtons = document.querySelectorAll('.search-option-btn');
+        const linkCards = document.querySelectorAll('.link-card');
+        let currentSearchOption = 'local'; // 默认为本地搜索
         
+        // 切换搜索选项
+        searchOptionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                searchOptionButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentSearchOption = button.dataset.option;
+                
+                // 如果切换到本地搜索，显示所有网站卡片
+                if (currentSearchOption === 'local') {
+                    linkCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                }
+            });
+        });
+        
+        // 执行本地搜索
+        function performLocalSearch(term) {
+            if (term.trim() === '') {
+                // 如果搜索词为空，显示所有网站卡片
+                linkCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                return;
+            }
+            
+            linkCards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const url = card.dataset.url.toLowerCase();
+                const description = card.dataset.description.toLowerCase();
+                const searchTerm = term.toLowerCase();
+                
+                if (name.includes(searchTerm) || url.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // 搜索功能按钮点击事件
         searchButton.addEventListener('click', () => {
             const searchTerm = searchInput.value.trim();
             if (searchTerm) {
-                window.open(`https://www.baidu.com/s?wd=${encodeURIComponent(searchTerm)}`);
+                if (currentSearchOption === 'local') {
+                    performLocalSearch(searchTerm);
+                } else {
+                    window.open(`https://www.baidu.com/s?wd=${encodeURIComponent(searchTerm)}`);
+                }
+            } else {
+                // 如果搜索词为空，显示所有网站卡片
+                linkCards.forEach(card => {
+                    card.style.display = 'block';
+                });
             }
         });
         
+        // 回车键触发搜索
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 searchButton.click();

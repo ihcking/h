@@ -363,6 +363,12 @@
             transition: width 0.1s linear;
         }
 
+        .time-display {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
         /* 文字特效 */
         .text-effect {
             position: relative;
@@ -665,16 +671,19 @@
                     <div class="audio-player-container">
                         <div class="audio-player">
                             <div class="audio-controls">
-                                <button id="play-btn">▶</button>
-                                <button id="pause-btn">⏸</button>
+                                <button id="play-btn" class="play-btn">▶</button>
+                                <button id="pause-btn" class="pause-btn">⬜</button>
                             </div>
                             <div class="audio-info">
-                                <p>PIA戏背景音乐</p>
+                                <p>PIA戏背景音乐 - BGM</p>
                                 <div class="progress-container">
                                     <div class="progress-bar"></div>
                                 </div>
+                                <div class="time-display">
+                                    <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
+                                </div>
                             </div>
-                            <a href="#" class="download-btn">下载音频</a>
+                            <a href="https://www.doubao.com/drive/s/195f571297685a3c" class="download-btn">下载</a>
                         </div>
                     </div>
 
@@ -730,21 +739,6 @@
                     <p>装乖 耍帅 换不停风格</p>
                     <p>青春有太多 未知的猜测</p>
                     <p>成长的烦恼算什么</p>
-
-                    <h3 class="text-effect" data-text="（二）剧情歌">（二）剧情歌</h3>
-                    <p>一般为轮流演绎，根据当前剧本，在字体颜色更换后或者相应音效之后，或者剧本中的提示更换，根据麦序轮流演绎。部分台词可能较长，需要注意卡音效（等B不等人），台词没读完而下一个音效已经到了就需要接音效之后的台词。</p>
-
-                    <p>多人（N男N女）：没有特定的角色性别区分，注意剧本中提示换人，轮流演绎，走本麦序位不足时由下一位走本麦序位轮流开始。</p>
-
-                    <p>欢迎收听由[御音阁]出品的《Pia戏萌新本-剧情歌》，请大家尽情演绎哦</p>
-
-                    <p class="text-effect" data-text="序幕：结缘">序幕：结缘</p>
-                    <p class="text-effect" data-text="铜铃轻响">[音效：铜铃轻响]</p>
-                    <p>玄霜（冷肃）："红尘阁第七代结师——玄霜，今日为君解心结。"</p>
-                    <p class="text-effect" data-text="冰晶凝结">[音效：冰晶凝结声]</p>
-                    <p>墨离（吊儿郎当）："小娘子，我的心结可深得很～（突然正经）比如...如何让死人复生？"</p>
-                    <p>青鸾（急迫）："小心！此人身上有妖气！"</p>
-                    <p class="text-effect" data-text="挡剑打斗">[音效：挡剑打斗声]</p>
 
                     <!-- 更多内容省略，实际应用中可以继续添加 -->
                 </div>
@@ -810,146 +804,167 @@
         </div>
     </section>
 
-<!-- 页脚 -->
-<footer id="contact">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>御音阁</h3>
-                <ul>
-                    <li><a href="index.html">首页</a></li>
-                    <li><a href="recruitment.html">招新公告</a></li>
-                    <li><a href="events.html">活动日历</a></li>
-                    <li><a href="news1.html">最新动态</a></li>
-                    <li><a href="works1.html">作品展示</a></li>
-                    <li><a href="members.html">成员查询</a></li>
-                    <li><a href="about.html">关于我们</a></li>
-                    <li><a href="recruitment.html#come">联系我们</a></li>
-                    <li><a href="index.html">皇宸 · 潇府 · 御音阁</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>皇宸</h3>
-                <ul>
-                    <li><a href="https://hc.ihcking.com">皇宸总部</a></li>
-                    <li><a href="https://hcbl.ihcking.com">皇宸部落</a></li>
-                    <li><a href="https://qlgh.ihcking.com">乾龙公会</a></li>
-                    <li><a href="https://qcjz.ihcking.com">卿城家族</a></li>
-                    <li><a href="https://fgsm.ihcking.com">枫谷师门</a></li>
-                    <li><a href="https://xf.ihcking.com">潇府</a></li>
-                    <li><a href="https://yg.ihcking.com">逸阁</a></li>
-                    <li><a href="https://qg.ihcking.com">卿阁</a></li>
-                    <li><a href="https://fg.ihcking.com">枫阁</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>友链</h3>
-                <ul>
-                    <li><a href="https://xf.ihcking.com">潇府</a></li>
-                    <li><a href="https://yg.ihcking.com">逸阁</a></li>
-                    <li><a href="https://qg.ihcking.com">卿阁</a></li>
-                    <li><a href="https://fg.ihcking.com">枫阁</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>联系我们</h3>
-                <ul>
-                        <li><a href="#">🐧 3010662388</a></li>
-                        <li><a href="#">📧 hc@ihcking.com</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>关注我们</h3>
-                <div class="wechat-qrcode">
-                    <div class="wechat-qrcode-item">
-                        <img src=".\assets\img\xfdyh.jpg" alt="微信公众号1">
-                        <p>潇府订阅号</p>
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>御音阁</h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="recruitment.html">招新公告</a></li>
+                        <li><a href="events.html">活动日历</a></li>
+                        <li><a href="news1.html">最新动态</a></li>
+                        <li><a href="works1.html">作品展示</a></li>
+                        <li><a href="members.html">成员查询</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="recruitment.html#come">联系我们</a></li>
+                        <li><a href="index.html">皇宸 · 潇府 · 御音阁</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>皇宸</h3>
+                    <ul>
+                        <li><a href="https://hc.ihcking.com">皇宸总部</a></li>
+                        <li><a href="https://hcbl.ihcking.com">皇宸部落</a></li>
+                        <li><a href="https://qlgh.ihcking.com">乾龙公会</a></li>
+                        <li><a href="https://qcjz.ihcking.com">卿城家族</a></li>
+                        <li><a href="https://fgsm.ihcking.com">枫谷师门</a></li>
+                        <li><a href="https://xf.ihcking.com">潇府</a></li>
+                        <li><a href="https://yg.ihcking.com">逸阁</a></li>
+                        <li><a href="https://qg.ihcking.com">卿阁</a></li>
+                        <li><a href="https://fg.ihcking.com">枫阁</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>友链</h3>
+                    <ul>
+                        <li><a href="https://xf.ihcking.com">潇府</a></li>
+                        <li><a href="https://yg.ihcking.com">逸阁</a></li>
+                        <li><a href="https://qg.ihcking.com">卿阁</a></li>
+                        <li><a href="https://fg.ihcking.com">枫阁</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul>
+                            <li><a href="#">💬 3010662388</a></li>
+                            <li><a href="#">📧 hc@ihcking.com</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>关注我们</h3>
+                    <div class="wechat-qrcode">
+                        <div class="wechat-qrcode-item">
+                            <img src="./assets/img/xfdyh.jpg" alt="微信公众号1">
+                            <p>潇府订阅号</p>
+                        </div>
+                        <div class="wechat-qrcode-item">
+                            <img src="./assets/img/hcwfh.jpg" alt="微信公众号2">
+                            <p>皇宸服务号</p>
+                        </div>
                     </div>
-                    <div class="wechat-qrcode-item">
-                        <img src=".\assets\img\hcwfh.jpg" alt="微信公众号2">
-                        <p>皇宸服务号</p>
+                    <div class="social-platforms">
+                        <a href="#" title="哔哩哔哩">
+                            <i>B</i>
+                        </a>
+                        <a href="#" title="微博">
+                            <i>微</i>
+                        </a>
+                        <a href="#" title="抖音">
+                            <i>抖</i>
+                        </a>
+                        <a href="#" title="网易云音乐">
+                            <i>云</i>
+                        </a>
                     </div>
                 </div>
-                <div class="social-platforms">
-                    <a href="#" title="哔哩哔哩">
-                        <i>B</i>
-                    </a>
-                    <a href="#" title="微博">
-                        <i>微</i>
-                    </a>
-                    <a href="#" title="抖音">
-                        <i>抖</i>
-                    </a>
-                    <a href="#" title="网易云音乐">
-                        <i>云</i>
-                    </a>
-                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 御音阁 . 保留所有权利.</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 御音阁 . 保留所有权利.</p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 音乐播放器功能
+            const audio = new Audio('./assets/audition/御音阁-萌新本-BGM.mp3'); // 替换为实际的音频文件URL
             const playBtn = document.getElementById('play-btn');
             const pauseBtn = document.getElementById('pause-btn');
             const progressBar = document.querySelector('.progress-bar');
-            
+            const currentTimeDisplay = document.getElementById('current-time');
+            const totalTimeDisplay = document.getElementById('total-time');
+            const progressContainer = document.querySelector('.progress-container');
+
             let isPlaying = false;
-            let progressInterval;
-            
+
+            // 格式化时间显示
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            // 更新进度条
+            function updateProgressBar() {
+                const percentage = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = `${percentage}%`;
+                currentTimeDisplay.textContent = formatTime(audio.currentTime);
+            }
+
+            // 播放按钮
             playBtn.addEventListener('click', function() {
                 if (!isPlaying) {
+                    audio.play();
                     isPlaying = true;
                     playBtn.style.transform = 'scale(1.2)';
                     setTimeout(() => {
                         playBtn.style.transform = 'scale(1)';
                     }, 300);
-                    
-                    // 模拟进度条更新
-                    updateProgressBar();
                 }
             });
-            
+
+            // 暂停按钮
             pauseBtn.addEventListener('click', function() {
                 if (isPlaying) {
+                    audio.pause();
                     isPlaying = false;
                     pauseBtn.style.transform = 'scale(1.2)';
                     setTimeout(() => {
                         pauseBtn.style.transform = 'scale(1)';
                     }, 300);
-                    
-                    // 停止进度条更新
-                    clearInterval(progressInterval);
                 }
             });
-            
-            function updateProgressBar() {
-                let width = 0;
-                progressInterval = setInterval(() => {
-                    if (!isPlaying) {
-                        clearInterval(progressInterval);
-                        return;
-                    }
-                    
-                    width += 0.5;
-                    if (width >= 100) {
-                        width = 0;
-                    }
-                    progressBar.style.width = width + '%';
-                }, 100);
-            }
-            
+
+            // 音频加载完成时更新总时长
+            audio.addEventListener('loadedmetadata', function() {
+                totalTimeDisplay.textContent = formatTime(audio.duration);
+            });
+
+            // 音频播放时更新进度条
+            audio.addEventListener('timeupdate', updateProgressBar);
+
+            // 点击进度条跳转到指定时间
+            progressContainer.addEventListener('click', function(e) {
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = pos * audio.duration;
+            });
+
+            // 音频播放结束时重置
+            audio.addEventListener('ended', function() {
+                progressBar.style.width = '0%';
+                currentTimeDisplay.textContent = '0:00';
+                isPlaying = false;
+            });
+
             // 下载按钮功能
             const downloadBtn = document.querySelector('.download-btn');
             downloadBtn.addEventListener('click', function(e) {
                 e.preventDefault();
             });
-            
+
             // 滚动动画
             const fadeElements = document.querySelectorAll('.fade-in');
             

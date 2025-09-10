@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小学英语作业作业自动生成系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 引入jsPDF库用于生成PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        accent: '#0F172A',
+                        light: '#F8FAFC',
+                        neutral: '#94A3B8'
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'system-ui', 'sans-serif'],
+                        english: ['"Times New Roman"', 'Georgia', 'serif'] // 英文专用字体
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .phonetic {
+                color: #6B7280;
+                font-size: 0.9em;
+            }
+            .answer-hidden {
+                display: none;
+            }
+            .answer-reveal {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans text-accent min-h-screen flex flex-col">
+    <!-- 头部区域 -->
+    <header class="bg-gradient-to-r from-primary to-secondary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6 md:py-8">
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-2 text-shadow">小学英语作业自动生成系统</h1>
+                <p class="text-white/90 max-w-2xl mx-auto">轻松生成各种英语作业，支持打印和PDF导出，帮助孩子巩固英语知识</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 左侧设置面板 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h2 class="text-xl font-bold mb-5 flex items-center">
+                        <i class="fa fa-cogs text-primary mr-2"></i> 作业设置
+                    </h2>
+                    
+                    <form id="homeworkSettings" class="space-y-5">
+                        <!-- 练习类型 -->
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">练习类型</label>
+                            <div class="grid grid-cols-1 gap-2">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="word-spelling" checked class="mr-2 text-primary">
+                                    <span>单词拼写</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="word-meaning" checked class="mr-2 text-primary">
+                                    <span>单词释义</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="sentence-making" class="mr-2 text-primary">
+                                    <span>造句练习</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="translation" class="mr-2 text-primary">
+                                    <span>中英互译</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="fill-blank" class="mr-2 text-primary">
+                                    <span>完形填空</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 年级选择 -->
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">年级</label>
+                            <select name="grade" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="1">一年级</option>
+                                <option value="2" selected>二年级</option>
+                                <option value="3">三年级</option>
+                                <option value="4">四年级</option>
+                                <option value="5">五年级</option>
+                                <option value="6">六年级</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 题目数量 -->
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">题目数量</label>
+                            <input type="number" name="count" value="20" min="5" max="50" 
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        </div>
+                        
+                        <!-- 音标显示设置 -->
+                        <div>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                <input type="checkbox" name="showPhonetic" id="showPhonetic" class="mr-2 text-primary">
+                                <span>显示单词音标</span>
+                            </label>
+                        </div>
+                        
+                        <!-- 生成按钮 -->
+                        <button type="button" id="generateBtn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                            <i class="fa fa-refresh mr-2"></i> 生成作业题
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 右侧作业展示区 -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 card-hover h-full flex flex-col">
+                    <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="fa fa-book text-primary mr-2"></i> 英语作业练习册
+                        </h2>
+                        <div class="flex gap-3">
+                            <button id="printStudentBtn" class="bg-secondary hover:bg-secondary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center">
+                                <i class="fa fa-print mr-2"></i> 打印作业(学生版)
+                            </button>
+                            <button id="printAnswerBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center">
+                                <i class="fa fa-print mr-2"></i> 打印作业答案(家长版)
+                            </button>
+                            <button id="pdfBtn" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center">
+                                <i class="fa fa-file-pdf-o mr-2"></i> 生成PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="homeworkContent" class="flex-grow">
+                        <!-- 作业标题 -->
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold mb-2" id="homeworkTitle">小学英语练习作业</h3>
+                            <p class="text-gray-600" id="homeworkSubtitle">班级：__________ 姓名：__________ 日期：__________ 得分：__________</p>
+                        </div>
+                        
+                        <!-- 题目区域 -->
+                        <div id="questionsArea" class="space-y-6">
+                            <!-- 题目将通过JS动态生成 -->
+                        </div>
+                        
+                        <!-- 答案区域 -->
+                        <div id="answersArea" class="mt-12 pt-6 border-t-2 border-gray-200 answer-hidden">
+                            <h3 class="text-xl font-bold mb-6 text-center">参考答案</h3>
+                            <div id="answersContainer" class="space-y-4">
+                                <!-- 答案将通过JS动态生成 -->
+                            </div>
+                        </div>
+                        
+                        <!-- 家长签字区 -->
+                        <div class="mt-12 text-right">
+                            <p>家长签字：__________</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-accent text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center" id="copyright">
+                <div class="flex flex-col md:flex-row justify-center items-center">
+                    <p class="mb-4 md:mb-0 md:mr-4">西数资源网首发</p>
+                    <a href="http://www.xishuzy.com" class="text-secondary hover:text-white font-medium mb-4 md:mb-0 md:mr-4 flex items-center" target="_blank">
+                        <i class="fa fa-globe mr-1"></i> www.xishuzy.com
+                    </a>
+                    <p class="text-gray-300 text-sm">© 2023 小学英语作业自动生成系统 - 保留所有权利</p>
+                </div>
+            </div>
+            
+            <!-- 防篡改措施 -->
+            <script type="text/javascript">
+                // 防篡改脚本
+                (function() {
+                    // 保存原始版权信息
+                    var originalCopyright = document.getElementById('copyright').innerHTML;
+                    var copyrightElement = document.getElementById('copyright');
+                    
+                    // 定期检查版权信息是否被修改
+                    setInterval(function() {
+                        if (copyrightElement.innerHTML !== originalCopyright) {
+                            // 恢复原始版权信息
+                            copyrightElement.innerHTML = originalCopyright;
+                            
+                            // 记录尝试篡改行为
+                            console.warn('检测到尝试篡改版权信息的行为');
+                            
+                            // 添加视觉提示
+                            copyrightElement.classList.add('bg-red-600');
+                            setTimeout(function() {
+                                copyrightElement.classList.remove('bg-red-600');
+                            }, 1000);
+                        }
+                    }, 500);
+                    
+                    // 防止元素被删除
+                    new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (!document.body.contains(copyrightElement)) {
+                                // 重新添加版权信息
+                                document.querySelector('footer').appendChild(copyrightElement);
+                                console.warn('检测到尝试删除版权信息的行为');
+                            }
+                        });
+                    }).observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                })();
+            </script>
+        </div>
+    </footer>
+
+    <!-- 打印样式 - 修复答案显示问题 -->
+    <style media="print">
+        header, main > div > div:first-child, #printStudentBtn, #printAnswerBtn, #pdfBtn {
+            display: none !important;
+        }
+        
+        body, .container, #homeworkContent {
+            background: white !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .bg-white {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 12px;
+        }
+        
+        #questionsArea {
+            font-size: 16px;
+            line-height: 2;
+            margin-bottom: 40px; /* 为答案区域留出空间 */
+        }
+        
+        .english-text {
+            font-family: "Times New Roman", Georgia, serif !important;
+        }
+        
+        /* 关键修复：移除默认隐藏，通过专用类控制显示 */
+        #answersArea {
+            display: none !important;
+        }
+        
+        /* 答案版本打印样式 - 强制显示答案区域 */
+        .print-answer-version #answersArea {
+            display: block !important;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ccc;
+            page-break-inside: avoid; /* 避免答案被分页截断 */
+        }
+        
+        .print-answer-version #homeworkTitle::after {
+            content: "（含答案）";
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+    </style>
+
+    <script>
+        // 存储当前生成的题目的答案
+        let currentAnswers = [];
+        
+        // 英语单词库 - 按年级分类
+        const vocabularyByGrade = {
+            1: {
+                words: [
+                    { word: "apple", chinese: "苹果", phonetic: "/ˈæpl/" },
+                    { word: "banana", chinese: "香蕉", phonetic: "/bəˈnɑːnə/" },
+                    { word: "cat", chinese: "猫", phonetic: "/kæt/" },
+                    { word: "dog", chinese: "狗", phonetic: "/dɒɡ/" },
+                    { word: "egg", chinese: "鸡蛋", phonetic: "/eɡ/" },
+                    { word: "fish", chinese: "鱼", phonetic: "/fɪʃ/" },
+                    { word: "goat", chinese: "山羊", phonetic: "/ɡəʊt/" },
+                    { word: "hand", chinese: "手", phonetic: "/hænd/" },
+                    { word: "ice", chinese: "冰", phonetic: "/aɪs/" },
+                    { word: "juice", chinese: "果汁", phonetic: "/dʒuːs/" },
+                    { word: "kite", chinese: "风筝", phonetic: "/kaɪt/" },
+                    { word: "lion", chinese: "狮子", phonetic: "/ˈlaɪən/" },
+                    { word: "milk", chinese: "牛奶", phonetic: "/mɪlk/" },
+                    { word: "nose", chinese: "鼻子", phonetic: "/nəʊz/" },
+                    { word: "orange", chinese: "橙子", phonetic: "/ˈɒrɪndʒ/" }
+                ],
+                sentences: [
+                    "I like apples.", // 我喜欢苹果。
+                    "This is a cat.", // 这是一只猫。
+                    "I have a dog.", // 我有一只狗。
+                    "Drink some milk.", // 喝点牛奶。
+                    "It is an orange.", // 这是一个橙子。
+                ]
+            },
+            2: {
+                words: [
+                    { word: "book", chinese: "书", phonetic: "/bʊk/" },
+                    { word: "pen", chinese: "钢笔", phonetic: "/pen/" },
+                    { word: "school", chinese: "学校", phonetic: "/skuːl/" },
+                    { word: "teacher", chinese: "老师", phonetic: "/ˈtiːtʃə/" },
+                    { word: "student", chinese: "学生", phonetic: "/ˈstjuːdnt/" },
+                    { word: "friend", chinese: "朋友", phonetic: "/frend/" },
+                    { word: "family", chinese: "家庭", phonetic: "/ˈfæməli/" },
+                    { word: "father", chinese: "父亲", phonetic: "/ˈfɑːðə/" },
+                    { word: "mother", chinese: "母亲", phonetic: "/ˈmʌðə/" },
+                    { word: "sister", chinese: "姐妹", phonetic: "/ˈsɪstə/" },
+                    { word: "brother", chinese: "兄弟", phonetic: "/ˈbrʌðə/" },
+                    { word: "water", chinese: "水", phonetic: "/ˈwɔːtə/" },
+                    { word: "food", chinese: "食物", phonetic: "/fuːd/" },
+                    { word: "red", chinese: "红色", phonetic: "/red/" },
+                    { word: "blue", chinese: "蓝色", phonetic: "/bluː/" }
+                ],
+                sentences: [
+                    "I go to school.", // 我去上学。
+                    "This is my teacher.", // 这是我的老师。
+                    "He is my friend.", // 他是我的朋友。
+                    "I love my family.", // 我爱我的家人。
+                    "My favorite color is red.", // 我最喜欢的颜色是红色。
+                ]
+            },
+            3: {
+                words: [
+                    { word: "computer", chinese: "电脑", phonetic: "/kəmˈpjuːtə/" },
+                    { word: "internet", chinese: "互联网", phonetic: "/ˈɪntənet/" },
+                    { word: "library", chinese: "图书馆", phonetic: "/ˈlaɪbrəri/" },
+                    { word: "classroom", chinese: "教室", phonetic: "/ˈklɑːsruːm/" },
+                    { word: "morning", chinese: "早上", phonetic: "/ˈmɔːnɪŋ/" },
+                    { word: "afternoon", chinese: "下午", phonetic: "/ˌɑːftəˈnuːn/" },
+                    { word: "evening", chinese: "晚上", phonetic: "/ˈiːvnɪŋ/" },
+                    { word: "Monday", chinese: "星期一", phonetic: "/ˈmʌndeɪ/" },
+                    { word: "Tuesday", chinese: "星期二", phonetic: "/ˈtjuːzdeɪ/" },
+                    { word: "Wednesday", chinese: "星期三", phonetic: "/ˈwenzdeɪ/" },
+                    { word: "Thursday", chinese: "星期四", phonetic: "/ˈθɜːzdeɪ/" },
+                    { word: "Friday", chinese: "星期五", phonetic: "/ˈfraɪdeɪ/" },
+                    { word: "Saturday", chinese: "星期六", phonetic: "/ˈsætədeɪ/" },
+                    { word: "Sunday", chinese: "星期日", phonetic: "/ˈsʌndeɪ/" },
+                    { word: "week", chinese: "星期", phonetic: "/wiːk/" }
+                ],
+                sentences: [
+                    "I use a computer at school.", // 我在学校使用电脑。
+                    "We have class in the classroom.", // 我们在教室里上课。
+                    "I read books in the library.", // 我在图书馆看书。
+                    "Today is Monday.", // 今天是星期一。
+                    "I go to school in the morning.", // 我早上去上学。
+                ]
+            },
+            4: {
+                words: [
+                    { word: "interesting", chinese: "有趣的", phonetic: "/ˈɪntrəstɪŋ/" },
+                    { word: "difficult", chinese: "困难的", phonetic: "/ˈdɪfɪkəlt/" },
+                    { word: "important", chinese: "重要的", phonetic: "/ɪmˈpɔːtnt/" },
+                    { word: "beautiful", chinese: "美丽的", phonetic: "/ˈbjuːtɪfl/" },
+                    { word: "happiness", chinese: "幸福", phonetic: "/ˈhæpinəs/" },
+                    { word: "knowledge", chinese: "知识", phonetic: "/ˈnɒlɪdʒ/" },
+                    { word: "exercise", chinese: "锻炼", phonetic: "/ˈeksəsaɪz/" },
+                    { word: "healthy", chinese: "健康的", phonetic: "/ˈhelθi/" },
+                    { word: "strong", chinese: "强壮的", phonetic: "/strɒŋ/" },
+                    { word: "clever", chinese: "聪明的", phonetic: "/ˈklevə/" },
+                    { word: "honest", chinese: "诚实的", phonetic: "/ˈɒnɪst/" },
+                    { word: "brave", chinese: "勇敢的", phonetic: "/breɪv/" },
+                    { word: "kind", chinese: "善良的", phonetic: "/kaɪnd/" },
+                    { word: "help", chinese: "帮助", phonetic: "/help/" },
+                    { word: "share", chinese: "分享", phonetic: "/ʃeə/" }
+                ],
+                sentences: [
+                    "English is interesting.", // 英语很有趣。
+                    "It's important to exercise every day.", // 每天锻炼很重要。
+                    "She is a beautiful girl.", // 她是一个美丽的女孩。
+                    "He is a clever boy.", // 他是一个聪明的男孩。
+                    "We should help each other.", // 我们应该互相帮助。
+                ]
+            },
+            5: {
+                words: [
+                    { word: "environment", chinese: "环境", phonetic: "/ɪnˈvaɪrənmənt/" },
+                    { word: "protection", chinese: "保护", phonetic: "/prəˈtekʃn/" },
+                    { word: "pollution", chinese: "污染", phonetic: "/pəˈluːʃn/" },
+                    { word: "recycle", chinese: "回收", phonetic: "/ˌriːˈsaɪkl/" },
+                    { word: "energy", chinese: "能源", phonetic: "/ˈenədʒi/" },
+                    { word: "natural", chinese: "自然的", phonetic: "/ˈnætʃrəl/" },
+                    { word: "resource", chinese: "资源", phonetic: "/rɪˈsɔːs/" },
+                    { word: "development", chinese: "发展", phonetic: "/dɪˈveləpmənt/" },
+                    { word: "technology", chinese: "技术", phonetic: "/tekˈnɒlədʒi/" },
+                    { word: "communication", chinese: "交流", phonetic: "/kəˌmjuːnɪˈkeɪʃn/" },
+                    { word: "information", chinese: "信息", phonetic: "/ˌɪnfəˈmeɪʃn/" },
+                    { word: "relationship", chinese: "关系", phonetic: "/rɪˈleɪʃnʃɪp/" },
+                    { word: "responsibility", chinese: "责任", phonetic: "/rɪˌspɒnsəˈbɪləti/" },
+                    { word: "opportunity", chinese: "机会", phonetic: "/ˌɒpəˈtjuːnəti/" },
+                    { word: "challenge", chinese: "挑战", phonetic: "/ˈtʃælɪndʒ/" }
+                ],
+                sentences: [
+                    "We should protect the environment.", // 我们应该保护环境。
+                    "Recycling is good for our planet.", // 回收对我们的星球有好处。
+                    "Technology changes our life.", // 技术改变我们的生活。
+                    "Communication is important in a relationship.", // 交流在关系中很重要。
+                    "We need to face many challenges in life.", // 我们需要面对生活中的许多挑战。
+                ]
+            },
+            6: {
+                words: [
+                    { word: "independence", chinese: "独立", phonetic: "/ˌɪndɪˈpendəns/" },
+                    { word: "confidence", chinese: "自信", phonetic: "/ˈkɒnfɪdəns/" },
+                    { word: "determination", chinese: "决心", phonetic: "/dɪˌtɜːmɪˈneɪʃn/" },
+                    { word: "perseverance", chinese: "毅力", phonetic: "/ˌpɜːsəˈvɪərəns/" },
+                    { word: "creativity", chinese: "创造力", phonetic: "/ˌkriːeɪˈtɪvəti/" },
+                    { word: "imagination", chinese: "想象力", phonetic: "/ɪˌmædʒɪˈneɪʃn/" },
+                    { word: "curiosity", chinese: "好奇心", phonetic: "/ˌkjʊəriˈɒsəti/" },
+                    { word: "gratitude", chinese: "感恩", phonetic: "/ˈɡrætɪtjuːd/" },
+                    { word: "integrity", chinese: "正直", phonetic: "/ɪnˈteɡrəti/" },
+                    { word: "wisdom", chinese: "智慧", phonetic: "/ˈwɪzdəm/" },
+                    { word: "courage", chinese: "勇气", phonetic: "/ˈkʌrɪdʒ/" },
+                    { word: "patience", chinese: "耐心", phonetic: "/ˈpeɪʃns/" },
+                    { word: "tolerance", chinese: "宽容", phonetic: "/ˈtɒlərəns/" },
+                    { word: "justice", chinese: "正义", phonetic: "/ˈdʒʌstɪs/" },
+                    { word: "freedom", chinese: "自由", phonetic: "/ˈfriːdəm/" }
+                ],
+                sentences: [
+                    "Independence is important for everyone.", // 独立对每个人都很重要。
+                    "We need confidence to face difficulties.", // 我们需要信心面对困难。
+                    "Creativity helps us solve problems.", // 创造力帮助我们解决问题。
+                    "Gratitude makes us happy.", // 感恩使我们快乐。
+                    "Wisdom comes from experience.", // 智慧来自经验。
+                ]
+            }
+        };
+        
+        // 完形填空段落及答案
+        const clozeParagraphs = [
+            {
+                paragraph: "I have a pet ___. It is a ___. Its name is ___. It has ___ fur and ___ eyes. It likes to ___ and ___. I ___ it very much.",
+                answers: ["dog", "animal", "Lucky", "white", "black", "run", "jump", "love"]
+            },
+            {
+                paragraph: "In the ___ , I get up and ___ my teeth. Then I ___ breakfast. I go to ___ by ___. At school, I ___ many subjects. In the ___ , I do my ___ and ___ TV.",
+                answers: ["morning", "brush", "have", "school", "bus", "study", "evening", "homework", "watch"]
+            },
+            {
+                paragraph: "___ is my favorite season. The ___ is ___. I can ___ outside. I often ___ with my ___. We ___ a good time together.",
+                answers: ["Summer", "weather", "hot", "play", "swim", "friends", "have"]
+            }
+        ];
+        
+        // 获取随机元素
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+        
+        // 生成单词拼写练习题目和答案
+        function generateWordSpellingQuestion(grade, showPhonetic) {
+            const wordInfo = getRandomItem(vocabularyByGrade[grade].words);
+            const phoneticHtml = showPhonetic ? `<span class="font-english phonetic ml-2">${wordInfo.phonetic}</span>` : '';
+            
+            const questionHtml = `
+                <div class="flex items-center">
+                    <span class="mr-3 font-medium">根据中文写出单词：${wordInfo.chinese}${phoneticHtml}</span>
+                    <div class="ml-2 flex-grow">
+                        <div class="h-8 border-b border-gray-300 w-40"></div>
+                    </div>
+                </div>
+            `;
+            
+            const answer = {
+                questionType: "单词拼写",
+                questionText: `根据中文写出单词：${wordInfo.chinese}`,
+                answerText: wordInfo.word
+            };
+            
+            return { questionHtml, answer };
+        }
+        
+        // 生成单词释义练习题目和答案
+        function generateWordMeaningQuestion(grade, showPhonetic) {
+            const wordInfo = getRandomItem(vocabularyByGrade[grade].words);
+            const phoneticHtml = showPhonetic ? `<span class="font-english phonetic ml-2">${wordInfo.phonetic}</span>` : '';
+            
+            const questionHtml = `
+                <div class="flex items-center">
+                    <span class="mr-3 font-medium">写出单词的中文意思：<span class="font-english">${wordInfo.word}</span>${phoneticHtml}</span>
+                    <div class="ml-2 flex-grow">
+                        <div class="h-8 border-b border-gray-300 w-40"></div>
+                    </div>
+                </div>
+            `;
+            
+            const answer = {
+                questionType: "单词释义",
+                questionText: `写出单词的中文意思：${wordInfo.word}`,
+                answerText: wordInfo.chinese
+            };
+            
+            return { questionHtml, answer };
+        }
+        
+        // 生成造句练习题目和参考答案
+        function generateSentenceMakingQuestion(grade) {
+            const wordInfo = getRandomItem(vocabularyByGrade[grade].words);
+            
+            // 为常见单词准备示例句子
+            const exampleSentences = {
+                "book": "I read a book every day.",
+                "pen": "I write with a pen.",
+                "school": "I go to school by bus.",
+                "teacher": "My teacher is very kind.",
+                "student": "I am a good student.",
+                "friend": "He is my best friend.",
+                "family": "I love my family very much."
+            };
+            
+            // 查找是否有示例句子，否则生成通用句子
+            const exampleSentence = exampleSentences[wordInfo.word] || 
+                                  `I like ${wordInfo.word}.` || 
+                                  `${wordInfo.word} is important.`;
+            
+            const questionHtml = `
+                <div class="flex items-start">
+                    <span class="mr-3 font-medium">用单词造句：<span class="font-english">${wordInfo.word}</span> (${wordInfo.chinese})</span>
+                    <div class="ml-2 flex-grow">
+                        <div class="h-8 border-b border-gray-300 w-full mb-1"></div>
+                        <div class="h-8 border-b border-gray-300 w-full"></div>
+                    </div>
+                </div>
+            `;
+            
+            const answer = {
+                questionType: "造句练习",
+                questionText: `用单词造句：${wordInfo.word} (${wordInfo.chinese})`,
+                answerText: `${exampleSentence}（答案不唯一）`
+            };
+            
+            return { questionHtml, answer };
+        }
+        
+        // 生成翻译练习题目和答案
+        function generateTranslationQuestion(grade) {
+            // 50%概率是中译英，50%是英译中
+            const isChineseToEnglish = Math.random() > 0.5;
+            
+            if (isChineseToEnglish) {
+                const wordInfo = getRandomItem(vocabularyByGrade[grade].words);
+                const questionHtml = `
+                    <div class="flex items-center">
+                        <span class="mr-3 font-medium">把中文翻译成英文：${wordInfo.chinese}</span>
+                        <div class="ml-2 flex-grow">
+                            <div class="h-8 border-b border-gray-300 w-40"></div>
+                        </div>
+                    </div>
+                `;
+                
+                const answer = {
+                    questionType: "中英互译",
+                    questionText: `把中文翻译成英文：${wordInfo.chinese}`,
+                    answerText: wordInfo.word
+                };
+                
+                return { questionHtml, answer };
+            } else {
+                const sentenceData = getRandomItem(vocabularyByGrade[grade].sentences);
+                // 获取句子对应的中文翻译（在数组中紧跟在英文句子后面的注释）
+                const chineseTranslation = sentenceData.match(/\/\/ (.*)/) ? sentenceData.match(/\/\/ (.*)/)[1] : "";
+                const englishSentence = sentenceData.replace(/\/\/.*/, "").trim();
+                
+                const questionHtml = `
+                    <div class="flex items-start">
+                        <span class="mr-3 font-medium">把英文翻译成中文：<span class="font-english">${englishSentence}</span></span>
+                        <div class="ml-2 flex-grow">
+                            <div class="h-8 border-b border-gray-300 w-full mb-1"></div>
+                            <div class="h-8 border-b border-gray-300 w-full"></div>
+                        </div>
+                    </div>
+                `;
+                
+                const answer = {
+                    questionType: "中英互译",
+                    questionText: `把英文翻译成中文：${englishSentence}`,
+                    answerText: chineseTranslation
+                };
+                
+                return { questionHtml, answer };
+            }
+        }
+        
+        // 生成完形填空练习题目和答案
+        function generateFillBlankQuestion(grade) {
+            const clozeData = getRandomItem(clozeParagraphs);
+            const paragraph = clozeData.paragraph;
+            const answers = clozeData.answers;
+            const blanksCount = (paragraph.match(/___/g) || []).length;
+            
+            // 根据年级选择合适的单词作为填空提示
+            const wordsPool = vocabularyByGrade[grade].words.map(item => `${item.word} (${item.chinese})`);
+            
+            // 为每个空生成3个提示词
+            let提示HTML = '';
+            for (let i = 0; i < blanksCount; i++) {
+                const提示词 = [];
+                while (提示词.length < 3) {
+                    const word = getRandomItem(wordsPool);
+                    if (!提示词.includes(word)) {
+                        提示词.push(word);
+                    }
+                }
+                提示HTML += `<p class="text-sm mt-2">${i+1}. <span class="font-english">${提示词.join(' / ')}</span></p>`;
+            }
+            
+            const questionHtml = `
+                <div class="flex flex-col">
+                    <span class="mb-3 font-medium">完形填空：在横线上填入合适的单词</span>
+                    <p class="mb-3 font-english">${paragraph}</p>
+                    <div class="ml-2">
+                        <p class="text-sm font-medium">提示词（英文及中文）：</p>
+                        ${提示HTML}
+                    </div>
+                </div>
+            `;
+            
+            // 构建答案文本
+            let answerText = "";
+            answers.forEach((answer, index) => {
+                answerText += `${index + 1}. ${answer} `;
+            });
+            
+            const answer = {
+                questionType: "完形填空",
+                questionText: "完形填空练习",
+                answerText: answerText
+            };
+            
+            return { questionHtml, answer };
+        }
+        
+        // 生成作业和答案
+        function generateHomework() {
+            const form = document.getElementById('homeworkSettings');
+            const formData = new FormData(form);
+            
+            // 获取设置
+            const grade = formData.get('grade');
+            const count = parseInt(formData.get('count'));
+            const showPhonetic = formData.get('showPhonetic') === 'on';
+            const exerciseTypes = [];
+            formData.forEach((value, key) => {
+                if (key === 'exerciseType') {
+                    exerciseTypes.push(value);
+                }
+            });
+            
+            // 如果没有选择练习类型，默认选择单词拼写和单词释义
+            if (exerciseTypes.length === 0) {
+                exerciseTypes.push('word-spelling', 'word-meaning');
+            }
+            
+            const questionsArea = document.getElementById('questionsArea');
+            const answersContainer = document.getElementById('answersContainer');
+            questionsArea.innerHTML = '';
+            answersContainer.innerHTML = '';
+            currentAnswers = [];
+            
+            // 生成题目和答案
+            for (let i = 0; i < count; i++) {
+                // 随机选择一种练习类型
+                const type = getRandomItem(exerciseTypes);
+                let result = {};
+                
+                switch (type) {
+                    case 'word-spelling':
+                        result = generateWordSpellingQuestion(grade, showPhonetic);
+                        break;
+                    case 'word-meaning':
+                        result = generateWordMeaningQuestion(grade, showPhonetic);
+                        break;
+                    case 'sentence-making':
+                        result = generateSentenceMakingQuestion(grade);
+                        break;
+                    case 'translation':
+                        result = generateTranslationQuestion(grade);
+                        break;
+                    case 'fill-blank':
+                        result = generateFillBlankQuestion(grade);
+                        break;
+                }
+                
+                // 添加题目到页面
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question flex items-start';
+                questionElement.innerHTML = `<span class="w-8 text-gray-500 mt-1">${i + 1}.</span>${result.questionHtml}`;
+                questionsArea.appendChild(questionElement);
+                
+                // 保存答案
+                currentAnswers.push({
+                    number: i + 1,
+                    ...result.answer
+                });
+            }
+            
+            // 生成答案区域内容
+            currentAnswers.forEach(answer => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item flex';
+                answerElement.innerHTML = `
+                    <span class="w-8 text-gray-500 mt-1">${answer.number}.</span>
+                    <div>
+                        <p class="text-sm text-gray-500">${answer.questionType}：${answer.questionText}</p>
+                        <p class="font-medium"><span class="font-english">${answer.answerText}</span></p>
+                    </div>
+                `;
+                answersContainer.appendChild(answerElement);
+            });
+            
+            // 更新作业标题中的年级信息
+            const gradeText = ['一', '二', '三', '四', '五', '六'][grade - 1] + '年级';
+            document.getElementById('homeworkTitle').textContent = `${gradeText}英语练习作业`;
+            
+            // 隐藏答案区域
+            document.getElementById('answersArea').classList.add('answer-hidden');
+        }
+        
+        // 生成PDF文件
+        function generatePDF() {
+            // 显示加载状态
+            const pdfBtn = document.getElementById('pdfBtn');
+            const originalText = pdfBtn.innerHTML;
+            pdfBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 生成中...';
+            pdfBtn.disabled = true;
+            
+            // 获取要导出的内容（不包含答案）
+            const content = document.getElementById('homeworkContent');
+            const answersArea = document.getElementById('answersArea');
+            const wasVisible = !answersArea.classList.contains('answer-hidden');
+            
+            // 确保答案区域在生成PDF时隐藏
+            if (wasVisible) {
+                answersArea.classList.add('answer-hidden');
+            }
+            
+            // 使用html2canvas和jsPDF生成PDF
+            html2canvas(content, {
+                scale: 2, // 提高分辨率
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                // 恢复答案区域可见性
+                if (wasVisible) {
+                    answersArea.classList.remove('answer-hidden');
+                }
+                
+                // 获取年级信息用于文件名
+                const gradeSelect = document.querySelector('select[name="grade"]');
+                const gradeText = ['一', '二', '三', '四', '五', '六'][gradeSelect.value - 1] + '年级';
+                
+                // 创建PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // 计算PDF页面尺寸和图像尺寸
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                const imgWidth = 210; // A4宽度(mm)
+                const pageHeight = 297; // A4高度(mm)
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                
+                // 添加第一页
+                pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // 如果内容超过一页，添加更多页面
+                while (heightLeft > 0) {
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, -pageHeight, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                // 保存PDF
+                pdf.save(`${gradeText}英语练习作业.pdf`);
+                
+                // 恢复按钮状态
+                pdfBtn.innerHTML = originalText;
+                pdfBtn.disabled = false;
+            }).catch(err => {
+                console.error('生成PDF失败:', err);
+                alert('生成PDF失败，请重试');
+                pdfBtn.innerHTML = originalText;
+                pdfBtn.disabled = false;
+            });
+        }
+        
+        // 打印学生版作业（只有题目）
+        function printStudentVersion() {
+            // 确保答案区域隐藏
+            document.getElementById('answersArea').classList.add('answer-hidden');
+            // 移除可能存在的答案版本类
+            document.body.classList.remove('print-answer-version');
+            // 执行打印
+            window.print();
+        }
+        
+        // 打印答案版作业（包含题目和答案）- 修复版
+        function printAnswerVersion() {
+            // 获取答案区域元素
+            const answersArea = document.getElementById('answersArea');
+            
+            // 显示答案区域（强制移除隐藏类）
+            answersArea.classList.remove('answer-hidden');
+            
+            // 添加答案版本类，用于打印样式控制
+            document.body.classList.add('print-answer-version');
+            
+            // 短暂延迟确保DOM更新完成后再打印
+            setTimeout(() => {
+                window.print();
+                
+                // 打印完成后恢复状态（使用afterprint事件确保在打印对话框关闭后执行）
+                window.addEventListener('afterprint', function restoreState() {
+                    answersArea.classList.add('answer-hidden');
+                    document.body.classList.remove('print-answer-version');
+                    window.removeEventListener('afterprint', restoreState);
+                });
+            }, 100);
+        }
+        
+        // DOM元素加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始生成作业题
+            generateHomework();
+            
+            // 生成作业按钮点击事件
+            document.getElementById('generateBtn').addEventListener('click', generateHomework);
+            
+            // 打印学生版按钮点击事件
+            document.getElementById('printStudentBtn').addEventListener('click', printStudentVersion);
+            
+            // 打印答案版按钮点击事件 - 确保绑定正确的函数
+            document.getElementById('printAnswerBtn').addEventListener('click', printAnswerVersion);
+            
+            // 生成PDF按钮点击事件
+            document.getElementById('pdfBtn').addEventListener('click', generatePDF);
+            
+            // 实时更新音标显示状态
+            document.getElementById('showPhonetic').addEventListener('change', generateHomework);
+        });
+    </script>
+</body>
+</html>
+    

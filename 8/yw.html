@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小学语文作业自动生成系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E63946',
+                        secondary: '#457B9D',
+                        accent: '#1D3557',
+                        light: '#F1FAEE',
+                        neutral: '#A8DADC'
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans text-accent min-h-screen flex flex-col">
+    <!-- 头部区域 -->
+    <header class="bg-gradient-to-r from-primary to-secondary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6 md:py-8">
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-2 text-shadow">小学语文作业自动生成系统</h1>
+                <p class="text-white/90 max-w-2xl mx-auto">轻松生成各种语文作业，支持打印，帮助孩子巩固语文知识</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 左侧设置面板 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h2 class="text-xl font-bold mb-5 flex items-center">
+                        <i class="fa fa-cogs text-primary mr-2"></i> 作业设置
+                    </h2>
+                    
+                    <form id="homeworkSettings" class="space-y-5">
+                        <!-- 练习类型 -->
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">练习类型</label>
+                            <div class="grid grid-cols-1 gap-2">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="pinyin" checked class="mr-2 text-primary">
+                                    <span>拼音练习</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="character" checked class="mr-2 text-primary">
+                                    <span>汉字书写</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="word" class="mr-2 text-primary">
+                                    <span>组词练习</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="sentence" class="mr-2 text-primary">
+                                    <span>造句练习</span>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                                    <input type="checkbox" name="exerciseType" value="antonym" class="mr-2 text-primary">
+                                    <span>反义词练习</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 年级选择 -->
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">年级</label>
+                            <select name="grade" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="1">一年级</option>
+                                <option value="2" selected>二年级</option>
+                                <option value="3">三年级</option>
+                                <option value="4">四年级</option>
+                                <option value="5">五年级</option>
+                                <option value="6">六年级</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 题目数量 -->
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">题目数量</label>
+                            <input type="number" name="count" value="20" min="5" max="50" 
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        </div>
+                        
+                        <!-- 生成按钮 -->
+                        <button type="button" id="generateBtn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                            <i class="fa fa-refresh mr-2"></i> 生成作业题
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 右侧作业展示区 -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 card-hover h-full flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="fa fa-book text-primary mr-2"></i> 语文作业练习册
+                        </h2>
+                        <button id="printBtn" class="bg-secondary hover:bg-secondary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center">
+                            <i class="fa fa-print mr-2"></i> 打印作业
+                        </button>
+                    </div>
+                    
+                    <div id="homeworkContent" class="flex-grow">
+                        <!-- 作业标题 -->
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold mb-2" id="homeworkTitle">小学语文练习作业</h3>
+                            <p class="text-gray-600" id="homeworkSubtitle">班级：__________ 姓名：__________ 日期：__________ 得分：__________</p>
+                        </div>
+                        
+                        <!-- 题目区域 -->
+                        <div id="questionsArea" class="space-y-6">
+                            <!-- 题目将通过JS动态生成 -->
+                        </div>
+                        
+                        <!-- 家长签字区 -->
+                        <div class="mt-12 text-right">
+                            <p>家长签字：__________</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-accent text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center" id="copyright">
+                <div class="flex flex-col md:flex-row justify-center items-center">
+                    <p class="mb-4 md:mb-0 md:mr-4">西数资源网首发</p>
+                    <a href="http://www.xishuzy.com" class="text-neutral hover:text-white font-medium mb-4 md:mb-0 md:mr-4 flex items-center" target="_blank">
+                        <i class="fa fa-globe mr-1"></i> www.xishuzy.com
+                    </a>
+                    <p class="text-gray-300 text-sm">© 2023 小学语文作业自动生成系统 - 保留所有权利</p>
+                </div>
+            </div>
+            
+            <!-- 防篡改措施 -->
+            <script type="text/javascript">
+                // 防篡改脚本
+                (function() {
+                    // 保存原始版权信息
+                    var originalCopyright = document.getElementById('copyright').innerHTML;
+                    var copyrightElement = document.getElementById('copyright');
+                    
+                    // 定期检查版权信息是否被修改
+                    setInterval(function() {
+                        if (copyrightElement.innerHTML !== originalCopyright) {
+                            // 恢复原始版权信息
+                            copyrightElement.innerHTML = originalCopyright;
+                            
+                            // 记录尝试篡改行为
+                            console.warn('检测到尝试篡改版权信息的行为');
+                            
+                            // 添加视觉提示
+                            copyrightElement.classList.add('bg-red-600');
+                            setTimeout(function() {
+                                copyrightElement.classList.remove('bg-red-600');
+                            }, 1000);
+                        }
+                    }, 500);
+                    
+                    // 防止元素被删除
+                    new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (!document.body.contains(copyrightElement)) {
+                                // 重新添加版权信息
+                                document.querySelector('footer').appendChild(copyrightElement);
+                                console.warn('检测到尝试删除版权信息的行为');
+                            }
+                        });
+                    }).observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                })();
+            </script>
+        </div>
+    </footer>
+
+    <!-- 打印样式 -->
+    <style media="print">
+        header, main > div > div:first-child, #printBtn {
+            display: none !important;
+        }
+        
+        body, .container, #homeworkContent {
+            background: white !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .bg-white {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 12px;
+        }
+        
+        #questionsArea {
+            font-size: 16px;
+            line-height: 2;
+        }
+    </style>
+
+    <script>
+        // 汉字库 - 按年级分类
+        const charactersByGrade = {
+            1: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十',
+                '天', '地', '人', '你', '我', '他', '日', '月', '水', '火',
+                '山', '石', '田', '土', '上', '下', '左', '右', '大', '小'],
+            2: ['爸', '妈', '哥', '姐', '弟', '妹', '学', '校', '老', '师',
+                '同', '学', '朋', '友', '前', '后', '多', '少', '来', '去',
+                '白', '云', '风', '雨', '花', '草', '树', '木', '鸟', '虫'],
+            3: ['家', '国', '学', '习', '语', '文', '数', '学', '音', '乐',
+                '体', '育', '美', '术', '劳', '动', '快', '乐', '开', '心',
+                '阳', '光', '明', '亮', '黑', '夜', '春', '夏', '秋', '冬'],
+            4: ['知', '识', '道', '理', '聪', '明', '智', '慧', '思', '考',
+                '阅', '读', '写', '作', '计', '划', '安', '排', '锻', '炼',
+                '健', '康', '运', '动', '锻', '炼', '生', '活', '学', '习'],
+            5: ['研', '究', '探', '索', '发', '现', '创', '造', '理', '解',
+                '体', '会', '感', '悟', '思', '想', '观', '点', '论', '证',
+                '分', '析', '综', '合', '概', '括', '判', '断', '推', '理'],
+            6: ['博', '学', '审', '问', '慎', '思', '明', '辨', '笃', '行',
+                '弘', '扬', '传', '承', '发', '展', '创', '新', '理', '性',
+                '智', '慧', '洞', '察', '洞', '悉', '领', '悟', '透', '彻']
+        };
+        
+        // 拼音和汉字对应表
+        const pinyinMap = {
+            'bà': '爸', 'mā': '妈', 'gē': '哥', 'jiě': '姐', 'dì': '弟',
+            'mèi': '妹', 'tóng': '同', 'xué': '学', 'lǎo': '老', 'shī': '师',
+            'tiān': '天', 'dì': '地', 'rén': '人', 'nǐ': '你', 'wǒ': '我',
+            'tā': '他', 'rì': '日', 'yuè': '月', 'shuǐ': '水', 'huǒ': '火',
+            'shān': '山', 'shí': '石', 'tián': '田', 'tǔ': '土', 'fēng': '风',
+            'yún': '云', 'huā': '花', 'niǎo': '鸟', 'chóng': '虫', 'yú': '鱼',
+            'dà': '大', 'xiǎo': '小', 'duō': '多', 'shǎo': '少', 'shàng': '上',
+            'xià': '下', 'zuǒ': '左', 'yòu': '右', 'qián': '前', 'hòu': '后'
+        };
+        
+        // 词语库
+        const words = {
+            1: ['天空', '大地', '人民', '学生', '老师', '朋友', '上下', '左右', '大小', '多少'],
+            2: ['学校', '家庭', '快乐', '高兴', '阳光', '月亮', '山水', '花草', '树木', '小鸟'],
+            3: ['白云', '风雨', '前后', '高低', '白天', '黑夜', '春天', '夏天', '秋天', '冬天'],
+            4: ['读书', '写字', '学习', '思考', '运动', '健康', '安全', '快乐', '幸福', '生活'],
+            5: ['知识', '道理', '聪明', '智慧', '阅读', '写作', '计划', '安排', '锻炼', '成长'],
+            6: ['研究', '探索', '发现', '创造', '理解', '体会', '感悟', '思想', '观点', '论证']
+        };
+        
+        // 反义词库
+        const antonyms = {
+            '大': '小', '多': '少', '上': '下', '左': '右', '前': '后',
+            '高': '低', '长': '短', '胖': '瘦', '快': '慢', '远': '近',
+            '黑': '白', '明': '暗', '早': '晚', '来': '去', '进': '出',
+            '开': '关', '哭': '笑', '好': '坏', '生': '死', '真': '假'
+        };
+        
+        // 获取随机元素
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+        
+        // 生成拼音练习题目
+        function generatePinyinQuestion(grade) {
+            const pinyinList = Object.keys(pinyinMap);
+            const randomPinyin = getRandomItem(pinyinList);
+            const correctChar = pinyinMap[randomPinyin];
+            
+            // 生成干扰项
+            const characters = charactersByGrade[grade];
+            const distractors = [];
+            while (distractors.length < 3) {
+                const distractor = getRandomItem(characters);
+                if (distractor !== correctChar && !distractors.includes(distractor)) {
+                    distractors.push(distractor);
+                }
+            }
+            
+            // 合并正确答案和干扰项并打乱顺序
+            const options = [correctChar, ...distractors];
+            options.sort(() => Math.random() - 0.5);
+            
+            return `
+                <div class="flex items-center">
+                    <span class="mr-3 font-medium">给拼音选择正确的汉字：${randomPinyin}</span>
+                    <div class="flex gap-4 ml-2">
+                        ${options.map(option => `<div class="w-8 h-8 border border-gray-300 flex items-center justify-center">${option}</div>`).join('')}
+                    </div>
+                    <div class="ml-auto w-24 h-8 border-b border-gray-300"></div>
+                </div>
+            `;
+        }
+        
+        // 生成汉字书写练习题目
+        function generateCharacterQuestion(grade) {
+            const character = getRandomItem(charactersByGrade[grade]);
+            return `
+                <div class="flex items-center">
+                    <span class="mr-3 font-medium">抄写汉字并注音：${character}</span>
+                    <div class="ml-2 flex-grow flex gap-2">
+                        <div class="w-10 h-10 border border-gray-300"></div>
+                        <div class="w-10 h-10 border border-gray-300"></div>
+                        <div class="w-10 h-10 border border-gray-300"></div>
+                        <div class="w-20 h-8 border-b border-gray-300 ml-2"></div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 生成组词练习题目
+        function generateWordQuestion(grade) {
+            const character = getRandomItem(charactersByGrade[grade]);
+            return `
+                <div class="flex items-center">
+                    <span class="mr-3 font-medium">给汉字组词：${character}</span>
+                    <div class="ml-2 flex-grow">
+                        <div class="h-8 border-b border-gray-300 w-32 inline-block mr-4"></div>
+                        <div class="h-8 border-b border-gray-300 w-32 inline-block"></div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 生成造句练习题目
+        function generateSentenceQuestion(grade) {
+            const word = getRandomItem(words[grade]);
+            return `
+                <div class="flex items-start">
+                    <span class="mr-3 font-medium">用词语造句：${word}</span>
+                    <div class="ml-2 flex-grow">
+                        <div class="h-8 border-b border-gray-300 w-full mb-1"></div>
+                        <div class="h-8 border-b border-gray-300 w-full"></div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 生成反义词练习题目
+        function generateAntonymQuestion() {
+            const word = getRandomItem(Object.keys(antonyms));
+            return `
+                <div class="flex items-center">
+                    <span class="mr-3 font-medium">写出下列词语的反义词：${word}</span>
+                    <div class="ml-2 flex-grow">
+                        <div class="h-8 border-b border-gray-300 w-32"></div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 生成作业
+        function generateHomework() {
+            const form = document.getElementById('homeworkSettings');
+            const formData = new FormData(form);
+            
+            // 获取设置
+            const grade = formData.get('grade');
+            const count = parseInt(formData.get('count'));
+            const exerciseTypes = [];
+            formData.forEach((value, key) => {
+                if (key === 'exerciseType') {
+                    exerciseTypes.push(value);
+                }
+            });
+            
+            // 如果没有选择练习类型，默认选择拼音和汉字书写
+            if (exerciseTypes.length === 0) {
+                exerciseTypes.push('pinyin', 'character');
+            }
+            
+            const questionsArea = document.getElementById('questionsArea');
+            questionsArea.innerHTML = '';
+            
+            // 生成题目
+            for (let i = 0; i < count; i++) {
+                // 随机选择一种练习类型
+                const type = getRandomItem(exerciseTypes);
+                let questionHtml = '';
+                
+                switch (type) {
+                    case 'pinyin':
+                        questionHtml = generatePinyinQuestion(grade);
+                        break;
+                    case 'character':
+                        questionHtml = generateCharacterQuestion(grade);
+                        break;
+                    case 'word':
+                        questionHtml = generateWordQuestion(grade);
+                        break;
+                    case 'sentence':
+                        questionHtml = generateSentenceQuestion(grade);
+                        break;
+                    case 'antonym':
+                        questionHtml = generateAntonymQuestion();
+                        break;
+                }
+                
+                // 添加题目到页面
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question flex items-center';
+                questionElement.innerHTML = `<span class="w-8 text-gray-500">${i + 1}.</span>${questionHtml}`;
+                questionsArea.appendChild(questionElement);
+            }
+            
+            // 更新作业标题中的年级信息
+            const gradeText = ['一', '二', '三', '四', '五', '六'][grade - 1] + '年级';
+            document.getElementById('homeworkTitle').textContent = `${gradeText}语文练习作业`;
+        }
+        
+        // DOM元素加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始生成作业题
+            generateHomework();
+            
+            // 生成作业按钮点击事件
+            document.getElementById('generateBtn').addEventListener('click', generateHomework);
+            
+            // 打印按钮点击事件
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+        });
+    </script>
+</body>
+</html>
+    

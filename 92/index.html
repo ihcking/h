@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语录聚合 - 随机句子生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        .quote-box {
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+        .quote-box:hover {
+            border-color: #ddd;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .type-btn {
+            padding: 8px 16px;
+            background-color: #e9f0fb;
+            border: none;
+            border-radius: 20px;
+            color: #2c6ecb;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .type-btn:hover, .type-btn.active {
+            background-color: #2c6ecb;
+            color: white;
+        }
+        .refresh-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 24px;
+            background-color: #38b000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .refresh-btn:hover {
+            background-color: #2e9100;
+            transform: translateY(-2px);
+        }
+        .loading {
+            color: #888;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>语录聚合生成器</h1>
+        <div class="quote-box" id="quoteDisplay">
+            点击下方按钮获取语录...
+        </div>
+        <div class="controls">
+            <button class="type-btn" data-type="安慰语录">安慰语录</button>
+            <button class="type-btn" data-type="QQ签名">QQ签名</button>
+            <button class="type-btn" data-type="趣味笑话">趣味笑话</button>
+            <button class="type-btn active" data-type="随机一言">随机一言</button>
+            <button class="type-btn" data-type="英汉语录">英汉语录</button>
+            <button class="type-btn" data-type="毒鸡汤">毒鸡汤</button>
+            <button class="type-btn" data-type="爱情语录">爱情语录</button>
+            <button class="type-btn" data-type="文案温柔">文案温柔</button>
+            <button class="type-btn" data-type="伤感语录">伤感语录</button>
+            <button class="type-btn" data-type="舔狗日记">舔狗日记</button>
+            <button class="type-btn" data-type="社会语录">社会语录</button>
+            <button class="type-btn" data-type="诗词">诗词</button>
+            <button class="type-btn" data-type="骚话">骚话</button>
+            <button class="type-btn" data-type="经典语录">经典语录</button>
+            <button class="type-btn" data-type="情话">情话</button>
+            <button class="type-btn" data-type="人生话语">人生话语</button>
+            <button class="type-btn" data-type="网易语录">网易语录</button>
+            <button class="type-btn" data-type="我在人间凑数的日子">我在人间凑数的日子</button>
+        </div>
+        <button class="refresh-btn" id="refreshBtn">获取新语录</button>
+        <footer>
+            数据来源: api.fenx.top | 支持18种语录类型切换
+        </footer>
+    </div>
+
+    <script>
+        const quoteDisplay = document.getElementById('quoteDisplay');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const typeBtns = document.querySelectorAll('.type-btn');
+        let currentType = '随机一言';
+
+        // 切换语录类型
+        typeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 更新活跃状态
+                typeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentType = btn.getAttribute('data-type');
+                // 自动加载对应类型的语录
+                fetchQuote();
+            });
+        });
+
+        // 刷新按钮点击事件
+        refreshBtn.addEventListener('click', fetchQuote);
+
+        // 调用API获取语录
+        function fetchQuote() {
+            quoteDisplay.textContent = '加载中...';
+            quoteDisplay.classList.add('loading');
+
+            // 构建请求URL
+            const url = `https://api.fenx.top/api/juheyulu?msg=${encodeURIComponent(currentType)}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络请求失败');
+                    }
+                    return response.text(); // 直接获取文本内容
+                })
+                .then(data => {
+                    quoteDisplay.textContent = data;
+                    quoteDisplay.classList.remove('loading');
+                })
+                .catch(error => {
+                    quoteDisplay.textContent = '获取失败，请重试';
+                    quoteDisplay.classList.remove('loading');
+                    console.error('错误:', error);
+                });
+        }
+
+        // 初始加载一条语录
+        fetchQuote();
+    </script>
+</body>
+</html>

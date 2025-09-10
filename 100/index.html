@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专业简历生成器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- 打印样式 - 只打印简历区域 -->
+    <style media="print">
+        @media print {
+            /* 隐藏所有不需要打印的元素 */
+            header, footer, main > section:first-child, 
+            main > section:last-child > div > h2, 
+            main > section:last-child > div > p {
+                display: none !important;
+            }
+            
+            /* 确保简历区域占满打印页面 */
+            body, html {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: white;
+            }
+            
+            #resumePreview {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                box-shadow: none;
+                margin: 0;
+                padding: 50px;
+            }
+            
+            /* 确保内容不被分割到不同页面 */
+            .education-entry, .experience-entry, .project-entry {
+                page-break-inside: avoid;
+            }
+            
+            /* 调整打印字体大小 */
+            #resumePreview {
+                font-size: 11pt;
+            }
+            
+            #previewName {
+                font-size: 24pt !important;
+            }
+        }
+    </style>
+    
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        accent: '#722ED1',
+                        dark: '#1D2129',
+                        light: '#F2F3F5',
+                        neutral: '#86909C'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Georgia', 'serif'],
+                        mono: ['Courier New', 'monospace']
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .resume-container {
+                min-height: 1123px;
+                width: 800px;
+            }
+            .section-title {
+                @apply text-lg md:text-xl font-bold mb-2 border-b pb-1;
+            }
+            .template-1 .section-title {
+                @apply border-primary text-primary;
+            }
+            .template-2 .section-title {
+                @apply border-dark text-dark;
+            }
+            .template-3 .section-title {
+                @apply border-accent text-accent;
+            }
+            .editable {
+                @apply outline-none transition-all duration-200;
+            }
+            .editable:focus {
+                @apply bg-blue-50/50 shadow-sm;
+            }
+            .fade-in {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .pulse {
+                animation: pulse 2s infinite;
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-file-text-o text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-primary">简历生成器</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="saveBtn" class="hidden md:flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                    <i class="fa fa-save mr-2"></i>保存
+                </button>
+                <button id="printBtn" class="flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors">
+                    <i class="fa fa-print mr-2"></i>打印
+                </button>
+                <button id="pdfBtn" class="flex items-center px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors">
+                    <i class="fa fa-file-pdf-o mr-2"></i>导出PDF
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto pt-20 pb-16 px-4 md:px-8 flex flex-col md:flex-row gap-6">
+        <!-- 左侧编辑区 -->
+        <section class="w-full md:w-1/3 lg:w-1/4 bg-white rounded-lg shadow-md p-5 order-2 md:order-1">
+            <h2 class="text-xl font-bold mb-4 border-b pb-2">编辑信息</h2>
+            
+            <!-- 个人信息 -->
+            <div class="mb-6">
+                <h3 class="font-bold text-primary mb-3 flex items-center">
+                    <i class="fa fa-user-circle mr-2"></i>个人信息
+                </h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">姓名</label>
+                        <input type="text" id="fullName" placeholder="请输入您的姓名" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">职位</label>
+                        <input type="text" id="jobTitle" placeholder="请输入您的目标职位" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">邮箱</label>
+                        <input type="email" id="email" placeholder="请输入您的邮箱" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">电话</label>
+                        <input type="tel" id="phone" placeholder="请输入您的电话" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">地址</label>
+                        <input type="text" id="location" placeholder="请输入您的地址" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">个人简介</label>
+                        <textarea id="summary" rows="3" placeholder="请输入您的个人简介" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 教育背景 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-primary flex items-center">
+                        <i class="fa fa-graduation-cap mr-2"></i>教育背景
+                    </h3>
+                    <button id="addEducation" class="text-sm text-primary hover:text-primary/80">
+                        <i class="fa fa-plus-circle"></i> 添加
+                    </button>
+                </div>
+                <div id="educationContainer" class="space-y-4">
+                    <div class="education-item p-3 border border-gray-200 rounded-lg">
+                        <div class="flex justify-end">
+                            <button class="delete-item text-red-500 hover:text-red-700 text-sm">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <input type="text" placeholder="学校名称" class="education-school w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            <input type="text" placeholder="专业" class="education-major w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="开始年份" class="education-start w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                <input type="text" placeholder="结束年份" class="education-end w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工作经历 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-primary flex items-center">
+                        <i class="fa fa-briefcase mr-2"></i>工作经历
+                    </h3>
+                    <button id="addExperience" class="text-sm text-primary hover:text-primary/80">
+                        <i class="fa fa-plus-circle"></i> 添加
+                    </button>
+                </div>
+                <div id="experienceContainer" class="space-y-4">
+                    <div class="experience-item p-3 border border-gray-200 rounded-lg">
+                        <div class="flex justify-end">
+                            <button class="delete-item text-red-500 hover:text-red-700 text-sm">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <input type="text" placeholder="公司名称" class="experience-company w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            <input type="text" placeholder="职位" class="experience-position w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="开始日期" class="experience-start w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                <input type="text" placeholder="结束日期" class="experience-end w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            </div>
+                            <textarea placeholder="工作描述" rows="2" class="experience-description w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 项目经验 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-primary flex items-center">
+                        <i class="fa fa-cogs mr-2"></i>项目经验
+                    </h3>
+                    <button id="addProject" class="text-sm text-primary hover:text-primary/80">
+                        <i class="fa fa-plus-circle"></i> 添加
+                    </button>
+                </div>
+                <div id="projectContainer" class="space-y-4">
+                    <div class="project-item p-3 border border-gray-200 rounded-lg">
+                        <div class="flex justify-end">
+                            <button class="delete-item text-red-500 hover:text-red-700 text-sm">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <input type="text" placeholder="项目名称" class="project-name w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="开始日期" class="project-start w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                <input type="text" placeholder="结束日期" class="project-end w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                            </div>
+                            <textarea placeholder="项目描述" rows="2" class="project-description w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"></textarea>
+                            <input type="text" placeholder="担任角色" class="project-role w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 技能特长 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-primary flex items-center">
+                        <i class="fa fa-star mr-2"></i>技能特长
+                    </h3>
+                    <button id="addSkill" class="text-sm text-primary hover:text-primary/80">
+                        <i class="fa fa-plus-circle"></i> 添加
+                    </button>
+                </div>
+                <div id="skillContainer" class="flex flex-wrap gap-2">
+                    <div class="skill-item flex items-center p-2 border border-gray-200 rounded-lg">
+                        <input type="text" placeholder="技能名称" class="skill-name border-none focus:ring-0 px-2 py-1 text-sm w-32">
+                        <div class="ml-2">
+                            <select class="skill-level text-xs border-gray-300 rounded">
+                                <option value="入门">入门</option>
+                                <option value="基础" selected>基础</option>
+                                <option value="熟练">熟练</option>
+                                <option value="精通">精通</option>
+                            </select>
+                        </div>
+                        <button class="delete-item ml-2 text-red-500 hover:text-red-700">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 模板选择 -->
+            <div>
+                <h3 class="font-bold text-primary mb-3 flex items-center">
+                    <i class="fa fa-th-large mr-2"></i>选择模板
+                </h3>
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="template-selector active p-2 border-2 border-primary rounded hover:bg-gray-50" data-template="1">
+                        <div class="bg-primary/10 h-16 rounded mb-1"></div>
+                        <span class="text-xs block text-center">模板1</span>
+                    </button>
+                    <button class="template-selector p-2 border-2 border-transparent rounded hover:bg-gray-50" data-template="2">
+                        <div class="bg-dark/10 h-16 rounded mb-1"></div>
+                        <span class="text-xs block text-center">模板2</span>
+                    </button>
+                    <button class="template-selector p-2 border-2 border-transparent rounded hover:bg-gray-50" data-template="3">
+                        <div class="bg-accent/10 h-16 rounded mb-1"></div>
+                        <span class="text-xs block text-center">模板3</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 右侧预览区 -->
+        <section class="w-full md:w-2/3 lg:w-3/4 order-1 md:order-2">
+            <div class="bg-white rounded-lg shadow-md p-4 md:p-6 mb-4">
+                <h2 class="text-xl font-bold mb-2 flex items-center">
+                    <i class="fa fa-eye mr-2 text-primary"></i>简历预览
+                </h2>
+                <p class="text-sm text-gray-500 mb-4">实时显示您的简历效果，可以直接点击预览区文本进行编辑</p>
+                
+                <!-- 简历预览容器 -->
+                <div class="flex justify-center py-4">
+                    <div id="resumePreview" class="resume-container bg-white shadow-lg p-8 template-1 fade-in">
+                        <!-- 个人信息头部 -->
+                        <div class="text-center mb-6">
+                            <h1 id="previewName" class="text-3xl font-bold editable" contenteditable="true">张三</h1>
+                            <h2 id="previewTitle" class="text-lg text-gray-600 mt-1 editable" contenteditable="true">前端开发工程师</h2>
+                            <div id="previewContact" class="mt-2 text-sm flex flex-wrap justify-center gap-x-4 gap-y-1 text-gray-700">
+                                <span><i class="fa fa-envelope-o mr-1"></i><span class="editable" contenteditable="true">example@mail.com</span></span>
+                                <span><i class="fa fa-phone mr-1"></i><span class="editable" contenteditable="true">13800138000</span></span>
+                                <span><i class="fa fa-map-marker mr-1"></i><span class="editable" contenteditable="true">北京市朝阳区</span></span>
+                            </div>
+                        </div>
+                        
+                        <!-- 个人简介 -->
+                        <div class="mb-6">
+                            <h3 class="section-title">个人简介</h3>
+                            <p id="previewSummary" class="text-sm leading-relaxed editable" contenteditable="true">
+                                具有5年前端开发经验，熟悉HTML5、CSS3、JavaScript等前端技术，
+                                熟练使用React、Vue等主流框架，有多个大型项目开发经验，
+                                注重用户体验和代码质量，具备良好的团队协作能力。
+                            </p>
+                        </div>
+                        
+                        <!-- 工作经历 -->
+                        <div class="mb-6">
+                            <h3 class="section-title">工作经历</h3>
+                            <div id="previewExperience" class="space-y-4">
+                                <div class="experience-entry">
+                                    <div class="flex justify-between">
+                                        <h4 class="font-bold editable" contenteditable="true">ABC科技有限公司</h4>
+                                        <span class="text-sm text-gray-600 editable" contenteditable="true">2020.01 - 至今</span>
+                                    </div>
+                                    <div class="text-primary font-medium editable" contenteditable="true">前端开发工程师</div>
+                                    <p class="text-sm mt-1 leading-relaxed editable" contenteditable="true">
+                                        负责公司核心产品的前端开发与维护，使用React框架构建用户界面，
+                                        优化前端性能，提升用户体验，参与需求分析和技术方案设计。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 项目经验 -->
+                        <div class="mb-6">
+                            <h3 class="section-title">项目经验</h3>
+                            <div id="previewProjects" class="space-y-4">
+                                <div class="project-entry">
+                                    <div class="flex justify-between">
+                                        <h4 class="font-bold editable" contenteditable="true">企业管理系统</h4>
+                                        <span class="text-sm text-gray-600 editable" contenteditable="true">2021.03 - 2021.10</span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 italic editable" contenteditable="true">担任角色：前端负责人</div>
+                                    <p class="text-sm mt-1 leading-relaxed editable" contenteditable="true">
+                                        该系统是一个集客户管理、订单管理、数据分析于一体的综合性平台，
+                                        我负责前端架构设计和核心模块开发，使用Vue+ElementUI技术栈，
+                                        实现了多个复杂交互功能，系统上线后获得用户一致好评。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 教育背景 -->
+                        <div class="mb-6">
+                            <h3 class="section-title">教育背景</h3>
+                            <div id="previewEducation" class="space-y-3">
+                                <div class="education-entry flex justify-between">
+                                    <div>
+                                        <h4 class="font-bold editable" contenteditable="true">北京大学</h4>
+                                        <span class="text-sm text-gray-600 editable" contenteditable="true">计算机科学与技术 - 本科</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600 editable" contenteditable="true">2016.09 - 2020.06</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 技能特长 -->
+                        <div class="mb-6">
+                            <h3 class="section-title">技能特长</h3>
+                            <div id="previewSkills" class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-primary/10 text-primary text-sm rounded-full editable" contenteditable="true">HTML5</span>
+                                <span class="px-2 py-1 bg-primary/10 text-primary text-sm rounded-full editable" contenteditable="true">CSS3</span>
+                                <span class="px-2 py-1 bg-primary/10 text-primary text-sm rounded-full editable" contenteditable="true">JavaScript</span>
+                                <span class="px-2 py-1 bg-primary/10 text-primary text-sm rounded-full editable" contenteditable="true">React</span>
+                                <span class="px-2 py-1 bg-primary/10 text-primary text-sm rounded-full editable" contenteditable="true">Vue</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 版权信息 -->
+                        <div id="copyright" class="text-center text-xs text-gray-500 mt-12 pt-4 border-t">
+                            <!-- 版权信息使用加密方式防止轻易修改 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <i class="fa fa-file-text-o text-primary text-xl mr-2"></i>
+                        <span class="font-bold">专业简历生成器</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-1">轻松创建专业、精美的简历</p>
+                </div>
+                <div class="text-sm text-gray-400">
+                    &copy; 2023 简历生成器 | 保护您的个人信息安全
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // 解密版权信息并显示，防止轻易从源码修改
+    function decodeCopyright() {
+        // 简单的字符编码，增加直接修改的难度
+        const encoded = "6KW/5pWw6LWE5rqQ572R6aaW5Y+Rd3d3Lnhpc2h1enkuY29t";
+        // 1. 移除空格
+        const cleaned = encoded.replace(/ /g, '');
+        // 2. Base64 解码得到包含 UTF-8 字节的字符串
+        const utf8BytesString = atob(cleaned);
+
+        // 3. 将字节字符串手动转换为 UTF-8 编码的字符串 (精简方式)
+        // 从 atob 结果创建 Uint8Array
+        const bytes = new Uint8Array(utf8BytesString.length);
+        for (let i = 0; i < utf8BytesString.length; i++) {
+            bytes[i] = utf8BytesString.charCodeAt(i);
+        }
+        // 使用 TextDecoder 解码 (这是关键步骤，让中文正确显示)
+        const decoded = new TextDecoder("utf-8").decode(bytes);
+
+        // 4. 设置到HTML元素中
+        const copyrightElement = document.getElementById('copyright');
+        if (copyrightElement) {
+            copyrightElement.innerHTML = decoded; // 使用 innerHTML 以支持可能的HTML标签
+        }
+    }
+
+    // 初始化页面
+    document.addEventListener('DOMContentLoaded', function() {
+        decodeCopyright();
+        setupEventListeners(); // 确保这个函数在你的主脚本中已定义
+    });
+        
+        // 设置所有事件监听器
+        function setupEventListeners() {
+            // 个人信息输入同步到预览
+            document.getElementById('fullName').addEventListener('input', function(e) {
+                document.getElementById('previewName').textContent = e.target.value || '张三';
+            });
+            
+            document.getElementById('jobTitle').addEventListener('input', function(e) {
+                document.getElementById('previewTitle').textContent = e.target.value || '前端开发工程师';
+            });
+            
+            document.getElementById('email').addEventListener('input', function(e) {
+                const emailSpan = document.querySelector('#previewContact span:first-child .editable');
+                emailSpan.textContent = e.target.value || 'example@mail.com';
+            });
+            
+            document.getElementById('phone').addEventListener('input', function(e) {
+                const phoneSpan = document.querySelector('#previewContact span:nth-child(2) .editable');
+                phoneSpan.textContent = e.target.value || '13800138000';
+            });
+            
+            document.getElementById('location').addEventListener('input', function(e) {
+                const locationSpan = document.querySelector('#previewContact span:last-child .editable');
+                locationSpan.textContent = e.target.value || '北京市朝阳区';
+            });
+            
+            document.getElementById('summary').addEventListener('input', function(e) {
+                document.getElementById('previewSummary').textContent = e.target.value || 
+                    '具有5年前端开发经验，熟悉HTML5、CSS3、JavaScript等前端技术，熟练使用React、Vue等主流框架，有多个大型项目开发经验，注重用户体验和代码质量，具备良好的团队协作能力。';
+            });
+            
+            // 添加教育背景
+            document.getElementById('addEducation').addEventListener('click', function() {
+                const container = document.getElementById('educationContainer');
+                const newItem = createEducationItem();
+                container.appendChild(newItem);
+                setupDeleteListeners();
+                syncEducationToPreview();
+            });
+            
+            // 添加工作经历
+            document.getElementById('addExperience').addEventListener('click', function() {
+                const container = document.getElementById('experienceContainer');
+                const newItem = createExperienceItem();
+                container.appendChild(newItem);
+                setupDeleteListeners();
+                syncExperienceToPreview();
+            });
+            
+            // 添加项目经验
+            document.getElementById('addProject').addEventListener('click', function() {
+                const container = document.getElementById('projectContainer');
+                const newItem = createProjectItem();
+                container.appendChild(newItem);
+                setupDeleteListeners();
+                syncProjectsToPreview();
+            });
+            
+            // 添加技能
+            document.getElementById('addSkill').addEventListener('click', function() {
+                const container = document.getElementById('skillContainer');
+                const newItem = createSkillItem();
+                container.appendChild(newItem);
+                setupDeleteListeners();
+                syncSkillsToPreview();
+            });
+            
+            // 设置删除按钮监听
+            setupDeleteListeners();
+            
+            // 设置输入变化监听，同步到预览
+            setupInputSyncListeners();
+            
+            // 模板选择
+            document.querySelectorAll('.template-selector').forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有活跃状态
+                    document.querySelectorAll('.template-selector').forEach(btn => {
+                        btn.classList.remove('active', 'border-primary');
+                        btn.classList.add('border-transparent');
+                    });
+                    
+                    // 设置当前为活跃
+                    this.classList.add('active', 'border-primary');
+                    this.classList.remove('border-transparent');
+                    
+                    // 应用模板
+                    const template = this.getAttribute('data-template');
+                    const preview = document.getElementById('resumePreview');
+                    
+                    // 移除所有模板类
+                    preview.classList.remove('template-1', 'template-2', 'template-3');
+                    
+                    // 添加选中的模板类
+                    preview.classList.add(`template-${template}`);
+                    
+                    // 添加动画效果
+                    preview.classList.remove('fade-in');
+                    void preview.offsetWidth; // 触发重绘
+                    preview.classList.add('fade-in');
+                });
+            });
+            
+            // 打印功能 - 只打印简历区域
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // 导出PDF功能
+            document.getElementById('pdfBtn').addEventListener('click', function() {
+                const element = document.getElementById('resumePreview');
+                const opt = {
+                    margin: 10,
+                    filename: `${document.getElementById('previewName').textContent || '我的简历'}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                // 显示加载状态
+                this.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>正在生成...';
+                this.disabled = true;
+                
+                // 生成PDF
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // 恢复按钮状态
+                    this.innerHTML = '<i class="fa fa-file-pdf-o mr-2"></i>导出PDF';
+                    this.disabled = false;
+                });
+            });
+            
+            // 保存功能（实际项目中可以连接后端API）
+            document.getElementById('saveBtn').addEventListener('click', function() {
+                // 模拟保存成功
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fa fa-check mr-2"></i>已保存';
+                this.classList.remove('bg-green-500');
+                this.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.classList.remove('bg-green-600');
+                    this.classList.add('bg-green-500');
+                }, 2000);
+            });
+        }
+        
+        // 创建教育背景项
+        function createEducationItem() {
+            const div = document.createElement('div');
+            div.className = 'education-item p-3 border border-gray-200 rounded-lg fade-in';
+            div.innerHTML = `
+                <div class="flex justify-end">
+                    <button class="delete-item text-red-500 hover:text-red-700 text-sm">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <input type="text" placeholder="学校名称" class="education-school w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    <input type="text" placeholder="专业" class="education-major w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="开始年份" class="education-start w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        <input type="text" placeholder="结束年份" class="education-end w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                </div>
+            `;
+            return div;
+        }
+        
+        // 创建工作经历项
+        function createExperienceItem() {
+            const div = document.createElement('div');
+            div.className = 'experience-item p-3 border border-gray-200 rounded-lg fade-in';
+            div.innerHTML = `
+                <div class="flex justify-end">
+                    <button class="delete-item text-red-500 hover:text-red-700 text-sm">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <input type="text" placeholder="公司名称" class="experience-company w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    <input type="text" placeholder="职位" class="experience-position w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="开始日期" class="experience-start w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        <input type="text" placeholder="结束日期" class="experience-end w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                    <textarea placeholder="工作描述" rows="2" class="experience-description w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"></textarea>
+                </div>
+            `;
+            return div;
+        }
+        
+        // 创建项目经验项
+        function createProjectItem() {
+            const div = document.createElement('div');
+            div.className = 'project-item p-3 border border-gray-200 rounded-lg fade-in';
+            div.innerHTML = `
+                <div class="flex justify-end">
+                    <button class="delete-item text-red-500 hover:text-red-700 text-sm">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <input type="text" placeholder="项目名称" class="project-name w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="开始日期" class="project-start w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        <input type="text" placeholder="结束日期" class="project-end w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    </div>
+                    <textarea placeholder="项目描述" rows="2" class="project-description w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"></textarea>
+                    <input type="text" placeholder="担任角色" class="project-role w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                </div>
+            `;
+            return div;
+        }
+        
+        // 创建技能项
+        function createSkillItem() {
+            const div = document.createElement('div');
+            div.className = 'skill-item flex items-center p-2 border border-gray-200 rounded-lg fade-in';
+            div.innerHTML = `
+                <input type="text" placeholder="技能名称" class="skill-name border-none focus:ring-0 px-2 py-1 text-sm w-32">
+                <div class="ml-2">
+                    <select class="skill-level text-xs border-gray-300 rounded">
+                        <option value="入门">入门</option>
+                        <option value="基础" selected>基础</option>
+                        <option value="熟练">熟练</option>
+                        <option value="精通">精通</option>
+                    </select>
+                </div>
+                <button class="delete-item ml-2 text-red-500 hover:text-red-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            `;
+            return div;
+        }
+        
+        // 设置删除按钮监听
+        function setupDeleteListeners() {
+            document.querySelectorAll('.delete-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const item = this.closest('.education-item, .experience-item, .project-item, .skill-item');
+                    if (item) {
+                        // 添加淡出动画
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(10px)';
+                        item.style.transition = 'opacity 0.3s, transform 0.3s';
+                        
+                        setTimeout(() => {
+                            item.remove();
+                            // 同步预览
+                            if (item.classList.contains('education-item')) syncEducationToPreview();
+                            if (item.classList.contains('experience-item')) syncExperienceToPreview();
+                            if (item.classList.contains('project-item')) syncProjectsToPreview();
+                            if (item.classList.contains('skill-item')) syncSkillsToPreview();
+                        }, 300);
+                    }
+                });
+            });
+        }
+        
+        // 设置输入同步监听
+        function setupInputSyncListeners() {
+            // 教育背景输入变化
+            document.getElementById('educationContainer').addEventListener('input', syncEducationToPreview);
+            
+            // 工作经历输入变化
+            document.getElementById('experienceContainer').addEventListener('input', syncExperienceToPreview);
+            
+            // 项目经验输入变化
+            document.getElementById('projectContainer').addEventListener('input', syncProjectsToPreview);
+            
+            // 技能输入变化
+            document.getElementById('skillContainer').addEventListener('input', syncSkillsToPreview);
+            document.getElementById('skillContainer').addEventListener('change', syncSkillsToPreview);
+        }
+        
+        // 同步教育背景到预览
+        function syncEducationToPreview() {
+            const container = document.getElementById('previewEducation');
+            container.innerHTML = '';
+            
+            document.querySelectorAll('.education-item').forEach(item => {
+                const school = item.querySelector('.education-school').value || '学校名称';
+                const major = item.querySelector('.education-major').value || '专业';
+                const start = item.querySelector('.education-start').value || '开始年份';
+                const end = item.querySelector('.education-end').value || '结束年份';
+                
+                const entry = document.createElement('div');
+                entry.className = 'education-entry flex justify-between';
+                entry.innerHTML = `
+                    <div>
+                        <h4 class="font-bold editable" contenteditable="true">${school}</h4>
+                        <span class="text-sm text-gray-600 editable" contenteditable="true">${major}</span>
+                    </div>
+                    <span class="text-sm text-gray-600 editable" contenteditable="true">${start} - ${end}</span>
+                `;
+                container.appendChild(entry);
+            });
+        }
+        
+        // 同步工作经历到预览
+        function syncExperienceToPreview() {
+            const container = document.getElementById('previewExperience');
+            container.innerHTML = '';
+            
+            document.querySelectorAll('.experience-item').forEach(item => {
+                const company = item.querySelector('.experience-company').value || '公司名称';
+                const position = item.querySelector('.experience-position').value || '职位';
+                const start = item.querySelector('.experience-start').value || '开始日期';
+                const end = item.querySelector('.experience-end').value || '结束日期';
+                const description = item.querySelector('.experience-description').value || '工作描述';
+                
+                const entry = document.createElement('div');
+                entry.className = 'experience-entry';
+                entry.innerHTML = `
+                    <div class="flex justify-between">
+                        <h4 class="font-bold editable" contenteditable="true">${company}</h4>
+                        <span class="text-sm text-gray-600 editable" contenteditable="true">${start} - ${end}</span>
+                    </div>
+                    <div class="text-primary font-medium editable" contenteditable="true">${position}</div>
+                    <p class="text-sm mt-1 leading-relaxed editable" contenteditable="true">${description}</p>
+                `;
+                container.appendChild(entry);
+            });
+        }
+        
+        // 同步项目经验到预览
+        function syncProjectsToPreview() {
+            const container = document.getElementById('previewProjects');
+            container.innerHTML = '';
+            
+            document.querySelectorAll('.project-item').forEach(item => {
+                const name = item.querySelector('.project-name').value || '项目名称';
+                const start = item.querySelector('.project-start').value || '开始日期';
+                const end = item.querySelector('.project-end').value || '结束日期';
+                const description = item.querySelector('.project-description').value || '项目描述';
+                const role = item.querySelector('.project-role').value || '担任角色';
+                
+                const entry = document.createElement('div');
+                entry.className = 'project-entry';
+                entry.innerHTML = `
+                    <div class="flex justify-between">
+                        <h4 class="font-bold editable" contenteditable="true">${name}</h4>
+                        <span class="text-sm text-gray-600 editable" contenteditable="true">${start} - ${end}</span>
+                    </div>
+                    <div class="text-sm text-gray-600 italic editable" contenteditable="true">担任角色：${role}</div>
+                    <p class="text-sm mt-1 leading-relaxed editable" contenteditable="true">${description}</p>
+                `;
+                container.appendChild(entry);
+            });
+        }
+        
+        // 同步技能到预览
+        function syncSkillsToPreview() {
+            const container = document.getElementById('previewSkills');
+            container.innerHTML = '';
+            
+            document.querySelectorAll('.skill-item').forEach(item => {
+                const name = item.querySelector('.skill-name').value || '技能名称';
+                const level = item.querySelector('.skill-level').value;
+                
+                const skillSpan = document.createElement('span');
+                skillSpan.className = 'px-2 py-1 bg-primary/10 text-primary text-sm rounded-full editable';
+                skillSpan.contentEditable = true;
+                skillSpan.textContent = `${name} (${level})`;
+                
+                container.appendChild(skillSpan);
+            });
+        }
+        
+        // 监听滚动，改变导航栏样式
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.classList.add('py-2', 'shadow-lg');
+                header.classList.remove('py-3', 'shadow-md');
+            } else {
+                header.classList.add('py-3', 'shadow-md');
+                header.classList.remove('py-2', 'shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
+    

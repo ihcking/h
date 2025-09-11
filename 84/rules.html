@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御音阁 - 全员准则</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+        }
+
+        :root {
+            --primary-color: #8e2de2; /* 紫色 */
+            --secondary-color: #4a00e0; /* 深紫色 */
+            --accent-color: #e94057; /* 红色 */
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --gradient-bg: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(142, 45, 226, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.6);
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: rgba(26, 26, 46, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-bg);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 页眉 */
+        .header-banner {
+            height: 400px;
+            background: var(--gradient-bg);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 800px;
+        }
+
+        .header-content h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .header-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* 招新公告 */
+        .recruitment-section {
+            padding: 100px 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gradient-bg);
+        }
+
+        .recruitment-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .recruitment-content h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .recruitment-content p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .recruitment-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .recruitment-content li {
+            margin-bottom: 10px;
+            color: #555;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .recruitment-content li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #856404;
+        }
+
+        /* 微信公众号二维码 */
+        .wechat-qrcode {
+            display: flex;
+            gap: 20px;
+        }
+
+        .wechat-qrcode-item {
+            text-align: center;
+            width: 120px; /* 设置容器为正方形 */
+        }
+
+        .wechat-qrcode-item img {
+            width: 120px; /* 设置二维码为正方形 */
+            height: 120px; /* 设置二维码为正方形 */
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* 媒体平台图标 */
+        .social-platforms {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-platforms a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-platforms a:hover {
+            background: var(--gradient-bg);
+            transform: translateY(-3px);
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--gradient-bg);
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--gradient-bg);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .header-content h2 {
+                font-size: 32px;
+            }
+            
+            .header-content p {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptMy41LTljLjgzIDAgMS41LS42NyAxLjUtMS41UzE2LjMzIDggMTUuNSA4IDE0IDguNjcgMTQgOC41IDE0LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41em0tNyAwYy44MyAwIDEuNS0uNjcgMS41LTEuNVM5LjMzIDggOC41IDggOCA4LjY3IDggOC41IDggOSA4LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41eiIvPjwvc3ZnPg==" alt="Logo">
+                    <h1>御音阁</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="events.html">活动日历</a></li>
+                    <li><a href="news.html">最新动态</a></li>
+                    <li><a href="recruitment.html">招新公告</a></li>
+                    <li><a href="rules.html">全员准则</a></li>
+                    <li><a href="works.html">作品展示</a></li>
+                    <li><a href="members.html">成员查询</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+					<li><a href="navigation.html">更多</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 页眉 -->
+    <section class="header-banner">
+        <div class="container">
+            <div class="header-content">
+                <h2 class="fade-in">全员准则</h2>
+                <p class="fade-in delay-1">希望各位成员能够严格遵守准则，共同维护社团的良好氛围和发展秩序，携手共创社团的美好未来。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 招新公告 -->
+    <section class="recruitment-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>全员准则</h2>
+            </div>
+            <div class="recruitment-content">
+                <h3 class="fade-in">御音阁全员准则</h3>
+                <p class="fade-in delay-1">以下是御音阁全员准则，请仔细阅读并遵守。</p>
+                <hr><br>
+                <h3 class="fade-in delay-2">一、新人实习期</h3>
+                <ul class="fade-in delay-3">
+                    <li><strong>时长：</strong>新成员需经过15天实习期，通过考核后方可转正。</li>
+                    <li><strong>考核内容：</strong>
+                        <ul>
+                            <li>任务完成：每日完成社团免费任务（如捐赠、互动、语音房驻留等）。</li>
+                            <li>活动参与：实习期内至少参与1次社团活动（如配音、创作研讨等）。</li>
+                            <li>社群活跃：保持社群的积极互动，展现团队协作能力。</li>
+                        </ul>
+                    </li>
+                    <li><strong>考核结果：</strong>
+                        <ul>
+                            <li>通过：正式成为成员，享有全部权益。</li>
+                            <li>未通过：延长7天实习期，仍未达标则劝退。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <hr><br>
+                <h3 class="fade-in delay-2">二、成员行为规范</h3>
+                <ul class="fade-in delay-3">
+                    <li><strong>日常要求：</strong>
+                        <ul>
+                            <li>禁止与成员或外部人员发生冲突、引战等行为，违者直接移除。</li>
+                            <li>维护社团形象，不得发表损害社团声誉的言论。</li>
+                        </ul>
+                    </li>
+                    <li><strong>任务与活跃度：</strong>
+                        <ul>
+                            <li>每日完成基础任务以获取声望值（用于兑换奖励）。</li>
+                            <li>连续7天未完成任务将收到警告；连续15天未活跃则降级为“观察成员”。</li>
+                            <li>超过1个月未参与活动且未说明者，需重新考核入社资格。</li>
+                        </ul>
+                    </li>
+                    <li><strong>社团归属：</strong>
+                        <ul>
+                            <li>严禁同时加入除御音阁以外的其他社团，违者取消资格。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <hr><br>
+                <h3 class="fade-in delay-2">三、活动参与规范</h3>
+                <ul class="fade-in delay-3">
+                    <li><strong>定期活动：</strong>每周六20:00-22:00为固定活动时间，成员需准时参加；缺席需提前请假。</li>
+                    <li><strong>临时活动：</strong>鼓励成员根据自身情况积极报名。</li>
+                    <li><strong>活动表现：</strong>
+                        <ul>
+                            <li>尊重他人意见，友好交流，营造积极氛围。</li>
+                            <li>积极参与活动策划与组织。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <hr><br>
+                <h3 class="fade-in delay-2">四、作品发布准则</h3>
+                <ul class="fade-in delay-3">
+                    <li><strong>内容要求：</strong>
+                        <ul>
+                            <li>必须为原创或合法授权作品，禁止抄袭、盗用。</li>
+                            <li>内容需符合社团价值观，不得含违法违规信息。</li>
+                            <li>发布前需通过内部审核。</li>
+                        </ul>
+                    </li>
+                    <li><strong>质量标准：</strong>
+                        <ul>
+                            <li>配音：音质清晰，演绎生动</li>
+                            <li>文字：逻辑流畅，内容共鸣</li>
+                            <li>视频：画面优质，创意新颖</li>
+                        </ul>
+                    </li>
+                    <li><strong>版权声明：</strong>
+                        <ul>
+                            <li>涉及他人版权需标注来源并取得授权。</li>
+                            <li>社团享有作品推广权，优秀作品可标注「御音阁出品」。</li>
+                            <li>成员独立作品可自愿标注社团标识，社团有优先合作使用权。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <hr><br>
+                <h3 class="fade-in delay-2">五、违规处理与退出机制</h3>
+                <ul class="fade-in delay-3">
+                    <li><strong>违规处理：</strong>
+                        <ul>
+                            <li>严重违规（如抄袭、引战）直接移除并永不录用。</li>
+                            <li>因活跃度不足被移除者，1个月后可重新申请，需通过实习考核。</li>
+                        </ul>
+                    </li>
+                    <li><strong>主动退出：</strong>需提前3天告知管理组，半年内不可重复申请。</li>
+                </ul>
+                <hr><br>
+                <h3 class="fade-in delay-2">六、成员权益</h3>
+                <ul class="fade-in delay-3">
+                    <li>优先参与社团活动及资源支持（创作资源、技术培训等）。</li>
+                    <li>优秀成员可获得荣誉表彰（称号、头像框、实物奖励等）。</li>
+                    <li>拓展社交圈，与志同道合者共同成长。</li>
+                </ul>
+                <p class="fade-in delay-3">希望各位成员能够严格遵守以上准则，共同维护社团的良好氛围和发展秩序，携手共创社团的美好未来。<br>如对准则有任何疑问或建议，可随时向社团管理人员反馈。</p>
+				<center>
+                <div class="warning">					
+                    <strong>注：本准则最终解释权归御音阁管理组所有，修订内容将及时公示。 </strong>
+                </div>  
+				</center>  
+            </div>
+        </div>
+    </section>
+
+<!-- 页脚 -->
+<footer id="contact">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>御音阁</h3>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="events.html">活动日历</a></li>
+                    <li><a href="news.html">最新动态</a></li>
+                    <li><a href="recruitment.html">招新公告</a></li>
+                    <li><a href="rules.html">全员准则</a></li>
+                    <li><a href="works.html">作品展示</a></li>
+                    <li><a href="members.html">成员查询</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+					<li><a href="navigation.html">皇宸 · 潇府 · 御音阁</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>皇宸</h3>
+                <ul>
+                    <li><a href="https://hc.ihcking.com">皇宸总部</a></li>
+                    <li><a href="https://hcbl.ihcking.com">皇宸部落</a></li>
+                    <li><a href="https://qlgh.ihcking.com">乾龙公会</a></li>
+                    <li><a href="https://qcjz.ihcking.com">卿城家族</a></li>
+                    <li><a href="https://fgsm.ihcking.com">枫谷师门</a></li>
+                    <li><a href="https://xf.ihcking.com">潇府</a></li>
+                    <li><a href="https://yg.ihcking.com">逸阁</a></li>
+                    <li><a href="https://qg.ihcking.com">卿阁</a></li>
+                    <li><a href="https://fg.ihcking.com">枫阁</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>友链</h3>
+                <ul>
+                    <li><a href="https://xf.ihcking.com">潇府</a></li>
+                    <li><a href="https://yg.ihcking.com">逸阁</a></li>
+                    <li><a href="https://qg.ihcking.com">卿阁</a></li>
+                    <li><a href="https://fg.ihcking.com">枫阁</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>联系我们</h3>
+                <ul>
+                        <li><a href="#">💬 3010662388</a></li>
+                        <li><a href="#">📧 hc@ihcking.com</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>关注我们</h3>
+                <div class="wechat-qrcode">
+                    <div class="wechat-qrcode-item">
+                        <img src="./assets/img/xfdyh.jpg" alt="微信公众号1">
+                        <p>潇府订阅号</p>
+                    </div>
+                    <div class="wechat-qrcode-item">
+                        <img src="./assets/img/hcwfh.jpg" alt="微信公众号2">
+                        <p>皇宸服务号</p>
+                    </div>
+                </div>
+                <div class="social-platforms">
+                    <a href="#" title="哔哩哔哩">
+                        <i>B</i>
+                    </a>
+                    <a href="#" title="微博">
+                        <i>微</i>
+                    </a>
+                    <a href="#" title="抖音">
+                        <i>抖</i>
+                    </a>
+                    <a href="#" title="网易云音乐">
+                        <i>云</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 御音阁 . 保留所有权利.</p>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        // 滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, 0.95)';
+                    header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.2)';
+                } else {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, 0.9)';
+                    header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

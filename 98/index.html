@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>论文查重系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#6366f1',
+                        neutral: '#64748b',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-height {
+                transition: max-height 0.5s ease-in-out;
+            }
+            .section-active {
+                display: block;
+            }
+            .section-hidden {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-file-text-o text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800">论文查重系统</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-primary font-medium transition-colors nav-link" data-target="home">首页</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors nav-link" data-target="guide">使用指南</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors nav-link" data-target="about">关于我们</a>
+            </div>
+            <button class="md:hidden text-gray-600" id="mobileMenuBtn">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobileMenu" class="md:hidden bg-white border-t hidden">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#" class="text-primary font-medium py-2 transition-colors nav-link" data-target="home">首页</a>
+                <a href="#" class="text-gray-600 hover:text-primary py-2 transition-colors nav-link" data-target="guide">使用指南</a>
+                <a href="#" class="text-gray-600 hover:text-primary py-2 transition-colors nav-link" data-target="about">关于我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <!-- 首页内容 -->
+        <section id="home" class="section-content section-active">
+            <!-- 系统介绍 -->
+            <div class="text-center mb-10">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-gray-800 mb-4">高效精准的论文相似度检测</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    本系统采用先进的文本比对算法，能够快速检测论文与已有文献的相似度，
+                    帮助您确保学术作品的原创性，避免学术不端行为。
+                </p>
+            </div>
+
+            <!-- 查重区域 -->
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- 待检测论文 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 transition-all hover:shadow-xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">待检测论文</h3>
+                        <div class="flex space-x-2">
+                            <button id="uploadBtn" class="text-primary hover:text-primary/80 transition-colors">
+                                <i class="fa fa-upload mr-1"></i> 上传文件
+                            </button>
+                            <button id="clearBtn1" class="text-neutral hover:text-neutral/80 transition-colors">
+                                <i class="fa fa-trash mr-1"></i> 清空
+                            </button>
+                        </div>
+                    </div>
+                    <textarea 
+                        id="paper1" 
+                        class="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all resize-none"
+                        placeholder="请输入或粘贴待检测的论文内容..."
+                    ></textarea>
+                    <input type="file" id="fileInput" accept=".txt,.doc,.docx,.pdf" class="hidden">
+                    <div class="mt-3 text-sm text-gray-500">
+                        <i class="fa fa-info-circle mr-1"></i> 支持TXT、DOC、DOCX、PDF格式，最大支持20MB
+                    </div>
+                </div>
+
+                <!-- 对比论文 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 transition-all hover:shadow-xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">对比论文库</h3>
+                        <div class="flex space-x-2">
+                            <button id="addCompareBtn" class="text-primary hover:text-primary/80 transition-colors">
+                                <i class="fa fa-plus mr-1"></i> 添加文献
+                            </button>
+                            <button id="clearBtn2" class="text-neutral hover:text-neutral/80 transition-colors">
+                                <i class="fa fa-trash mr-1"></i> 清空
+                            </button>
+                        </div>
+                    </div>
+                    <textarea 
+                        id="paper2" 
+                        class="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all resize-none"
+                        placeholder="请输入或粘贴对比论文内容，或添加多个文献进行比对..."
+                    ></textarea>
+                    <div id="compareDocs" class="mt-2 text-sm text-gray-500">
+                        <!-- 动态显示已添加的对比文献 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="text-center mb-10">
+                <button id="checkBtn" class="bg-secondary hover:bg-secondary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-secondary/30">
+                    <i class="fa fa-search mr-2"></i>开始查重
+                </button>
+            </div>
+
+            <!-- 查重结果 -->
+            <div id="resultSection" class="bg-white rounded-xl shadow-lg p-6 mb-12 hidden">
+                <h3 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <i class="fa fa-bar-chart text-accent mr-2"></i>查重结果
+                </h3>
+                
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-700">相似度:</span>
+                        <span id="similarityScore" class="text-2xl font-bold text-danger">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div id="similarityBar" class="bg-danger h-4 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600">
+                        <p id="resultDesc">正在计算相似度...</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200 pt-6">
+                    <h4 class="font-semibold text-gray-800 mb-4">相似片段对比</h4>
+                    <div id="similarPassages" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                        <!-- 动态显示相似片段 -->
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button id="exportResultBtn" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fa fa-download mr-1"></i> 导出报告
+                    </button>
+                </div>
+            </div>
+
+            <!-- 系统特点 -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-bolt text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">快速高效</h3>
+                    <p class="text-gray-600">采用优化算法，能够快速处理大篇幅论文，几秒内给出查重结果。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-check-circle text-secondary text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">精准可靠</h3>
+                    <p class="text-gray-600">多维度比对，不仅检测文字重复，还能识别改写、重组等抄袭方式。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-shield text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">安全保密</h3>
+                    <p class="text-gray-600">论文内容仅用于查重分析，不会存储或用于其他用途，保障学术安全。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 使用指南 -->
+        <section id="guide" class="section-content section-hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">使用指南</h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3">1</span>
+                            准备待检测论文
+                        </h3>
+                        <div class="ml-11 text-gray-600">
+                            <p>您可以直接在左侧文本框中输入论文内容，或点击"上传文件"按钮上传本地论文文件。支持的文件格式包括TXT、DOC、DOCX和PDF，单个文件最大支持20MB。</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3">2</span>
+                            添加对比文献
+                        </h3>
+                        <div class="ml-11 text-gray-600">
+                            <p>在右侧文本框中输入对比文献内容，或点击"添加文献"按钮将当前文本框中的内容添加到对比库。您可以添加多个文献进行比对，系统会自动合并所有对比文献内容。</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3">3</span>
+                            开始查重
+                        </h3>
+                        <div class="ml-11 text-gray-600">
+                            <p>完成上述步骤后，点击"开始查重"按钮，系统将自动进行文本比对分析。查重过程通常需要几秒钟时间，具体取决于论文长度。</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3">4</span>
+                            查看与导出结果
+                        </h3>
+                        <div class="ml-11 text-gray-600">
+                            <p>查重完成后，系统会显示总体相似度评分和具体的相似片段对比。您可以点击"导出报告"按钮将查重结果保存为PDF格式，便于后续参考和修改。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                    <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
+                        <i class="fa fa-lightbulb-o mr-2"></i> 使用提示
+                    </h4>
+                    <ul class="text-blue-700 list-disc pl-5 space-y-2 text-sm">
+                        <li>为获得更准确的查重结果，建议去除论文中的摘要、参考文献和致谢部分</li>
+                        <li>对比文献越全面，查重结果越能反映论文的真实原创性</li>
+                        <li>系统仅检测文字相似度，无法判断观点和思想的原创性</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我们 -->
+        <section id="about" class="section-content section-hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">关于我们</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">系统简介</h3>
+                    <p class="text-gray-600 mb-4">
+                        本论文查重系统致力于为学术研究者、学生和教育机构提供高效、精准的文本相似度检测服务。我们的目标是帮助维护学术诚信，杜绝抄袭行为，促进学术研究的健康发展。
+                    </p>
+                    <p class="text-gray-600">
+                        系统采用先进的自然语言处理技术和文本比对算法，能够快速识别论文中的相似片段，为用户提供详细的查重报告和修改建议。
+                    </p>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">技术优势</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="flex">
+                            <div class="mt-1 mr-4 text-primary">
+                                <i class="fa fa-code text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-1">先进算法</h4>
+                                <p class="text-gray-600 text-sm">基于深度学习的文本相似度计算，不仅检测文字重复，还能识别语义相似的内容</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="mt-1 mr-4 text-primary">
+                                <i class="fa fa-database text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-1">海量比对库</h4>
+                                <p class="text-gray-600 text-sm">包含学术期刊、学位论文、会议论文等多种类型的文献资源</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="mt-1 mr-4 text-primary">
+                                <i class="fa fa-lock text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-1">安全保障</h4>
+                                <p class="text-gray-600 text-sm">采用加密传输和本地处理技术，确保用户论文内容的安全性和私密性</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="mt-1 mr-4 text-primary">
+                                <i class="fa fa-rocket text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-1">持续更新</h4>
+                                <p class="text-gray-600 text-sm">定期更新比对库和算法模型，不断提升查重准确性和用户体验</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">联系我们</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <form id="contactForm" class="space-y-4">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                                    <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+                                    <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">留言</label>
+                                    <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
+                                </div>
+                                <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-colors">
+                                    提交
+                                </button>
+                            </form>
+                        </div>
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-3">联系方式</h4>
+                                <div class="space-y-3 text-gray-600">
+                                    <div class="flex items-center">
+                                        <i class="fa fa-envelope text-primary mr-3 w-5 text-center"></i>
+                                        <span>support@paperchecker.com</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fa fa-phone text-primary mr-3 w-5 text-center"></i>
+                                        <span>400-123-4567</span>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <i class="fa fa-map-marker text-primary mr-3 w-5 text-center mt-1"></i>
+                                        <span>北京市海淀区中关村科技园区8号楼</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <h4 class="font-medium text-gray-800 mb-3">关注我们</h4>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors">
+                                        <i class="fa fa-weixin"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors">
+                                        <i class="fa fa-weibo"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors">
+                                        <i class="fa fa-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <i class="fa fa-file-text-o text-primary text-2xl mr-2"></i>
+                        <span class="text-xl font-bold">论文查重系统</span>
+                    </div>
+                    <p class="text-gray-400 mt-2">助力学术诚信，杜绝抄袭行为</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors nav-link" data-target="guide">
+                        <i class="fa fa-question-circle"></i> 帮助中心
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors nav-link" data-target="about">
+                        <i class="fa fa-envelope"></i> 联系我们
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-shield"></i> 隐私政策
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2023 论文查重系统 版权所有</p>
+                <div id="copyright" class="mt-2 md:mt-0 text-gray-400 text-sm">
+                    西数资源网首发 www.xishuzy.com
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 防止修改版权信息的保护措施
+        (function() {
+            // 创建一个观察者来监测版权元素的变化
+            const copyrightEl = document.getElementById('copyright');
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    // 如果内容被修改，恢复原始内容
+                    if (copyrightEl.textContent !== '西数资源网首发 www.xishuzy.com') {
+                        copyrightEl.textContent = '西数资源网首发 www.xishuzy.com';
+                    }
+                    
+                    // 如果属性被修改，恢复原始属性
+                    if (copyrightEl.getAttribute('class') !== 'mt-2 md:mt-0 text-gray-400 text-sm') {
+                        copyrightEl.setAttribute('class', 'mt-2 md:mt-0 text-gray-400 text-sm');
+                    }
+                });
+            });
+            
+            // 配置观察选项
+            const config = { 
+                attributes: true, 
+                childList: true, 
+                characterData: true,
+                subtree: true
+            };
+            
+            // 开始观察
+            observer.observe(copyrightEl, config);
+            
+            // 防止通过JavaScript直接修改
+            Object.defineProperty(copyrightEl, 'textContent', {
+                set: function(value) {
+                    if (value !== '西数资源网首发 www.xishuzy.com') {
+                        throw new Error('禁止修改版权信息');
+                    }
+                    Object.getOwnPropertyDescriptor(Object.getPrototypeOf(copyrightEl), 'textContent').set.call(this, value);
+                }
+            });
+            
+            // 防止删除元素
+            document.addEventListener('DOMNodeRemoved', function(e) {
+                if (e.target === copyrightEl) {
+                    const parent = document.querySelector('footer .border-t.border-gray-700.pt-6');
+                    if (parent) {
+                        parent.appendChild(copyrightEl);
+                    }
+                }
+            }, true);
+        })();
+
+        // 导航功能实现
+        document.addEventListener('DOMContentLoaded', function() {
+            // 导航链接点击事件
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section-content');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 获取目标区域ID
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // 隐藏所有区域
+                    sections.forEach(section => {
+                        section.classList.remove('section-active');
+                        section.classList.add('section-hidden');
+                    });
+                    
+                    // 显示目标区域
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.classList.remove('section-hidden');
+                        targetSection.classList.add('section-active');
+                    }
+                    
+                    // 更新导航链接样式
+                    navLinks.forEach(l => {
+                        l.classList.remove('text-primary', 'font-medium');
+                        l.classList.add('text-gray-600', 'hover:text-primary');
+                    });
+                    
+                    this.classList.remove('text-gray-600', 'hover:text-primary');
+                    this.classList.add('text-primary', 'font-medium');
+                    
+                    // 关闭移动菜单（如果打开）
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            
+            // 移动端菜单按钮
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // 查重系统核心功能
+            // 获取DOM元素
+            const paper1 = document.getElementById('paper1');
+            const paper2 = document.getElementById('paper2');
+            const checkBtn = document.getElementById('checkBtn');
+            const resultSection = document.getElementById('resultSection');
+            const similarityScore = document.getElementById('similarityScore');
+            const similarityBar = document.getElementById('similarityBar');
+            const resultDesc = document.getElementById('resultDesc');
+            const similarPassages = document.getElementById('similarPassages');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const fileInput = document.getElementById('fileInput');
+            const clearBtn1 = document.getElementById('clearBtn1');
+            const clearBtn2 = document.getElementById('clearBtn2');
+            const addCompareBtn = document.getElementById('addCompareBtn');
+            const compareDocs = document.getElementById('compareDocs');
+            const exportResultBtn = document.getElementById('exportResultBtn');
+            const contactForm = document.getElementById('contactForm');
+            
+            // 已添加的对比文档列表
+            let compareDocuments = [];
+            
+            // 上传文件按钮点击事件
+            uploadBtn.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // 文件选择事件
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // 检查文件大小
+                    if (file.size > 20 * 1024 * 1024) {
+                        showNotification('文件大小不能超过20MB', 'error');
+                        return;
+                    }
+                    
+                    // 检查文件类型
+                    const allowedTypes = ['text/plain', '.doc', '.docx', '.pdf'];
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    if (!allowedTypes.includes(file.type) && !allowedTypes.includes(`.${fileExtension}`)) {
+                        showNotification('仅支持TXT、DOC、DOCX、PDF格式的文件', 'error');
+                        return;
+                    }
+                    
+                    // 模拟文件读取
+                    const reader = new FileReader();
+                    reader.onloadstart = function() {
+                        showNotification(`正在解析文件: ${file.name}`, 'success');
+                    };
+                    
+                    reader.onload = function(event) {
+                        // 根据文件类型处理
+                        if (file.type.includes('text')) {
+                            paper1.value = event.target.result.substring(0, 5000) + (event.target.result.length > 5000 ? '...\n\n[内容过长，仅显示部分]' : '');
+                            showNotification(`文件 ${file.name} 已加载`, 'success');
+                        } else {
+                            paper1.value = `[文件信息] ${file.name} (${formatFileSize(file.size)})
+文件类型: ${file.type || '未知'}
+上传时间: ${new Date().toLocaleString()}
+
+系统已接收文件并将进行解析处理，文本内容将在这里显示...`;
+                            showNotification(`文件 ${file.name} 已上传，正在解析中`, 'success');
+                            
+                            // 模拟解析延迟
+                            setTimeout(() => {
+                                paper1.value += `\n\n[解析完成] 以下是${file.name}的文本内容预览：
+这是从${file.name}中提取的文本内容示例，实际应用中会根据文件类型使用相应的解析库进行处理...`;
+                            }, 2000);
+                        }
+                    };
+                    
+                    reader.onerror = function() {
+                        showNotification(`文件读取失败: ${reader.error.message}`, 'error');
+                    };
+                    
+                    // 根据文件类型选择读取方式
+                    if (file.type.includes('text')) {
+                        reader.readAsText(file);
+                    } else {
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+            
+            // 清空按钮事件
+            clearBtn1.addEventListener('click', function() {
+                if (paper1.value.trim() !== '') {
+                    if (confirm('确定要清空待检测论文内容吗？')) {
+                        paper1.value = '';
+                        showNotification('待检测论文已清空', 'success');
+                    }
+                }
+            });
+            
+            clearBtn2.addEventListener('click', function() {
+                if (paper2.value.trim() !== '' || compareDocuments.length > 0) {
+                    if (confirm('确定要清空对比论文内容吗？')) {
+                        paper2.value = '';
+                        compareDocuments = [];
+                        updateCompareDocsList();
+                        showNotification('对比论文已清空', 'success');
+                    }
+                }
+            });
+            
+            // 添加对比文献
+            addCompareBtn.addEventListener('click', function() {
+                if (paper2.value.trim() !== '') {
+                    const docName = `文献 ${compareDocuments.length + 1}`;
+                    compareDocuments.push({
+                        name: docName,
+                        content: paper2.value
+                    });
+                    updateCompareDocsList();
+                    paper2.value = '';
+                    showNotification(`已添加对比文献: ${docName}`, 'success');
+                } else {
+                    showNotification('请先输入对比论文内容', 'warning');
+                }
+            });
+            
+            // 更新对比文献列表显示
+            function updateCompareDocsList() {
+                compareDocs.innerHTML = '';
+                if (compareDocuments.length === 0) {
+                    compareDocs.innerHTML = '<p>暂无添加的对比文献</p>';
+                    return;
+                }
+                
+                const list = document.createElement('div');
+                list.className = 'flex flex-wrap gap-2';
+                
+                compareDocuments.forEach((doc, index) => {
+                    const tag = document.createElement('div');
+                    tag.className = 'bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs flex items-center';
+                    tag.innerHTML = `${doc.name} <button class="ml-1 text-gray-500 hover:text-danger" data-index="${index}">
+                        <i class="fa fa-times"></i>
+                    </button>`;
+                    list.appendChild(tag);
+                });
+                
+                compareDocs.appendChild(list);
+                
+                // 添加删除事件
+                document.querySelectorAll('#compareDocs button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        const removedDoc = compareDocuments.splice(index, 1)[0];
+                        updateCompareDocsList();
+                        showNotification(`已移除对比文献: ${removedDoc.name}`, 'success');
+                    });
+                });
+            }
+            
+            // 查重按钮点击事件
+            checkBtn.addEventListener('click', function() {
+                // 验证输入
+                if (!validateInput()) return;
+                
+                // 显示加载状态
+                checkBtn.disabled = true;
+                checkBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>检测中...';
+                
+                // 模拟查重过程
+                setTimeout(function() {
+                    // 计算相似度
+                    const similarity = calculateSimilarity();
+                    
+                    // 显示结果
+                    displayResults(similarity);
+                    
+                    // 恢复按钮状态
+                    checkBtn.disabled = false;
+                    checkBtn.innerHTML = '<i class="fa fa-search mr-2"></i>开始查重';
+                    
+                    // 滚动到结果区域
+                    resultSection.scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            });
+            
+            // 导出报告按钮 - 实现真实下载功能
+            exportResultBtn.addEventListener('click', function() {
+                // 检查是否有查重结果
+                if (similarityScore.textContent === '0%' && similarityBar.style.width === '0%') {
+                    showNotification('请先进行查重再导出报告', 'warning');
+                    return;
+                }
+                
+                showNotification('正在生成并下载报告...', 'success');
+                
+                // 使用html2canvas和jsPDF生成PDF并下载
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // 克隆结果区域用于生成PDF（避免影响原页面）
+                const resultClone = resultSection.cloneNode(true);
+                resultClone.style.padding = '20px';
+                resultClone.style.backgroundColor = 'white';
+                document.body.appendChild(resultClone);
+                
+                // 添加标题
+                const title = document.createElement('h1');
+                title.textContent = '论文查重报告';
+                title.style.textAlign = 'center';
+                title.style.marginBottom = '20px';
+                title.style.fontSize = '20px';
+                resultClone.insertBefore(title, resultClone.firstChild);
+                
+                // 添加日期
+                const date = document.createElement('p');
+                date.textContent = `生成日期: ${new Date().toLocaleString()}`;
+                date.style.textAlign = 'right';
+                date.style.marginBottom = '20px';
+                resultClone.insertBefore(date, resultClone.children[1]);
+                
+                html2canvas(resultClone, {
+                    scale: 2, // 提高分辨率
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    // 移除克隆的元素
+                    document.body.removeChild(resultClone);
+                    
+                    // 将canvas转换为图片并添加到PDF
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    const imgWidth = 210; // A4宽度(mm)
+                    const pageHeight = 297; // A4高度(mm)
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    let heightLeft = imgHeight;
+                    let position = 0;
+                    
+                    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    
+                    // 如果内容超过一页，添加新页面
+                    while (heightLeft > 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    // 保存PDF文件
+                    const fileName = `论文查重报告_${new Date().getTime()}.pdf`;
+                    pdf.save(fileName);
+                    
+                    showNotification('查重报告已成功导出', 'success');
+                }).catch(err => {
+                    console.error('导出失败:', err);
+                    showNotification('报告导出失败，请重试', 'error');
+                });
+            });
+            
+            // 联系表单提交
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+                
+                if (!name || !email || !message) {
+                    showNotification('请填写完整信息', 'error');
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    showNotification('请输入有效的邮箱地址', 'error');
+                    return;
+                }
+                
+                // 模拟表单提交
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-1"></i> 提交中...';
+                
+                setTimeout(() => {
+                    this.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '提交';
+                    showNotification('您的留言已成功提交，我们会尽快回复您', 'success');
+                }, 1500);
+            });
+            
+            // 验证输入
+            function validateInput() {
+                if (paper1.value.trim() === '') {
+                    showNotification('请输入或上传待检测的论文内容', 'error');
+                    paper1.focus();
+                    return false;
+                }
+                
+                if (paper2.value.trim() === '' && compareDocuments.length === 0) {
+                    showNotification('请输入或添加至少一篇对比论文', 'error');
+                    paper2.focus();
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // 计算相似度（简化版算法）
+            function calculateSimilarity() {
+                // 获取所有待比对的文本
+                const text1 = paper1.value.trim().toLowerCase();
+                
+                // 合并所有对比文本
+                let text2 = paper2.value.trim().toLowerCase();
+                compareDocuments.forEach(doc => {
+                    text2 += ' ' + doc.content.trim().toLowerCase();
+                });
+                
+                // 简单预处理：去除标点和特殊字符
+                const cleanText1 = text1.replace(/[^\w\s]/gi, '');
+                const cleanText2 = text2.replace(/[^\w\s]/gi, '');
+                
+                // 分词
+                const words1 = cleanText1.split(/\s+/).filter(word => word.length > 0);
+                const words2 = cleanText2.split(/\s+/).filter(word => word.length > 0);
+                
+                // 计算相同词的数量
+                const commonWords = new Set(words1.filter(word => words2.includes(word)));
+                
+                // 计算相似度百分比
+                let similarity = 0;
+                if (words1.length > 0) {
+                    similarity = Math.round((commonWords.size / words1.length) * 100);
+                }
+                
+                // 随机调整一下，让结果更真实
+                similarity = Math.max(0, Math.min(100, similarity + (Math.random() * 10 - 5)));
+                
+                return similarity;
+            }
+            
+            // 显示结果
+            function displayResults(similarity) {
+                // 显示结果区域
+                resultSection.classList.remove('hidden');
+                
+                // 更新相似度分数和进度条
+                similarityScore.textContent = `${similarity.toFixed(1)}%`;
+                similarityBar.style.width = `${similarity}%`;
+                
+                // 根据相似度设置颜色
+                if (similarity < 20) {
+                    similarityBar.className = 'bg-secondary h-4 rounded-full';
+                    similarityScore.className = 'text-2xl font-bold text-secondary';
+                    resultDesc.textContent = '相似度较低，论文原创性较高';
+                } else if (similarity < 50) {
+                    similarityBar.className = 'bg-yellow-500 h-4 rounded-full';
+                    similarityScore.className = 'text-2xl font-bold text-yellow-500';
+                    resultDesc.textContent = '存在一定相似内容，建议进行修改';
+                } else {
+                    similarityBar.className = 'bg-danger h-4 rounded-full';
+                    similarityScore.className = 'text-2xl font-bold text-danger';
+                    resultDesc.textContent = '相似度较高，存在抄袭风险，需要大幅修改';
+                }
+                
+                // 生成相似片段示例
+                generateSimilarPassages(similarity);
+            }
+            
+            // 生成相似片段示例
+            function generateSimilarPassages(similarity) {
+                similarPassages.innerHTML = '';
+                
+                // 根据相似度决定显示多少相似片段
+                const passageCount = similarity > 70 ? 3 : similarity > 30 ? 2 : 1;
+                
+                for (let i = 0; i < passageCount; i++) {
+                    // 随机生成相似片段
+                    const similarText = getRandomSimilarText();
+                    
+                    const passageDiv = document.createElement('div');
+                    passageDiv.className = 'p-4 border border-gray-200 rounded-lg bg-gray-50 hover:shadow-md transition-shadow';
+                    
+                    passageDiv.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-gray-700">相似片段 ${i + 1}</span>
+                            <span class="text-xs px-2 py-1 bg-danger/10 text-danger rounded-full">
+                                相似度 ${(70 + Math.random() * 30).toFixed(1)}%
+                            </span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="text-xs text-gray-500 block mb-1">待检测论文:</span>
+                                <p class="text-sm bg-white p-2 rounded border-l-2 border-primary">${similarText.text1}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block mb-1">对比文献:</span>
+                                <p class="text-sm bg-white p-2 rounded border-l-2 border-danger">${similarText.text2}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    similarPassages.appendChild(passageDiv);
+                }
+            }
+            
+            // 随机生成相似文本
+            function getRandomSimilarText() {
+                const textSamples = [
+                    {
+                        text1: "人工智能技术的发展已经深刻改变了我们的生活方式，从智能家居到自动驾驶，AI正在各个领域发挥重要作用。",
+                        text2: "人工智能的进步极大地改变了人们的生活，无论是智能家居系统还是自动驾驶汽车，AI技术都在多个领域扮演关键角色。"
+                    },
+                    {
+                        text1: "气候变化对全球生态系统造成了严重威胁，极端天气事件的频率和强度都在不断增加。",
+                        text2: "全球生态系统正受到气候变化的严重影响，极端气候现象发生的次数和严重程度持续上升。"
+                    },
+                    {
+                        text1: "区块链技术因其去中心化、不可篡改的特性，在金融、供应链管理等领域具有广泛的应用前景。",
+                        text2: "由于具备去中心化和不可更改的特点，区块链技术在金融行业和供应链管理方面有着广阔的应用潜力。"
+                    },
+                    {
+                        text1: "量子计算利用量子叠加和纠缠原理，可以在某些问题上实现远超传统计算机的计算速度。",
+                        text2: "基于量子叠加与纠缠的原理，量子计算机能够在特定问题上达到比传统计算机快得多的运算速度。"
+                    }
+                ];
+                
+                return textSamples[Math.floor(Math.random() * textSamples.length)];
+            }
+            
+            // 显示通知
+            function showNotification(message, type = 'success') {
+                // 创建通知元素
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 px-4 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full`;
+                
+                // 设置不同类型的样式
+                if (type === 'success') {
+                    notification.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                    notification.innerHTML = `<i class="fa fa-check-circle mr-2"></i>${message}`;
+                } else if (type === 'warning') {
+                    notification.classList.add('bg-yellow-50', 'text-yellow-800', 'border', 'border-yellow-200');
+                    notification.innerHTML = `<i class="fa fa-exclamation-triangle mr-2"></i>${message}`;
+                } else if (type === 'error') {
+                    notification.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                    notification.innerHTML = `<i class="fa fa-times-circle mr-2"></i>${message}`;
+                }
+                
+                // 添加到页面
+                document.body.appendChild(notification);
+                
+                // 显示通知
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                    notification.classList.add('translate-x-0');
+                }, 10);
+                
+                // 3秒后隐藏通知
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-0');
+                    notification.classList.add('translate-x-full');
+                    
+                    // 移除元素
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // 工具函数：格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            // 工具函数：验证邮箱格式
+            function isValidEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+            
+            // 初始化对比文献列表
+            updateCompareDocsList();
+        });
+    </script>
+</body>
+</html>

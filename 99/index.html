@@ -1,0 +1,1467 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能文章伪原创工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // 配置TailTailwind自定义颜色和字体
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#8B5CF6',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-dark min-h-screen flex flex-col">
+    <!-- 导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-magic text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">智能文章伪原创工具</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-gray-600 hover:text-primary transition-all-300">
+                    <i class="fa fa-home mr-1"></i>首页
+                </a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-all-300">
+                    <i class="fa fa-book mr-1"></i>使用指南
+                </a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-all-300">
+                    <i class="fa fa-question-circle mr-1"></i>帮助中心
+                </a>
+            </div>
+            <button class="md:hidden text-gray-600 focus:outline-none" id="menu-toggle">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white border-t" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#" class="text-gray-600 hover:text-primary py-2 transition-all-300">
+                    <i class="fa fa-home mr-2"></i>首页
+                </a>
+                <a href="#" class="text-gray-600 hover:text-primary py-2 transition-all-300">
+                    <i class="fa fa-book mr-2"></i>使用指南
+                </a>
+                <a href="#" class="text-gray-600 hover:text-primary py-2 transition-all-300">
+                    <i class="fa fa-question-circle mr-2"></i>帮助中心
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow container mx-auto px-4 py-6 md:py-10">
+        <!-- 介绍部分 -->
+        <section class="mb-8 text-center">
+            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 text-shadow">专业级文章改写工具</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                通过多种智能改写策略，帮助您快速生成原创度高的文章，保留原意的同时提升内容独特性
+            </p>
+        </section>
+
+        <!-- 工具主体 -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <!-- 输入区域 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                <div class="bg-primary text-white px-6 py-4">
+                    <h3 class="text-xl font-semibold flex items-center">
+                        <i class="fa fa-pencil-square-o mr-2"></i>输入原文
+                    </h3>
+                </div>
+                <div class="p-4 md:p-6">
+                    <textarea id="original-text" class="w-full h-80 p-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all resize-none" placeholder="请在此输入需要改写的文章内容..."></textarea>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button id="clear-input" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all-300 flex items-center">
+                            <i class="fa fa-trash-o mr-1"></i>清空
+                        </button>
+                        <button id="sample-text" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all-300 flex items-center">
+                            <i class="fa fa-file-text-o mr-1"></i>示例文本
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 输出区域 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                <div class="bg-secondary text-white px-6 py-4">
+                    <h3 class="text-xl font-semibold flex items-center">
+                        <i class="fa fa-file-text mr-2"></i>改写结果
+                    </h3>
+                </div>
+                <div class="p-4 md:p-6">
+                    <div id="rewritten-text" class="w-full h-80 p-4 border border-gray-200 rounded-lg overflow-auto">
+                        <div class="text-gray-400 flex items-center justify-center h-full">
+                            <i class="fa fa-arrow-left mr-2"></i>请输入文本并选择改写策略
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button id="copy-result" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all-300 flex items-center">
+                            <i class="fa fa-copy mr-1"></i>复制结果
+                        </button>
+                        <button id="download-result" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all-300 flex items-center">
+                            <i class="fa fa-download mr-1"></i>下载文本
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 改写选项 -->
+        <section class="mt-8 bg-white rounded-xl shadow-lg p-4 md:p-6">
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fa fa-sliders mr-2 text-primary"></i>改写策略设置
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- 同义词替换 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                            <i class="fa fa-exchange text-primary"></i>
+                        </div>
+                        <h4 class="font-medium">同义词替换</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">替换文章中的词语为意义相近的表达</p>
+                    <div class="flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" id="synonym-replace" checked="">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                        <div class="ml-3">
+                            <label for="synonym-intensity" class="text-sm text-gray-600">强度:</label>
+                            <input type="range" id="synonym-intensity" min="1" max="5" value="3" class="ml-2 w-24 accent-primary">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 句式调整 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                            <i class="fa fa-random text-primary"></i>
+                        </div>
+                        <h4 class="font-medium">句式调整</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">改变句子结构，保持原意的同时变换表达方式</p>
+                    <div class="flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" id="sentence-restructure" checked="">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                        <div class="ml-3">
+                            <label for="sentence-intensity" class="text-sm text-gray-600">强度:</label>
+                            <input type="range" id="sentence-intensity" min="1" max="5" value="2" class="ml-2 w-24 accent-primary">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 段落重组 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                            <i class="fa fa-th-large text-primary"></i>
+                        </div>
+                        <h4 class="font-medium">段落重组</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">重新排列段落顺序，优化文章结构</p>
+                    <div class="flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" id="paragraph-reorder">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                        <div class="ml-3">
+                            <label for="paragraph-method" class="text-sm text-gray-600">方式:</label>
+                            <select id="paragraph-method" class="ml-2 text-sm border-gray-300 rounded-md focus:ring-primary focus:border-primary">
+                                <option value="random">随机</option>
+                                <option value="logic">逻辑优化</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 核心概念前置 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                            <i class="fa fa-flag text-primary"></i>
+                        </div>
+                        <h4 class="font-medium">核心概念前置</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">将重要信息移至段落开头，突出核心内容</p>
+                    <div class="flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" id="core-前置">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                        <div class="ml-3">
+                            <label for="core-percentage" class="text-sm text-gray-600">比例:</label>
+                            <input type="range" id="core-percentage" min="0" max="100" value="50" class="ml-2 w-24 accent-primary">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 意译与抽象化 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                            <i class="fa fa-lightbulb-o text-primary"></i>
+                        </div>
+                        <h4 class="font-medium">意译与抽象化</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">用不同方式表达相同含义，提升原创度</p>
+                    <div class="flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" id="paraphrase">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                        <div class="ml-3">
+                            <label for="abstract-level" class="text-sm text-gray-600">抽象度:</label>
+                            <input type="range" id="abstract-level" min="1" max="5" value="3" class="ml-2 w-24 accent-primary">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 混合策略 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                            <i class="fa fa-code-fork text-primary"></i>
+                        </div>
+                        <h4 class="font-medium">混合策略</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">部分保留原文，部分进行改写，平衡原创与效率</p>
+                    <div class="flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" id="hybrid-mode">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                        <div class="ml-3">
+                            <label for="original-percentage" class="text-sm text-gray-600">原文比例:</label>
+                            <input type="range" id="original-percentage" min="0" max="100" value="30" class="ml-2 w-24 accent-primary">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 执行按钮 -->
+            <div class="mt-6 text-center">
+                <button id="rewrite-btn" class="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg shadow-md hover:shadow-lg transition-all-300 text-lg font-medium flex items-center justify-center mx-auto">
+                    <i class="fa fa-magic mr-2"></i>开始改写
+                </button>
+                <div id="rewrite-status" class="mt-4 hidden">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <p class="mt-2 text-gray-600">正在进行智能改写，请稍候...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 原创度检测 -->
+        <section class="mt-8 bg-white rounded-xl shadow-lg p-4 md:p-6">
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fa fa-check-circle mr-2 text-accent"></i>原创度分析
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center p-4 border border-gray-100 rounded-lg bg-gray-50">
+                    <div class="text-3xl font-bold text-accent mb-1" id="originality-score">--</div>
+                    <div class="text-gray-600">预估原创度</div>
+                </div>
+                <div class="text-center p-4 border border-gray-100 rounded-lg bg-gray-50">
+                    <div class="text-3xl font-bold text-primary mb-1" id="word-count">0</div>
+                    <div class="text-gray-600">总字数</div>
+                </div>
+                <div class="text-center p-4 border border-gray-100 rounded-lg bg-gray-50">
+                    <div class="text-3xl font-bold text-secondary mb-1" id="change-percentage">--</div>
+                    <div class="text-gray-600">修改比例</div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h4 class="font-medium mb-2">改写对比</h4>
+                <div class="h-1 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="originality-bar" class="h-full bg-gradient-to-r from-red-400 via-yellow-400 to-green-500 w-0 transition-all duration-1000"></div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-500 mt-1">
+                    <span>与原文高度相似</span>
+                    <span>中等原创度</span>
+                    <span>高度原创</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能说明 -->
+        <section class="mt-8 bg-white rounded-xl shadow-lg p-4 md:p-6">
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fa fa-info-circle mr-2 text-primary"></i>功能说明
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-medium text-lg mb-2 text-primary">改写策略详解</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                            <span><strong>同义词替换</strong>：用含义相近的词语替换原文词汇，保持句子结构基本不变</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                            <span><strong>句式调整</strong>：改变句子的语法结构，如主动变被动、调整语序等</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                            <span><strong>段落重组</strong>：重新排列段落顺序，优化文章逻辑结构</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-lg mb-2 text-primary">高级改写技巧</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                            <span><strong>核心概念前置</strong>：将重要信息提前，符合现代阅读习惯</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                            <span><strong>意译与抽象化</strong>：用不同表达方式传达相同含义，提升原创度</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                            <span><strong>混合策略</strong>：平衡保留原文与改写内容，兼顾效率与质量</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white mt-10">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fa fa-magic mr-2 text-primary"></i>智能文章伪原创工具
+                    </h4>
+                    <p class="text-gray-400 text-sm">
+                        专业的文章改写工具，帮助您快速生成高质量原创内容，提升创作效率。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">快速链接</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-all-300">使用指南</a></li>
+                        <li><a href="#" class="hover:text-primary transition-all-300">常见问题</a></li>
+                        <li><a href="#" class="hover:text-primary transition-all-300">隐私政策</a></li>
+                        <li><a href="#" class="hover:text-primary transition-all-300">联系我们</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">关注我们</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition-all-300">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition-all-300">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition-all-300">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-4">
+                        订阅我们的更新，获取最新功能通知
+                    </p>
+                    <div class="mt-2 flex">
+                        <input type="email" placeholder="您的邮箱地址" class="px-3 py-2 bg-gray-700 text-white rounded-l-lg focus:outline-none focus:ring-1 focus:ring-primary text-sm w-full">
+                        <button class="bg-primary hover:bg-primary/90 text-white px-3 py-2 rounded-r-lg transition-all-300">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
+                西数资源网首发 <a href="http://www.xishuzy.com" class="text-primary hover:underline" target="_blank">www.xishuzy.com</a>
+            </div>
+            <div class="border-t border-gray-700 mt-4 pt-4 text-center text-gray-500 text-sm">
+                © 2023 智能文章伪原创工具 - 保留所有权利
+            </div>
+        </div>
+    </footer>
+
+    <!-- 通知提示框 -->
+    <div id="notification" class="fixed bottom-6 right-6 bg-dark text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center z-50">
+        <i id="notification-icon" class="fa fa-check-circle mr-2 text-secondary"></i>
+        <span id="notification-text">操作成功</span>
+    </div>
+
+    <script>
+        // 同义词库
+        const synonyms = {
+            "重要": ["关键", "主要", "核心", "首要", "要紧"],
+            "帮助": ["协助", "援助", "辅助", "支持", "帮忙"],
+            "使用": ["应用", "运用", "采用", "利用", "施用"],
+            "提高": ["提升", "增强", "增进", "抬高", "拔高"],
+            "快速": ["迅速", "快捷", "急速", "飞速", "敏捷"],
+            "创建": ["建立", "创立", "创建", "创设", "组建"],
+            "功能": ["功用", "效能", "机能", "作用", "性能"],
+            "内容": ["实质", "内容", "内涵", "实质", "要义"],
+            "智能": ["聪慧", "智能", "智慧", "机灵", "聪颖"],
+            "工具": ["器具", "工具", "器械", "用具", "器材"],
+            "方法": ["方式", "方法", "办法", "手段", "措施"],
+            "数据": ["资料", "数据", "讯息", "信息", "材料"],
+            "分析": ["剖析", "分析", "解析", "研判", "研究"],
+            "系统": ["体系", "系统", "体制", "制度", "系统"],
+            "用户": ["使用者", "用户", "客户", "消费者", "宾客"],
+            "结果": ["成果", "结果", "成效", "后果", "结局"],
+            "问题": ["疑问", "问题", "难题", "课题", "麻烦"],
+            "解决": ["处理", "解决", "化解", "搞定", "处置"],
+            "优化": ["改进", "优化", "完善", "改良", "提升"],
+            "发展": ["进展", "发展", "成长", "进步", "演变"],
+            "实现": ["达成", "实现", "完成", "兑现", "达到"],
+            "提供": ["供给", "提供", "供应", "给予", "供给"],
+            "支持": ["支撑", "支持", "支援", "拥护", "赞成"],
+            "包括": ["包含", "包括", "包罗", "囊括", "涵盖"],
+            "设计": ["规划", "设计", "构想", "策划", "设想"],
+            "技术": ["技能", "技术", "技艺", "本领", "技巧"],
+            "服务": ["效劳", "服务", "办事", "供职", "任职"],
+            "管理": ["治理", "管理", "管控", "料理", "执掌"],
+            "显示": ["展示", "显示", "显现", "呈现", "展现"],
+            "增加": ["增添", "增加", "增长", "增多", "增添"],
+            "减少": ["削减", "减少", "缩减", "降低", "减轻"],
+            "简单": ["简易", "简单", "简便", "简洁", "浅易"],
+            "复杂": ["繁杂", "复杂", "繁复", "纷乱", "庞杂"],
+            "有效": ["有用", "有效", "管用", "生效", "灵验"],
+            "专业": ["专门", "专业", "专长", "专攻", "拿手"],
+            "基础": ["根基", "基础", "底子", "根本", "基石"],
+            "能力": ["本领", "能力", "才能", "才干", "技能"],
+            "知识": ["学问", "知识", "学识", "常识", "认知"],
+            "经验": ["经历", "经验", "体会", "体验", "阅历"],
+            "研究": ["探究", "研究", "研讨", "钻研", "探讨"],
+            "开发": ["开拓", "开发", "开辟", "发掘", "研发"],
+            "应用": ["运用", "应用", "使用", "施用", "利用"],
+            "创新": ["革新", "创新", "创造", "立异", "刷新"],
+            "安全": ["平安", "安全", "安稳", "安好", "安然"],
+            "稳定": ["稳固", "稳定", "安稳", "安定", "平稳"],
+            "可靠": ["牢靠", "可靠", "可信", "靠谱", "稳妥"],
+            "准确": ["精确", "准确", "确切", "精准", "正确"],
+            "全面": ["周全", "全面", "详尽", "完整", "完备"],
+            "丰富": ["丰盛", "丰富", "丰硕", "充裕", "富足"],
+            "独特": ["特有", "独特", "特别", "特殊", "特有"],
+            "灵活": ["灵巧", "灵活", "活络", "机敏", "变通"],
+            "高效": ["高效", "高效能", "高效率", "速效", "卓效"],
+            "便捷": ["便利", "便捷", "便当", "方便", "简捷"],
+            "直观": ["直接", "直观", "直不雅", "明显", "明白"],
+            "强大": ["强盛", "强大", "强劲", "强盛", "壮大"],
+            "完善": ["完备", "完善", "完好", "完美", "圆满"],
+            "持续": ["连续", "持续", "延续", "接续", "接连"],
+            "自动": ["主动", "自动", "自主", "自发", "自愿"],
+            "智能": ["智慧", "智能", "聪慧", "机灵", "聪颖"],
+            "先进": ["领先", "先进", "超前", "进步", "优良"],
+            "科学": ["科研", "科学", "学术", "科技", "理科"],
+            "合理": ["公道", "合理", "恰当", "适宜", "适合"],
+            "规范": ["标准", "规范", "规矩", "规定", "准则"],
+            "严格": ["严厉", "严格", "严肃", "严苛", "严谨"],
+            "细致": ["精细", "细致", "详尽", "周密", "细密"],
+            "精确": ["精准", "精确", "准确", "精密", "确切"],
+            "及时": ["准时", "及时", "按时", "实时", "适时"],
+            "灵活": ["灵巧", "灵活", "机敏", "活络", "变通"],
+            "高效": ["高效能", "高效", "高效率", "卓效", "速效"],
+            "优质": ["优良", "优质", "优异", "出色", "良好"],
+            "卓越": ["卓绝", "卓越", "优异", "杰出", "超群"],
+            "显著": ["明显", "显著", "显然", "鲜明", "突出"],
+            "明显": ["显著", "明显", "显然", "鲜明", "清楚"],
+            "优秀": ["优良", "优秀", "优异", "杰出", "出色"],
+            "卓越": ["卓绝", "卓越", "杰出", "优异", "超群"],
+            "杰出": ["卓越", "杰出", "优秀", "出色", "突出"],
+            "出色": ["优秀", "出色", "杰出", "卓越", "优异"],
+            "成功": ["胜利", "成功", "告成", "胜利", "顺遂"],
+            "顺利": ["顺畅", "顺利", "顺遂", "通畅", "亨通"],
+            "顺利": ["顺畅", "顺利", "亨通", "通顺", "顺遂"],
+            "挑战": ["挑衅", "挑战", "应战", "寻衅", "挑拨"],
+            "机遇": ["机会", "机遇", "机缘", "时机", "契机"],
+            "目标": ["目的", "目标", "宗旨", "标的", "对象"],
+            "计划": ["规划", "计划", "打算", "安排", "策划"],
+            "执行": ["履行", "执行", "施行", "实行", "落实"],
+            "合作": ["协作", "合作", "合营", "互助", "协同"],
+            "沟通": ["雷同", "沟通", "雷同", "疏导", "交流"],
+            "理解": ["了解", "理解", "领会", "明白", "通晓"],
+            "掌握": ["把握", "掌握", "控制", "驾驭", "支配"],
+            "学习": ["进修", "学习", "研习", "求学", "念书"],
+            "教育": ["教导", "教育", "教诲", "教养", "培育"],
+            "培训": ["练习", "培训", "训练", "培育", "造就"],
+            "成长": ["生长", "成长", "发展", "成长", "进步"],
+            "进步": ["前进", "进步", "提高", "长进", "发展"],
+            "成就": ["成绩", "成就", "功绩", "成果", "造诣"],
+            "贡献": ["进献", "贡献", "奉献", "功绩", "功劳"],
+            "价值": ["代价", "价值", "价钱", "价格", "代价"],
+            "意义": ["意思", "意义", "含义", "事理", "道理"],
+            "责任": ["义务", "责任", "职责", "负担", "职守"],
+            "义务": ["责任", "义务", "任务", "使命", "职分"],
+            "权利": ["权力", "权利", "职权", "权益", "权柄"],
+            "利益": ["好处", "利益", "益处", "甜头", "便宜"],
+            "安全": ["平安", "安全", "安宁", "安稳", "安好"],
+            "健康": ["康健", "健康", "健壮", "强健", "安康"],
+            "快乐": ["快活", "快乐", "愉快", "欢乐", "欢喜"],
+            "幸福": ["福祉", "幸福", "美满", "甜蜜", "福祉"],
+            "自由": ["自在", "自由", "自主", "解放", "自在"],
+            "平等": ["对等", "平等", "同等", "匀称", "均衡"],
+            "公正": ["公平", "公正", "公道", "公允", "平正"],
+            "法治": ["法制", "法治", "法律", "轨制", "制度"],
+            "文明": ["文化", "文明", "文雅", "开化", "斯文"],
+            "和谐": ["协调", "和谐", "调和", "融洽", "和睦"],
+            "美丽": ["标致", "美丽", "漂亮", "好看", "艳丽"],
+            "美好": ["美妙", "美好", "美满", "优美", "佳妙"],
+            "舒适": ["安适", "舒适", "舒服", "安逸", "舒畅"],
+            "整洁": ["整齐", "整洁", "洁净", "干净", "齐整"],
+            "环保": ["环保", "绿色", "生态", "环保", "生态保护"],
+            "节能": ["节能", "节电", "省电", "节能降耗", "节约能源"],
+            "绿色": ["环保", "绿色", "生态", "天然", "有机"],
+            "可持续": ["可连续", "可持续", "能持续", "可延续", "可持续发展"],
+            "创新": ["革新", "创新", "创造", "立异", "翻新"],
+            "创业": ["立业", "创业", "开创事业", "兴办事业", "创始事业"],
+            "就业": ["失业", "就业", "工作", "任职", "职业"],
+            "经济": ["经济", "财经", "金融", "经济体系", "经济状况"],
+            "社会": ["社会", "社群", "社会形态", "社会群体", "社会结构"],
+            "文化": ["文明", "文化", "文教", "文化体系", "文化传统"],
+            "科技": ["科技", "科学技术", "科技体系", "科技发展", "科技进步"],
+            "环境": ["情况", "环境", "境遇", "处境", "周遭"],
+            "资源": ["资本", "资源", "资材", "物资", "材料"],
+            "能源": ["能量", "能源", "动力", "能源资源", "能源供应"],
+            "信息": ["资讯", "信息", "消息", "讯息", "数据"],
+            "网络": ["收集", "网络", "互联网", "网络系统", "网络结构"],
+            "技术": ["技能", "技术", "技艺", "技法", "本领"],
+            "产品": ["产物", "产品", "制品", "出品", "货品"],
+            "服务": ["办事", "服务", "效劳", "供职", "任职"],
+            "质量": ["品质", "质量", "质料", "质地", "品格"],
+            "数量": ["数目", "数量", "数额", "数量", "数目"],
+            "效率": ["效力", "效率", "效能", "速率", "功效"],
+            "效益": ["效益", "效用", "成效", "收益", "效果"],
+            "成本": ["本钱", "成本", "代价", "本钱", "花费"],
+            "利润": ["利润", "收益", "红利", "盈利", "赢利"],
+            "市场": ["市场", "市集", "商场", "市场需求", "市场份额"],
+            "竞争": ["合作", "竞争", "竞赛", "角逐", "比拼"],
+            "管理": ["治理", "管理", "管控", "料理", "执掌"],
+            "领导": ["带领", "领导", "率领", "引导", "指导"],
+            "团队": ["团队", "团体", "小组", "团队组织", "团队协作"],
+            "合作": ["协作", "合作", "互助", "合营", "协同"],
+            "沟通": ["沟通", "交流", "雷同", "疏导", "相通"],
+            "决策": ["决议", "决策", "决定", "抉择", "断定"],
+            "策略": ["计谋", "策略", "战略", "计策", "方略"],
+            "战略": ["策略", "战略", "方略", "计谋", "大计"],
+            "执行": ["履行", "执行", "施行", "实行", "落实"],
+            "监督": ["监视", "监督", "监察", "看管", "督查"],
+            "评估": ["评价", "评估", "评定", "估量", "估测"],
+            "反馈": ["反应", "反馈", "回响", "回馈", "应答"],
+            "改进": ["改良", "改进", "改善", "革新", "优化"],
+            "优化": ["优化", "改进", "完善", "优化", "改良"],
+            "升级": ["进级", "升级", "晋级", "升格", "提高"],
+            "更新": ["刷新", "更新", "革新", "换新", "升级"],
+            "维护": ["保护", "维护", "护卫", "维护", "保养"],
+            "维修": ["补缀", "维修", "修理", "修缮", "修茸"],
+            "保障": ["保证", "保障", "确保", "担保", "保全"],
+            "支持": ["支撑", "支持", "支援", "拥护", "赞成"],
+            "反对": ["否决", "反对", "否决", "辩驳", "驳斥"],
+            "同意": ["赞成", "同意", "赞同", "应允", "允许"],
+            "拒绝": ["谢绝", "拒绝", "回绝", "推却", "推辞"],
+            "接受": ["接管", "接受", "接纳", "领受", "收受"],
+            "提供": ["供给", "提供", "供应", "给予", "供给"],
+            "获取": ["获得", "获取", "取得", "得到", "获致"],
+            "使用": ["应用", "使用", "运用", "采用", "利用"],
+            "处理": ["处置", "处理", "办理", "措置", "收拾"],
+            "解决": ["解决", "处理", "化解", "搞定", "处置"],
+            "分析": ["剖析", "分析", "解析", "研判", "研究"],
+            "综合": ["综合", "归纳", "汇总", "整合", "总合"],
+            "总结": ["总结", "归纳", "概括", "总结", "归结"],
+            "归纳": ["归纳", "总结", "概括", "归总", "归结"],
+            "概括": ["归纳", "概括", "总结", "概述", "归纳"],
+            "描述": ["形貌", "描述", "描绘", "刻画", "描摹"],
+            "说明": ["阐明", "说明", "解释", "注解", "阐明"],
+            "解释": ["说明", "解释", "诠释", "注解", "阐释"],
+            "演示": ["演示", "示范", "展示", "展演", "演示"],
+            "展示": ["展示", "展现", "展示", "演示", "呈现"],
+            "呈现": ["呈现", "展现", "显现", "显示", "展示"],
+            "表现": ["表示", "表现", "体现", "展示", "显露"],
+            "体现": ["表现", "体现", "展现", "显示", "反映"],
+            "反映": ["反响", "反映", "体现", "反响", "反馈"],
+            "影响": ["感化", "影响", "浸染", "感化", "作用"],
+            "作用": ["感化", "作用", "影响", "效用", "效能"],
+            "效果": ["成效", "效果", "成果", "效验", "效用"],
+            "结果": ["成果", "结果", "成效", "后果", "结局"],
+            "成果": ["成绩", "成果", "成效", "结果", "收获"],
+            "收获": ["收成", "收获", "成果", "收益", "得益"],
+            "利益": ["好处", "利益", "益处", "甜头", "便宜"],
+            "好处": ["益处", "好处", "利益", "甜头", "便宜"],
+            "优势": ["上风", "优势", "长处", "好处", "优点"],
+            "劣势": ["下风", "劣势", "短处", "缺点", "弊端"],
+            "优点": ["长处", "优点", "好处", "优势", "益处"],
+            "缺点": ["短处", "缺点", "弊端", "劣势", "毛病"],
+            "特点": ["特色", "特点", "特征", "特质", "特性"],
+            "特征": ["特色", "特征", "特点", "特质", "特性"],
+            "特性": ["特色", "特性", "特点", "特质", "特征"],
+            "属性": ["属性", "特性", "性质", "特质", "品性"],
+            "性质": ["性子", "性质", "品性", "属性", "特质"],
+            "本质": ["本色", "本质", "实质", "本性", "本体"],
+            "实质": ["本质", "实质", "本色", "内容", "核心"],
+            "核心": ["焦点", "核心", "中心", "重点", "关键"],
+            "重点": ["核心", "重点", "要点", "中心", "关键"],
+            "关键": ["核心", "关键", "要害", "重点", "主要"],
+            "要素": ["要素", "因素", "成份", "成分", "元素"],
+            "因素": ["要素", "因素", "成分", "成份", "元素"],
+            "成分": ["要素", "成分", "因素", "成份", "元素"],
+            "部分": ["部门", "部分", "局部", "有些", "环节"],
+            "整体": ["全体", "整体", "全部", "整个", "总体"],
+            "全面": ["周全", "全面", "详尽", "完整", "完备"],
+            "完整": ["完全", "完整", "完备", "完好", "周全"],
+            "系统": ["体系", "系统", "体制", "制度", "系统"],
+            "体系": ["系统", "体系", "体制", "系统", "系统"],
+            "结构": ["布局", "结构", "构造", "组织", "架构"],
+            "组织": ["构造", "组织", "机构", "布局", "结构"],
+            "机构": ["组织", "机构", "机关", "构造", "单位"],
+            "单位": ["单元", "单位", "机构", "单元", "部门"],
+            "部门": ["部分", "部门", "单位", "机构", "科室"],
+            "流程": ["流程", "程序", "过程", "步骤", "次序"],
+            "程序": ["法式", "程序", "流程", "步骤", "手续"],
+            "过程": ["进程", "过程", "历程", "流程", "经过"],
+            "步骤": ["步调", "步骤", "程序", "环节", "措施"],
+            "环节": ["环节", "步骤", "部分", "阶段", "程序"],
+            "阶段": ["阶段", "时期", "环节", "时段", "时代"],
+            "时期": ["时代", "时期", "阶段", "时代", "年代"],
+            "时间": ["时候", "时间", "光阴", "时期", "时光"],
+            "空间": ["空间", "地方", "场所", "区域", "地域"],
+            "范围": ["规模", "范围", "范畴", "领域", "界限"],
+            "领域": ["范畴", "领域", "范围", "范畴", "区域"],
+            "范畴": ["范围", "范畴", "领域", "范围", "类别"],
+            "类别": ["种类", "类别", "类型", "品类", "门类"],
+            "类型": ["种类", "类型", "类别", "品类", "种类"],
+            "种类": ["品种", "种类", "类型", "类别", "品类"],
+            "形式": ["情势", "形式", "方式", "形态", "式样"],
+            "方式": ["方法", "方式", "形式", "手段", "办法"],
+            "方法": ["方式", "方法", "办法", "手段", "措施"],
+            "手段": ["方法", "手段", "办法", "方式", "措施"],
+            "措施": ["办法", "措施", "方法", "手段", "步骤"],
+            "办法": ["方法", "办法", "措施", "手段", "方式"],
+            "途径": ["路径", "途径", "路径", "渠道", "门路"],
+            "渠道": ["途径", "渠道", "路径", "门路", "路子"],
+            "途径": ["路径", "途径", "渠道", "门路", "路子"],
+            "途径": ["路径", "途径", "渠道", "门路", "路子"],
+            "资源": ["资本", "资源", "资材", "物资", "材料"],
+            "资料": ["材料", "资料", "素材", "数据", "信息"],
+            "数据": ["资料", "数据", "讯息", "信息", "材料"],
+            "信息": ["资讯", "信息", "消息", "讯息", "数据"],
+            "知识": ["学问", "知识", "学识", "常识", "认知"],
+            "技能": ["技巧", "技能", "技艺", "本领", "本事"],
+            "经验": ["经历", "经验", "体会", "体验", "阅历"],
+            "能力": ["本领", "能力", "才能", "才干", "技能"],
+            "素质": ["本质", "素质", "素养", "品质", "涵养"],
+            "素养": ["素质", "素养", "修养", "涵养", "品质"],
+            "修养": ["涵养", "修养", "素养", "素质", "涵养"],
+            "水平": ["程度", "水平", "程度", "水准", "层次"],
+            "程度": ["水平", "程度", "水准", "层次", "地步"],
+            "水准": ["水平", "水准", "程度", "层次", "标准"],
+            "标准": ["规范", "标准", "准则", "尺度", "规格"],
+            "规范": ["标准", "规范", "规矩", "规定", "准则"],
+            "规则": ["规矩", "规则", "规定", "准则", "规范"],
+            "规定": ["规则", "规定", "规矩", "法则", "条例"],
+            "法则": ["规律", "法则", "规则", "定律", "原理"],
+            "规律": ["纪律", "规律", "法则", "定律", "原理"],
+            "定律": ["定理", "定律", "法则", "规律", "原理"],
+            "原理": ["道理", "原理", "事理", "定律", "法则"],
+            "道理": ["事理", "道理", "原理", "理由", "情理"],
+            "理由": ["事理", "理由", "道理", "原因", "缘由"],
+            "原因": ["缘由", "原因", "缘故", "理由", "起因"],
+            "结果": ["成果", "结果", "成效", "后果", "结局"],
+            "后果": ["成果", "后果", "结果", "成果", "结局"],
+            "影响": ["感化", "影响", "浸染", "感化", "作用"],
+            "作用": ["感化", "作用", "影响", "效用", "效能"],
+            "效果": ["成效", "效果", "成果", "效验", "效用"],
+            "成效": ["效果", "成效", "成果", "结果", "收效"],
+            "效率": ["效力", "效率", "效能", "速率", "功效"],
+            "效益": ["效益", "效用", "成效", "收益", "效果"],
+            "价值": ["代价", "价值", "价钱", "价格", "代价"],
+            "意义": ["意思", "意义", "含义", "事理", "道理"],
+            "重要性": ["重要性", "关键性", "主要性", "严重性", "重大性"],
+            "必要性": ["必要性", "需要性", "必需性", "必要性", "需要性"],
+            "可能性": ["可能性", "能够性", "概率", "几率", "或许性"],
+            "必然性": ["必然性", "必定性", "肯定性", "定然性", "必定性"],
+            "偶然性": ["偶然性", "偶尔性", "有时性", "随机", "随机"],
+            "真实性": ["真实性", "实在性", "真确性", "确实性", "真切性"],
+            "准确性": ["准确性", "精确性", "确切性", "精准性", "正确性"],
+            "可靠性": ["可靠性", "靠得住性", "可信性", "靠谱性", "稳妥性"],
+            "安全性": ["安全性", "平安性", "安稳性", "安宁性", "安好性"],
+            "稳定性": ["稳固性", "稳定性", "安稳性", "安定性", "平稳性"],
+            "灵活性": ["灵巧性", "灵活性", "活络性", "机敏性", "变通性"],
+            "适应性": ["顺应性", "适应性", "顺应性", "适合性", "符合性"],
+            "兼容性": ["兼容性", "兼容并蓄性", "并存性", "共存性", "相融性"],
+            "创新性": ["革新性", "创新性", "创造性", "立异性", "刷新性"],
+            "独特性": ["特有性", "独特性", "特别性", "特殊性", "特有性"],
+            "多样性": ["多样性", "多元性", "多种性", "各式性", "各类性"],
+            "复杂性": ["繁杂性", "复杂性", "繁复性", "纷乱性", "庞杂性"],
+            "简单性": ["简易性", "简单性", "简便性", "简洁性", "浅易性"],
+            "全面性": ["周全性", "全面性", "详尽性", "完整性", "完备性"],
+            "系统性": ["体系性", "系统性", "体制性", "制度性", "系统性"],
+            "整体性": ["全体性", "整体性", "全部性", "整个性", "总体性"],
+            "局部性": ["部门性", "局部性", "部分性", "有些性", "环节性"],
+            "阶段性": ["阶段性", "时期性", "环节性", "时段性", "时代性"],
+            "长期性": ["长久性", "长期性", "久远性", "永恒性", "持久性"],
+            "短期性": ["短暂性", "短期性", "临时", "暂时", "一时"],
+            "周期性": ["周期性", "循环性", "轮回来去性", "周期循环性", "循环往复性"],
+            "持续性": ["连续性", "持续性", "延续性", "接续性", "接连性"],
+            "间断性": ["中断性", "间断性", "中止性", "间歇", "断断续续"],
+            "频率": ["频次", "频率", "次数", "频次", "频率"],
+            "速度": ["速率", "速度", "快慢", "时速", "速率"],
+            "程度": ["水平", "程度", "水准", "层次", "地步"],
+            "规模": ["范围", "规模", "范畴", "领域", "界限"],
+            "范围": ["规模", "范围", "范畴", "领域", "界限"],
+            "幅度": ["幅度", "范围", "幅度", "程度", "范畴"],
+            "强度": ["强度", "力度", "强度", "烈度", "力度"],
+            "力度": ["力度", "强度", "力度", "力量", "强度"],
+            "深度": ["深度", "深浅", "深度", "深刻度", "深浅程度"],
+            "广度": ["广度", "宽度", "广度", "范围", "宽度"],
+            "高度": ["高度", "高矮", "高度", "水平", "高度"],
+            "宽度": ["宽度", "广度", "宽度", "幅度", "宽窄"],
+            "长度": ["长度", "长短", "长度", "距离", "长短"],
+            "厚度": ["厚度", "厚薄", "厚度", "厚薄程度", "厚度"],
+            "密度": ["密度", "疏密", "密度", "疏密程度", "密度"],
+            "浓度": ["浓度", "浓淡", "浓度", "浓淡程度", "浓度"],
+            "温度": ["温度", "冷热", "温度", "冷热程度", "温度"],
+            "湿度": ["湿度", "干湿", "湿度", "干湿程度", "湿度"],
+            "速度": ["速率", "速度", "快慢", "时速", "速率"],
+            "加速度": ["加快度", "加速度", "加快速度", "加速率", "加速度"],
+            "效率": ["效力", "效率", "效能", "速率", "功效"],
+            "频率": ["频次", "频率", "次数", "频次", "频率"],
+            "概率": ["几率", "概率", "可能性", "几率", "能够性"],
+            "比例": ["比例", "比率", "比重", "比例", "比率"],
+            "比率": ["比例", "比率", "比重", "比例", "比率"],
+            "比重": ["分量", "比重", "比例", "重量", "比率"],
+            "数量": ["数目", "数量", "数额", "数量", "数目"],
+            "质量": ["品质", "质量", "质料", "质地", "品格"],
+            "能量": ["能量", "能量", "动力", "能源", "能量"],
+            "动力": ["动力", "能源", "动力", "能量", "动力"],
+            "能力": ["本领", "能力", "才能", "才干", "技能"],
+            "潜力": ["潜力", "潜能", "潜力", "潜能", "潜力"],
+            "实力": ["气力", "实力", "气力", "能力", "实力"],
+            "活力": ["生机", "活力", "生机", "活力", "生命力"],
+            "生命力": ["活力", "生命力", "生机", "活力", "生命力"],
+            "创造力": ["缔造力", "创造力", "创新力", "创作力", "缔造力"],
+            "想象力": ["设想力", "想象力", "空想力", "幻想力", "设想力"],
+            "记忆力": ["影象力", "记忆力", "记念力", "回忆力", "影象力"],
+            "注意力": ["留意力", "注意力", "存眷力", "关注力", "留意力"],
+            "观察力": ["不雅察力", "观察力", "察看力", "观察能力", "不雅察力"],
+            "分析力": ["剖析力", "分析力", "解析力", "分析能力", "剖析力"],
+            "判断力": ["断定力", "判断力", "判定力", "判断能力", "断定力"],
+            "决策力": ["决议计划力", "决策力", "决定力", "决策能力", "决议计划力"],
+            "执行力": ["履行力", "执行力", "施行力", "执行能力", "履行力"],
+            "领导力": ["带领力", "领导力", "率领力", "领导能力", "带领力"],
+            "管理力": ["治理力", "管理力", "管控力", "管理能力", "治理力"],
+            "沟通力": ["沟通力", "沟通能力", "交换力", "交流能力", "沟通力"],
+            "协作力": ["协作力", "合作力", "协作能力", "合作能力", "协作力"],
+            "竞争力": ["合作力", "竞争力", "竞赛力", "竞争能力", "合作力"],
+            "影响力": ["感化力", "影响力", "浸染力", "影响能力", "感化力"],
+            "说服力": ["压服力", "说服力", "劝服力", "说服能力", "压服力"],
+            "感染力": ["传染力", "感染力", "沾染力", "感染能力", "传染力"],
+            "吸引力": ["吸引力", "吸收力", "引诱力", "吸引能力", "吸引力"],
+            "凝聚力": ["凝集力", "凝聚力", "固结力", "凝聚能力", "凝集力"],
+            "向心力": ["向心力", "凝集力", "向心力", "向心能力", "向心力"],
+            "离心力": ["离心力", "别离力", "离心力", "离心能力", "离心力"],
+            "推动力": ["推进力", "推动力", "鞭策力", "推动能力", "推进力"],
+            "拉动力": ["拉动力", "牵引力", "拉动力", "拉动能力", "拉动力"],
+            "支撑力": ["支持力", "支撑力", "撑持力", "支撑能力", "支持力"],
+            "压力": ["压力", "压力", "压力", "压力", "压力"],
+            "阻力": ["阻力", "阻力", "阻力", "阻力", "阻力"],
+            "动力": ["动力", "能源", "动力", "能量", "动力"],
+            "浮力": ["浮力", "浮力", "浮力", "浮力", "浮力"],
+            "重力": ["重力", "重力", "重力", "重力", "重力"],
+            "引力": ["引力", "吸引力", "引力", "吸引", "引力"],
+            "斥力": ["斥力", "排挤力", "斥力", "排斥力", "斥力"],
+            "摩擦力": ["摩擦力", "磨擦力", "摩擦力", "摩擦", "摩擦力"],
+            "弹力": ["弹力", "弹力", "弹力", "弹力", "弹力"],
+            "电力": ["电力", "电力", "电力", "电力", "电力"],
+            "磁力": ["磁力", "磁力", "磁力", "磁力", "磁力"],
+            "热力": ["热力", "热力", "热力", "热力", "热力"],
+            "水力": ["水力", "水力", "水力", "水力", "水力"],
+            "风力": ["风力", "风力", "风力", "风力", "风力"],
+            "火力": ["火力", "火力", "火力", "火力", "火力"],
+            "核能": ["核能", "核能", "核能", "核能", "核能"],
+            "太阳能": ["太阳能", "太阳能", "太阳能", "太阳能", "太阳能"],
+            "地热能": ["地热能", "地热能", "地热能", "地热能", "地热能"],
+            "生物质能": ["生物质能", "生物质能", "生物质能", "生物质能", "生物质能"],
+            "潮汐能": ["潮汐能", "潮汐能", "潮汐能", "潮汐能", "潮汐能"],
+            "波浪能": ["波浪能", "波浪能", "波浪能", "波浪能", "波浪能"],
+            "海洋能": ["海洋能", "海洋能", "海洋能", "海洋能", "海洋能"],
+            "水能": ["水能", "水能", "水能", "水能", "水能"],
+            "风能": ["风能", "风能", "风能", "风能", "风能"],
+            "电能": ["电能", "电能", "电能", "电能", "电能"],
+            "热能": ["热能", "热能", "热能", "热能", "热能"],
+            "光能": ["光能", "光能", "光能", "光能", "光能"],
+            "声能": ["声能", "声能", "声能", "声能", "声能"],
+            "化学能": ["化学能", "化学能", "化学能", "化学能", "化学能"],
+            "机械能": ["机械能", "机械能", "机械能", "机械能", "机械能"],
+            "动能": ["动能", "动能", "动能", "动能", "动能"],
+            "势能": ["势能", "势能", "势能", "势能", "势能"],
+            "热能": ["热能", "热能", "热能", "热能", "热能"],
+            "内能": ["内能", "内能", "内能", "内能", "内能"],
+            "核能": ["核能", "核能", "核能", "核能", "核能"],
+            "能量": ["能量", "能量", "动力", "能源", "能量"],
+            "物质": ["物资", "物质", "质料", "材料", "物资"],
+            "材料": ["质料", "材料", "资料", "素材", "物资"],
+            "元素": ["元素", "元素", "要素", "因素", "成分"],
+            "成分": ["要素", "成分", "因素", "成份", "元素"],
+            "结构": ["布局", "结构", "构造", "组织", "架构"],
+            "组织": ["构造", "组织", "机构", "布局", "结构"],
+            "细胞": ["细胞", "细胞", "细胞", "细胞", "细胞"],
+            "组织": ["构造", "组织", "机构", "布局", "结构"],
+            "器官": ["器官", "器官", "器官", "器官", "器官"],
+            "系统": ["体系", "系统", "体制", "制度", "系统"],
+            "个体": ["个别", "个体", "单个", "个别", "个体"],
+            "群体": ["群体", "群体", "集体", "团体", "人群"],
+            "社会": ["社会", "社群", "社会形态", "社会群体", "社会结构"],
+            "国家": ["国度", "国家", "国度", "国家", "国家"],
+            "世界": ["天下", "世界", "全球", "国际", "天下"],
+            "地球": ["地球", "地球", "地球", "地球", "地球"],
+            "宇宙": ["宇宙", "宇宙", "宇宙", "宇宙", "宇宙"],
+            "时间": ["时候", "时间", "光阴", "时期", "时光"],
+            "空间": ["空间", "地方", "场所", "区域", "地域"],
+            "维度": ["维度", "维度", "维度", "维度", "维度"],
+            "频率": ["频次", "频率", "次数", "频次", "频率"],
+            "概率": ["几率", "概率", "可能性", "几率", "能够性"],
+            "信息": ["资讯", "信息", "消息", "讯息", "数据"],
+            "数据": ["资料", "数据", "讯息", "信息", "材料"],
+            "知识": ["学问", "知识", "学识", "常识", "认知"],
+            "智慧": ["伶俐", "智慧", "聪慧", "智谋", "明智"],
+            "思想": ["思惟", "思想", "思路", "想法", "观念"],
+            "观念": ["看法", "观念", "观点", "见解", "理念"],
+            "观点": ["看法", "观点", "观念", "见解", "立场"],
+            "见解": ["看法", "见解", "观点", "观念", "认识"],
+            "认识": ["看法", "认识", "认知", "了解", "理解"],
+            "理解": ["了解", "理解", "领会", "明白", "通晓"],
+            "了解": ["理解", "了解", "知道", "明白", "知晓"],
+            "知道": ["晓得", "知道", "了解", "明白", "知晓"],
+            "明白": ["清楚", "明白", "了解", "知道", "知晓"],
+            "清楚": ["清晰", "清楚", "明白", "了解", "知晓"],
+            "清晰": ["清楚", "清晰", "明晰", "分明", "明白"],
+            "明晰": ["清晰", "明晰", "清楚", "分明", "明确"],
+            "明确": ["明白", "明确", "明晰", "清楚", "确定"],
+            "确定": ["肯定", "确定", "明确", "断定", "一定"],
+            "肯定": ["确定", "肯定", "必定", "一定", "确定"],
+            "必定": ["肯定", "必定", "必然", "一定", "注定"],
+            "必然": ["必定", "必然", "必定", "定然", "一定"],
+            "一定": ["肯定", "一定", "必定", "必然", "确定"],
+            "可能": ["能够", "可能", "或许", "也许", "大概"],
+            "或许": ["可能", "或许", "也许", "大概", "恐怕"],
+            "也许": ["可能", "也许", "或许", "大概", "恐怕"],
+            "大概": ["大约", "大概", "也许", "或许", "恐怕"],
+            "大约": ["大概", "大约", "约莫", "大致", "也许"],
+            "大致": ["大约", "大致", "大概", "大约", "也许"],
+            "大约": ["大概", "大约", "约莫", "大致", "也许"],
+            "一定": ["肯定", "一定", "必定", "必然", "确定"],
+            "必须": ["必需", "必须", "务必", "必得", "一定"],
+            "必需": ["必须", "必需", "必要", "需要", "必备"],
+            "必要": ["必需", "必要", "需要", "紧要", "重要"],
+            "需要": ["需求", "需要", "必要", "必需", "需求"],
+            "需求": ["需要", "需求", "必要", "须要", "要求"],
+            "要求": ["请求", "要求", "需求", "请求", "恳求"],
+            "请求": ["要求", "请求", "恳求", "祈求", "央求"],
+            "恳求": ["请求", "恳求", "哀求", "祈求", "央求"],
+            "哀求": ["恳求", "哀求", "请求", "祈求", "央求"],
+            "祈求": ["恳求", "祈求", "请求", "哀求", "央求"],
+            "央求": ["恳求", "央求", "请求", "哀求", "祈求"],
+            "希望": ["但愿", "希望", "期望", "盼望", "渴望"],
+            "期望": ["希望", "期望", "盼望", "渴望", "指望"],
+            "盼望": ["希望", "盼望", "期望", "渴望", "企望"],
+            "渴望": ["希望", "渴望", "盼望", "期望", "热望"],
+            "愿望": ["希望", "愿望", "欲望", "心愿", "志愿"],
+            "欲望": ["愿望", "欲望", "渴望", "欲求", "心愿"],
+            "心愿": ["愿望", "心愿", "欲望", "希望", "志愿"],
+            "志愿": ["愿望", "志愿", "心愿", "意愿", "志向"],
+            "意愿": ["志愿", "意愿", "愿望", "心愿", "意图"],
+            "意图": ["意愿", "意图", "打算", "企图", "目的"],
+            "企图": ["意图", "企图", "打算", "图谋", "目的"],
+            "打算": ["意图", "打算", "计划", "企图", "准备"],
+            "计划": ["规划", "计划", "打算", "安排", "策划"],
+            "规划": ["计划", "规划", "策划", "打算", "安排"],
+            "策划": ["计划", "策划", "规划", "谋划", "筹谋"],
+            "谋划": ["策划", "谋划", "筹谋", "计划", "规划"],
+            "筹谋": ["策划", "筹谋", "谋划", "计划", "规划"],
+            "安排": ["计划", "安排", "布置", "安置", "部署"],
+            "布置": ["安排", "布置", "部署", "安置", "摆设"],
+            "部署": ["安排", "部署", "布置", "摆设", "安置"],
+            "安置": ["安排", "安置", "布置", "部署", "安顿"],
+            "安顿": ["安置", "安顿", "安排", "安置", "布置"],
+            "摆设": ["布置", "摆设", "陈设", "部署", "安排"],
+            "陈设": ["摆设", "陈设", "布置", "摆设", "陈列"],
+            "陈列": ["陈设", "陈列", "摆设", "排列", "展示"],
+            "排列": ["陈列", "排列", "排序", "列队", "罗列"],
+            "排序": ["排列", "排序", "排列", "排序", "序列"],
+            "序列": ["排序", "序列", "顺序", "次序", "排列"],
+            "顺序": ["序列", "顺序", "次序", "程序", "步骤"],
+            "次序": ["顺序", "次序", "顺序", "程序", "步骤"],
+            "程序": ["法式", "程序", "流程", "步骤", "手续"],
+            "步骤": ["步调", "步骤", "程序", "环节", "措施"],
+            "环节": ["环节", "步骤", "部分", "阶段", "程序"],
+            "阶段": ["阶段", "时期", "环节", "时段", "时代"],
+            "时期": ["时代", "时期", "阶段", "时代", "年代"],
+            "时代": ["时期", "时代", "年代", "时期", "阶段"],
+            "年代": ["时代", "年代", "时期", "时代", "阶段"],
+            "时间": ["时候", "时间", "光阴", "时期", "时光"],
+            "光阴": ["时间", "光阴", "时光", "岁月", "时日"],
+            "时光": ["时间", "时光", "光阴", "岁月", "时日"],
+            "岁月": ["时光", "岁月", "光阴", "时间", "年代"],
+            "时日": ["时间", "时日", "光阴", "时光", "岁月"],
+            "日期": ["日子", "日期", "日子", "时日", "时间"],
+            "日子": ["日期", "日子", "时日", "时间", "光阴"],
+            "时刻": ["时间", "时刻", "时分", "时候", "光阴"],
+            "时分": ["时刻", "时分", "时间", "时候", "光阴"],
+            "时候": ["时间", "时候", "时刻", "时分", "光阴"],
+            "瞬间": ["霎时", "瞬间", "刹那", "瞬息", "顷刻"],
+            "刹那": ["瞬间", "刹那", "霎时", "瞬息", "顷刻"],
+            "霎时": ["瞬间", "霎时", "刹那", "瞬息", "顷刻"],
+            "瞬息": ["瞬间", "瞬息", "刹那", "霎时", "顷刻"],
+            "顷刻": ["瞬间", "顷刻", "刹那", "霎时", "瞬息"],
+            "短暂": ["瞬间", "短暂", "短促", "转瞬", "片刻"],
+            "短促": ["短暂", "短促", "转瞬", "片刻", "瞬间"],
+            "转瞬": ["短暂", "转瞬", "短促", "片刻", "瞬间"],
+            "片刻": ["短暂", "片刻", "转瞬", "短促", "瞬间"],
+            "长久": ["长远", "长久", "久远", "永恒", "持久"],
+            "长远": ["长久", "长远", "久远", "永恒", "持久"],
+            "久远": ["长久", "久远", "长远", "永恒", "持久"],
+            "永恒": ["长久", "永恒", "永久", "久远", "持久"],
+            "永久": ["永恒", "永久", "长久", "久远", "持久"],
+            "持久": ["长久", "持久", "永恒", "永久", "久远"],
+            "持续": ["连续", "持续", "延续", "接续", "接连"],
+            "连续": ["持续", "连续", "延续", "接续", "接连"],
+            "延续": ["持续", "延续", "连续", "接续", "接连"],
+            "接续": ["持续", "接续", "连续", "延续", "接连"],
+            "接连": ["持续", "接连", "连续", "延续", "接续"],
+            "中断": ["中止", "中断", "间断", "停止", "停顿"],
+            "中止": ["中断", "中止", "间断", "停止", "停顿"],
+            "间断": ["中断", "间断", "中止", "停止", "停顿"],
+            "停止": ["中断", "停止", "中止", "间断", "停顿"],
+            "停顿": ["中断", "停顿", "中止", "间断", "停止"],
+            "开始": ["开端", "开始", "起始", "开头", "着手"],
+            "开端": ["开始", "开端", "起始", "开头", "着手"],
+            "起始": ["开始", "起始", "开端", "开头", "着手"],
+            "开头": ["开始", "开头", "开端", "起始", "着手"],
+            "着手": ["开始", "着手", "开端", "起始", "开头"],
+            "进行": ["举行", "进行", "开展", "举办", "实行"],
+            "举行": ["进行", "举行", "开展", "举办", "实行"],
+            "开展": ["进行", "开展", "举行", "举办", "实行"],
+            "举办": ["进行", "举办", "举行", "开展", "实行"],
+            "实行": ["进行", "实行", "举行", "开展", "举办"],
+            "完成": ["实现", "完成", "完毕", "结束", "告终"],
+            "实现": ["完成", "实现", "完毕", "结束", "告终"],
+            "完毕": ["完成", "完毕", "实现", "结束", "告终"],
+            "结束": ["完成", "结束", "完毕", "实现", "告终"],
+            "告终": ["完成", "告终", "完毕", "结束", "实现"],
+            "过程": ["进程", "过程", "历程", "流程", "经过"],
+            "进程": ["过程", "进程", "历程", "流程", "经过"],
+            "历程": ["过程", "历程", "进程", "流程", "经过"],
+            "流程": ["过程", "流程", "进程", "历程", "经过"],
+            "经过": ["过程", "经过", "进程", "历程", "流程"],
+            "经历": ["履历", "经历", "阅历", "体验", "体会"],
+            "履历": ["经历", "履历", "阅历", "体验", "体会"],
+            "阅历": ["经历", "阅历", "履历", "体验", "体会"],
+            "体验": ["经历", "体验", "阅历", "履历", "体会"],
+            "体会": ["经历", "体会", "体验", "阅历", "履历"],
+            "经验": ["经历", "经验", "体会", "体验", "阅历"],
+            "教训": ["经验", "教训", "教导", "训诫", "教诲"],
+            "教导": ["教训", "教导", "教诲", "训诫", "教育"],
+            "教诲": ["教训", "教诲", "教导", "训诫", "教育"],
+            "训诫": ["教训", "训诫", "教导", "教诲", "教育"],
+            "教育": ["教导", "教育", "教诲", "教养", "培育"],
+            "教养": ["教育", "教养", "教诲", "涵养", "素养"],
+            "培育": ["教育", "培育", "培养", "造就", "培训"],
+            "培养": ["培育", "培养", "造就", "培育", "培训"],
+            "造就": ["培育", "造就", "培养", "培育", "培训"],
+            "培训": ["练习", "培训", "训练", "培育", "造就"],
+            "训练": ["练习", "训练", "培训", "锻炼", "练习"],
+            "练习": ["训练", "练习", "锻炼", "实习", "演练"],
+            "锻炼": ["练习", "锻炼", "训练", "磨练", "锤炼"],
+            "磨练": ["锻炼", "磨练", "锤炼", "训练", "练习"],
+            "锤炼": ["锻炼", "锤炼", "磨练", "训练", "练习"],
+            "学习": ["进修", "学习", "研习", "求学", "念书"],
+            "进修": ["学习", "进修", "研习", "求学", "念书"],
+            "研习": ["学习", "研习", "进修", "研究", "钻研"],
+            "研究": ["探究", "研究", "研讨", "钻研", "探讨"],
+            "钻研": ["研究", "钻研", "探究", "研讨", "探讨"],
+            "探究": ["研究", "探究", "钻研", "研讨", "探讨"],
+            "研讨": ["研究", "研讨", "探究", "钻研", "探讨"],
+            "探讨": ["研究", "探讨", "探究", "钻研", "研讨"],
+            "知识": ["学问", "知识", "学识", "常识", "认知"],
+            "学问": ["知识", "学问", "学识", "常识", "认知"],
+            "学识": ["知识", "学识", "学问", "常识", "认知"],
+            "常识": ["知识", "常识", "学问", "学识", "认知"],
+            "认知": ["知识", "认知", "认识", "了解", "理解"],
+            "技能": ["技巧", "技能", "技艺", "本领", "本事"],
+            "技巧": ["技能", "技巧", "技艺", "本领", "本事"],
+            "技艺": ["技能", "技艺", "技巧", "本领", "本事"],
+            "本领": ["技能", "本领", "本事", "能力", "才干"],
+            "本事": ["技能", "本事", "本领", "能力", "才干"],
+            "能力": ["本领", "能力", "才能", "才干", "技能"],
+            "才能": ["能力", "才能", "才干", "本领", "技能"],
+            "才干": ["能力", "才干", "才能", "本领", "技能"],
+            "天赋": ["天资", "天赋", "天资", "禀赋", "天分"],
+            "天资": ["天赋", "天资", "禀赋", "天分", "天才"],
+            "禀赋": ["天赋", "禀赋", "天资", "天分", "天才"],
+            "天分": ["天赋", "天分", "天资", "禀赋", "天才"],
+            "天才": ["天赋", "天才", "天资", "禀赋", "天分"],
+            "智慧": ["伶俐", "智慧", "聪慧", "智谋", "明智"],
+            "聪慧": ["智慧", "聪慧", "伶俐", "聪明", "聪颖"],
+            "伶俐": ["智慧", "伶俐", "聪慧", "聪明", "聪颖"],
+            "聪明": ["智慧", "聪明", "聪慧", "伶俐", "聪颖"],
+            "聪颖": ["智慧", "聪颖", "聪慧", "伶俐", "聪明"],
+            "智能": ["聪慧", "智能", "智慧", "机灵", "聪颖"],
+            "机灵": ["智能", "机灵", "聪慧", "伶俐", "聪明"],
+            "明智": ["智慧", "明智", "聪明", "理智", "聪慧"],
+            "理智": ["明智", "理智", "理性", "明智", "清醒"],
+            "理性": ["理智", "理性", "理智", "明智", "清醒"],
+            "清醒": ["理智", "清醒", "理性", "明智", "清楚"],
+            "清楚": ["清晰", "清楚", "明白", "了解", "知晓"],
+            "清晰": ["清楚", "清晰", "明晰", "分明", "明白"],
+            "明晰": ["清晰", "明晰", "清楚", "分明", "明确"],
+            "明确": ["明白", "明确", "明晰", "清楚", "确定"],
+            "确定": ["肯定", "确定", "明确", "断定", "一定"],
+            "肯定": ["确定", "肯定", "必定", "一定", "确定"]
+        };
+
+        // DOM元素
+        const originalText = document.getElementById('original-text');
+        const rewrittenText = document.getElementById('rewritten-text');
+        const rewriteBtn = document.getElementById('rewrite-btn');
+        const rewriteStatus = document.getElementById('rewrite-status');
+        const clearInputBtn = document.getElementById('clear-input');
+        const sampleTextBtn = document.getElementById('sample-text');
+        const copyResultBtn = document.getElementById('copy-result');
+        const downloadResultBtn = document.getElementById('download-result');
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const originalityScore = document.getElementById('originality-score');
+        const wordCount = document.getElementById('word-count');
+        const changePercentage = document.getElementById('change-percentage');
+        const originalityBar = document.getElementById('originality-bar');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        const notificationIcon = document.getElementById('notification-icon');
+
+        // 选项复选框
+        const synonymReplace = document.getElementById('synonym-replace');
+        const sentenceRestructure = document.getElementById('sentence-restructure');
+        const paragraphReorder = document.getElementById('paragraph-reorder');
+        const core前置 = document.getElementById('core-前置');
+        const paraphrase = document.getElementById('paraphrase');
+        const hybridMode = document.getElementById('hybrid-mode');
+
+        // 选项强度
+        const synonymIntensity = document.getElementById('synonym-intensity');
+        const sentenceIntensity = document.getElementById('sentence-intensity');
+        const paragraphMethod = document.getElementById('paragraph-method');
+        const corePercentage = document.getElementById('core-percentage');
+        const abstractLevel = document.getElementById('abstract-level');
+        const originalPercentage = document.getElementById('original-percentage');
+
+        // 移动端菜单切换
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 清空输入
+        clearInputBtn.addEventListener('click', () => {
+            originalText.value = '';
+            rewrittenText.innerHTML = '<div class="text-gray-400 flex items-center justify-center h-full"><i class="fa fa-arrow-left mr-2"></i>请输入文本并选择改写策略</div>';
+            updateStats();
+            showNotification('已清空输入内容', 'fa-check-circle', 'text-secondary');
+        });
+
+        // 示例文本
+        sampleTextBtn.addEventListener('click', () => {
+            originalText.value = `人工智能技术的发展正在深刻改变我们的生活方式。从智能手机到智能家居，从自动驾驶到医疗诊断，人工智能的应用已经渗透到社会的各个领域。
+
+            机器学习作为人工智能的核心技术之一，通过让计算机从数据中学习并改进，实现了许多以前难以想象的功能。深度学习算法的突破，使得计算机在图像识别、语音处理等方面的能力已经接近甚至超过人类水平。
+            
+            然而，人工智能的快速发展也带来了一系列伦理和社会问题。例如，自动化可能导致部分工作岗位消失，数据隐私问题日益突出，算法偏见可能加剧社会不平等。
+            
+            因此，在推动人工智能技术进步的同时，我们需要建立相应的法律法规和伦理准则，确保技术的发展能够真正造福人类，实现人与技术的和谐共处。`;
+            updateStats();
+            showNotification('已加载示例文本', 'fa-check-circle', 'text-secondary');
+        });
+
+        // 复制结果
+        copyResultBtn.addEventListener('click', () => {
+            const textToCopy = rewrittenText.innerText;
+            if (textToCopy && textToCopy !== '请输入文本并选择改写策略') {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showNotification('改写结果已复制到剪贴板', 'fa-check-circle', 'text-secondary');
+                }).catch(err => {
+                    showNotification('复制失败，请手动复制', 'fa-exclamation-circle', 'text-red-500');
+                    console.error('复制失败:', err);
+                });
+            } else {
+                showNotification('没有可复制的内容', 'fa-info-circle', 'text-yellow-500');
+            }
+        });
+
+        // 下载结果
+        downloadResultBtn.addEventListener('click', () => {
+            const textToDownload = rewrittenText.innerText;
+            if (textToDownload && textToDownload !== '请输入文本并选择改写策略') {
+                const blob = new Blob([textToDownload], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'rewritten_article.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showNotification('文本已下载', 'fa-check-circle', 'text-secondary');
+            } else {
+                showNotification('没有可下载的内容', 'fa-info-circle', 'text-yellow-500');
+            }
+        });
+
+        // 显示通知
+        function showNotification(text, icon, colorClass) {
+            notificationText.textContent = text;
+            notificationIcon.className = `fa ${icon} mr-2 ${colorClass}`;
+            notification.classList.remove('translate-y-20', 'opacity-0');
+            notification.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-y-0', 'opacity-100');
+                notification.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // 计算字数（支持中英文）
+        function countWords(text) {
+            if (!text.trim()) return 0;
+            
+            // 匹配中文字符、英文字母、数字和下划线
+            const matches = text.match(/[\u4e00-\u9fa5a-zA-Z0-9_]+/g);
+            if (!matches) return 0;
+            
+            let count = 0;
+            for (const match of matches) {
+                // 中文字符按1个计算，英文单词按空格分割计算
+                if (/[\u4e00-\u9fa5]/.test(match)) {
+                    count += match.length;
+                } else {
+                    count += match.split(/\s+/).filter(word => word).length;
+                }
+            }
+            return count;
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            let text = originalText.value || rewrittenText.innerText;
+            const count = countWords(text);
+            wordCount.textContent = count;
+            
+            // 只有当有改写结果时才更新原创度
+            if (rewrittenText.innerText && rewrittenText.innerText !== '请输入文本并选择改写策略') {
+                calculateOriginality();
+            } else {
+                originalityScore.textContent = '--';
+                changePercentage.textContent = '--';
+                originalityBar.style.width = '0%';
+            }
+        }
+
+        // 计算原创度（模拟）
+        function calculateOriginality() {
+            // 实际应用中应该使用更复杂的算法比较原文和改写后的文本
+            let score = 50; // 默认值
+            
+            // 根据选择的选项调整原创度分数
+            if (synonymReplace.checked) score += synonymIntensity.value * 3;
+            if (sentenceRestructure.checked) score += sentenceIntensity.value * 5;
+            if (paragraphReorder.checked) score += 10;
+            if (core前置.checked) score += 5;
+            if (paraphrase.checked) score += abstractLevel.value * 4;
+            if (hybridMode.checked) score -= (originalPercentage.value / 2);
+            
+            // 确保分数在0-100之间
+            score = Math.max(0, Math.min(100, score));
+            
+            originalityScore.textContent = `${Math.round(score)}%`;
+            changePercentage.textContent = `${Math.round(100 - (score / 2))}%`;
+            originalityBar.style.width = `${score}%`;
+        }
+
+        // 同义词替换
+        function replaceSynonyms(text, intensity) {
+            if (!synonymReplace.checked) return text;
+            
+            let words = text.split(/(\s+|\W+)/);
+            const replaceProbability = intensity / 10; // 替换概率基于强度
+            
+            words = words.map(word => {
+                // 只处理有意义的单词
+                if (word.trim() && /[a-zA-Z\u4e00-\u9fa5]/.test(word) && Math.random() < replaceProbability) {
+                    const lowerWord = word.toLowerCase();
+                    if (synonyms[lowerWord]) {
+                        // 随机选择一个同义词
+                        const synonym = synonyms[lowerWord][Math.floor(Math.random() * synonyms[lowerWord].length)];
+                        
+                        // 保持原单词的大小写
+                        if (word[0] === word[0].toUpperCase()) {
+                            return synonym.charAt(0).toUpperCase() + synonym.slice(1);
+                        }
+                        return synonym;
+                    }
+                }
+                return word;
+            });
+            
+            return words.join('');
+        }
+
+        // 句式调整
+        function restructureSentences(text, intensity) {
+            if (!sentenceRestructure.checked) return text;
+            
+            // 按句子分割
+            let sentences = text.split(/([。！？；,.!?;])/);
+            let result = [];
+            
+            // 重组句子的概率基于强度
+            const restructureProbability = intensity / 8;
+            
+            for (let i = 0; i < sentences.length; i += 2) {
+                let sentence = sentences[i];
+                const punctuation = sentences[i + 1] || '';
+                
+                if (sentence && Math.random() < restructureProbability) {
+                    // 简单的句式调整示例
+                    if (sentence.includes('是')) {
+                        // 改变"X是Y"的结构为"Y是X"（如果适用）
+                        const parts = sentence.split('是');
+                        if (parts.length === 2) {
+                            sentence = parts[1] + '是' + parts[0];
+                        }
+                    } else if (sentence.includes('有')) {
+                        // 改变"X有Y"的结构为"Y存在于X中"
+                        const parts = sentence.split('有');
+                        if (parts.length === 2) {
+                            sentence = parts[1] + '存在于' + parts[0] + '中';
+                        }
+                    } else if (sentence.length > 5) {
+                        // 简单的词序调整
+                        const words = sentence.split(/\s+/);
+                        if (words.length > 3) {
+                            // 交换第二个和倒数第二个词
+                            const temp = words[1];
+                            words[1] = words[words.length - 2];
+                            words[words.length - 2] = temp;
+                            sentence = words.join(' ');
+                        }
+                    }
+                }
+                
+                result.push(sentence + punctuation);
+            }
+            
+            return result.join('');
+        }
+
+        // 段落重组
+        function reorderParagraphs(text, method) {
+            if (!paragraphReorder.checked) return text;
+            
+            // 按段落分割
+            let paragraphs = text.split(/\n\s*\n/).filter(p => p.trim());
+            
+            if (paragraphs.length <= 1) return text;
+            
+            if (method === 'random') {
+                // 随机重组
+                for (let i = paragraphs.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [paragraphs[i], paragraphs[j]] = [paragraphs[j], paragraphs[i]];
+                }
+            } else if (method === 'logic') {
+                // 简单的逻辑重组（将较短的段落放在前面）
+                paragraphs.sort((a, b) => a.length - b.length);
+            }
+            
+            return paragraphs.join('\n\n');
+        }
+
+        // 核心概念前置
+        function moveCoreConceptsForward(text, percentage) {
+            if (!core前置.checked) return text;
+            
+            // 按段落分割
+            let paragraphs = text.split(/\n\s*\n/).filter(p => p.trim());
+            const applyPercentage = percentage / 100;
+            
+            paragraphs = paragraphs.map(paragraph => {
+                if (Math.random() < applyPercentage && paragraph.length > 50) {
+                    // 简单地将句子顺序反转
+                    const sentences = paragraph.split(/([。！？；,.!?;])/).filter(s => s.trim());
+                    if (sentences.length > 2) {
+                        return sentences.reverse().join('');
+                    }
+                }
+                return paragraph;
+            });
+            
+            return paragraphs.join('\n\n');
+        }
+
+        // 意译与抽象化
+        function paraphraseText(text, level) {
+            if (!paraphrase.checked) return text;
+            
+            // 简单的抽象化示例
+            const abstractProbability = level / 10;
+            
+            // 抽象化表达映射
+            const abstractExpressions = {
+                "非常": level > 3 ? "显著地" : "较为",
+                "很多": level > 3 ? "大量" : "不少",
+                "很少": level > 3 ? "稀缺" : "不多",
+                "总是": level > 3 ? "一贯" : "常常",
+                "经常": level > 3 ? "频繁" : "时常",
+                "可能": level > 3 ? "存在可能性" : "也许",
+                "一定": level > 3 ? "必然" : "必定",
+                "因为": level > 3 ? "鉴于" : "由于",
+                "所以": level > 3 ? "因此" : "因而",
+                "但是": level > 3 ? "然而" : "可是",
+                "而且": level > 3 ? "此外" : "并且",
+                "关于": level > 3 ? "就...而言" : "对于",
+                "通过": level > 3 ? "借助于" : "经过",
+                "使用": level > 3 ? "运用" : "利用",
+                "完成": level > 3 ? "达成" : "实现",
+                "提高": level > 3 ? "提升" : "增强",
+                "降低": level > 3 ? "减少" : "减轻",
+                "增加": level > 3 ? "增长" : "增多",
+                "减少": level > 3 ? "降低" : "缩减",
+                "重要": level > 3 ? "关键" : "主要",
+                "必要": level > 3 ? "必需" : "需要"
+            };
+            
+            let result = text;
+            
+            // 替换抽象化表达
+            Object.keys(abstractExpressions).forEach(key => {
+                if (Math.random() < abstractProbability) {
+                    const regex = new RegExp(`\\b${key}\\b`, 'g');
+                    result = result.replace(regex, abstractExpressions[key]);
+                }
+            });
+            
+            return result;
+        }
+
+        // 混合策略
+        function applyHybridMode(original, rewritten, percentage) {
+            if (!hybridMode.checked) return rewritten;
+            
+            // 保留一定比例的原文
+            const keepPercentage = percentage / 100;
+            
+            // 按段落分割
+            let originalParagraphs = original.split(/\n\s*\n/).filter(p => p.trim());
+            let rewrittenParagraphs = rewritten.split(/\n\s*\n/).filter(p => p.trim());
+            
+            // 确保段落数量相同
+            const maxLength = Math.max(originalParagraphs.length, rewrittenParagraphs.length);
+            while (originalParagraphs.length < maxLength) originalParagraphs.push('');
+            while (rewrittenParagraphs.length < maxLength) rewrittenParagraphs.push('');
+            
+            // 随机保留一些原文段落
+            const result = [];
+            for (let i = 0; i < maxLength; i++) {
+                if (Math.random() < keepPercentage && originalParagraphs[i]) {
+                    result.push(originalParagraphs[i]);
+                } else {
+                    result.push(rewrittenParagraphs[i] || originalParagraphs[i]);
+                }
+            }
+            
+            return result.join('\n\n');
+        }
+
+        // 执行改写
+        rewriteBtn.addEventListener('click', () => {
+            const text = originalText.value.trim();
+            
+            if (!text) {
+                showNotification('请先输入需要改写的文本', 'fa-exclamation-circle', 'text-red-500');
+                return;
+            }
+            
+            // 显示加载状态
+            rewriteStatus.classList.remove('hidden');
+            rewriteBtn.disabled = true;
+            
+            // 模拟处理延迟
+            setTimeout(() => {
+                let result = text;
+                
+                // 应用各种改写策略
+                result = replaceSynonyms(result, parseInt(synonymIntensity.value));
+                result = restructureSentences(result, parseInt(sentenceIntensity.value));
+                result = reorderParagraphs(result, paragraphMethod.value);
+                result = moveCoreConceptsForward(result, parseInt(corePercentage.value));
+                result = paraphraseText(result, parseInt(abstractLevel.value));
+                result = applyHybridMode(text, result, parseInt(originalPercentage.value));
+                
+                // 格式化结果为HTML
+                rewrittenText.innerHTML = result.replace(/\n\n/g, '<p></p>').replace(/\n/g, '<br>');
+                
+                // 更新统计信息
+                updateStats();
+                
+                // 隐藏加载状态
+                rewriteStatus.classList.add('hidden');
+                rewriteBtn.disabled = false;
+                
+                showNotification('改写完成', 'fa-check-circle', 'text-secondary');
+            }, 1500);
+        });
+
+        // 监听输入变化更新字数
+        originalText.addEventListener('input', updateStats);
+
+        // 初始化统计
+        updateStats();
+    </script>
+
+
+</body></html>

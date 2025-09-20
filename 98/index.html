@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>精美壁纸集合</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .category-btn {
+      margin-bottom: 5px;
+    }
+    .wallpaper-img {
+      cursor: pointer;
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      transition: transform 0.2s;
+    }
+    .wallpaper-img:hover {
+      transform: scale(1.1);
+    }
+    #previewImageContainer {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    #previewImage {
+      max-width: 100%;
+      height: auto;
+    }
+    #closePreview {
+      margin-top: 10px;
+    }
+    #viewOriginal {
+      margin-top: 10px;
+    }
+    #totalCountRow {
+      margin-bottom: 20px;
+    }
+    #pagination {
+      margin-top: 20px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+    .btn-danger:hover {
+      background-color: #bb2d3b;
+      border-color: #bb2d3b;
+    }
+    .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active, .show>.btn-danger.dropdown-toggle {
+      background-color: #bb2d3b;
+      border-color: #bb2d3b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mt-4 mb-4">精美壁纸集合</h1>
+    <div class="row mb-4">
+      <div class="col-md-12 text-center">
+        <div class="row">
+          <div class="col-6 col-md-12">
+            <button type="button" class="btn btn-primary category-btn" data-tid="67">精选</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="1">风景</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="2">宠物</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="92">动漫</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="62">插画</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="109">游戏</button>
+          </div>
+          <div class="col-6 col-md-12">
+            <button type="button" class="btn btn-primary category-btn" data-tid="6">风格</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="4">科幻</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="70">美女</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="9">色系</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="5">汽车</button>
+            <button type="button" class="btn btn-primary category-btn" data-tid="86">影视</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="totalCountRow">
+      <div class="col-md-12 text-center" id="totalCount">
+        <!-- 总共有多少张壁纸 -->
+      </div>
+    </div>
+    <div class="row" id="wallpapers">
+      <!-- 壁纸将在这里显示 -->
+    </div>
+  </div>
+
+  <div id="previewImageContainer">
+    <img src="" id="previewImage" class="img-fluid">
+    <div class="text-center">
+      <button type="button" class="btn btn-danger" id="closePreview">关闭</button>
+      <a href="#" id="viewOriginal" class="btn btn-primary" target="_blank">查看原图</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row" id="pagination">
+      <div class="col-md-12 text-center" id="pageButtons">
+        <!-- 分页按钮将在这里显示 -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var totalPage;
+      var currentPage = 1;
+      var currentTid;
+
+      $('.category-btn').click(function() {
+        currentTid = $(this).data('tid');
+        loadWallpapers(currentTid, currentPage);
+      });
+
+      // 默认加载精选分类
+      $('.category-btn[data-tid="67"]').click();
+
+      function loadWallpapers(tid, page) {
+        $.ajax({
+          url: 'https://mini.browser.360.cn/newtab/imgsx?tid=' + tid + '&page=' + page + '&uid=0',
+          type: 'GET',
+          success: function(response) {
+            var wallpapers = response.data.list;
+            totalPage = response.data.total_page;
+            $('#wallpapers').empty();
+            wallpapers.forEach(function(wallpaper) {
+              $('#wallpapers').append('<div class="col-md-4 mb-4"><img src="' + wallpaper.img + '" class="img-fluid wallpaper-img" data-img="' + wallpaper.img + '"></div>');
+            });
+            $('#totalCount').text('共' + response.data.total_count + '张壁纸');
+            updatePageButtons();
+          },
+          error: function() {
+            alert('加载壁纸出错');
+          }
+        });
+      }
+
+      function updatePageButtons() {
+        $('#pageButtons').empty();
+        $('#pageButtons').append('<button type="button" class="btn btn-primary page-btn" data-type="first">首页</button>');
+        $('#pageButtons').append('<button type="button" class="btn btn-primary page-btn" data-type="prev">上一页</button>');
+        $('#pageButtons').append('<span> 当前第' + currentPage + '页 </span>');
+        $('#pageButtons').append('<button type="button" class="btn btn-primary page-btn" data-type="next">下一页</button>');
+        $('#pageButtons').append('<button type="button" class="btn btn-primary page-btn" data-type="last">末页</button>');
+      }
+
+      $(document).on('click', '.page-btn', function() {
+        var btnType = $(this).data('type');
+        
+        if (btnType === 'first') {
+          if (currentPage === 1) {
+            alert('已经是第一页');
+            return;
+          }
+          currentPage = 1;
+          loadWallpapers(currentTid, currentPage);
+        } else if (btnType === 'prev') {
+          if (currentPage === 1) {
+            alert('已经是第一页');
+            return;
+          }
+          currentPage--;
+          loadWallpapers(currentTid, currentPage);
+        } else if (btnType === 'next') {
+          if (currentPage === totalPage) {
+            alert('已经是最后一页');
+            return;
+          }
+          currentPage++;
+          loadWallpapers(currentTid, currentPage);
+        } else if (btnType === 'last') {
+          if (currentPage === totalPage) {
+            alert('已经是最后一页');
+            return;
+          }
+          currentPage = totalPage;
+          loadWallpapers(currentTid, currentPage);
+        }
+      });
+
+      $('#wallpapers').on('click', '.wallpaper-img', function() {
+        var imgUrl = $(this).data('img');
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent)){
+          window.open(imgUrl, '_blank');
+        } else {
+          $('#previewImage').attr('src', imgUrl);
+          $('#previewImageContainer').fadeIn();
+        }
+      });
+
+      $('#closePreview').click(function() {
+        $('#previewImageContainer').fadeOut();
+      });
+
+      $('#viewOriginal').click(function() {
+        var originalUrl = $('#previewImage').attr('src');
+        window.open(originalUrl, '_blank');
+      });
+
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 双恒网络gree020.cn一个资源下载站 -->

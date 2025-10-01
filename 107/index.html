@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人空间 | 简约主页</title>
+    <title>寒潇 | 欢迎大家！</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -147,6 +147,14 @@
             overflow-y: auto;
             padding: 120px 0 50px;
             z-index: 2;
+        }
+        
+        .bilibili-page {
+            background-color: var(--bg-white);
+            transform: translateY(200%);
+            overflow-y: auto;
+            padding: 120px 0 50px;
+            z-index: 3;
         }
         
         .page.active {
@@ -490,6 +498,63 @@
             margin: 0 auto;
         }
         
+        /* B站直播页面样式 */
+        .bilibili-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .bilibili-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .bilibili-header h2 {
+            font-size: 2.8rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+        
+        .bilibili-header p {
+            font-size: 1.3rem;
+            color: var(--text-medium);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .bilibili-player-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .bilibili-player-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .adaptive-iframe {
+            width: 100%;
+            height: 560px;
+            border: none;
+        }
+        
+        @media (max-width: 768px) {
+            .adaptive-iframe {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .adaptive-iframe {
+                height: 300px;
+            }
+        }
+        
         /* 导航网站改为四列分布 */
         .links-grid {
             display: grid;
@@ -619,6 +684,8 @@
             outline: none;
             font-size: 0.8rem;
             transition: var(--transition);
+            /* 添加文本居中 */
+            text-align: center;
         }
         
         .playlist-input:focus, .song-id-input:focus, .custom-url-input:focus {
@@ -635,6 +702,10 @@
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.8rem;
+            /* 添加文本居中 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .playlist-load-btn:hover, .song-id-load-btn:hover, .custom-url-load-btn:hover {
@@ -659,6 +730,10 @@
             transition: var(--transition);
             font-size: 0.8rem;
             text-align: center;
+            /* 确保按钮文本居中 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .mode-btn.active {
@@ -921,6 +996,7 @@
                 <ul class="nav-links">
                     <li><a href="#home" class="nav-link active" data-target="home">首页</a></li>
                     <li><a href="#links-page" class="nav-link" data-target="links-page">导航</a></li>
+                    <li><a href="#bilibili-page" class="nav-link" data-target="bilibili-page">直播</a></li>
                 </ul>
             </nav>
         </div>
@@ -1171,6 +1247,56 @@
                 </div>
             </div>
         </section>
+
+        <!-- B站直播页面 -->
+        <section id="bilibili-page" class="page bilibili-page inactive">
+            <div class="bilibili-container">
+                <div class="bilibili-header">
+                    <h2 class="gradient-text">B站直播</h2>
+                    <p>观看精彩的B站直播内容，与主播互动交流</p>
+                </div>
+                
+                <div class="bilibili-player-container">
+                    <div class="bilibili-player-wrapper card-hover">
+                        <iframe class="adaptive-iframe" 
+                                src="https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=30778828&quality=0" 
+                                frameborder="no" 
+                                framespacing="0" 
+                                scrolling="no" 
+                                allow="autoplay; encrypted-media" 
+                                allowfullscreen="true">
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="links-grid">
+                    <a href="https://live.bilibili.com" target="_blank" class="link-card card-hover">
+                        <div class="link-icon" style="background: #fb7299;">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="link-text">B站直播首页</div>
+                    </a>
+                    <a href="https://www.bilibili.com/v/popular" target="_blank" class="link-card card-hover">
+                        <div class="link-icon" style="background: #00a1d6;">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="link-text">热门视频</div>
+                    </a>
+                    <a href="https://www.bilibili.com/v/game" target="_blank" class="link-card card-hover">
+                        <div class="link-icon" style="background: #ff9800;">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="link-text">游戏区</div>
+                    </a>
+                    <a href="https://www.bilibili.com/v/kichiku" target="_blank" class="link-card card-hover">
+                        <div class="link-icon" style="background: #4caf50;">
+                            <i class="fas fa-theater-masks"></i>
+                        </div>
+                        <div class="link-text">鬼畜区</div>
+                    </a>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- 页脚 -->
@@ -1187,37 +1313,38 @@
         // 页面切换功能 - 完全重写
         const homePage = document.getElementById('home');
         const linksPage = document.getElementById('links-page');
+        const bilibiliPage = document.getElementById('bilibili-page');
         const navLinks = document.querySelectorAll('.nav-link');
         
         // 切换页面函数
         function switchPage(targetPage) {
+            // 重置所有页面状态
+            homePage.classList.remove('active');
+            homePage.classList.add('inactive');
+            linksPage.classList.remove('active');
+            linksPage.classList.add('inactive');
+            bilibiliPage.classList.remove('active');
+            bilibiliPage.classList.add('inactive');
+            
+            // 激活目标页面
             if (targetPage === 'home') {
                 homePage.classList.add('active');
                 homePage.classList.remove('inactive');
-                linksPage.classList.add('inactive');
-                linksPage.classList.remove('active');
-                
-                // 更新导航链接状态
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('data-target') === 'home') {
-                        link.classList.add('active');
-                    }
-                });
             } else if (targetPage === 'links-page') {
-                homePage.classList.add('inactive');
-                homePage.classList.remove('active');
                 linksPage.classList.add('active');
                 linksPage.classList.remove('inactive');
-                
-                // 更新导航链接状态
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('data-target') === 'links-page') {
-                        link.classList.add('active');
-                    }
-                });
+            } else if (targetPage === 'bilibili-page') {
+                bilibiliPage.classList.add('active');
+                bilibiliPage.classList.remove('inactive');
             }
+            
+            // 更新导航链接状态
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-target') === targetPage) {
+                    link.classList.add('active');
+                }
+            });
         }
         
         // 导航链接点击事件
@@ -1231,6 +1358,7 @@
         
         // 鼠标滚轮切换页面
         let isScrolling = false;
+        let currentPage = 'home';
         
         window.addEventListener('wheel', function(e) {
             if (isScrolling) return;
@@ -1238,12 +1366,26 @@
             isScrolling = true;
             
             if (e.deltaY > 0) {
-                // 向下滚动，切换到导航页
-                switchPage('links-page');
+                // 向下滚动，切换到下一个页面
+                if (currentPage === 'home') {
+                    currentPage = 'links-page';
+                } else if (currentPage === 'links-page') {
+                    currentPage = 'bilibili-page';
+                } else {
+                    currentPage = 'home'; // 循环回到首页
+                }
             } else {
-                // 向上滚动，切换到首页
-                switchPage('home');
+                // 向上滚动，切换到上一个页面
+                if (currentPage === 'bilibili-page') {
+                    currentPage = 'links-page';
+                } else if (currentPage === 'links-page') {
+                    currentPage = 'home';
+                } else {
+                    currentPage = 'bilibili-page'; // 循环到B站直播页
+                }
             }
+            
+            switchPage(currentPage);
             
             setTimeout(() => {
                 isScrolling = false;

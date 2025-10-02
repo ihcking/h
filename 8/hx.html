@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小学化学作业出题系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- 配置Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        accent: '#FF7D00',
+                        neutral: '#F5F7FA',
+                        dark: '#1D2129'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-custom {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .print-area {
+            display: none;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .print-area, .print-area * {
+                visibility: visible;
+            }
+            
+            .print-area {
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 30px;
+                box-sizing: border-box;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                padding-bottom: 20px;
+            }
+            
+            .question-item {
+                margin-bottom: 1.5rem !important;
+                page-break-inside: avoid;
+            }
+            
+            .print-area {
+                font-size: 12pt;
+                line-height: 1.6;
+            }
+            
+            @page {
+                margin: 2cm;
+            }
+        }
+        
+        .answer {
+            display: none;
+        }
+        
+        .show-answers .answer {
+            display: block;
+            color: #e53e3e;
+            font-weight: 500;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #d1d5db;
+        }
+        
+        .loading {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50 transition-custom">
+        <div class="container mx-auto px-4 py-4 flex flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fa fa-flask text-primary text-3xl mr-3"></i>
+                <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary">小学化学化学作业出题系统</h1>
+            </div>
+            <p class="text-gray-600 text-center md:text-right">简单方便的随机出题工具，助力孩子学习成长</p>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 配置区域 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 transform hover:shadow-lg transition-custom">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fa fa-cogs text-primary mr-2"></i>题目设置
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="questionCount" class="block text-sm font-medium text-gray-700 mb-1">题目数量</label>
+                    <div class="flex items-center">
+                        <input type="number" id="questionCount" min="5" max="50" value="10" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                        <span class="ml-2 text-gray-500">题</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="difficulty" class="block text-sm font-medium text-gray-700 mb-1">难度级别</label>
+                    <select id="difficulty" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                        <option value="easy">简单</option>
+                        <option value="medium" selected>中等</option>
+                        <option value="hard">较难</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="questionType" class="block text-sm font-medium text-gray-700 mb-1">题目类型</label>
+                    <select id="questionType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                        <option value="mixed" selected>混合类型</option>
+                        <option value="choice">选择题</option>
+                        <option value="fill">填空题</option>
+                        <option value="judge">判断题</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button id="generateBtn" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg shadow transition-custom flex items-center justify-center mx-auto">
+                    <i class="fa fa-refresh mr-2"></i>生成题目
+                </button>
+            </div>
+        </section>
+        
+        <!-- 操作按钮区域 -->
+        <section id="actionButtons" class="hidden mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <button id="printStudentBtn" class="bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg shadow transition-custom flex items-center justify-center">
+                <i class="fa fa-print mr-2"></i>打印学生版
+            </button>
+            
+            <button id="printParentBtn" class="bg-accent hover:bg-accent/90 text-white font-medium px-4 py-3 rounded-lg shadow transition-custom flex items-center justify-center">
+                <i class="fa fa-print mr-2"></i>打印家长版(带答案)
+            </button>
+            
+            <button id="generatePdfBtn" class="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-3 rounded-lg shadow transition-custom flex items-center justify-center">
+                <i class="fa fa-file-pdf-o mr-2"></i>生成PDF
+            </button>
+        </section>
+        
+        <!-- 题目预览区域 -->
+        <section id="previewArea" class="hidden bg-white rounded-xl shadow-md p-6 mb-8 transform hover:shadow-lg transition-custom">
+            <h2 class="text-xl font-semibold mb-6 pb-2 border-b border-gray-200 flex items-center">
+                <i class="fa fa-eye text-primary mr-2"></i>题目预览
+            </h2>
+            
+            <div id="questionsContainer" class="space-y-6">
+                <!-- 题目将通过JS动态生成 -->
+            </div>
+            
+            <!-- 页脚版权信息 -->
+            <div class="mt-12 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+                双恒网络首发 www.gree020cn
+            </div>
+        </section>
+        
+        <!-- 初始提示区域 -->
+        <section id="initialMessage" class="bg-white rounded-xl shadow-md p-8 text-center">
+            <div class="text-primary text-5xl mb-4">
+                <i class="fa fa-lightbulb-o"></i>
+            </div>
+            <h2 class="text-2xl font-semibold mb-2">开始生成你的化学作业吧</h2>
+            <p class="text-gray-600 mb-6">使用上方的设置，选择题目数量和难度，点击生成按钮获取自定义作业</p>
+            <img src="https://picsum.photos/seed/chemistry/600/300" alt="化学实验图示" class="mx-auto rounded-lg shadow-md max-w-full h-auto">
+        </section>
+    </main>
+    
+    <!-- 打印区域 (默认隐藏) -->
+    <div id="printSection" class="print-area">
+        <div id="printHeader" class="mb-8 text-center">
+            <h1 class="text-2xl font-bold mb-2">小学化学作业练习册</h1>
+            <p id="printInfo" class="text-gray-600">生成日期: <span id="printDate"></span> | 题目数量: <span id="printQuestionCount"></span></p>
+        </div>
+        
+        <div id="printQuestionsContainer" class="space-y-8">
+            <!-- 打印用的题目将通过JS动态生成 -->
+        </div>
+        
+        <!-- 页脚版权信息 -->
+        <div class="footer mt-12 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+            双恒网络首发 www.gree020cn
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm text-gray-400">© 2023 小学化学作业出题系统 - 助力孩子学习成长</p>
+                </div>
+                <div class="text-sm font-medium">
+                    双恒网络首发 <a href="&#104;&#116;&#116;&#112;&#58;&#47;&#47;&#119;&#119;&#119;&#46;&#103;&#114;&#101;&#101;&#48;&#50;&#48;&#99;&#110;" class="text-primary hover:underline" target="_blank">www.gree020cn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 化学题目数据库 - 扩充题目数量到50+，确保能满足最大题量需求
+        const chemistryQuestions = {
+            easy: [
+                { type: "choice", question: "水的化学式是什么？", options: ["A. H2O", "B. CO2", "C. O2", "D. NaCl"], answer: "A" },
+                { type: "choice", question: "下列哪种气体支持燃烧？", options: ["A. 氮气", "B. 氧气", "C. 二氧化碳", "D. 氢气"], answer: "B" },
+                { type: "judge", question: "铁在空气中会生锈。", answer: "正确" },
+                { type: "fill", question: "我们呼吸时，吸入的是氧气，呼出的主要是______。", answer: "二氧化碳" },
+                { type: "choice", question: "下列哪种物质是金属？", options: ["A. 木头", "B. 铁", "C. 塑料", "D. 玻璃"], answer: "B" },
+                { type: "judge", question: "盐的化学式是NaCl。", answer: "正确" },
+                { type: "fill", question: "______是维持生命所必需的气体，约占空气体积的21%。", answer: "氧气" },
+                { type: "choice", question: "下列哪种物质可以溶解在水中？", options: ["A. 石头", "B. 盐", "C. 铁", "D. 木头"], answer: "B" },
+                { type: "judge", question: "二氧化碳可以使澄清石灰水变浑浊。", answer: "正确" },
+                { type: "fill", question: "水在______摄氏度时会结冰。", answer: "0" },
+                { type: "choice", question: "下列哪种物质是酸性的？", options: ["A. 肥皂水", "B. 柠檬汁", "C. 牙膏", "D. 洗涤剂"], answer: "B" },
+                { type: "judge", question: "空气主要由氧气和氮气组成。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质是固体？", options: ["A. 水", "B. 氧气", "C. 石头", "D. 酒精"], answer: "C" },
+                { type: "fill", question: "物质有三种状态：固态、液态和______。", answer: "气态" },
+                { type: "judge", question: "冰是水的固态形式。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质可以燃烧？", options: ["A. 石头", "B. 木材", "C. 水", "D. 玻璃"], answer: "B" },
+                { type: "fill", question: "燃烧需要氧气、______和热量三个条件。", answer: "可燃物" },
+                { type: "judge", question: "金属都是银白色的。", answer: "错误" },
+                { type: "choice", question: "下列哪种是金属的特性？", options: ["A. 透明", "B. 导电", "C. 易破碎", "D. 不导热"], answer: "B" },
+                { type: "fill", question: "______是最常见的金属，常用于制造铁锅。", answer: "铁" },
+                { type: "judge", question: "所有物质都能溶解在水中。", answer: "错误" },
+                { type: "choice", question: "下列哪种方法可以加快溶解？", options: ["A. 降温", "B. 搅拌", "C. 静置", "D. 减少水量"], answer: "B" },
+                { type: "fill", question: "溶液是由______和溶剂组成的混合物。", answer: "溶质" },
+                { type: "judge", question: "海水是一种溶液。", answer: "正确" },
+                { type: "choice", question: "下列哪种是天然材料？", options: ["A. 塑料", "B. 棉花", "C. 玻璃", "D. 合成纤维"], answer: "B" },
+                { type: "fill", question: "______是从石油中提炼出来的人造材料。", answer: "塑料" },
+                { type: "judge", question: "纸是由木材制成的。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质能导电？", options: ["A. 橡胶", "B. 塑料", "C. 铜", "D. 玻璃"], answer: "C" },
+                { type: "fill", question: "______是一种清洁能源，常用于发电。", answer: "水电" },
+                { type: "judge", question: "太阳能是可再生能源。", answer: "正确" },
+                { type: "choice", question: "下列哪种属于化学变化？", options: ["A. 折纸", "B. 燃烧", "C. 冰融化", "D. 打碎玻璃"], answer: "B" },
+                { type: "fill", question: "食物变质是一种______变化。", answer: "化学" },
+                { type: "judge", question: "铁生锈是物理变化。", answer: "错误" },
+                { type: "choice", question: "下列哪种物质含有水分？", options: ["A. 石头", "B. 木材", "C. 金属", "D. 玻璃"], answer: "B" },
+                { type: "fill", question: "植物通过______作用吸收水分。", answer: "蒸腾" },
+                { type: "judge", question: "水可以用来灭火。", answer: "正确" },
+                { type: "choice", question: "下列哪种气体是无色无味的？", options: ["A. 氯气", "B. 氧气", "C. 氨气", "D. 二氧化硫"], answer: "B" },
+                { type: "fill", question: "______气体会使气球上升，因为它比空气轻。", answer: "氢" },
+                { type: "judge", question: "二氧化碳比空气重。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质是混合物？", options: ["A. 纯净水", "B. 氧气", "C. 空气", "D. 铁"], answer: "C" },
+                { type: "fill", question: "______是由一种物质组成的，具有固定的性质。", answer: "纯净物" },
+                { type: "judge", question: "盐水是纯净物。", answer: "错误" }
+            ],
+            medium: [
+                { type: "choice", question: "下列哪种物质属于酸性物质？", options: ["A. 肥皂水", "B. 柠檬汁", "C. 氨水", "D. 小苏打"], answer: "B" },
+                { type: "fill", question: "化学反应中，______是指物质与氧气发生的剧烈氧化反应，通常会发光发热。", answer: "燃烧" },
+                { type: "judge", question: "所有金属都能被磁铁吸引。", answer: "错误" },
+                { type: "choice", question: "下列哪种方法可以将盐水中的盐和水分离？", options: ["A. 过滤", "B. 沉淀", "C. 蒸发", "D. 搅拌"], answer: "C" },
+                { type: "fill", question: "铁锈的主要成分是______。", answer: "氧化铁" },
+                { type: "judge", question: "物质的状态变化（如冰变成水）属于化学变化。", answer: "错误" },
+                { type: "choice", question: "下列哪种气体是温室气体？", options: ["A. 氧气", "B. 氮气", "C. 二氧化碳", "D. 氢气"], answer: "C" },
+                { type: "fill", question: "光合作用中，植物利用______、水和阳光制造有机物和氧气。", answer: "二氧化碳" },
+                { type: "judge", question: "溶液一定是无色透明的。", answer: "错误" },
+                { type: "choice", question: "下列哪种物质是化合物？", options: ["A. 氧气(O2)", "B. 铁(Fe)", "C. 水(H2O)", "D. 氢气(H2)"], answer: "C" },
+                { type: "fill", question: "______是一种常见的溶剂，可以溶解许多物质。", answer: "水" },
+                { type: "choice", question: "下列哪种物质可以用来检验氧气？", options: ["A. 澄清石灰水", "B. 带火星的木条", "C. 紫色石蕊试液", "D. 酚酞试液"], answer: "B" },
+                { type: "choice", question: "下列哪种金属最容易生锈？", options: ["A. 金", "B. 银", "C. 铁", "D. 铝"], answer: "C" },
+                { type: "fill", question: "防止铁生锈的方法有涂漆、镀锌和______。", answer: "涂油" },
+                { type: "judge", question: "铝比铁更耐腐蚀是因为铝不易与氧气反应。", answer: "错误" },
+                { type: "choice", question: "下列哪种物质是碱性的？", options: ["A. 醋", "B. 柠檬汁", "C. 小苏打", "D. 酸奶"], answer: "C" },
+                { type: "fill", question: "pH值______7的物质是酸性物质。", answer: "小于" },
+                { type: "judge", question: "酸碱中和反应会产生盐和水。", answer: "正确" },
+                { type: "choice", question: "下列哪种是物理变化？", options: ["A. 食物消化", "B. 蜡烛燃烧", "C. 水蒸发", "D. 铁生锈"], answer: "C" },
+                { type: "fill", question: "物质发生______变化时，分子种类不变，只是状态或形状改变。", answer: "物理" },
+                { type: "judge", question: "纸张燃烧是物理变化。", answer: "错误" },
+                { type: "choice", question: "下列哪种方法可以净化水？", options: ["A. 搅拌", "B. 过滤", "C. 加热", "D. 摇晃"], answer: "B" },
+                { type: "fill", question: "自来水厂常用______的方法杀死水中的细菌。", answer: "消毒" },
+                { type: "judge", question: "蒸馏水是纯净的水，不含任何杂质。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质是有机物？", options: ["A. 水", "B. 二氧化碳", "C. 甲烷", "D. 食盐"], answer: "C" },
+                { type: "fill", question: "______是构成生命体的重要有机化合物。", answer: "蛋白质" },
+                { type: "judge", question: "塑料是有机化合物。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质是金属氧化物？", options: ["A. 二氧化碳", "B. 氧化铁", "C. 水", "D. 硫酸"], answer: "B" },
+                { type: "fill", question: "氧化物是由______种元素组成，其中一种是氧元素的化合物。", answer: "两" },
+                { type: "judge", question: "所有氧化物都是气体。", answer: "错误" },
+                { type: "choice", question: "下列哪种方法可以区分硬水和软水？", options: ["A. 观察颜色", "B. 闻气味", "C. 加入肥皂水", "D. 测量温度"], answer: "C" },
+                { type: "fill", question: "硬水中含有较多的钙和______离子。", answer: "镁" },
+                { type: "judge", question: "煮沸可以降低水的硬度。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质是催化剂？", options: ["A. 高锰酸钾", "B. 二氧化锰", "C. 氯化钠", "D. 碳酸钙"], answer: "B" },
+                { type: "fill", question: "催化剂可以______化学反应速率，但本身的质量和化学性质不变。", answer: "改变" },
+                { type: "judge", question: "催化剂可以使不可能发生的反应发生。", answer: "错误" }
+            ],
+            hard: [
+                { type: "choice", question: "下列哪种物质的pH值大于7？", options: ["A. 醋", "B. 柠檬汁", "C. 肥皂水", "D. 雨水"], answer: "C" },
+                { type: "fill", question: "化学反应前后，______的种类和数量保持不变，这是质量守恒定律的体现。", answer: "原子" },
+                { type: "judge", question: "催化剂可以改变反应速率，但本身不会在反应中消耗。", answer: "正确" },
+                { type: "choice", question: "下列哪种现象属于物理变化？", options: ["A. 食物腐烂", "B. 冰融化成水", "C. 铁生锈", "D. 蜡烛燃烧"], answer: "B" },
+                { type: "fill", question: "______是地壳中含量最多的金属元素。", answer: "铝" },
+                { type: "judge", question: "所有的燃烧都需要氧气参与。", answer: "错误" },
+                { type: "choice", question: "下列哪种物质可以用来灭火？", options: ["A. 氧气", "B. 氢气", "C. 二氧化碳", "D. 甲烷"], answer: "C" },
+                { type: "fill", question: "当酸性溶液和碱性溶液混合时，会发生______反应，生成盐和水。", answer: "中和" },
+                { type: "judge", question: "金属活动性顺序中，排在氢前面的金属都能与稀盐酸反应产生氢气。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质是纯净物？", options: ["A. 空气", "B. 海水", "C. 蒸馏水", "D. 矿泉水"], answer: "C" },
+                { type: "fill", question: "物质的三种常见状态是固态、液态和______。", answer: "气态" },
+                { type: "choice", question: "下列哪种方法可以区分硬水和软水？", options: ["A. 观察颜色", "B. 闻气味", "C. 加入肥皂水", "D. 测量温度"], answer: "C" },
+                { type: "choice", question: "下列哪种气体在空气中的体积分数最大？", options: ["A. 氧气", "B. 氮气", "C. 二氧化碳", "D. 稀有气体"], answer: "B" },
+                { type: "fill", question: "空气中______的体积分数约为21%，是维持生命活动所必需的。", answer: "氧气" },
+                { type: "judge", question: "稀有气体在通常情况下不与其他物质发生化学反应。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质属于合金？", options: ["A. 纯金", "B. 生铁", "C. 铝箔", "D. 铜丝"], answer: "B" },
+                { type: "fill", question: "______是铁和碳的合金，硬度比纯铁大。", answer: "钢" },
+                { type: "judge", question: "合金的熔点通常比组成它的纯金属高。", answer: "错误" },
+                { type: "choice", question: "下列哪种物质是电解质？", options: ["A. 蔗糖", "B. 酒精", "C. 氯化钠", "D. 植物油"], answer: "C" },
+                { type: "fill", question: "电解质在______中或熔融状态下能导电。", answer: "水" },
+                { type: "judge", question: "所有能导电的物质都是电解质。", answer: "错误" },
+                { type: "choice", question: "下列哪种反应属于置换反应？", options: ["A. 酸碱中和", "B. 金属与酸反应", "C. 碳酸钙分解", "D. 铁生锈"], answer: "B" },
+                { type: "fill", question: "置换反应是一种______和一种化合物反应，生成另一种单质和另一种化合物。", answer: "单质" },
+                { type: "judge", question: "氢气还原氧化铜的反应是置换反应。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质是氧化剂？", options: ["A. 氢气", "B. 碳", "C. 氧气", "D. 一氧化碳"], answer: "C" },
+                { type: "fill", question: "在氧化还原反应中，______剂失去电子，被氧化。", answer: "还原" },
+                { type: "judge", question: "氧化反应和还原反应总是同时发生的。", answer: "正确" },
+                { type: "choice", question: "下列哪种物质的溶解度随温度升高而减小？", options: ["A. 硝酸钾", "B. 氯化钠", "C. 氢氧化钙", "D. 蔗糖"], answer: "C" },
+                { type: "fill", question: "______是指一定温度下，某物质在100克溶剂中达到饱和状态时所溶解的质量。", answer: "溶解度" },
+                { type: "judge", question: "饱和溶液一定是浓溶液。", answer: "错误" },
+                { type: "choice", question: "下列哪种方法可以分离互溶的液体混合物？", options: ["A. 过滤", "B. 蒸馏", "C. 沉淀", "D. 吸附"], answer: "B" },
+                { type: "fill", question: "蒸馏是利用混合物中各成分______不同而进行分离的方法。", answer: "沸点" },
+                { type: "judge", question: "过滤可以分离溶液中的溶质和溶剂。", answer: "错误" }
+            ]
+        };
+        
+        // 工具函数：从数组中随机选择n个元素，如果数量不足则循环补充
+        function getRandomElements(arr, n) {
+            // 如果需要的数量大于数组长度，则复制数组直到满足需求
+            let result = [];
+            let tempArr = [...arr];
+            
+            while (result.length < n) {
+                // 打乱数组
+                tempArr.sort(() => 0.5 - Math.random());
+                
+                // 计算还需要多少元素
+                const need = n - result.length;
+                
+                // 如果剩余需要的元素小于数组长度，则取前need个
+                if (need <= tempArr.length) {
+                    result = [...result, ...tempArr.slice(0, need)];
+                } else {
+                    // 否则取全部
+                    result = [...result, ...tempArr];
+                }
+            }
+            
+            return result;
+        }
+        
+        // 生成题目
+        function generateQuestions() {
+            // 获取并验证题目数量
+            const questionCountInput = document.getElementById('questionCount');
+            let questionCount = parseInt(questionCountInput.value, 10);
+            
+            // 验证并修正题目数量，确保在有效范围内
+            if (isNaN(questionCount) || questionCount < 5) {
+                questionCount = 5;
+                questionCountInput.value = 5;
+            } else if (questionCount > 50) {
+                questionCount = 50;
+                questionCountInput.value = 50;
+            }
+            
+            const difficulty = document.getElementById('difficulty').value;
+            const questionType = document.getElementById('questionType').value;
+            
+            // 显示加载状态
+            document.getElementById('generateBtn').innerHTML = '<i class="fa fa-circle-o-notch loading mr-2"></i>生成中...';
+            document.getElementById('generateBtn').disabled = true;
+            
+            // 模拟加载延迟
+            setTimeout(() => {
+                let selectedQuestions = [];
+                // 获取所有难度级别的题目，确保有足够的题目可供选择
+                let allQuestions = [];
+                if (questionType === 'mixed') {
+                    // 混合类型可以跨难度选择
+                    allQuestions = [
+                        ...chemistryQuestions.easy,
+                        ...chemistryQuestions.medium,
+                        ...chemistryQuestions.hard
+                    ];
+                } else {
+                    // 特定类型，先从当前难度筛选，如果不足则从其他难度补充
+                    allQuestions = [
+                        ...chemistryQuestions.easy.filter(q => q.type === questionType || questionType === 'mixed'),
+                        ...chemistryQuestions.medium.filter(q => q.type === questionType || questionType === 'mixed'),
+                        ...chemistryQuestions.hard.filter(q => q.type === questionType || questionType === 'mixed')
+                    ];
+                }
+                
+                // 选择指定数量的题目
+                selectedQuestions = getRandomElements(allQuestions, questionCount);
+                
+                // 显示预览区域和操作按钮
+                document.getElementById('initialMessage').classList.add('hidden');
+                document.getElementById('previewArea').classList.remove('hidden');
+                document.getElementById('actionButtons').classList.remove('hidden');
+                
+                // 清空容器
+                const questionsContainer = document.getElementById('questionsContainer');
+                questionsContainer.innerHTML = '';
+                
+                // 生成题目HTML
+                selectedQuestions.forEach((q, index) => {
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'question-item p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-custom';
+                    questionElement.dataset.answer = q.answer;
+                    
+                    let questionHTML = `<div class="font-medium mb-3">${index + 1}. ${q.question}</div>`;
+                    
+                    if (q.type === 'choice') {
+                        q.options.forEach(option => {
+                            questionHTML += `<div class="ml-4 mb-2">${option}</div>`;
+                        });
+                    } else if (q.type === 'fill') {
+                        questionHTML += `<div class="ml-4 mt-2 p-2 border-b border-gray-300 w-40 mb-2"></div>`;
+                    } else if (q.type === 'judge') {
+                        questionHTML += `<div class="ml-4 mt-2 mb-2">
+                                            <div class="inline-block mr-6"><input type="radio" name="judge-${index}" id="judge-${index}-true"> <label for="judge-${index}-true">正确</label></div>
+                                            <div class="inline-block"><input type="radio" name="judge-${index}" id="judge-${index}-false"> <label for="judge-${index}-false">错误</label></div>
+                                        </div>`;
+                    }
+                    
+                    // 添加答案（默认隐藏）
+                    questionHTML += `<div class="answer">答案：${q.answer}</div>`;
+                    
+                    questionElement.innerHTML = questionHTML;
+                    questionsContainer.appendChild(questionElement);
+                });
+                
+                // 恢复按钮状态
+                document.getElementById('generateBtn').innerHTML = '<i class="fa fa-refresh mr-2"></i>生成题目';
+                document.getElementById('generateBtn').disabled = false;
+                
+            }, 800);
+        }
+        
+        // 准备打印内容
+        function preparePrintContent(showAnswers = false) {
+            const questions = document.querySelectorAll('#questionsContainer .question-item');
+            const printQuestionsContainer = document.getElementById('printQuestionsContainer');
+            const questionCount = document.getElementById('questionCount').value;
+            
+            // 清空打印容器
+            printQuestionsContainer.innerHTML = '';
+            
+            // 设置打印信息
+            document.getElementById('printDate').textContent = new Date().toLocaleDateString();
+            document.getElementById('printQuestionCount').textContent = questionCount;
+            
+            // 复制题目到打印区域
+            questions.forEach((q, index) => {
+                const clonedQuestion = q.cloneNode(true);
+                clonedQuestion.className = 'question-item mb-8 pb-6 border-b border-gray-200';
+                
+                // 如果是家长版，显示答案
+                if (showAnswers) {
+                    const answerElement = clonedQuestion.querySelector('.answer');
+                    if (answerElement) {
+                        answerElement.style.display = 'block';
+                        answerElement.style.marginTop = '12px';
+                    }
+                }
+                
+                printQuestionsContainer.appendChild(clonedQuestion);
+            });
+        }
+        
+        // 打印学生版（无答案）
+        function printStudentVersion() {
+            preparePrintContent(false);
+            window.print();
+        }
+        
+        // 打印家长版（带答案）
+        function printParentVersion() {
+            preparePrintContent(true);
+            window.print();
+        }
+        
+        // 生成PDF
+        function generatePDF() {
+            preparePrintContent(false);
+            
+            const element = document.getElementById('printSection');
+            const opt = {
+                margin: 15,
+                filename: '小学化学作业_' + new Date().toLocaleDateString() + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // 生成PDF
+            html2pdf().set(opt).from(element).save();
+        }
+        
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('generateBtn').addEventListener('click', generateQuestions);
+            document.getElementById('printStudentBtn').addEventListener('click', printStudentVersion);
+            document.getElementById('printParentBtn').addEventListener('click', printParentVersion);
+            document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
+            
+            // 为题目数量输入框添加验证
+            document.getElementById('questionCount').addEventListener('change', function() {
+                let value = parseInt(this.value, 10);
+                if (isNaN(value) || value < 5) {
+                    this.value = 5;
+                } else if (value > 50) {
+                    this.value = 50;
+                }
+            });
+            
+            // 滚动时改变导航栏样式
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (window.scrollY > 10) {
+                    header.classList.add('py-2');
+                    header.classList.remove('py-4');
+                } else {
+                    header.classList.add('py-4');
+                    header.classList.remove('py-2');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    

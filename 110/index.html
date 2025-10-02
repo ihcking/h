@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农场游戏系统</title>
+    <!-- 引入本地CSS文件 -->
+    <link rel="stylesheet" href="farm-style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>农场游戏系统</h1>
+        <p>种植作物，饲养狗狗，成为最佳农场主！</p>
+    </div>
+    
+    <div class="stats-bar">
+        <div class="stats-item">📅 第 <span id="day">1</span> 天</div>
+        <div class="stats-item">💰 金币: <span id="money">666666</span></div>
+        <div class="stats-item">⭐ 等级: <span id="level">1</span></div>
+        <div class="stats-item">📈 经验: <span id="experience">0</span>/<span id="nextLevel">100</span></div>
+        <div class="stats-item">🌤️ 天气: <span id="current-weather">晴天</span></div>
+        <button class="btn" id="nextDayBtn">下一天</button>
+    </div>
+    
+    <div class="farm-container">
+        <div class="plots" id="farmPlots">
+            <!-- 地块将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="sidebar">
+            <div class="panel">
+                <h3>天气预报</h3>
+                <div class="weather" id="weatherForecast">
+                    <!-- 天气预报将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>物品商店</h3>
+                <div class="shop-list" id="shopList">
+                    <!-- 商店物品将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>我的物品</h3>
+                <div class="inventory-list" id="inventoryList">
+                    <!-- 物品将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>狗狗商店</h3>
+                <div class="dog-breeds" id="dogBreeds">
+                    <!-- 狗狗品种将通过JavaScript动态生成 -->
+                </div>
+                <div class="dog-status" id="dogStatus">
+                    <p>尚未拥有狗狗，等级2可解锁</p>
+                </div>
+                <div class="dog-actions" id="dogActions" style="display: none;">
+                    <button class="btn" id="feedDog">喂食</button>
+                    <button class="btn" id="giveMedicine">喂药</button>
+                    <button class="btn" id="giveVitamin">维生素</button>
+                    <button class="btn" id="playWithDog">玩耍</button>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>自动进行</h3>
+                <div class="auto-progress">
+                    <input type="number" id="autoDays" min="1" max="30" value="1">
+                    <button class="btn" id="startAuto">开始自动进行</button>
+                    <button class="btn" id="stopAuto" style="display: none;">停止</button>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>消息通知</h3>
+                <div class="messages" id="messages">
+                    <!-- 消息将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入本地JavaScript文件九 双 恒 网 络gree0 2 0 .cn -->
+    <script src="farm-script.js"></script>
+</body>
+</html>
+    

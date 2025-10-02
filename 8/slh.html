@@ -1,0 +1,627 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数理化随机出题系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .question-card {
+                @apply bg-white rounded-lg shadow-md p-4 mb-4 transition-all duration-300 hover:shadow-lg;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-white px-4 py-2 rounded-md hover:bg-secondary/90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary/50;
+            }
+            .btn-accent {
+                @apply bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50;
+            }
+            .form-select {
+                @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/20 focus:ring-opacity-50;
+            }
+        }
+    </style>
+    <style>
+        /* 打印样式 - 隐藏不需要打印的元素 */
+        @media print {
+            header, #control-panel, #help-btn, #theme-toggle, #view-controls, .no-print {
+                display: none !important;
+            }
+            
+            body, main, #questions-container, #questions-container > div {
+                background-color: white !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .question-card {
+                border: none !important;
+                padding: 8px 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+            }
+            
+            @page {
+                margin: 1.5cm;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 页面头部 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fa fa-calculator text-primary text-3xl mr-3"></i>
+                <h1 class="text-2xl font-bold text-dark">数理化随机出题系统</h1>
+            </div>
+            <div class="flex space-x-2">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <i class="fa fa-moon-o text-dark"></i>
+                </button>
+                <button id="help-btn" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <i class="fa fa-question text-dark"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 控制面板 - 添加no-print类确保不被打印 -->
+        <section id="control-panel" class="bg-white rounded-lg shadow-md p-6 mb-6 transform transition-all duration-500 hover:shadow-lg no-print">
+            <h2 class="text-xl font-semibold mb-4 text-dark">出题设置</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">科目</label>
+                    <select id="subject" class="form-select">
+                        <option value="math">数学</option>
+                        <option value="physics">物理</option>
+                        <option value="chemistry">化学</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">难度</label>
+                    <select id="difficulty" class="form-select">
+                        <option value="easy">简单</option>
+                        <option value="medium" selected="">中等</option>
+                        <option value="hard">困难</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">题目数量</label>
+                    <select id="question-count" class="form-select">
+                        <option value="5">5题</option>
+                        <option value="10" selected="">10题</option>
+                        <option value="15">15题</option>
+                        <option value="20">20题</option>
+                        <option value="30">30题</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex flex-wrap gap-4">
+                <button id="generate-btn" class="btn-primary flex items-center">
+                    <i class="fa fa-refresh mr-2"></i> 生成题目
+                </button>
+                <div id="view-controls" class="hidden ml-auto">
+                    <button id="student-view" class="btn-secondary flex items-center">
+                        <i class="fa fa-user student mr-2"></i> 学生版
+                    </button>
+                    <button id="parent-view" class="btn-accent flex items-center ml-2">
+                        <i class="fa fa-users parent mr-2"></i> 家长版
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 题目区域 -->
+        <section id="questions-container" class="min-h-[300px] mb-8 opacity-0 transition-opacity duration-500">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-dark" id="paper-title">作业练习册</h2>
+                    <div class="flex gap-2 no-print">
+                        <button id="print-btn" class="btn-secondary flex items-center">
+                            <i class="fa fa-print mr-2"></i> 打印
+                        </button>
+                        <button id="pdf-btn" class="btn-accent flex items-center">
+                            <i class="fa fa-file-pdf-o mr-2"></i> 生成PDF
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="questions-list" class="space-y-6">
+                    <!-- 题目将通过JS动态生成 -->
+                </div>
+                
+                <!-- 答案区域 (默认隐藏) -->
+                <div id="answers-section" class="mt-10 pt-6 border-t-2 border-gray-200 hidden">
+                    <h3 class="text-lg font-semibold text-dark mb-4">参考答案</h3>
+                    <div id="answers-list" class="space-y-4">
+                        <!-- 答案将通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="mt-10 text-center text-sm text-gray-500">
+                    <p>班级：__________ 姓名：__________ 日期：__________ 得分：__________</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-6 mt-10">
+        <div class="container mx-auto px-4">
+            <div id="copyright" class="text-center">双恒网络首发 www.gree020.cn</div>
+        </div>
+    </footer>
+
+    <!-- 帮助模态框 -->
+    <div id="help-modal" class="fixed inset-0 bg-black bg-black bg-opacity-50 flex items-center items-center z-50 hidden no-print">
+        <div class="bg-white rounded-lg-lg shadow-xl max-w-md w-full p-6 transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-dark">使用帮助</h3>
+                <button id="close-help" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-gray-700">
+                <p>1. 选择科目、难度和题目数量，点击"生成题目"按钮</p>
+                <p>2. 生成题目后，可以切换"学生版"(无答案)和"家长版"(有答案)</p>
+                <p>3. 点击"打印"按钮可以直接打印练习册</p>
+                <p>4. 点击"生成PDF"按钮可以将练习册保存为PDF文件</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据库 - 简化版，实际应用可以扩展
+        const questionDatabase = {
+            math: {
+                easy: [
+                    { question: "计算：25 + 38 = ?", answer: "63" },
+                    { question: "计算：120 - 75 = ?", answer: "45" },
+                    { question: "计算：8 × 15 = ?", answer: "120" },
+                    { question: "计算：100 ÷ 4 = ?", answer: "25" },
+                    { question: "一个三角形的内角和是多少度？", answer: "180度" },
+                    { question: "正方形的边长为5cm，它的面积是多少？", answer: "25平方厘米" },
+                    { question: "将0.75转换为分数是多少？", answer: "3/4" },
+                    { question: "计算：3.2 + 1.85 = ?", answer: "5.05" },
+                    { question: "36的平方根是多少？", answer: "6" },
+                    { question: "一个长方形的长是8m，宽是5m，它的周长是多少？", answer: "26米" }
+                ],
+                medium: [
+                    { question: "解方程：3x + 7 = 22", answer: "x = 5" },
+                    { question: "计算：(15 + 35) × (40 - 25) = ?", answer: "750" },
+                    { question: "一个圆的半径是7cm，它的周长是多少？(π取3.14)", answer: "43.96厘米" },
+                    { question: "计算：2/3 + 3/4 = ?", answer: "17/12 或 1又5/12" },
+                    { question: "一个袋子里有5个红球和3个蓝球，随机摸出一个红球的概率是多少？", answer: "5/8" },
+                    { question: "一个梯形的上底是4cm，下底是6cm，高是3cm，它的面积是多少？", answer: "15平方厘米" },
+                    { question: "计算：5² + 12² 的平方根是多少？", answer: "13" },
+                    { question: "如果x:y = 3:4，且x + y = 28，那么x的值是多少？", answer: "12" },
+                    { question: "计算：0.6 × (2.5 ÷ 0.5) = ?", answer: "3" },
+                    { question: "一个数的30%是15，这个数是多少？", answer: "50" }
+                ],
+                hard: [
+                    { question: "解方程：2(x - 3) + 5 = 3(x + 1)", answer: "x = -2" },
+                    { question: "一个圆锥的底面半径是3cm，高是5cm，它的体积是多少？(π取3.14)", answer: "47.1立方厘米" },
+                    { question: "计算：(2x²y³)³ ÷ (4x³y⁴) = ?", answer: "2x³y⁵" },
+                    { question: "已知直角三角形的两条直角边分别为6和8，斜边的长度是多少？", answer: "10" },
+                    { question: "求解不等式：3(x - 1) < 2x + 5", answer: "x < 8" },
+                    { question: "计算：sin30° + cos60° = ?", answer: "1" },
+                    { question: "一个数列的前n项和公式为Sₙ = n(n + 1)/2，求前10项的和。", answer: "55" },
+                    { question: "计算：log₂8 + log₃9 = ?", answer: "5" },
+                    { question: "二次函数y = x² - 4x + 3的顶点坐标是什么？", answer: "(2, -1)" },
+                    { question: "一个正方体的体积是64立方厘米，它的表面积是多少？", answer: "96平方厘米" }
+                ]
+            },
+            physics: {
+                easy: [
+                    { question: "力的单位是什么？", answer: "牛顿（N）" },
+                    { question: "光在真空中的传播速度约为多少？", answer: "3×10⁸米/秒" },
+                    { question: "重力的方向是？", answer: "竖直向下" },
+                    { question: "声音的传播需要什么？", answer: "介质" },
+                    { question: "质量的国际单位是什么？", answer: "千克（kg）" },
+                    { question: "什么现象是由于光的反射形成的？", answer: "镜子成像（或类似答案）" },
+                    { question: "力的作用效果是什么？", answer: "改变物体的运动状态或形状" },
+                    { question: "摩擦力的方向与物体相对运动方向的关系是？", answer: "相反" },
+                    { question: "液体的沸点与气压的关系是？", answer: "气压越高，沸点越高" },
+                    { question: "简单机械包括哪些？", answer: "杠杆、滑轮、斜面等" }
+                ],
+                medium: [
+                    { question: "一个物体在10N的力作用下移动了5m，这个力做了多少功？", answer: "50焦耳" },
+                    { question: "一辆汽车以36km/h的速度行驶，它的速度合多少m/s？", answer: "10m/s" },
+                    { question: "一个质量为5kg的物体，它受到的重力是多少？(g取10N/kg)", answer: "50N" },
+                    { question: "某导体两端的电压为6V，通过的电流为0.3A，它的电阻是多少？", answer: "20Ω" },
+                    { question: "光从空气斜射入水中时，折射角与入射角的大小关系是？", answer: "折射角小于入射角" },
+                    { question: "一个物体做匀速直线运动，在5s内通过了20m的路程，它的速度是多少？", answer: "4m/s" },
+                    { question: "什么是杠杆的支点？", answer: "杠杆绕着转动的固定点" },
+                    { question: "质量为100g的水温度升高了20℃，吸收了多少热量？(水的比热容为4.2×10³J/(kg·℃))", answer: "8400J" },
+                    { question: "串联电路中，电流的特点是什么？", answer: "处处相等" },
+                    { question: "压强的计算公式是什么？", answer: "p = F/S" }
+                ],
+                hard: [
+                    { question: "一个物体从高处自由落下，3秒后落地，它下落的高度是多少？(g取10m/s²)", answer: "45米" },
+                    { question: "某机械的功率为500W，它在10分钟内做的功是多少？", answer: "3×10⁵焦耳" },
+                    { question: "一个电阻为10Ω的导体，接在电压为20V的电源上，1分钟内产生的热量是多少？", answer: "2400焦耳" },
+                    { question: "一辆质量为1000kg的汽车，在水平路面上以20m/s的速度行驶，它的动能是多少？", answer: "2×10⁵焦耳" },
+                    { question: "凸透镜的焦距为10cm，当物体放在距透镜15cm处时，成什么性质的像？", answer: "倒立、放大的实像" },
+                    { question: "一个边长为10cm的正方体铁块，浸没在水中，受到的浮力是多少？(ρ水=1×10³kg/m³，g取10N/kg)", answer: "10N" },
+                    { question: "某滑轮组的机械效率为80%，用它将重400N的物体提升2m，需要做多少总功？", answer: "1000焦耳" },
+                    { question: "两个电阻R₁=10Ω和R₂=20Ω并联在电路中，它们的总电阻是多少？", answer: "20/3Ω 或约6.67Ω" },
+                    { question: "一辆汽车在平直公路上以10m/s的速度匀速行驶，发动机的牵引力为500N，汽车的功率是多少？", answer: "5000W" },
+                    { question: "体积为1m³的冰熔化成水后，体积是多少？(ρ冰=0.9×10³kg/m³，ρ水=1×10³kg/m³)", answer: "0.9m³" }
+                ]
+            },
+            chemistry: {
+                easy: [
+                    { question: "水的化学式是什么？", answer: "H₂O" },
+                    { question: "空气中含量最多的气体是什么？", answer: "氮气（N₂）" },
+                    { question: "氧气的化学式是什么？", answer: "O₂" },
+                    { question: "金属铜的颜色是什么？", answer: "紫红色" },
+                    { question: "化学变化的本质特征是什么？", answer: "有新物质生成" },
+                    { question: "二氧化碳的化学式是什么？", answer: "CO₂" },
+                    { question: "最简单的有机物是什么？", answer: "甲烷（CH₄）" },
+                    { question: "盐酸的化学式是什么？", answer: "HCl" },
+                    { question: "元素周期表中，原子序数为1的元素是什么？", answer: "氢（H）" },
+                    { question: "溶液的pH值小于7时，溶液呈什么性质？", answer: "酸性" }
+                ],
+                medium: [
+                    { question: "写出铁在氧气中燃烧的化学方程式。", answer: "3Fe + 2O₂ 点燃 Fe₃O₄" },
+                    { question: "2H₂O₂ 在MnO₂催化下分解的产物是什么？", answer: "水（H₂O）和氧气（O₂）" },
+                    { question: "氯化钠的相对分子质量是多少？(Na:23, Cl:35.5)", answer: "58.5" },
+                    { question: "什么是中和反应？", answer: "酸和碱作用生成盐和水的反应" },
+                    { question: "碳酸钙（CaCO₃）与稀盐酸（HCl）反应会产生什么气体？", answer: "二氧化碳（CO₂）" },
+                    { question: "氢气在氯气中燃烧生成什么物质？", answer: "氯化氢（HCl）" },
+                    { question: "写出氢氧化钠（NaOH）与盐酸（HCl）反应的化学方程式。", answer: "NaOH + HCl = NaCl + H₂O" },
+                    { question: "在化学反应前后，什么的种类和数目不变？", answer: "原子" },
+                    { question: "甲烷（CH₄）燃烧的产物是什么？", answer: "二氧化碳（CO₂）和水（H₂O）" },
+                    { question: "硫酸铜溶液是什么颜色？", answer: "蓝色" }
+                ],
+                hard: [
+                    { question: "配平化学方程式：Fe₂O₃ + CO 高温 Fe + CO₂", answer: "Fe₂O₃ + 3CO 高温 2Fe + 3CO₂" },
+                    { question: "计算18g水中含有多少个水分子？(阿伏加德罗常数为6.02×10²³/mol，H:1, O:16)", answer: "6.02×10²³个" },
+                    { question: "20g溶质质量分数为10%的氯化钠溶液，需加入多少克水才能稀释成5%的溶液？", answer: "20克" },
+                    { question: "什么是置换反应？举例说明。", answer: "一种单质和一种化合物反应生成另一种单质和另一种化合物的反应，如：Zn + H₂SO₄ = ZnSO₄ + H₂↑" },
+                    { question: "现有20g纯度为90%的碳酸钙，与足量的稀盐酸反应，能生成多少克二氧化碳？(Ca:40, C:12, O:16, H:1, Cl:35.5)", answer: "7.92克" },
+                    { question: "写出实验室用高锰酸钾制取氧气的化学方程式。", answer: "2KMnO₄ △ K₂MnO₄ + MnO₂ + O₂↑" },
+                    { question: "什么是离子？举例说明。", answer: "带电的原子或原子团，如：Na⁺、Cl⁻、SO₄²⁻等" },
+                    { question: "将100g质量分数为20%的硝酸钾溶液蒸发掉50g水后，溶质的质量分数是多少？", answer: "40%" },
+                    { question: "什么是催化剂？它在化学反应中有什么作用？", answer: "能改变其他物质的化学反应速率，而本身的质量和化学性质在化学反应前后都没有发生变化的物质；作用是改变反应速率" },
+                    { question: "写出碳酸钠（Na₂CO₃）与氢氧化钙（Ca(OH)₂）反应的化学方程式。", answer: "Na₂CO₃ + Ca(OH)₂ = CaCO₃↓ + 2NaOH" }
+                ]
+            }
+        };
+
+        // DOM元素
+        const generateBtn = document.getElementById('generate-btn');
+        const subjectSelect = document.getElementById('subject');
+        const difficultySelect = document.getElementById('difficulty');
+        const questionCountSelect = document.getElementById('question-count');
+        const questionsList = document.getElementById('questions-list');
+        const answersList = document.getElementById('answers-list');
+        const answersSection = document.getElementById('answers-section');
+        const studentViewBtn = document.getElementById('student-view');
+        const parentViewBtn = document.getElementById('parent-view');
+        const viewControls = document.getElementById('view-controls');
+        const questionsContainer = document.getElementById('questions-container');
+        const printBtn = document.getElementById('print-btn');
+        const pdfBtn = document.getElementById('pdf-btn');
+        const paperTitle = document.getElementById('paper-title');
+        const helpBtn = document.getElementById('help-btn');
+        const helpModal = document.getElementById('help-modal');
+        const closeHelpBtn = document.getElementById('close-help');
+        const themeToggle = document.getElementById('theme-toggle');
+        const copyrightElement = document.getElementById('copyright');
+
+        // 当前生成的题目和答案
+        let currentQuestions = [];
+        let currentAnswers = [];
+
+        // 生成随机题目
+        generateBtn.addEventListener('click', () => {
+            const subject = subjectSelect.value;
+            const difficulty = difficultySelect.value;
+            const count = parseInt(questionCountSelect.value);
+            
+            // 根据选择获取对应题库
+            const questionPool = questionDatabase[subject][difficulty];
+            
+            // 随机选择题目
+            currentQuestions = [];
+            currentAnswers = [];
+            
+            // 复制题库并打乱顺序
+            const shuffledQuestions = [...questionPool].sort(() => Math.random() - 0.5);
+            
+            // 选择所需数量的题目
+            const selectedQuestions = shuffledQuestions.slice(0, count);
+            
+            // 填充当前题目和答案数组
+            selectedQuestions.forEach((item, index) => {
+                currentQuestions.push({
+                    id: index + 1,
+                    question: item.question
+                });
+                currentAnswers.push({
+                    id: index + 1,
+                    answer: item.answer
+                });
+            });
+            
+            // 显示题目
+            displayQuestions();
+            
+            // 显示控制面板
+            viewControls.classList.remove('hidden');
+            
+            // 显示题目区域
+            questionsContainer.classList.remove('opacity-0');
+            
+            // 更新标题
+            updatePaperTitle();
+            
+            // 默认显示学生版
+            showStudentView();
+        });
+
+        // 显示题目
+        function displayQuestions() {
+            questionsList.innerHTML = '';
+            
+            currentQuestions.forEach(question => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question-card';
+                questionElement.innerHTML = `
+                    <div class="flex items-start">
+                        <span class="font-bold text-primary mr-2">${question.id}.</span>
+                        <p class="text-gray-800">${question.question}</p>
+                    </div>
+                    <div class="mt-2 ml-6 border-b border-gray-100 pb-2">
+                        <div class="h-8 md:h-12 bg-gray-50 rounded"></div>
+                    </div>
+                `;
+                questionsList.appendChild(questionElement);
+            });
+            
+            // 显示答案
+            displayAnswers();
+        }
+
+        // 显示答案
+        function displayAnswers() {
+            answersList.innerHTML = '';
+            
+            currentAnswers.forEach(answer => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'p-2 border-l-4 border-primary bg-blue-50';
+                answerElement.innerHTML = `
+                    <div class="flex items-start">
+                        <span class="font-bold text-primary mr-2">${answer.id}.</span>
+                        <p class="text-gray-800">${answer.answer}</p>
+                    </div>
+                `;
+                answersList.appendChild(answerElement);
+            });
+        }
+
+        // 显示学生版（隐藏答案）
+        function showStudentView() {
+            answersSection.classList.add('hidden');
+            studentViewBtn.classList.add('bg-secondary/80');
+            parentViewBtn.classList.remove('bg-accent/80');
+        }
+
+        // 显示家长版（显示答案）
+        function showParentView() {
+            answersSection.classList.remove('hidden');
+            parentViewBtn.classList.add('bg-accent/80');
+            studentViewBtn.classList.remove('bg-secondary/80');
+        }
+
+        // 更新试卷标题
+        function updatePaperTitle() {
+            const subjectMap = {
+                'math': '数学',
+                'physics': '物理',
+                'chemistry': '化学'
+            };
+            
+            const difficultyMap = {
+                'easy': '简单',
+                'medium': '中等',
+                'hard': '困难'
+            };
+            
+            const subjectName = subjectMap[subjectSelect.value];
+            const difficultyName = difficultyMap[difficultySelect.value];
+            
+            paperTitle.textContent = `${subjectName}${difficultyName}难度练习册 (${questionCountSelect.value}题)`;
+        }
+
+        // 打印功能
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        // 生成PDF功能
+        pdfBtn.addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            // 显示加载状态
+            pdfBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 生成中...';
+            pdfBtn.disabled = true;
+            
+            try {
+                // 获取要转换为PDF的元素
+                const element = document.querySelector('#questions-container > div');
+                
+                // 使用html2canvas转换为图像
+                await html2canvas(element, { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    // 排除不需要的元素
+                    ignoreElements: (el) => {
+                        return el.classList.contains('no-print');
+                    }
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    const imgWidth = 210; // A4宽度(mm)
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    
+                    // 添加图像到PDF
+                    pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                    
+                    // 保存PDF
+                    const subjectMap = {
+                        'math': '数学',
+                        'physics': '物理',
+                        'chemistry': '化学'
+                    };
+                    const subjectName = subjectMap[subjectSelect.value];
+                    pdf.save(`${subjectName}练习册.pdf`);
+                });
+            } catch (error) {
+                console.error('生成PDF失败:', error);
+                alert('生成PDF失败，请重试');
+            } finally {
+                // 恢复按钮状态
+                pdfBtn.innerHTML = '<i class="fa fa-file-pdf-o mr-2"></i> 生成PDF';
+                pdfBtn.disabled = false;
+            }
+        });
+
+        // 视图切换事件
+        studentViewBtn.addEventListener('click', showStudentView);
+        parentViewBtn.addEventListener('click', showParentView);
+
+        // 帮助模态框控制
+        helpBtn.addEventListener('click', () => {
+            helpModal.classList.remove('hidden');
+            helpModal.classList.add('flex');
+        });
+
+        closeHelpBtn.addEventListener('click', () => {
+            helpModal.classList.add('hidden');
+            helpModal.classList.remove('flex');
+        });
+
+        // 点击模态框外部关闭
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) {
+                helpModal.classList.add('hidden');
+                helpModal.classList.remove('flex');
+            }
+        });
+
+        // 暗黑模式切换
+        let isDarkMode = false;
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('bg-gray-900', isDarkMode);
+            document.body.classList.toggle('bg-gray-50', !isDarkMode);
+            
+            const icon = themeToggle.querySelector('i');
+            if (isDarkMode) {
+                icon.classList.remove('fa-moon-o');
+                icon.classList.add('fa-sun-o');
+                icon.classList.add('text-yellow-400');
+            } else {
+                icon.classList.remove('fa-sun-o', 'text-yellow-400');
+                icon.classList.add('fa-moon-o');
+            }
+        });
+
+        // 版权信息保护 - 混淆处理（已修正文字顺序）
+        (function() {
+            // 混淆版权信息 - 修正后的顺序
+            const a = ['双', '恒', '网', '络', '首', '发', ' ', 'w', 'w', 'w', '.', 'g', 'r', 'e', 'e', '0', '2', '0', '.', 'c', 'n'];
+            let c = '';
+            b.forEach(i => c += a[i]);
+            
+            // 设置版权信息
+            copyrightElement.textContent = c;
+            
+            // 定期检查版权信息是否被篡改
+            setInterval(() => {
+                if (copyrightElement.textContent !== c) {
+                    copyrightElement.textContent = c;
+                    
+                    // 更隐蔽的恢复方式，避免直接替换引起注意
+                    setTimeout(() => {
+                        copyrightElement.textContent = c;
+                    }, 100);
+                }
+            }, 1000);
+            
+            // 防止删除元素
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList' && !document.getElementById('copyright')) {
+                        // 如果元素被删除，重新创建
+                        const newCopyright = document.createElement('div');
+                        newCopyright.id = 'copyright';
+                        newCopyright.className = 'text-center';
+                        newCopyright.textContent = c;
+                        document.querySelector('footer > div').appendChild(newCopyright);
+                    }
+                });
+            });
+            
+            observer.observe(document.querySelector('footer > div'), {
+                childList: true,
+                subtree: true
+            });
+        })();
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            // 预加载一些资源以提高后续加载速度
+            const preloadResources = () => {
+                const links = [
+                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'
+                ];
+                
+                links.forEach(link => {
+                    const preloadLink = document.createElement('link');
+                    preloadLink.rel = 'preload';
+                    preloadLink.as = 'script';
+                    preloadLink.href = link;
+                    document.head.appendChild(preloadLink);
+                });
+            };
+            
+            preloadResources();
+        });
+    </script>
+</body></html>

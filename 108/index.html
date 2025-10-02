@@ -34,6 +34,7 @@
         
         html, body {
             height: 100%;
+            scroll-behavior: smooth;
         }
         
         body {
@@ -147,22 +148,33 @@
             width: 100%;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
         
         .page-section {
-            display: none;
             width: 100%;
             min-height: calc(100vh - 160px);
             padding: 40px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         
         .page-section.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+            position: relative;
         }
         
-        /* 首页布局 - 优化排版和对齐 */
+        /* 首页布局 - 修复对齐问题 */
         .home-content {
             display: flex;
             flex-direction: column;
@@ -171,13 +183,15 @@
             margin: 0 auto;
             width: 100%;
             padding: 0 20px;
+            justify-content: center;
+            min-height: calc(100vh - 240px);
         }
         
         .top-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            align-items: stretch; /* 确保两列高度一致 */
+            align-items: stretch; /* 修改为拉伸对齐 */
             width: 100%;
         }
         
@@ -185,9 +199,17 @@
             display: flex;
             flex-direction: column;
             gap: 30px;
+            height: 100%;
         }
         
-        /* 音乐播放器样式 - 优化对齐 */
+        /* 确保左右模块高度一致 */
+        .home-left > *, .home-right > * {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 音乐播放器样式 - 使用1.html的版本 */
         .music-player {
             background: var(--bg-white);
             border-radius: var(--border-radius);
@@ -198,7 +220,7 @@
             flex-direction: column;
             gap: 20px;
             width: 100%;
-            height: 100%; /* 确保高度填满容器 */
+            height: 100%;
         }
         
         .music-player:hover {
@@ -345,7 +367,149 @@
             height: 10%;
         }
         
-        /* 搜索区域样式 - 优化排版 */
+        /* 输入区域样式 */
+        .input-container {
+            margin-top: 10px;
+            display: flex;
+        }
+        
+        .playlist-input, .song-id-input, .custom-url-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px 0 0 8px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .playlist-input:focus, .song-id-input:focus, .custom-url-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .playlist-load-btn, .song-id-load-btn, .custom-url-load-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .playlist-load-btn:hover, .song-id-load-btn:hover, .custom-url-load-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* 模式切换样式 */
+        .mode-switcher {
+            display: flex;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 10px 15px;
+            background: var(--bg-lighter);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .mode-btn:not(.active):hover {
+            background: #edf2f7;
+        }
+        
+        /* 输入区域容器 */
+        .input-areas {
+            margin-top: 15px;
+        }
+        
+        .input-area {
+            display: none;
+        }
+        
+        .input-area.active {
+            display: flex;
+        }
+        
+        /* 状态消息样式 */
+        .status-message-container {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .status-message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
+        
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* 按钮脉冲效果 */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+            }
+        }
+        
+        /* 搜索区域样式 */
         .search-area {
             display: flex;
             flex-direction: column;
@@ -443,7 +607,7 @@
             background: var(--primary-dark);
         }
         
-        /* 时间组件样式 - 优化对齐 */
+        /* 时间组件样式 */
         .time-widget {
             background: var(--bg-white);
             border-radius: var(--border-radius);
@@ -455,7 +619,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100%; /* 确保高度填满容器 */
+            height: 100%;
         }
         
         .time-widget:hover {
@@ -690,7 +854,7 @@
             right: 25px;
         }
         
-        /* 直播页面 - 移除直播模块上方的标题文字 */
+        /* 直播页面样式 */
         .bilibili-container {
             max-width: var(--max-width);
             margin: 0 auto;
@@ -698,30 +862,12 @@
             width: 100%;
         }
         
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding-top: 20px;
-        }
-        
-        .page-header h2 {
-            font-size: 2.8rem;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-        }
-        
-        .page-header p {
-            font-size: 1.2rem;
-            color: var(--text-medium);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
         .bilibili-player-container {
             display: flex;
             justify-content: center;
             margin-bottom: 50px;
             width: 100%;
+            position: relative;
         }
         
         .bilibili-player-wrapper {
@@ -741,6 +887,42 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+        
+        /* 直播播放器覆盖层 */
+        .live-player-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 10;
+            border-radius: 15px;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .live-player-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .live-player-overlay i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .live-player-overlay p {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 300px;
         }
         
         /* 页脚样式 */
@@ -768,148 +950,6 @@
         .delay-1 { animation-delay: 0.2s; opacity: 0; }
         .delay-2 { animation-delay: 0.4s; opacity: 0; }
         .delay-3 { animation-delay: 0.6s; opacity: 0; }
-        
-        /* 输入区域样式 */
-        .input-container {
-            margin-top: 10px;
-            display: flex;
-        }
-        
-        .playlist-input, .song-id-input, .custom-url-input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px 0 0 8px;
-            outline: none;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            text-align: center;
-        }
-        
-        .playlist-input:focus, .song-id-input:focus, .custom-url-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-        
-        .playlist-load-btn, .song-id-load-btn, .custom-url-load-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 0 8px 8px 0;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .playlist-load-btn:hover, .song-id-load-btn:hover, .custom-url-load-btn:hover {
-            background: var(--primary-dark);
-        }
-        
-        /* 模式切换样式 */
-        .mode-switcher {
-            display: flex;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-        
-        .mode-btn {
-            flex: 1;
-            padding: 10px 15px;
-            background: var(--bg-lighter);
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .mode-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .mode-btn:not(.active):hover {
-            background: #edf2f7;
-        }
-        
-        /* 输入区域容器 */
-        .input-areas {
-            margin-top: 15px;
-        }
-        
-        .input-area {
-            display: none;
-        }
-        
-        .input-area.active {
-            display: flex;
-        }
-        
-        /* 状态消息样式 */
-        .status-message-container {
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 15px;
-        }
-        
-        .status-message {
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            text-align: center;
-            width: 100%;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: var(--transition);
-        }
-        
-        .status-message.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .status-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        /* 按钮脉冲效果 */
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
-            }
-            70% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
-            }
-        }
         
         /* 卡片悬浮效果 */
         .card-hover {
@@ -968,6 +1008,21 @@
         
         .page-indicator:hover {
             background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 页面切换动画 */
+        .page-section {
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .page-section.leaving {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        .page-section.entering {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* 移动端适配样式 */
@@ -1194,15 +1249,6 @@
             .nav-links li {
                 flex: 1 1 100%;
             }
-            
-            /* 直播页面小屏幕适配 */
-            .page-header h2 {
-                font-size: 1.8rem;
-            }
-            
-            .page-header p {
-                font-size: 1rem;
-            }
         }
     </style>
 </head>
@@ -1231,7 +1277,7 @@
             <div class="container">
                 <div class="home-content">
                     <div class="top-content">
-                        <!-- 音乐播放器 -->
+                        <!-- 音乐播放器 - 使用1.html的版本 -->
                         <div class="home-left">
                             <div class="music-player fade-in delay-1 card-hover">
                                 <div class="player-controls">
@@ -1275,19 +1321,19 @@
                                 <div class="input-areas">
                                     <!-- 歌单ID输入 -->
                                     <div class="input-area active" id="playlistArea">
-                                        <input type="text" class="playlist-input" id="playlistInput" placeholder="输入网易云歌单ID (例如: 3778678)">
+                                        <input type="text" class="playlist-input" id="playlistInput" placeholder="输入网易云歌单ID">
                                         <button class="playlist-load-btn" id="playlistLoadBtn">加载</button>
                                     </div>
                                     
                                     <!-- 歌曲ID输入 -->
                                     <div class="input-area" id="songIdArea">
-                                        <input type="text" class="song-id-input" id="songIdInput" placeholder="输入网易云歌曲ID (例如: 1867217766)">
+                                        <input type="text" class="song-id-input" id="songIdInput" placeholder="输入网易云歌曲ID)">
                                         <button class="song-id-load-btn" id="songIdLoadBtn">加载</button>
                                     </div>
                                     
                                     <!-- 自定义链接输入 -->
                                     <div class="input-area" id="customUrlArea">
-                                        <input type="text" class="custom-url-input" id="customUrlInput" placeholder="输入音乐直链URL">
+                                        <input type="text" class="custom-url-input" id="customUrlInput" placeholder="输入音乐URL">
                                         <button class="custom-url-load-btn" id="customUrlLoadBtn">加载</button>
                                     </div>
                                 </div>
@@ -1467,16 +1513,21 @@
             </div>
         </section>
 
-        <!-- 直播页面 - 移除直播模块上方的标题文字 -->
+        <!-- 直播页面 -->
         <section id="live" class="page-section">
             <div class="container">
                 <div class="bilibili-container">
-                    <!-- 移除了直播页面的标题文字 -->
-                    
                     <div class="bilibili-player-container">
                         <div class="bilibili-player-wrapper card-hover">
-                            <!-- 恢复原有的直播播放器嵌入代码 -->
+                            <!-- 直播播放器覆盖层 -->
+                            <div class="live-player-overlay" id="livePlayerOverlay">
+                                <i class="fas fa-play-circle"></i>
+                                <p>点击播放直播内容</p>
+                            </div>
+                            
+                            <!-- 直播播放器 -->
                             <iframe class="adaptive-iframe" 
+                                    id="liveIframe"
                                     src="https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=30778828&quality=0" 
                                     frameborder="no" 
                                     framespacing="0" 
@@ -1529,8 +1580,15 @@
     <!-- 音频元素 -->
     <audio id="audioPlayer" preload="metadata"></audio>
 
+    <!-- 页面指示器 -->
+    <div class="page-indicators">
+        <div class="page-indicator active" data-page="home"></div>
+        <div class="page-indicator" data-page="links"></div>
+        <div class="page-indicator" data-page="live"></div>
+    </div>
+
     <script>
-        // 个人网站类
+        // 个人网站类 - 使用1.html的音乐模块功能
         class PersonalSite {
             constructor() {
                 this.currentPage = 'home';
@@ -1538,6 +1596,9 @@
                 this.playlist = [];
                 this.currentSongIndex = 0;
                 this.audioPlayer = document.getElementById('audioPlayer');
+                this.isScrolling = false;
+                this.isAnimating = false;
+                this.isPageScrolling = false;
                 
                 this.init();
             }
@@ -1550,6 +1611,8 @@
                 this.setupBanner();
                 this.loadDefaultPlaylist();
                 this.setupWheelNavigation();
+                this.setupPageIndicators();
+                this.setupLivePlayer();
             }
             
             setupNavigation() {
@@ -1571,40 +1634,104 @@
                 });
             }
             
-            // 添加鼠标滚轮切换页面功能
+            // 修复后的鼠标滚轮切换页面功能
             setupWheelNavigation() {
-                let isScrolling = false;
+                let wheelTimeout = null;
+                let lastScrollTime = 0;
+                
+                // 监听页面滚动事件
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.addEventListener('scroll', () => {
+                        // 标记页面正在滚动
+                        this.isPageScrolling = true;
+                        
+                        // 清除之前的定时器
+                        if (wheelTimeout) {
+                            clearTimeout(wheelTimeout);
+                        }
+                        
+                        // 设置新的定时器，标记滚动结束
+                        wheelTimeout = setTimeout(() => {
+                            this.isPageScrolling = false;
+                        }, 100);
+                    });
+                });
                 
                 document.addEventListener('wheel', (e) => {
-                    if (isScrolling) return;
+                    // 如果页面正在滚动中，不处理滚轮事件
+                    if (this.isPageScrolling || this.isAnimating) return;
                     
-                    isScrolling = true;
+                    // 使用时间戳而不是防抖，确保每次滚动都能被处理
+                    const currentTime = Date.now();
+                    if (currentTime - lastScrollTime < 300) return; // 300ms内只处理一次
+                    
+                    lastScrollTime = currentTime;
+                    
+                    // 更精确的滚动方向判断
+                    const delta = e.deltaY;
+                    const absDelta = Math.abs(delta);
+                    
+                    // 忽略微小的滚动
+                    if (absDelta < 5) return;
+                    
+                    // 检查当前页面是否已滚动到底部或顶部
+                    const currentPage = document.querySelector('.page-section.active');
+                    const isAtTop = currentPage.scrollTop === 0;
+                    const isAtBottom = currentPage.scrollTop + currentPage.clientHeight >= currentPage.scrollHeight - 10;
                     
                     const pages = ['home', 'links', 'live'];
                     const currentIndex = pages.indexOf(this.currentPage);
                     
-                    if (e.deltaY > 0 && currentIndex < pages.length - 1) {
+                    // 只有在页面顶部向上滚动或底部向下滚动时才切换页面
+                    if (delta > 0 && currentIndex < pages.length - 1 && isAtBottom) {
                         // 向下滚动，切换到下一页
                         this.switchPage(pages[currentIndex + 1]);
-                    } else if (e.deltaY < 0 && currentIndex > 0) {
+                    } else if (delta < 0 && currentIndex > 0 && isAtTop) {
                         // 向上滚动，切换到上一页
                         this.switchPage(pages[currentIndex - 1]);
                     }
                     
-                    setTimeout(() => {
-                        isScrolling = false;
-                    }, 800); // 防止快速滚动导致多次切换
+                    // 清除之前的定时器
+                    if (wheelTimeout) {
+                        clearTimeout(wheelTimeout);
+                    }
+                    
+                    // 设置新的定时器，但不会阻止下一次滚动
+                    wheelTimeout = setTimeout(() => {
+                        wheelTimeout = null;
+                    }, 300);
+                }, { passive: true });
+            }
+            
+            // 设置页面指示器
+            setupPageIndicators() {
+                const pageIndicators = document.querySelectorAll('.page-indicator');
+                
+                pageIndicators.forEach(indicator => {
+                    indicator.addEventListener('click', () => {
+                        const targetPage = indicator.getAttribute('data-page');
+                        this.switchPage(targetPage);
+                    });
                 });
             }
             
             switchPage(pageName) {
-                // 隐藏所有页面
-                document.querySelectorAll('.page-section').forEach(section => {
-                    section.classList.remove('active');
-                });
+                if (this.isAnimating || this.currentPage === pageName) return;
                 
-                // 显示目标页面
-                document.getElementById(pageName).classList.add('active');
+                this.isAnimating = true;
+                
+                const currentPage = document.querySelector('.page-section.active');
+                const nextPage = document.getElementById(pageName);
+                
+                // 添加离开动画
+                if (currentPage) {
+                    currentPage.classList.add('leaving');
+                    currentPage.classList.remove('active');
+                }
+                
+                // 添加进入动画
+                nextPage.classList.add('entering');
+                nextPage.classList.add('active');
                 
                 // 更新导航状态
                 document.querySelectorAll('.nav-link').forEach(link => {
@@ -1614,9 +1741,27 @@
                     }
                 });
                 
+                // 更新页面指示器状态
+                document.querySelectorAll('.page-indicator').forEach(indicator => {
+                    indicator.classList.remove('active');
+                    if (indicator.getAttribute('data-page') === pageName) {
+                        indicator.classList.add('active');
+                    }
+                });
+                
                 this.currentPage = pageName;
+                
+                // 动画结束后重置状态
+                setTimeout(() => {
+                    if (currentPage) {
+                        currentPage.classList.remove('leaving');
+                    }
+                    nextPage.classList.remove('entering');
+                    this.isAnimating = false;
+                }, 600);
             }
             
+            // 使用1.html的音乐播放器设置
             setupMusicPlayer() {
                 const playBtn = document.getElementById('playBtn');
                 const prevBtn = document.getElementById('prevBtn');
@@ -2064,6 +2209,43 @@
                             window.open(href, '_blank');
                         }
                     });
+                });
+            }
+            
+            // 设置直播播放器
+            setupLivePlayer() {
+                const liveIframe = document.getElementById('liveIframe');
+                const livePlayerOverlay = document.getElementById('livePlayerOverlay');
+                
+                // 尝试自动播放
+                setTimeout(() => {
+                    // 检查iframe是否已加载
+                    if (liveIframe.contentWindow) {
+                        // 尝试播放
+                        try {
+                            liveIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                            // 如果自动播放成功，隐藏覆盖层
+                            setTimeout(() => {
+                                livePlayerOverlay.classList.add('hidden');
+                            }, 1000);
+                        } catch (e) {
+                            console.log("自动播放失败，等待用户交互");
+                        }
+                    }
+                }, 2000);
+                
+                // 点击覆盖层播放
+                livePlayerOverlay.addEventListener('click', () => {
+                    livePlayerOverlay.classList.add('hidden');
+                    
+                    // 尝试播放
+                    try {
+                        if (liveIframe.contentWindow) {
+                            liveIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                        }
+                    } catch (e) {
+                        console.log("播放失败:", e);
+                    }
                 });
             }
             

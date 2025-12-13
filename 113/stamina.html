@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禾 - 体力计算器</title>
+    <meta name="description" content="燕云十六声，禾，休闲百业，养老百业，欢迎大家！">
+    <meta name="keywords" content="燕云十六声，燕云，游戏，手游，端游，页游，禾，兮禾，汐禾，百业，攻略">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8e2de2;
+            --secondary-color: #4a00e0;
+            --accent-color: #e94057;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --gradient-bg: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+        }
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all .3s ease;
+            box-shadow: 0 4px 15px rgba(142, 45, 226, .4);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 45, 226, .6);
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: rgba(26, 26, 46, .9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, .1);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-links a {
+            color: white;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-bg);
+            transition: width .3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 页眉 - 完全与realms.html一致 */
+        .header-banner {
+            height: 400px;
+            background: var(--gradient-bg);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+			margin-top: 80px;
+        }
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: .2;
+            z-index: 0;
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 800px;
+        }
+        .header-content h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        .header-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* 体力计算器样式 */
+        .calculator-section {
+            padding: 40px 0 80px;
+            background-color: white;
+            min-height: calc(100vh - 480px);
+        }
+        
+        .calculator-container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: rgba(30, 40, 70, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding: 25px;
+        }
+        
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .calculator-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #f8c555;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            color: #aaa;
+            font-size: 16px;
+        }
+        
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+            align-items: stretch;
+            min-height: 500px;
+        }
+        
+        .input-section, .result-section {
+            background: rgba(20, 30, 60, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-section {
+            justify-content: space-between;
+        }
+        
+        .input-group {
+            margin-bottom: 18px;
+        }
+        
+        .mode-group {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #ddd;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: rgba(10, 15, 30, 0.7);
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .rate-inputs {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .time-input {
+            width: 30%;
+        }
+        
+        .unit-select {
+            width: 30%;
+        }
+        
+        .points-input {
+            width: 25%;
+        }
+        
+        .rate-text {
+            color: #ddd;
+            font-size: 14px;
+            white-space: nowrap;
+            width: auto;
+        }
+        
+        .fixed-time-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .fixed-time-inputs .input-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .calc-btn {
+            background: var(--gradient-bg);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
+        }
+        
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(142, 45, 226, 0.4);
+        }
+        
+        .result-item {
+            margin-bottom: 18px;
+            padding: 15px;
+            background: rgba(10, 15, 30, 0.7);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .result-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        
+        .result-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #f8c555;
+        }
+        
+        .countdown {
+            text-align: center;
+            padding: 15px;
+            background: rgba(10, 15, 30, 0.9);
+            border-radius: 10px;
+            margin-top: auto;
+            border: 1px solid rgba(248, 197, 85, 0.3);
+        }
+        
+        .countdown-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #f8c555;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(248, 197, 85, 0.5);
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--gradient-bg);
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(20, 30, 60, 0.7);
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            
+            .rate-inputs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .rate-inputs .time-input,
+            .rate-inputs .unit-select,
+            .rate-inputs .points-input {
+                width: 100%;
+            }
+            
+            .rate-text {
+                text-align: center;
+                margin: 5px 0;
+            }
+            
+            .fixed-time-inputs {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mode-group {
+                height: auto;
+                margin-bottom: 18px;
+            }
+            
+            .header-banner {
+                height: 300px;
+            }
+            .header-content h2 {
+                font-size: 32px;
+            }
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--gradient-bg);
+        }
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        .footer-column ul li a {
+            color: #aaa;
+            transition: color .3s ease;
+        }
+        .footer-column ul li a:hover {
+            color: var(--gradient-bg);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* 微信二维码容器 */
+        .wechat-qrcode {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            width: 260px;
+            justify-content: space-between;
+        }
+        .wechat-qrcode-item {
+            text-align: center;
+            width: 120px;
+        }
+        .wechat-qrcode-item img {
+            width: 120px;
+            height: 120px;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+        }
+        .wechat-qrcode-item p {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        /* 媒体平台图标 */
+        .social-platforms {
+            display: flex;
+            justify-content: space-between;
+            width: 260px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .social-platforms a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,.1);
+            border-radius: 50%;
+            transition: all .3s ease;
+            flex: 0 0 auto;
+        }
+
+        .social-platforms a:hover {
+            background: var(--gradient-bg);
+            transform: translateY(-3px);
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 1s ease forwards; opacity: 0; }
+        .delay-1 { animation-delay: .2s; }
+        .delay-2 { animation-delay: .4s; }
+        .delay-3 { animation-delay: .6s; }
+
+        /* 响应 */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptMy41LTljLjgzIDAgMS41LS42NyAxLjUtMS41UzE2LjMzIDggMTUuNSA4IDE0IDguNjcgMTQgOC41IDE0LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41eiIvPjwvc3ZnPg==" alt="Logo">
+                    <h1>禾</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">首页</a></li>
+                    <li><a href="events.html">百业活动</a></li>
+					<li><a href="guide.html">百业引导</a></li>
+                    <li><a href="gallery.html">百业风采</a></li>
+                    <li><a href="strategy.html">萌新指南</a></li>
+                    <li><a href="realms.html">攻略心得</a></li>
+					<li><a href="stamina.html">心力计算器</a></li>
+                    <li><a href="gallery.html#come">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 页眉 - 完全与realms.html一致 -->
+    <section class="header-banner">
+        <div class="container">
+            <div class="header-content">
+                <h2 class="fade-in">禾 - 体力（心力）恢复计算器</h2>
+                <p class="fade-in delay-1">精确计算体力（心力）恢复时间，合理安排游戏日程</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 体力计算器 -->
+    <section class="calculator-section">
+        <div class="container">
+            <div class="calculator-container">
+                <div class="calculator">
+                    <div class="input-section">
+                        <div class="input-content">
+                            <div class="input-group">
+                                <label for="maxStamina">体力（心力）上限</label>
+                                <input type="number" id="maxStamina" min="1" max="1000" value="600">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="currentStamina">当前体力（心力）</label>
+                                <input type="number" id="currentStamina" min="0" max="1000" value="50">
+                            </div>
+                            
+                            <div class="mode-group">
+                                <label>恢复模式</label>
+                                <select id="recoveryMode">
+                                    <option value="rate">速率恢复</option>
+                                    <option value="fixed">固定恢复</option>
+                                </select>
+                            </div>
+                            
+                            <div id="rateSettings">
+                                <div class="input-group">
+                                    <label for="recoveryRate">恢复速度</label>
+                                    <div class="rate-inputs">
+                                        <input type="number" id="recoveryTime" min="0.1" max="1000" value="8" step="0.1" class="time-input">
+                                        <select id="rateUnit" class="unit-select">
+                                            <option value="seconds">秒</option>
+                                            <option value="minutes" selected>分钟</option>
+                                            <option value="hours">小时</option>
+                                        </select>
+                                        <span class="rate-text">恢复</span>
+                                        <input type="number" id="recoveryPoints" min="1" max="1000" value="1" step="1" class="points-input">
+                                        <span class="rate-text">点</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="fixedSettings" style="display: none;">
+                                <div class="input-group">
+                                    <div class="fixed-time-inputs">
+                                        <div class="input-group">
+                                            <label for="fixedTime">恢复时间</label>
+                                            <input type="time" id="fixedTime" value="00:00">
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label for="fixedAmount">恢复数量</label>
+                                            <input type="number" id="fixedAmount" min="1" max="1000" value="240">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="calc-btn" id="calculateBtn">计算恢复时间</button>
+                    </div>
+                    
+                    <div class="result-section">
+                        <div class="result-item">
+                            <div class="result-label">恢复满额所需时间</div>
+                            <div class="result-value" id="timeToFull">--</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">预计恢复满额时间</div>
+                            <div class="result-value" id="fullAtTime">--</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">当前恢复进度</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="progressBar"></div>
+                            </div>
+                            <div class="result-value" id="progressPercent">0%</div>
+                        </div>
+                        
+                        <div class="countdown">
+                            <div class="result-label">体力（心力）完全恢复倒计时</div>
+                            <div class="result-value" id="countdownText">--</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h3>使用说明：</h3>
+                    <p>1. 输入你的体力（心力）上限和当前体力（心力）</p>
+                    <p>2. 选择恢复模式：按速率恢复或固定恢复</p>
+                    <p>3. 按速率恢复：设置恢复速度（例如：8分钟恢复1点）</p>
+                    <p>4. 固定时间恢复：设置每天恢复的时间和数量</p>
+                    <p>5. 点击"计算恢复时间"按钮获取结果</p>
+                    <p>6. 倒计时会实时更新，帮助你了解还需要多久体力（心力）才能完全恢复</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>禾</h3>
+                    <ul>
+                    <li><a href="index.html#home">首页</a></li>
+                    <li><a href="events.html">百业活动</a></li>
+					<li><a href="guide.html">百业引导</a></li>
+                    <li><a href="gallery.html">百业风采</a></li>
+                    <li><a href="strategy.html">萌新指南</a></li>
+                    <li><a href="realms.html">攻略心得</a></li>
+					<li><a href="stamina.html">心力计算器</a></li>
+                    <li><a href="gallery.html#come">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>皇宸</h3>
+                    <ul>
+                        <li><a href="https://hc.ihcking.com">皇宸总部</a></li>
+                        <li><a href="极光科技">皇宸部落</a></li>
+                        <li><a href="https://qlgh.ihcking.com">乾龙公会</a></li>
+                        <li><a href="https://qcjz.ihcking.com">卿城家族</a></li>
+                        <li><a href="https://fgsm.ihcking.com">枫谷师门</a></li>
+                        <li><a href="https://xf.ihcking.com">潇府</a></li>
+                        <li><a href="https://yg.ihcking.com">逸阁</a></li>
+                        <li><a href="https://qg.ihcking.com">卿阁</a></li>
+                        <li><a href="https://fg.ihcking.com">枫阁</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>燕云十六声</h3>
+                    <ul>
+                        <li><a href="https://www.yysls.cn/index.html" target="_blank">游戏官网</a></li>
+                        <li><a href="https://www.yysls.cn/news/index.html" target="_blank">新闻资讯</a></li>
+                        <li><a href="https://16.163.com/map/" target="_blank">燕云地图</a></li>
+                        <li><a href="https://www.yysls.cn/faq/" target="_blank">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-qq"></i> 3010662388</a></li>
+                        <li><a href="#"><i class="fab fa-weixin"></i> 3010662388</a></li>
+                        <li><a href="#">📧 hc@ihcking.com</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>关注我们</h3>
+                    <div class="wechat-qrcode">
+                        <div class="wechat-qrcode-item">
+                            <img src=".././assets/img/hcwxdyh.jpg" alt="皇宸订阅号">
+                            <p>皇宸订阅号</p>
+                        </div>
+                        <div class="wechat-qrcode-item">
+                            <img src=".././assets/img/hcwxfwh.jpg" alt="皇宸服务号">
+                            <p>皇宸服务号</p>
+                        </div>
+                    </div>
+                    <div class="social-platforms">
+                        <a href="#" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a>
+                        <a href="#" title="微博"><i class="fab fa-weibo"></i></a>
+                        <a href="#" title="抖音"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" title="QQ群"><i class="fab fa-qq"></i></a>
+                        <a href="#" title="微信群"><i class="fas fa-comments"></i></a>
+                        <a href="https://kook.vip/h2QyLc" title="KOOK社区"><i class="fas fa-users"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 禾. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 导航栏和通用功能
+        document.addEventListener('DOMContentLoaded', () => {
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(a => {
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    const target = document.querySelector(a.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 导航栏滚动变色
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, .95)';
+                    header.style.boxShadow = '0 2px 20px rgba(0,0,0,.2)';
+                } else {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, .9)';
+                    header.style.boxShadow = '0 2px 20px rgba(0,0,0,.1)';
+                }
+            });
+
+            // 体力计算器功能
+            const maxStaminaInput = document.getElementById('maxStamina');
+            const currentStaminaInput = document.getElementById('currentStamina');
+            const recoveryModeSelect = document.getElementById('recoveryMode');
+            const rateSettingsDiv = document.getElementById('rateSettings');
+            const fixedSettingsDiv = document.getElementById('fixedSettings');
+            const recoveryTimeInput = document.getElementById('recoveryTime');
+            const rateUnitSelect = document.getElementById('rateUnit');
+            const recoveryPointsInput = document.getElementById('recoveryPoints');
+            const fixedTimeInput = document.getElementById('fixedTime');
+            const fixedAmountInput = document.getElementById('fixedAmount');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const timeToFullElement = document.getElementById('timeToFull');
+            const fullAtTimeElement = document.getElementById('fullAtTime');
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            const countdownText = document.getElementById('countdownText');
+            
+            let countdownInterval = null;
+            
+            // 切换恢复模式
+            recoveryModeSelect.addEventListener('change', function() {
+                if (this.value === 'rate') {
+                    rateSettingsDiv.style.display = 'block';
+                    fixedSettingsDiv.style.display = 'none';
+                } else {
+                    rateSettingsDiv.style.display = 'none';
+                    fixedSettingsDiv.style.display = 'block';
+                }
+            });
+            
+            function calculateRecoveryTime() {
+                const maxStamina = parseInt(maxStaminaInput.value);
+                const currentStamina = parseInt(currentStaminaInput.value);
+                const recoveryMode = recoveryModeSelect.value;
+                
+                if (currentStamina >= maxStamina) {
+                    timeToFullElement.textContent = "体力（心力）已满";
+                    fullAtTimeElement.textContent = "无需等待";
+                    countdownText.textContent = "0天 0小时 0分钟 0秒";
+                    progressBar.style.width = "100%";
+                    progressPercent.textContent = "100%";
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                let totalSeconds = 0;
+                
+                if (recoveryMode === 'rate') {
+                    // 速率恢复模式
+                    const recoveryTime = parseFloat(recoveryTimeInput.value);
+                    const rateUnit = rateUnitSelect.value;
+                    const recoveryPoints = parseInt(recoveryPointsInput.value);
+                    
+                    // 转换为秒/点
+                    let secondsPerPoint;
+                    if (rateUnit === 'seconds') {
+                        secondsPerPoint = recoveryTime / recoveryPoints;
+                    } else if (rateUnit === 'minutes') {
+                        secondsPerPoint = (recoveryTime * 60) / recoveryPoints;
+                    } else { // hours
+                        secondsPerPoint = (recoveryTime * 3600) / recoveryPoints;
+                    }
+                    
+                    // 计算需要恢复的点数
+                    const pointsToRecover = maxStamina - currentStamina;
+                    
+                    // 计算总恢复时间（秒）
+                    totalSeconds = pointsToRecover * secondsPerPoint;
+                    
+                } else {
+                    // 固定时间恢复模式
+                    const fixedTime = fixedTimeInput.value;
+                    const fixedAmount = parseInt(fixedAmountInput.value);
+                    
+                    // 解析固定时间
+                    const [hours, minutes] = fixedTime.split(':').map(Number);
+                    
+                    // 计算今天恢复时间点
+                    const now = new Date();
+                    const todayRecovery = new Date();
+                    todayRecovery.setHours(hours, minutes, 0, 0);
+                    
+                    // 如果今天恢复时间已过，使用明天的恢复时间
+                    let nextRecovery = todayRecovery;
+                    if (now >= todayRecovery) {
+                        nextRecovery = new Date(todayRecovery.getTime() + 24 * 60 * 60 * 1000);
+                    }
+                    
+                    // 计算需要恢复的点数
+                    const pointsToRecover = maxStamina - currentStamina;
+                    
+                    // 计算需要多少次恢复
+                    const recoveriesNeeded = Math.ceil(pointsToRecover / fixedAmount);
+                    
+                    // 计算完全恢复的时间点
+                    const fullRecoveryTime = new Date(nextRecovery.getTime() + (recoveriesNeeded - 1) * 24 * 60 * 60 * 1000);
+                    
+                    // 计算总恢复时间（秒）
+                    totalSeconds = Math.floor((fullRecoveryTime - now) / 1000);
+                }
+                
+                // 计算恢复完成的具体时间
+                const now = new Date();
+                const recoveryComplete = new Date(now.getTime() + totalSeconds * 1000);
+                fullAtTimeElement.textContent = recoveryComplete.toLocaleString();
+                
+                // 格式化恢复满额所需时间 (格式：1天 01:20:00)
+                const days = Math.floor(totalSeconds / (24 * 60 * 60));
+                const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+                const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+                const seconds = Math.floor(totalSeconds % 60);
+                
+                let timeString = "";
+                if (days > 0) {
+                    timeString += `${days}天 `;
+                }
+                timeString += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                timeToFullElement.textContent = timeString;
+                
+                // 更新进度条
+                const progress = (currentStamina / maxStamina) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressPercent.textContent = `${Math.round(progress)}%`;
+                
+                // 开始倒计时
+                startCountdown(totalSeconds);
+            }
+            
+            function startCountdown(totalSeconds) {
+                clearInterval(countdownInterval);
+                
+                function updateCountdown() {
+                    if (totalSeconds <= 0) {
+                        countdownText.textContent = "0天 0小时 0分钟 0秒";
+                        progressBar.style.width = "100%";
+                        progressPercent.textContent = "100%";
+                        clearInterval(countdownInterval);
+                        return;
+                    }
+                    
+                    const days = Math.floor(totalSeconds / (24 * 60 * 60));
+                    const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+                    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+                    const seconds = Math.floor(totalSeconds % 60);
+                    
+                    // 格式化倒计时文本 (格式：3天 1小时 20分钟 0秒)
+                    let countdownString = "";
+                    if (days > 0) {
+                        countdownString += `${days}天 `;
+                    }
+                    countdownString += `${hours}小时 ${minutes}分钟 ${seconds}秒`;
+                    
+                    countdownText.textContent = countdownString;
+                    
+                    totalSeconds--;
+                    
+                    // 更新进度
+                    const maxStamina = parseInt(maxStaminaInput.value);
+                    const currentStamina = parseInt(currentStaminaInput.value);
+                    
+                    // 计算已恢复的心力
+                    const elapsedSeconds = (parseInt(maxStaminaInput.value) - currentStamina) * getSecondsPerPoint() - totalSeconds;
+                    const currentProgress = currentStamina + (elapsedSeconds / getSecondsPerPoint());
+                    const progressPercentValue = (currentProgress / maxStamina) * 100;
+                    
+                    progressBar.style.width = `${Math.min(progressPercentValue, 100)}%`;
+                    progressPercent.textContent = `${Math.min(Math.round(progressPercentValue), 100)}%`;
+                }
+                
+                function getSecondsPerPoint() {
+                    if (recoveryModeSelect.value === 'fixed') {
+                        // 对于固定时间恢复，我们无法精确计算每秒恢复多少，使用近似值
+                        return 24 * 60 * 60 / parseInt(fixedAmountInput.value);
+                    }
+                    
+                    const recoveryTime = parseFloat(recoveryTimeInput.value);
+                    const rateUnit = rateUnitSelect.value;
+                    const recoveryPoints = parseInt(recoveryPointsInput.value);
+                    
+                    if (rateUnit === 'seconds') {
+                        return recoveryTime / recoveryPoints;
+                    } else if (rateUnit === 'minutes') {
+                        return (recoveryTime * 60) / recoveryPoints;
+                    } else { // hours
+                        return (recoveryTime * 3600) / recoveryPoints;
+                    }
+                }
+                
+                updateCountdown();
+                countdownInterval = setInterval(updateCountdown, 1000);
+            }
+            
+            calculateBtn.addEventListener('click', calculateRecoveryTime);
+            
+            // 初始计算
+            calculateRecoveryTime();
+        });
+    </script>
+</body>
+</html>

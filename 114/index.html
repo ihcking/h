@@ -1,0 +1,2793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禾 - 江湖如梦，侠影留心！</title>
+    <meta name="description" content="燕云十六声，禾，休闲百业，养老百业，欢迎大家！">
+    <meta name="keywords" content="燕云十六声，燕云，游戏，手游，端游，页游，禾，兮禾，汐禾，百业，攻略">
+    
+    <!-- 添加网站图标 (favicon) -->
+    <link rel="icon" type="image/x-icon" href="https://www.yysls.cn/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.yysls.cn/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://www.yysls.cn/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.yysls.cn/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 全局样式 - 与build.html统一 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', '微软雅黑', 'Segoe UI', Arial, sans-serif;
+        }
+
+        :root {
+            --primary-color: #8e2de2;
+            --secondary-color: #4a00e0;
+            --accent-color: #e94057;
+            --fun-color: #ff9a3c;
+            --success-color: #00c853;
+            --info-color: #2979ff;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+            --text-light: #666;
+            --text-lighter: #888;
+            --border-color: #eaeaea;
+            --border-light: #f0f0f0;
+            --gradient-bg: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            --gradient-fun: linear-gradient(135deg, var(--fun-color), #ffcc00);
+            --gradient-success: linear-gradient(135deg, var(--success-color), #64dd17);
+            --section-bg: #ffffff;
+            --section-alt: #f8f9fa;
+            --section-light: #fcfcfe;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --shadow-deep: 0 12px 36px rgba(0, 0, 0, 0.12);
+            --nav-height: 70px;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+            padding-top: var(--nav-height);
+            font-size: 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(142, 45, 226, 0.3);
+            font-size: 15px;
+            letter-spacing: 0.3px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.4);
+        }
+
+        /* ************ 导航栏样式 - 与build.html完全一致 ************ */
+        header {
+            background-color: rgba(26, 26, 46, 0.98);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 1001;
+        }
+
+        .logo img {
+            height: 42px;
+            width: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .logo-subtitle {
+            color: #b0b0d0;
+            font-size: 12px;
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+            opacity: 0.9;
+        }
+
+        /* 桌面端导航链接 */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            gap: 6px;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #e0e0ff;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .nav-links a i {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .nav-active {
+            color: white !important;
+            background: linear-gradient(135deg, rgba(142, 45, 226, 0.2), rgba(233, 64, 87, 0.2)) !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 8px rgba(142, 45, 226, 0.2);
+        }
+
+        .nav-active::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 12px;
+            right: 12px;
+            height: 3px;
+            background: var(--gradient-bg);
+            border-radius: 2px;
+        }
+
+        /* 汉堡菜单按钮 */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            z-index: 1001;
+            padding: 5px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* 移动端导航菜单 */
+        @media (max-width: 992px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: var(--nav-height);
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                background-color: rgba(26, 26, 46, 0.98);
+                backdrop-filter: blur(15px);
+                padding: 20px 24px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 999;
+                gap: 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.15);
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-links li {
+                margin: 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-links a {
+                padding: 18px 20px;
+                font-size: 15px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 4px 0;
+            }
+            
+            .nav-links a:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+                padding-left: 24px;
+            }
+            
+            .nav-links a i {
+                font-size: 14px;
+            }
+            
+            .nav-active::before {
+                left: 0;
+                right: auto;
+                width: 4px;
+                height: 100%;
+                bottom: 0;
+                background: var(--gradient-bg);
+            }
+        }
+
+        /* 小屏幕调整 */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 64px;
+            }
+            
+            .logo h1 {
+                font-size: 20px;
+            }
+            
+            .logo img {
+                height: 36px;
+                width: 36px;
+            }
+            
+            .logo-subtitle {
+                font-size: 11px;
+            }
+        }
+
+        /* ************ 英雄区域 - 重新设计以匹配build风格 ************ */
+        .hero {
+            height: 100vh;
+            background: var(--gradient-bg);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 60px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/21_2468f2e.jpg?image_process=format,jpg') center/cover;
+            opacity: 0.9;
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(142, 45, 226, 0.0), rgba(233, 64, 87, 0.0));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            max-width: 800px;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .hero h2 {
+            font-size: 52px;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* ************ 通用内容区域样式 - 与build.html统一 ************ */
+        .content-section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-bg);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ************ 游戏介绍区域 - 重新设计 ************ */
+        #about {
+            background-color: var(--section-light);
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        .about-content:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            min-height: 320px;
+            transition: all 0.4s ease;
+        }
+
+        .about-image:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.08);
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .about-text h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-bg);
+            border-radius: 2px;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .about-text p strong {
+            color: var(--secondary-color);
+        }
+
+        /* ************ 最新动态区域 - 重新设计为卡片式 ************ */
+        #news {
+            background-color: white;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border-color);
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .news-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .news-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%);
+            z-index: 1;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .news-card:hover .news-image img {
+            transform: scale(1.1);
+        }
+
+        .news-info {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            line-height: 1.4;
+        }
+
+        .news-info .news-date {
+            color: var(--accent-color);
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .news-info p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .news-readmore {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: auto;
+        }
+
+        .news-readmore:hover {
+            color: var(--accent-color);
+            gap: 10px;
+        }
+
+        /* ************ 游戏风采区域 - 重新设计 ************ */
+        #gallery {
+            background-color: var(--section-light);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s ease;
+            height: 240px;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .gallery-item .overlay p {
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            background: rgba(142, 45, 226, 0.8);
+            border-radius: 8px;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+            width: 100%;
+        }
+
+        .gallery-item:hover .overlay p {
+            transform: translateY(0);
+        }
+
+        /* ************ 攻略区 - 重新设计为现代化选项卡 ************ */
+        #guides {
+            background-color: white;
+        }
+
+        .guides-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .guides-tab {
+            padding: 12px 24px;
+            margin: 0 8px 0 0;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+            border-radius: 8px 8px 0 0;
+            font-size: 16px;
+        }
+
+        .guides-tab:last-child {
+            margin-right: 0;
+        }
+
+        .guides-tab.active, .guides-tab:hover {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background: rgba(142, 45, 226, 0.05);
+        }
+
+        .guides-content {
+            display: none;
+        }
+
+        .guides-content.active {
+            display: block;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border-color);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .guide-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .guide-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%);
+            z-index: 1;
+        }
+
+        .guide-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .guide-card:hover .guide-image img {
+            transform: scale(1.1);
+        }
+
+        .guide-info {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .guide-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            line-height: 1.4;
+        }
+
+        .guide-info .guide-category {
+            color: var(--accent-color);
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .guide-info p {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .guide-info h4 {
+            font-size: 16px;
+            color: var(--secondary-color);
+            margin: 15px 0 8px;
+            font-weight: 600;
+        }
+
+        /* ************ 分页控件样式 - 重新设计 ************ */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .pagination-btn {
+            padding: 10px 20px;
+            background: rgba(142, 45, 226, 0.1);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--gradient-bg);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination-pages {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .pagination-page {
+            padding: 10px 16px;
+            background: rgba(142, 45, 226, 0.1);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .pagination-page.active {
+            background: var(--gradient-bg);
+            color: white;
+            box-shadow: 0 4px 12px rgba(142, 45, 226, 0.3);
+        }
+        
+        .pagination-page:hover:not(.active) {
+            background: rgba(142, 45, 226, 0.2);
+            color: var(--primary-color);
+        }
+        
+        .pagination-info {
+            margin-left: 15px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* ************ 页脚样式 - 与build.html完全一致 ************ */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 3px;
+            background: var(--gradient-bg);
+        }
+
+        .footer-column ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .footer-column ul li a i {
+            margin-right: 8px;
+            font-size: 13px;
+            width: 16px;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        /* 微信二维码容器 */
+        .wechat-qrcode {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            width: 240px;
+            justify-content: space-between;
+        }
+        
+        .wechat-qrcode-item {
+            text-align: center;
+            width: 112px;
+        }
+        
+        .wechat-qrcode-item img {
+            width: 112px;
+            height: 112px;
+            background: white;
+            padding: 4px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        }
+        
+        .wechat-qrcode-item p {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #ccc;
+        }
+        
+        /* 媒体平台图标 */
+        .social-platforms {
+            display: flex;
+            justify-content: space-between;
+            width: 240px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .social-platforms a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,.1);
+            border-radius: 50%;
+            transition: all .3s ease;
+            flex: 0 0 auto;
+        }
+
+        .social-platforms a:hover {
+            background: var(--gradient-bg);
+            transform: translateY(-3px);
+        }
+
+        /* ************ 动画效果 ************ */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* ************ 返回顶部按钮和分享功能 - 新增样式 ************ */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-bg);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 16px rgba(142, 45, 226, 0.4);
+            border: none;
+            outline: none;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 24px rgba(142, 45, 226, 0.6);
+        }
+
+        /* 分享按钮 */
+        .share-button {
+            position: fixed;
+            bottom: 86px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-bg);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 16px rgba(142, 45, 226, 0.4);
+            border: none;
+            outline: none;
+        }
+        
+        .share-button.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .share-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 24px rgba(142, 45, 226, 0.6);
+        }
+
+        /* 分享面板 */
+        .share-panel {
+            position: fixed;
+            bottom: 140px;
+            right: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            min-width: 220px;
+        }
+        
+        .share-panel.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .share-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 30px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        
+        .share-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 15px;
+        }
+        
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .share-option:hover {
+            background-color: var(--section-alt);
+            transform: translateY(-3px);
+        }
+        
+        .share-option i {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .share-option.qq i {
+            color: #12B7F5;
+        }
+        
+        .share-option.wechat i {
+            color: #07C160;
+        }
+        
+        .share-option.douyin i {
+            color: #000000;
+        }
+        
+        .share-option.weibo i {
+            color: #E6162D;
+        }
+        
+        .share-option.xiaohongshu i {
+            color: #FF2442;
+        }
+        
+        .share-option.copy i {
+            color: var(--primary-color);
+        }
+        
+        .share-option span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* 分享成功提示 */
+        .share-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 6px 20px rgba(0, 200, 83, 0.3);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .share-toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 二维码分享弹窗 */
+        .qrcode-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .qrcode-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .qrcode-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+        
+        .qrcode-modal.show .qrcode-content {
+            transform: translateY(0);
+        }
+        
+        .qrcode-content h3 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .qrcode-img {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .qrcode-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .qrcode-content p {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .close-qrcode {
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-qrcode:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(142, 45, 226, 0.4);
+        }
+
+        /* ************ 分隔线样式 ************ */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border-color), transparent);
+            margin: 40px auto;
+            max-width: 1200px;
+        }
+
+        /* ************ 响应式设计 ************ */
+        @media (max-width: 1200px) {
+            .news-grid, .guides-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 42px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .about-image, .about-text {
+                width: 100%;
+            }
+            
+            .about-image {
+                min-height: 280px;
+            }
+            
+            .section-title h2 {
+                font-size: 36px;
+            }
+            
+            .news-grid, .guides-grid, .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            /* 移动端调整分享按钮位置 */
+            .share-button {
+                bottom: 86px;
+                right: 16px;
+            }
+            
+            .back-to-top {
+                right: 16px;
+            }
+            
+            .share-panel {
+                right: 16px;
+                bottom: 140px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: 80vh;
+                border-radius: 0;
+                border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px;
+                margin-bottom: 40px;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .section-title h2 {
+                font-size: 28px;
+            }
+            
+            .content-section {
+                padding: 60px 0;
+            }
+            
+            .about-text h3 {
+                font-size: 26px;
+            }
+            
+            .guides-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .guides-tab {
+                white-space: nowrap;
+                padding: 10px 18px;
+                font-size: 15px;
+            }
+            
+            .news-grid, .guides-grid, .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .pagination {
+                gap: 8px;
+            }
+            
+            .pagination-info {
+                width: 100%;
+                text-align: center;
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            
+            /* 移动端分享面板调整 */
+            .share-panel {
+                min-width: 200px;
+                padding: 15px;
+            }
+            
+            .share-options {
+                gap: 12px;
+            }
+            
+            .share-option i {
+                font-size: 20px;
+            }
+            
+            .share-option span {
+                font-size: 10px;
+            }
+            
+            .share-toast {
+                width: 90%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .section-title h2 {
+                font-size: 24px;
+            }
+            
+            .content-section {
+                padding: 40px 0;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .about-text h3 {
+                font-size: 22px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            /* 移动端分享面板进一步调整 */
+            .share-panel {
+                min-width: 180px;
+                padding: 12px;
+            }
+            
+            .share-options {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+        }
+        
+        /* 高亮文本 */
+        .highlight {
+            background: linear-gradient(120deg, rgba(142, 45, 226, 0.2) 0%, rgba(142, 45, 226, 0.1) 100%);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        /* 徽章样式 */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--gradient-bg);
+            color: white;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptMy41LTljLjgzIDAgMS41LS42NyAxLjUtMS41UzE2LjMzIDggMTUuNSA4IDE0IDguNjcgMTQgOC41IDE0LjUgOSAxNS41IDkgMTVzLjY3IDEuNSAxLjUgMS41eiIvPjwvc3ZnPg==" alt="Logo">
+                <div class="logo-text">
+                    <h1>禾</h1>
+                    <div class="logo-subtitle">江湖如梦，侠影留心</div>
+                </div>
+            </div>
+            
+            <!-- 汉堡菜单按钮 -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-active"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="events.html"><i class="fas fa-calendar-alt"></i> 百业活动</a></li>
+                <li><a href="guide.html"><i class="fas fa-leaf"></i> 百业引导</a></li>					
+                <li><a href="build.html"><i class="fas fa-seedling"></i> 成长共筑</a></li>
+                <li><a href="gallery.html"><i class="fas fa-images"></i> 百业风采</a></li>
+                <li><a href="strategy.html"><i class="fas fa-book-open"></i> 萌新指南</a></li>
+                <li><a href="realms.html"><i class="fas fa-lightbulb"></i> 攻略心得</a></li>
+                <li><a href="stamina.html"><i class="fas fa-calculator"></i> 心力计算器</a></li>
+                <li><a href="https://m.tb.cn/h.7c08Y22?tk=De5BfH4URHs"><i class="fas fa-shopping-cart"></i> 代肝服务</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="fade-in">燕云十六声 - 江湖如梦，侠影留心！</h2>
+                <p class="fade-in delay-1">致力于为江湖侠客们打造一片轻松惬意的休闲天地！</p>
+                <div class="hero-buttons fade-in delay-2">
+                    <a href="https://www.yysls.cn" target="_blank" class="btn">游戏下载</a>
+                    <a href="#about" class="btn btn-secondary">了解更多</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏介绍 -->
+    <section id="about" class="content-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>百业介绍</h2>
+                <p class="section-subtitle">轻松惬意的休闲天地，让心灵在诗意江湖中寻得一方柔美的栖息之所</p>
+            </div>
+            <div class="about-content fade-in">
+                <div class="about-image">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/8_558102f.jpg?image_process=format,jpg" alt="游戏介绍">
+                </div>
+                <div class="about-text">
+                    <h3>禾</h3>
+					<p>欢迎你</p>
+                    <p>致力于为江湖侠客们打造一片轻松惬意的休闲天地，在刀光剑影与快意恩仇之余，能够沉浸于武侠的闲适氛围中，忘却尘世纷扰，享受片刻宁静与欢愉，让心灵在诗意江湖中寻得一方柔美的栖息之所。</p>
+                    <p>步入江湖繁华处，且寻江湖闲适间。这里有茶香袅袅、幻境奇幻、身心舒缓，一起闯荡江湖的的侠友们，别再让疲倦伴随江湖路，来禾，赴一场专属江湖人的悠闲之约!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 萌新指南 -->
+    <section id="newbie-guides" class="content-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>百业指引</h2>
+                <p class="section-subtitle">新人入门与进阶指南，助您快速融入江湖，享受游戏乐趣</p>
+            </div>
+            
+            <div class="about-content fade-in">
+                <div class="about-image">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/8_558102f.jpg?image_process=format,jpg" alt="新人指南">
+                </div>
+                <div class="about-text">
+                    <h3>新人指南</h3>
+                    <p>欢迎来到燕云十六声!这里是为新侠客准备的入门指南。</p>
+                    <p><span class="badge">1</span> <strong>新手教程</strong>：完成新手教程可获得丰厚奖励，帮助你快速了解游戏基础操作。</p>
+                    <p><span class="badge">2</span> <strong>武学选择</strong>：根据个人喜好选择适合的武学，心法，奇术，装备搭配，每个武学都有独特的优势和玩法。</p>
+                    <p><span class="badge">3</span> <strong>游戏任务</strong>：完成游戏任务可获得经验、通宝和装备等奖励，助力快速成长。</p>
+                    <p><span class="badge">4</span> <strong>探索收集</strong>：每一个地图都需要抓蹊跷和开宝箱等其他玩法，不仅能获得丰厚奖励，还可以提升属性。</p>
+                </div>
+            </div>
+            
+            <!-- 分隔线 -->
+            <div class="section-divider"></div>
+            
+            <div class="about-content fade-in delay-1">
+                <div class="about-image">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/25_9773060.jpg?image_process=format,jpg" alt="进阶指南">
+                </div>
+                <div class="about-text">
+                    <h3>进阶指南</h3>
+                    <p>掌握基础后，进阶指南将帮助你更深入地了解游戏。</p>
+                    <p><span class="badge">1</span> <strong>装备强化</strong>：通过装备调律提升装备属性，增强角色战斗力。</p>
+                    <p><span class="badge">2</span> <strong>心法搭配</strong>：根据不同流派和玩法选择合适的心法组合，发挥最大战斗效能。</p>
+                    <p><span class="badge">3</span> <strong>造诣进阶</strong>：学习高级武学，心法，奇术等级，提升战斗技巧和策略深度。</p>
+                    <p><span class="badge">4</span> <strong>天赋属性</strong>：通过任务和探索提高顿悟值，增加天赋点。</p>
+                </div>
+            </div>
+            
+            <!-- 分隔线 -->
+            <div class="section-divider"></div>
+            
+            <div class="about-content fade-in delay-2">
+                <div class="about-image">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/8_558102f.jpg?image_process=format,jpg" alt="百业指南">
+                </div>
+                <div class="about-text">
+                    <h3>百业指南</h3>
+                    <p>欢迎来到百业!这里是为新侠客准备的百业指南。</p>
+                    <p><span class="badge">1</span> <strong>新手教程</strong>：根据任务完成百业活动，帮助你快速了解百业玩法。</p>
+                    <p><span class="badge">2</span> <strong>战力辅助</strong>：通过百业活动获取货币，提升辅助属性。</p>
+                    <p><span class="badge">3</span> <strong>休闲活动</strong>：可以与大家一起玩小游戏，简单休闲，还能结交志同道合的朋友。</p>
+                    <p><span class="badge">4</span> <strong>副本活动</strong>：与队友协作挑战副本，获得丰厚奖励，快速提升战力。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+	
+    <!-- 最新动态 -->
+    <section id="news" class="content-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>百业动态</h2>
+                <p class="section-subtitle">了解公会最新活动、成就与社区发展</p>
+            </div>
+            <div class="news-grid" id="newsGrid">
+                <div class="news-card fade-in">
+                    <div class="news-image">
+                        <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/11_ec9dda1.jpg?image_process=format,jpg" alt="动态1">
+                    </div>
+                    <div class="news-info">
+                        <span class="news-date">2024年5月31日</span>
+                        <h3>《燕云十六声》开启限量测试</h3>
+                        <p>参与仲吕测试，提前获取游戏内容玩法。测试期间将有机会体验全新职业与副本，参与测试的玩家将获得专属奖励。</p>
+                        <a href="#" class="news-readmore">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card fade-in delay-1">
+                    <div class="news-image">
+                        <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/25_9773060.jpg?image_process=format,jpg" alt="动态2">
+                    </div>
+                    <div class="news-info">
+                        <span class="news-date">2025年5月10日</span>
+                        <h3>百业正式创立</h3>
+                        <p>为大家提供一个温馨的栖息之所。公会将秉承"轻松惬意"的理念，打造一个让玩家可以放松身心、结交朋友的社区。</p>
+                        <a href="#" class="news-readmore">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card fade-in delay-2">
+                    <div class="news-image">
+                        <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/13_b3b83f1.jpg?image_process=format,jpg" alt="动态3">
+                    </div>
+                    <div class="news-info">
+                        <span class="news-date">2025年5月25日</span>
+                        <h3>百业官网正式创立</h3>
+                        <p>为大家提供便捷常用的游戏攻略信息。网站包含百业介绍、活动安排、攻略心得、成员风采等多个板块。</p>
+                        <a href="#" class="news-readmore">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <!-- 更多新闻卡片 -->
+                <div class="news-card fade-in">
+                    <div class="news-image">
+                        <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/11_ec9dda1.jpg?image_process=format,jpg" alt="动态4">
+                    </div>
+                    <div class="news-info">
+                        <span class="news-date">2025年6月1日</span>
+                        <h3>百业首次活动圆满成功</h3>
+                        <p>首次团队副本活动圆满成功，成员积极参与。活动中共有25名成员参与，成功击败了首个团队副本首领。</p>
+                        <a href="#" class="news-readmore">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card fade-in delay-1">
+                    <div class="news-image">
+                        <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/25_9773060.jpg?image_process=format,jpg" alt="动态5">
+                    </div>
+                    <div class="news-info">
+                        <span class="news-date">2025年6月15日</span>
+                        <h3>百业成员突破100人</h3>
+                        <p>百业成员数量突破100人，社区日益壮大。公会将继续保持轻松惬意的氛围，欢迎更多志同道合的玩家加入。</p>
+                        <a href="#" class="news-readmore">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card fade-in delay-2">
+                    <div class="news-image">
+                        <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/13_b3b83f1.jpg?image_process=format,jpg" alt="动态6">
+                    </div>
+                    <div class="news-info">
+                        <span class="news-date">2025年6月30日</span>
+                        <h3>百业竞技赛事开启</h3>
+                        <p>首届百业PVP竞技赛事正式开启，奖励丰厚。比赛分为个人赛和团队赛，优胜者将获得专属称号和游戏道具奖励。</p>
+                        <a href="#" class="news-readmore">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分页控件 -->
+            <div class="pagination" id="newsPagination">
+                <button class="pagination-btn" id="newsPrev">上一页</button>
+                <div class="pagination-pages" id="newsPages"></div>
+                <button class="pagination-btn" id="newsNext">下一页</button>
+                <div class="pagination-info" id="newsInfo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏风采 -->
+    <section id="gallery" class="content-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>游戏风采</h2>
+                <p class="section-subtitle">燕云十六声精美游戏截图与角色展示</p>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="gallery-item fade-in">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/mhys/bz/24_8b33d4e.jpg?image_process=format,jpg" alt="游戏截图1">
+                    <div class="overlay">
+                        <p>镇守：容鸢</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in delay-1">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/23_b5691a8.jpg?image_process=format,jpg" alt="游戏截图2">
+                    <div class="overlay">
+                        <p>镇守：千夜</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in delay-2">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/20_3919d6e.jpg?image_process=format,jpg" alt="游戏截图3">
+                    <div class="overlay">
+                        <p>镇守：叶万山</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/14_97e6191.jpg?image_process=format,jpg" alt="游戏截图4">
+                    <div class="overlay">
+                        <p>镇守：道主</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in delay-1">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/15_6af9e0c.jpg?image_process=format,jpg" alt="游戏截图5">
+                    <div class="overlay">
+                        <p>镇守：蛇郎君</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in delay-2">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/16_591367f.jpg?image_process=format,jpg" alt="游戏截图6">
+                    <div class="overlay">
+                        <p>镇守：皮影</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/17_3869ae2.jpg?image-process=format,jpg" alt="游戏截图7">
+                    <div class="overlay">
+                        <p>镇守：小十七</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in delay-1">
+                    <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/18_4d4a64e.jpg?image_process=format,jpg" alt="游戏截图8">
+                    <div class="overlay">
+                        <p>镇守：田英</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分页控件 -->
+            <div class="pagination" id="galleryPagination">
+                <button class="pagination-btn" id="galleryPrev">上一页</button>
+                <div class="pagination-pages" id="galleryPages"></div>
+                <button class="pagination-btn" id="galleryNext">下一页</button>
+                <div class="pagination-info" id="galleryInfo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 攻略区 -->
+    <section id="guides" class="content-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>游戏百科</h2>
+                <p class="section-subtitle">全面解析游戏流派与装备搭配，助您打造最强角色</p>
+            </div>
+            
+            <div class="guides-tabs">
+                <div class="guides-tab active" data-tab="weapons">流派</div>			
+                <div class="guides-tab" data-tab="equipment">装备</div>
+            </div>
+            
+            <div id="weapons" class="guides-content active">
+                <div class="guides-grid" id="weaponsGrid">
+                    <div class="guide-card fade-in">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派1">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">鸣金系列</span>
+                            <h3>鸣金·虹（无名剑法 / 无名枪法）</h3>
+                            <p>有较强机动性，和一定的单体控制能力，先手拉扯比较有优势。并在对抗中有耐力博弈优势，配合高额伤害的蓄力技可打出爆发输出。</p>
+							<h4>心法</h4>
+							<p>无名心法、千山法、燎原星火、威猛歌</p>
+							<h4>装备</h4>
+							<p>玉斗武器套装、易相防具套装</p>
+							<h4>武库</h4>
+							<p>鸣金</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会意率</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-1">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派2">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">鸣金系列</span>
+                            <h3>鸣金·影（积矩九剑 / 九曲惊神枪）</h3>
+                            <p>通过附加流血异常效果，触发高频次持续伤害结算。并可通过提升自身伤害系数，更快的集中打击目标。同时有一定的机动性。</p>
+							<h4>心法</h4>
+							<p>剑气纵横、逐浪心经、移经易武、凝神章</p>
+							<h4>装备</h4>
+							<p>飞隼武器套装、鹰扬防具套装</p>
+							<h4>武库</h4>
+							<p>鸣金</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会意率</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-2">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派3">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">裂石系列</span>
+                            <h3>裂石·威（嗟夫刀法 / 八方风雷枪）</h3>
+                            <p>拥有护盾、减伤和抗打断能力，生存能力较强。并可通过嘲讽能力在团队中承担承伤的定位。可聚怪后使用大范围蓄力技造成群体伤害。</p>
+							<h4>心法</h4>
+							<p>山河绝韵、磐石决、困兽心经、抗造大法</p>
+							<h4>装备</h4>
+							<p>时雨武器套装、桂月防具套装</p>
+							<h4>武库</h4>
+							<p>裂石</p>
+							<h4>调律</h4>
+							<p>气血最大值</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 更多卡片 -->
+                    <div class="guide-card fade-in">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派7">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">裂石系列</span>
+                            <h3>裂石·钧（斩雪刀法 / 十方破阵）</h3>
+                            <p>拥有强近战压制能力，同时具备流畅的机动性，在单体怪环境中持续输出能力突出。能召唤安西军协战提供增伤机制，并拥有极强的爆发输出能力。</p>
+							<h4>心法</h4>
+							<p>霜天白夜、孤忠不辞、穿喉诀、燎原踏</p>
+							<h4>装备</h4>
+						 <p>断岳武器套装、玄甲防具套装</p>
+							<h4>武库</h4>
+							<p>裂石</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会心率</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-1">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派4">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">牵丝系列</span>
+                            <h3>牵丝·玉（青山执笔 / 九重春色）</h3>
+                            <p>远程流派，拥有远程持续输出的能力。也有一定控制能力，配合浮空连击对目标打出爆发伤害。</p>
+							<h4>心法</h4>
+							<p>花上月令、葫芦飞飞、春雷篇、纵地摘星</p>
+							<h4>装备</h4>
+							<p>烟柳武器套装、不知寒防具套装</p>
+							<h4>武库</h4>
+							<p>牵丝</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会心率</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-2">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派6">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">牵丝系列</span>
+                            <h3>牵丝·霖（明川药典 / 千香引魂蛊）</h3>
+                            <p>拥有爆发性和持续性的治疗技能，兼顾单体和群体的回复手段。复活能力可使重伤的队友重新战斗，以及可为全队提供增伤的辅助效果。</p>
+							<h4>心法</h4>
+							<p>君臣药、千丝蛊、杏花不见、千丝蛊</p>
+							<h4>装备</h4>
+							<p>浣花武器套装、梨雪防具套装</p>
+							<h4>武库</h4>
+							<p>牵丝</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会心率</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 更多卡片 -->
+                    <div class="guide-card fade-in">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派5">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">破竹系列</span>
+                            <h3>破竹·风（泥犁三垢 / 粟子游尘）</h3>
+                            <p>拥有极强的机动性和高频的连续输出能力，多种手段可以快速拉近与目标的距离，有一定的控制手段保证输出环境。</p>
+							<h4>心法</h4>
+							<p>忘川绝响、心弥泥鱼、断石之构、沧浪剑诀</p>
+							<h4>装备</h4>
+							<p>燕归武器套装、江凝防具套装</p>
+							<h4>武库</h4>
+							<p>破竹</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会心率</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-1">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派7">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">破竹系列</span>
+                            <h3>破竹·尘（醉梦游春 / 粟子行云）</h3>
+                            <p>拥有多种范围伤害的远程技能，具备位移、聚怪、屏息时间等手段来创造有利的输出环境，在应对多个敌人时能发挥最大的优势。</p>
+							<h4>心法</h4>
+							<p>千营一呼、绳舟行木、灯儿亮、大唐歌</p>
+							<h4>装备</h4>
+							<p>连星武器套装、抱玉防具套装</p>
+							<h4>武库</h4>
+							<p>破竹</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会心率</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-2">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="流派7">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">破竹系列</span>
+                            <h3>破竹·鸢（千机索天 / 天志垂象）</h3>
+                            <p>能够配合鹰集追击持续输出，也可在积攒足够资源后打出终结一拳造成巨额爆发。同时具备位移、聚怪等手段来创造有利环境，在应对单体敌人时可发挥最大的优势。</p>
+							<h4>心法</h4>
+							<p>扶摇直上，擒天势，三穷致知，天行健</p>
+							<h4>装备</h4>
+							<p>撼天武器套装、尚义防具套装</p>
+							<h4>武库</h4>
+							<p>破竹</p>
+							<h4>调律</h4>
+							<p>最小外功攻击/最大外功攻击/会心率</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分页控件 -->
+                <div class="pagination" id="weaponsPagination">
+                    <button class="pagination-btn" id="weaponsPrev">上一页</button>
+                    <div class="pagination-pages" id="weaponsPages"></div>
+                    <button class="pagination-btn" id="weaponsNext">下一页</button>
+                    <div class="pagination-info" id="weaponsInfo"></div>
+                </div>
+            </div>
+			
+            <div id="equipment" class="guides-content">
+                <div class="guides-grid" id="equipmentGrid">
+                    <div class="guide-card fade-in">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备1">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">鸣金系列套装</span>
+                            <h3>玉斗套装</h3>
+                            <p><strong>二件套</strong>：最大外功攻击 +1<br><strong>四件套</strong>：武学技释放后可激活玉斗效果：会意伤害提升10%，且对处于控制状态或真气值低于40%的目标，造成的会意伤害额外增加15%，持续8秒。此效果每12秒只能生效一次</p>
+                            <h4>易相套装</h4>
+                            <p><strong>二件套</strong>：外功防御 +1<br><strong>四件套</strong>：自身释放的护盾持续时间延长2秒。真气高于85%或真气伤害免疫护盾期间，受到的所有气血伤害降低20%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-1">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备2">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">鸣金系列套装</span>
+                            <h3>飞隼套装</h3>
+                            <p><strong>二件套</strong>：会意率 +0.1%<br><strong>四件套</strong>：造成的所有伤害触发会意时可获得飞隼效果：外功攻击会提升2%，持续5秒，最多可叠加5层</p>
+                            <h4>鹰扬套装</h4>
+                            <p><strong>二件套</strong>：外功防御 +1<br><strong>四件套</strong>：每次造成持续伤害或治疗时可给自身添加1层鹰扬效果：受到伤害降低1.2%，持续10秒，最多可叠5层。满层时可以获得一个鹰护效果：10秒内下次受击伤害降低90%（来源是首领时效果减半），此效果每30秒只能触发一次</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-2">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备3">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">裂石系列套装</span>
+                            <h3>时雨套装</h3>
+                            <p><strong>二件套</strong>：气血最大值 +40<br><strong>四件套</strong>：造成的所有会心伤害和治疗提升10%，且在自身处于气血护盾状态时额外提升15%</p>
+							<h4>桂月套装</h4>
+							<p><strong>二件套</strong>：气血最大值 +40<br><strong>四件套</strong>：防御中被攻击，有30%概率产生一个吸收伤害量为10%气血上限的护盾，持续20秒，如当前已存在护盾，则额外回复2%气血值。此效果每60秒只能生效一次</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 更多卡片 -->
+                    <div class="guide-card fade-in">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备4">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">牵丝系列套装</span>
+                            <h3>烟柳套装</h3>
+                            <p><strong>二件套</strong>：精准率 +0.1%<br><strong>四件套</strong>：轻击/空中轻击命中后重击/空中重击伤害提升12%，持续15秒；反之亦然，特别的是，重击/空中重击命中后还会使轻击蓄力伤害提升12%</p>
+							<h4>不知寒套装</h4>
+							<p><strong>二件套</strong>：会意率 +0.2%<br><strong>四件套</strong>：进入战斗状态后，若保持10秒不受伤害，可立即获得不知寒效果：下次受击伤害和受击后2秒内受到的所有伤害都可以降低40%。不知寒效果在离开战斗状态时会移除</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-1">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备5">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">牵丝系列套装</span>
+                            <h3>燕归套装</h3>
+                            <p><strong>二件套</strong>：最小外功攻击 +1<br><strong>四件套</strong>：轻击对真气值低于40%的目标造成的外攻伤害增加15%，对气竭目标额外增加5%</p>
+							<h4>江凝套装</h4>
+							<p><strong>二件套</strong>：外功防御 +1<br><strong>四件套</strong>：完美闪避敌人有50%的概率回复自身3%最大生命值和10点耐力</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-2">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备6">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">牵丝系列套装</span>
+                            <h3>浣花套装</h3>
+                            <p><strong>二件套</strong>：会心率 +1%<br><strong>四件套</strong>：满气血状态下有额外5%概率造成会心治疗和会心伤害，且会心治疗和会心伤害效果提升15%</p>
+							<h4>梨雪套装</h4>
+							<p><strong>二件套</strong>：外功防御 +1<br><strong>四件套</strong>：当遭受的单次伤害超过最大气血值40%或自身气血值低于20%时，5秒内下次治疗额外为自身治疗25%最大气血值，每60秒最多生效一次</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 更多卡片 -->
+                    <div class="guide-card fade-in">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备7">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">破竹系列套装</span>
+                            <h3>连星套装</h3>
+                            <p><strong>二件套</strong>：最大外功攻击 +1<br><strong>四件套</strong>：同时命中不少于2个敌人以及命中首领时，自身获得1层连星效果：5秒内武学技造成的伤害提升3%，最多可叠加5层，每受到1次伤害减少1层，每秒最多叠加2层连星</p>
+							<h4>抱玉套装</h4>
+							<p><strong>二件套</strong>：气血最大值 +40<br><strong>四件套</strong>：当1秒内移动距离超过6米，自身获得抱玉效果：5秒内受到的气血伤害和真气伤害降低15%，该效果每20秒只能生效一次</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-1">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备7">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">裂石系列套装</span>
+                            <h3>断岳套装</h3>
+                            <p><strong>二件套</strong>：最小外功攻击 +1<br><strong>四件套</strong>：卸势成功或命中首领时获得持续5秒断岳效果:造成气血伤害提升5%，轻击·派生技和重击·派生技造成的伤害额外提升5%。可生效的轻击派生技和重击派生技包括:嗟夫刀法·轻击派生和重击派生、青山执笔·月出惊春、九重春色·风敲竹和彩凤飞、斩雪刀法·泉下冻和拨雪寻春</p>
+							<h4>玄甲套装</h4>
+							<p><strong>二件套</strong>：外功防御 +1<br><strong>四件套</strong>：自身处于强韧状态时，受到的气血伤害降低5%。强韧状态下受击，自身获得持续5秒可叠加5层的玄甲效果:受到会心伤害结算的概率降低2%受到会意伤害结算的概率降低1%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card fade-in delay-2">
+                        <div class="guide-image">
+                            <img src="https://www.yysls.cn/pc/gw/20220815175950/img/downloads/bz/3_32b1b24.jpg?image_process=format,jpg" alt="装备7">
+                        </div>
+                        <div class="guide-info">
+                            <span class="guide-category">破竹系列套装</span>
+                            <h3>撼天套装</h3>
+                            <p><strong>二件套</strong>：最小外功攻击 +1<br><strong>四件套</strong>：触发完美闪避后以及命中首领或玩家时可获得撼天效果:所有类型攻击提升1%(包含外功攻击和全部属性攻击)，持续5秒，最多可叠加5层。撼天效果5层时，武学触发效果造成伤害结算时的全部类型属攻穿透额外提升4点。生效的武学触发效果包括:天志垂象·鹰集追击和无义当诛系列技能、粟子游尘·鼠鼠、醉梦游春·共鸣、十方破阵·安西军协战</p>
+							<h4>尚义套装</h4>
+							<p><strong>二件套</strong>：外功防御 +1<br><strong>四件套</strong>：触发完美闪避后获得5秒尚义效果:受到的气血伤害降低10%，同时受到伤害结算的会心伤害和会意伤害额外降低12%，门尚义效果每10秒最多获得一次。</p>
+                        </div>
+                    </div>					
+                </div>
+                
+                <!-- 分页控件 -->
+                <div class="pagination" id="equipmentPagination">
+                    <button class="pagination-btn" id="equipmentPrev">上一页</button>
+                    <div class="pagination-pages" id="equipmentPages"></div>
+                    <button class="pagination-btn" id="equipmentNext">下一页</button>
+                    <div class="pagination-info" id="equipmentInfo"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>禾</h3>
+                    <ul>
+                        <li><a href="index.html#home"><i class="fas fa-home"></i> 首页</a></li>
+                        <li><a href="events.html"><i class="fas fa-calendar-alt"></i> 百业活动</a></li>
+                        <li><a href="guide.html"><i class="fas fa-leaf"></i> 百业引导</a></li>					
+                        <li><a href="build.html"><i class="fas fa-seedling"></i> 成长共筑</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-images"></i> 百业风采</a></li>
+                        <li><a href="strategy.html"><i class="fas fa-book-open"></i> 萌新指南</a></li>
+                        <li><a href="realms.html"><i class="fas fa-lightbulb"></i> 攻略心得</a></li>
+                        <li><a href="stamina.html"><i class="fas fa-calculator"></i> 心力计算器</a></li>
+                        <li><a href="https://m.tb.cn/h.7c08Y22?tk=De5BfH4URHs"><i class="fas fa-shopping-cart"></i> 代肝服务</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>皇宸</h3>
+                <ul>
+                        <li><a href="https://hc.kinghc.com"><i class="fas fa-crown"></i> 皇宸总部</a></li>
+                        <li><a href="https://hcbl.kinghc.com"><i class="fas fa-users"></i> 皇宸部落</a></li>
+                        <li><a href="https://qlgh.kinghc.com"><i class="fas fa-dragon"></i> 乾龙公会</a></li>
+                        <li><a href="https://qcjz.kinghc.com"><i class="fas fa-home"></i> 卿城家族</a></li>
+                        <li><a href="https://fgsm.kinghc.com"><i class="fas fa-graduation-cap"></i> 枫谷师门</a></li>
+                        <li><a href="https://xf.kinghc.com"><i class="fas fa-landmark"></i> 潇府</a></li>
+                        <li><a href="https://yg.kinghc.com"><i class="fas fa-mountain"></i> 逸阁</a></li>
+                        <li><a href="https://qg.kinghc.com"><i class="fas fa-building"></i> 卿阁</a></li>
+                        <li><a href="https://fg.kinghc.com"><i class="fas fa-tree"></i> 枫阁</a></li>
+                </ul>
+                </div>
+				<div class="footer-column">
+                    <h3>燕云十六声</h3>
+                    <ul>
+                        <li><a href="https://www.yysls.cn/index.html" target="_blank"><i class="fas fa-gamepad"></i> 游戏官网</a></li>
+                        <li><a href="https://www.yysls.cn/news/index.html" target="_blank"><i class="far fa-newspaper"></i> 新闻资讯</a></li>
+                        <li><a href="https://16.163.com/map/" target="_blank"><i class="fas fa-map"></i> 燕云地图</a></li>
+                        <li><a href="https://www.yysls.cn/faq/" target="_blank"><i class="far fa-question-circle"></i> 常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-qq"></i> 3010662388</a></li>
+						<li><a href="#"><i class="fab fa-weixin"></i> 3010662388</a></li>
+                        <li><a href="#"><i class="far fa-envelope"></i> hc@ihcking.com</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                <h3>关注我们</h3>
+                <div class="wechat-qrcode">
+                    <div class="wechat-qrcode-item">
+                        <img src=".././assets/img/hcwxdyh.jpg" alt="微信公众号1">
+                        <p>皇宸订阅号</p>
+                    </div>
+                    <div class="wechat-qrcode-item">
+                        <img src=".././assets/img/hcwxfwh.jpg" alt="微信公众号2">
+                        <p>皇宸服务号</p>
+                    </div>
+                </div>
+                <div class="social-platforms">
+                        <a href="#" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a>
+                        <a href="#" title="微博"><i class="fab fa-weibo"></i></a>
+                        <a href="#" title="抖音"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" title="QQ群"><i class="fab fa-qq"></i></a>
+						<a href="#" title="微信群"><i class="fas fa-comments"></i></a>
+                        <a href="https://kook.vip/h2QyLc" title="KOOK社区"><i class="fas fa-users"></i></a>
+                </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 禾. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- 新增：分享按钮 -->
+    <div class="share-button" id="shareButton">
+        <i class="fas fa-share-alt"></i>
+    </div>
+
+    <!-- 新增：分享面板 -->
+    <div class="share-panel" id="sharePanel">
+        <div class="share-title">分享到</div>
+        <div class="share-options">
+            <a class="share-option copy" data-platform="copy" title="复制链接">
+                <i class="fas fa-link"></i>
+                <span>复制链接</span>
+            </a>
+            <a class="share-option qq" data-platform="qq" title="QQ">
+                <i class="fab fa-qq"></i>
+                <span>QQ</span>
+            </a>
+            <a class="share-option wechat" data-platform="wechat" title="微信">
+                <i class="fab fa-weixin"></i>
+                <span>微信</span>
+            </a>
+            <a class="share-option weibo" data-platform="weibo" title="微博">
+                <i class="fab fa-weibo"></i>
+                <span>微博</span>
+            </a>
+            <a class="share-option douyin" data-platform="douyin" title="抖音">
+                <i class="fab fa-tiktok"></i>
+                <span>抖音</span>
+            </a>
+            <a class="share-option xiaohongshu" data-platform="xiaohongshu" title="小红书">
+                <i class="fas fa-book"></i>
+                <span>小红书</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 新增：分享成功提示 -->
+    <div class="share-toast" id="shareToast">
+        链接已复制到剪贴板！
+    </div>
+
+    <!-- 新增：微信二维码弹窗 -->
+    <div class="qrcode-modal" id="qrcodeModal">
+        <div class="qrcode-content">
+            <h3>微信分享</h3>
+            <div class="qrcode-img" id="qrcodeImg">
+                <!-- 这里将动态生成二维码 -->
+                <canvas id="qrcodeCanvas"></canvas>
+            </div>
+            <p>使用微信扫描二维码分享</p>
+            <button class="close-qrcode" id="closeQrcode">关闭</button>
+        </div>
+    </div>
+
+    <script>
+        // 全局分页配置
+        const paginationConfig = {
+            news: {
+                itemsPerPage: 6,
+                container: document.getElementById('newsGrid'),
+                pagination: document.getElementById('newsPagination'),
+                prevBtn: document.getElementById('newsPrev'),
+                nextBtn: document.getElementById('newsNext'),
+                pagesContainer: document.getElementById('newsPages'),
+                infoContainer: document.getElementById('newsInfo'),
+                currentPage: 1
+            },
+            gallery: {
+                itemsPerPage: 8,
+                container: document.getElementById('galleryGrid'),
+                pagination: document.getElementById('galleryPagination'),
+                prevBtn: document.getElementById('galleryPrev'),
+                nextBtn: document.getElementById('galleryNext'),
+                pagesContainer: document.getElementById('galleryPages'),
+                infoContainer: document.getElementById('galleryInfo'),
+                currentPage: 1
+            },
+            weapons: {
+                itemsPerPage: 3,
+                container: document.getElementById('weaponsGrid'),
+                pagination: document.getElementById('weaponsPagination'),
+                prevBtn: document.getElementById('weaponsPrev'),
+                nextBtn: document.getElementById('weaponsNext'),
+                pagesContainer: document.getElementById('weaponsPages'),
+                infoContainer: document.getElementById('weaponsInfo'),
+                currentPage: 1
+            },
+            equipment: {
+                itemsPerPage: 3,
+                container: document.getElementById('equipmentGrid'),
+                pagination: document.getElementById('equipmentPagination'),
+                prevBtn: document.getElementById('equipmentPrev'),
+                nextBtn: document.getElementById('equipmentNext'),
+                pagesContainer: document.getElementById('equipmentPages'),
+                infoContainer: document.getElementById('equipmentInfo'),
+                currentPage: 1
+            }
+        };
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 滚动动画
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    // 排除导航栏链接
+                    if (this.getAttribute('href').startsWith('#') && 
+                        !this.getAttribute('href').includes('.html')) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        if(targetId === '#') return;
+                        
+                        const targetElement = document.querySelector(targetId);
+                        if(targetElement) {
+                            const offset = 100;
+                            const elementPosition = targetElement.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - offset;
+                            
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                            
+                            // 移动端点击链接后关闭导航菜单
+                            if (window.innerWidth <= 992) {
+                                closeMobileMenu();
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                const backToTop = document.getElementById('backToTop');
+                const shareButton = document.getElementById('shareButton');
+                
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, 0.98)';
+                    header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.2)';
+                } else {
+                    header.style.backgroundColor = 'rgba(26, 26, 46, 0.98)';
+                    header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                }
+                
+                // 显示/隐藏返回顶部按钮和分享按钮
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('show');
+                    shareButton.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                    shareButton.classList.remove('show');
+                }
+            });
+            
+            // 返回顶部按钮点击事件
+            document.getElementById('backToTop').addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // 攻略区选项卡切换
+            const tabs = document.querySelectorAll('.guides-tab');
+            const contents = document.querySelectorAll('.guides-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // 移除所有active类
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+                    
+                    // 添加active类到当前选项卡和内容
+                    tab.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // 重置分页到第一页
+                    if (tabId === 'weapons') {
+                        paginationConfig.weapons.currentPage = 1;
+                        updatePagination(paginationConfig.weapons);
+                    } else if (tabId === 'equipment') {
+                        paginationConfig.equipment.currentPage = 1;
+                        updatePagination(paginationConfig.equipment);
+                    }
+                });
+            });
+            
+            // 汉堡菜单功能
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                
+                // 防止滚动
+                if (navLinks.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // 点击外部关闭移动菜单
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 992) {
+                    const isClickInsideNav = navLinks.contains(event.target) || hamburger.contains(event.target);
+                    
+                    if (!isClickInsideNav && navLinks.classList.contains('active')) {
+                        closeMobileMenu();
+                    }
+                }
+            });
+            
+            // 关闭移动菜单函数
+            function closeMobileMenu() {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // 窗口大小改变时重置移动菜单
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 992) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // 初始化分页
+            initPagination();
+            
+            // 初始化分享功能
+            initShareFunctionality();
+        });
+
+        // 分页功能
+        function initPagination() {
+            // 初始化每个模块的分页
+            for (const module in paginationConfig) {
+                setupPagination(paginationConfig[module]);
+            }
+        }
+
+        // 设置分页功能
+        function setupPagination(config) {
+            // 初始显示所有项目
+            updatePagination(config);
+            
+            // 上一页按钮事件
+            config.prevBtn.addEventListener('click', () => {
+                if (config.currentPage > 1) {
+                    config.currentPage--;
+                    updatePagination(config);
+                }
+            });
+            
+            // 下一页按钮事件
+            config.nextBtn.addEventListener('click', () => {
+                const items = Array.from(config.container.children);
+                const totalPages = Math.ceil(items.length / config.itemsPerPage);
+                
+                if (config.currentPage < totalPages) {
+                    config.currentPage++;
+                    updatePagination(config);
+                }
+            });
+        }
+
+        // 更新分页显示
+        function updatePagination(config) {
+            const items = Array.from(config.container.children);
+            const totalItems = items.length;
+            const totalPages = Math.ceil(totalItems / config.itemsPerPage);
+            
+            // 确保当前页不超过总页数
+            if (config.currentPage > totalPages && totalPages > 0) {
+                config.currentPage = totalPages;
+            } else if (totalPages === 0) {
+                config.currentPage = 1;
+            }
+            
+            // 隐藏所有项目
+            items.forEach(item => {
+                item.style.display = 'none';
+                item.style.opacity = '0';
+            });
+            
+            // 显示当前页的项目
+            const startIndex = (config.currentPage - 1) * config.itemsPerPage;
+            const endIndex = Math.min(startIndex + config.itemsPerPage, totalItems);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                items[i].style.display = 'block';
+                setTimeout(() => { items[i].style.opacity = '1'; }, 100);
+            }
+            
+            // 更新分页控件
+            updatePaginationControls(config, totalPages, totalItems);
+        }
+
+        // 更新分页控件
+        function updatePaginationControls(config, totalPages, totalItems) {
+            // 清空页码按钮
+            config.pagesContainer.innerHTML = '';
+            
+            // 添加上一页/下一页按钮状态
+            config.prevBtn.disabled = config.currentPage === 1;
+            config.nextBtn.disabled = config.currentPage === totalPages || totalPages === 0;
+            
+            // 添加页码按钮
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, config.currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'pagination-page';
+                pageBtn.textContent = i;
+                if (i === config.currentPage) {
+                    pageBtn.classList.add('active');
+                }
+                
+                pageBtn.addEventListener('click', () => {
+                    config.currentPage = i;
+                    updatePagination(config);
+                });
+                
+                config.pagesContainer.appendChild(pageBtn);
+            }
+            
+            // 更新信息显示
+            const startItem = totalItems === 0 ? 0 : (config.currentPage - 1) * config.itemsPerPage + 1;
+            const endItem = Math.min(config.currentPage * config.itemsPerPage, totalItems);
+            
+            config.infoContainer.textContent = 
+                `显示 ${startItem}-${endItem} 条，共 ${totalItems} 条`;
+        }
+
+        // 初始化分享功能
+        function initShareFunctionality() {
+            const shareButton = document.getElementById('shareButton');
+            const sharePanel = document.getElementById('sharePanel');
+            const shareToast = document.getElementById('shareToast');
+            const qrcodeModal = document.getElementById('qrcodeModal');
+            const closeQrcode = document.getElementById('closeQrcode');
+            const shareOptions = document.querySelectorAll('.share-option');
+            
+            let sharePanelVisible = false;
+            let qrcodeModalVisible = false;
+            
+            // 分享按钮点击事件
+            shareButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSharePanel();
+            });
+            
+            // 切换分享面板显示/隐藏
+            function toggleSharePanel() {
+                sharePanelVisible = !sharePanelVisible;
+                if (sharePanelVisible) {
+                    sharePanel.classList.add('show');
+                } else {
+                    sharePanel.classList.remove('show');
+                }
+            }
+            
+            // 点击页面其他区域关闭分享面板
+            document.addEventListener('click', function(e) {
+                if (!shareButton.contains(e.target) && !sharePanel.contains(e.target) && sharePanelVisible) {
+                    sharePanelVisible = false;
+                    sharePanel.classList.remove('show');
+                }
+                
+                if (qrcodeModalVisible && !qrcodeModal.contains(e.target)) {
+                    closeQrcodeModal();
+                }
+            });
+            
+            // 分享选项点击事件
+            shareOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const platform = this.getAttribute('data-platform');
+                    handleShare(platform);
+                });
+            });
+            
+            // 处理分享
+            function handleShare(platform) {
+                const url = window.location.href;
+                const title = document.title;
+                const desc = document.querySelector('meta[name="description"]').getAttribute('content');
+                
+                switch(platform) {
+                    case 'copy':
+                        copyToClipboard(url);
+                        showToast('链接已复制到剪贴板！');
+                        break;
+                    case 'qq':
+                        shareToQQ(url, title, desc);
+                        break;
+                    case 'wechat':
+                        showWechatQrcode(url);
+                        break;
+                    case 'weibo':
+                        shareToWeibo(url, title);
+                        break;
+                    case 'douyin':
+                        copyToClipboard(url);
+                        showToast('链接已复制，请打开抖音分享');
+                        break;
+                    case 'xiaohongshu':
+                        copyToClipboard(url);
+                        showToast('链接已复制，请打开小红书分享');
+                        break;
+                }
+                
+                // 关闭分享面板
+                sharePanelVisible = false;
+                sharePanel.classList.remove('show');
+            }
+            
+            // 复制到剪贴板
+            function copyToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+            
+            // 显示提示
+            function showToast(message) {
+                shareToast.textContent = message;
+                shareToast.classList.add('show');
+                
+                setTimeout(() => {
+                    shareToast.classList.remove('show');
+                }, 3000);
+            }
+            
+            // 分享到QQ
+            function shareToQQ(url, title, desc) {
+                const shareUrl = `https://connect.qq.com/widget/shareqq/index.html?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&desc=${encodeURIComponent(desc)}`;
+                window.open(shareUrl, '_blank', 'width=615,height=530');
+            }
+            
+            // 分享到微博
+            function shareToWeibo(url, title) {
+                const shareUrl = `https://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+                window.open(shareUrl, '_blank', 'width=615,height=530');
+            }
+            
+            // 显示微信二维码弹窗
+            function showWechatQrcode(url) {
+                // 创建二维码
+                createQRCode(url);
+                
+                // 显示弹窗
+                qrcodeModalVisible = true;
+                qrcodeModal.classList.add('show');
+            }
+            
+            // 创建二维码
+            function createQRCode(url) {
+                const canvas = document.getElementById('qrcodeCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // 设置画布大小
+                canvas.width = 200;
+                canvas.height = 200;
+                
+                // 清除画布
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 生成简单二维码（简化版）
+                // 注意：实际应用中应该使用专门的二维码生成库
+                ctx.fillStyle = '#000000';
+                
+                // 简单实现，绘制一个简单的二维码样式
+                // 实际应该使用专门的二维码库，这里仅做演示
+                const size = 10;
+                const margin = 10;
+                
+                // 绘制定位标记
+                ctx.fillRect(margin, margin, size*7, size*7);
+                ctx.clearRect(margin+size, margin+size, size*5, size*5);
+                
+                ctx.fillRect(canvas.width - margin - size*7, margin, size*7, size*7);
+                ctx.clearRect(canvas.width - margin - size*6, margin+size, size*5, size*5);
+                
+                ctx.fillRect(margin, canvas.height - margin - size*7, size*7, size*7);
+                ctx.clearRect(margin+size, canvas.height - margin - size*6, size*5, size*5);
+                
+                // 在二维码中间添加网站logo
+                ctx.font = 'bold 14px Arial';
+                ctx.fillStyle = '#8e2de2';
+                ctx.textAlign = 'center';
+                ctx.fillText('禾', canvas.width/2, canvas.height/2 + 5);
+                
+                // 显示URL文本
+                const qrcodeImg = document.getElementById('qrcodeImg');
+                qrcodeImg.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}" alt="微信分享二维码">`;
+            }
+            
+            // 关闭二维码弹窗
+            closeQrcode.addEventListener('click', closeQrcodeModal);
+            
+            function closeQrcodeModal() {
+                qrcodeModalVisible = false;
+                qrcodeModal.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>

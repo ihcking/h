@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🍎 八级卡通·教资备考乐园 | 动态倒计时·特效番茄钟</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>法考零基础通关站 | 客观题+主观题双倒计时 · 智能备考助手</title>
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -14,11 +14,15 @@
         }
 
         body {
-            font-family: 'Quicksand', 'Segoe UI', sans-serif;
-            background: linear-gradient(145deg, #fff9ef 0%, #ffe6cf 100%);
-            color: #4a3b2c;
-            padding: 24px 20px;
-            line-height: 1.45;
+            background: linear-gradient(145deg, #f4f9ff 0%, #eef3fc 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            padding: 2rem 1.5rem;
+            color: #1a2c3e;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
         }
 
         .container {
@@ -26,874 +30,619 @@
             margin: 0 auto;
         }
 
-        /* 卡通卡片统一圆润 + 柔和阴影 */
-        .cute-card {
-            background: #fffef7;
-            border-radius: 2rem;
-            box-shadow: 0 16px 28px -12px rgba(255, 160, 80, 0.25);
-            padding: 1.5rem;
-            transition: all 0.2s ease;
-            border: 2px solid #ffe1b3;
-        }
-        .cute-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 24px 32px -12px #ffc48a;
+        /* ========== 头部 ========== */
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
 
-        /* 头部大卡片 */
-        .hero-cute {
-            background: linear-gradient(115deg, #f7a35c, #ffc48a);
-            border-radius: 2.5rem;
-            padding: 1.6rem 2rem;
-            margin-bottom: 2rem;
-            color: #2d2b26;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+        .hero h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(125deg, #1a3c5c, #1f6392, #2b7cab);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-flex;
             align-items: center;
-            box-shadow: 0 12px 0 #e07c3e;
-            border: 2px solid #fff0cf;
-        }
-        .hero-cute h1 {
-            font-size: 1.9rem;
-            font-weight: 800;
-            text-shadow: 3px 3px 0 #ffdd99;
+            gap: 12px;
             letter-spacing: -0.3px;
         }
-        .hero-cute p {
-            font-weight: 600;
-            background: #ffefcf;
-            display: inline-block;
-            padding: 6px 20px;
-            border-radius: 40px;
-            font-size: 0.9rem;
+
+        .hero h1 i {
+            background: none;
+            color: #1f6392;
+            font-size: 2.2rem;
         }
 
-        /* 倒计时网格优化间距 */
-        .countdown-grid {
+        .hero p {
+            font-size: 1.05rem;
+            color: #3a5a7a;
+            max-width: 720px;
+            margin: 0.5rem auto 0;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            gap: 12px;
+            background: rgba(31, 99, 146, 0.1);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1f6392;
+        }
+
+        /* ========== 双倒计时卡片 (等高对齐) ========== */
+        .double-timer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .timer-card {
+            background: #ffffffdd;
+            backdrop-filter: blur(8px);
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+            border-radius: 2rem;
+            padding: 1.6rem 1.2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .timer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 28px 40px -16px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer-icon {
+            background: #ecf3fa;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            border-radius: 35px;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: #1f6392;
+        }
+
+        .timer-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .exam-date {
+            font-size: 0.85rem;
+            color: #6b8eab;
+            margin-bottom: 1rem;
+        }
+
+        .timer-digits {
+            font-family: 'Fira Mono', 'JetBrains Mono', monospace;
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: #1e2f3c;
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            color: #f7e6a2;
+            letter-spacing: 2px;
+            margin: 0.5rem 0;
+        }
+
+        .timer-status {
+            font-size: 0.8rem;
+            background: #eef2f7;
+            display: inline-block;
+            padding: 0.2rem 0.9rem;
+            border-radius: 24px;
+            margin-top: 0.5rem;
+        }
+
+        /* ========== 通用卡片网格 全部对齐 ========== */
+        .grid-equal {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 1.8rem;
-            margin-bottom: 2.2rem;
-        }
-        .season-cute {
-            background: #ffffffdb;
-            backdrop-filter: blur(3px);
-            border-radius: 2rem;
-            padding: 1.3rem 1.6rem;
-            border-left: 12px solid #ffaa66;
-            box-shadow: 0 8px 18px #ffdaa0;
-        }
-        .season-cute h3 {
-            font-size: 1.45rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1rem;
-        }
-        .badge-cute {
-            background: #fff0c8;
-            border-radius: 60px;
-            padding: 4px 14px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: #c97e2a;
-        }
-        .cd-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-top: 12px;
-        }
-        .cd-unit {
-            background: #fef3e2;
-            border-radius: 2rem;
-            padding: 10px 12px;
-            flex: 1;
-            text-align: center;
-            min-width: 100px;
-            transition: all 0.1s ease;
-        }
-        /* 动态倒计时数字动画 */
-        .cd-number {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #d2691e;
-            display: inline-block;
-            transition: transform 0.1s ease;
-        }
-        .number-pop {
-            transform: scale(1.12);
-            color: #f08c2e;
-        }
-        .cd-label {
-            font-size: 0.72rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: #b9772e;
-            letter-spacing: 0.3px;
-        }
-        .tiny-unit {
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-left: 3px;
-        }
-        .target-date {
-            font-size: 0.65rem;
-            color: #aa7a44;
-            margin-top: 6px;
-            font-weight: 600;
-            background: #fff1df;
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 40px;
-        }
-
-        /* 左右布局：任务清单 + 高频考点 */
-        .task-know-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2.2rem;
-        }
-        @media (max-width: 780px) {
-            .task-know-row {
-                grid-template-columns: 1fr;
-                gap: 1.8rem;
-            }
-        }
-
-        /* 任务清单内间距优化 */
-        .task-item {
-            background: #fff5e6;
-            border-radius: 1.8rem;
-            margin: 12px 0;
-            padding: 12px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #ffddb0;
-        }
-        .progress-bg-cute {
-            background: #ffe0bd;
-            border-radius: 3rem;
-            height: 14px;
-            overflow: hidden;
-            margin: 8px 0 6px;
-        }
-        .progress-fill-cute {
-            background: #f39c12;
-            width: 0%;
-            height: 100%;
-            border-radius: 3rem;
-        }
-
-        /* 考点手风琴 行距舒适 */
-        .accordion-cute .acc-item {
-            background: #fff7e8;
-            margin: 14px 0;
-            border-radius: 1.8rem;
-            padding: 0 16px;
-            border: 1px solid #ffe0ae;
-        }
-        .acc-header {
-            font-weight: 800;
-            padding: 16px 0;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1rem;
-        }
-        .acc-content {
-            display: none;
-            padding-bottom: 16px;
-            color: #7a5a3a;
-            line-height: 1.5;
-            font-size: 0.9rem;
-        }
-
-        /* 双栏下部分 */
-        .two-col-fun {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 2rem;
             margin-bottom: 2rem;
         }
 
-        /* 番茄钟自定义区域 - 特效按钮 */
-        .timer-custom {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin: 16px 0 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .timer-custom input {
-            width: 90px;
-            padding: 10px;
-            border-radius: 3rem;
-            border: 2px solid #fbc48f;
-            text-align: center;
-            font-weight: bold;
-            background: #fff3e4;
-        }
-        .btn-set-effect {
-            background: #ffaa55;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 2rem;
-            font-weight: 700;
-            color: #2f2e2a;
-            cursor: pointer;
-            transition: 0.1s linear;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-set-effect:active {
-            transform: scale(0.94);
-        }
-        .ripple-effect {
-            position: relative;
-            overflow: hidden;
-        }
-        .ripple-effect:after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 200, 0.8);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-        .ripple-effect:active:after {
-            width: 120px;
-            height: 120px;
-            opacity: 0;
-            transition: 0s;
-        }
-        .timer-display-cute {
-            background: #f7d9b5;
-            border-radius: 2.5rem;
-            padding: 1.2rem;
-            text-align: center;
-        }
-        .timer-clock-big {
-            font-size: 3rem;
-            font-weight: 800;
-            font-family: monospace;
+        .card {
             background: white;
-            display: inline-block;
-            padding: 0.2rem 1.6rem;
-            border-radius: 3rem;
-            color: #bf6f00;
-            letter-spacing: 3px;
-        }
-        .btn-cute {
-            background: #ffaa55;
-            border: none;
-            padding: 8px 20px;
             border-radius: 2rem;
-            font-weight: 700;
-            color: #2f2e2a;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: 0.07s linear;
-            font-family: inherit;
-        }
-        .btn-cute:active { transform: scale(0.96); }
-
-        /* 轻提示toast */
-        .toast-msg {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #f39c12;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 60px;
-            font-weight: bold;
-            z-index: 999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            animation: fadeOutUp 2s forwards;
-            pointer-events: none;
-        }
-        @keyframes fadeOutUp {
-            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            70% { opacity: 1; }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-30px); visibility: hidden; }
-        }
-
-        /* 笔记卡片内边距 */
-        .note-item {
-            background: #fff2e2;
-            border-radius: 1.5rem;
-            padding: 12px 16px;
-            margin: 10px 0;
+            padding: 1.5rem 1.6rem;
+            box-shadow: 0 12px 26px -10px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+            border: 1px solid #eef2fa;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-header {
+            display: flex;
             align-items: center;
-        }
-
-        /* 题库选项 */
-        .quiz-option-cute {
-            background: #fff2e0;
-            border-radius: 3rem;
-            padding: 12px 20px;
-            margin: 10px 0;
-            cursor: pointer;
-            transition: 0.05s linear;
-            border: 1px solid #ffe0b5;
-            font-weight: 500;
-        }
-        .quiz-option-cute.selected {
-            background: #ffe0b5;
-            border: 2px solid #f7b05e;
-        }
-
-        /* 页尾链接模块样式 */
-        .footer-links {
-            margin-top: 1.2rem;
+            gap: 12px;
+            border-bottom: 2px solid #eef2f8;
+            padding-bottom: 0.8rem;
             margin-bottom: 1.2rem;
         }
-        .link-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 12px;
-            justify-content: center;
+
+        .card-header i {
+            font-size: 1.7rem;
+            color: #1f6392;
         }
-        .cute-link {
-            background: #fffaec;
-            padding: 10px 22px;
-            border-radius: 3rem;
-            text-decoration: none;
-            font-weight: 700;
-            color: #b35f1a;
-            border: 2px solid #ffd9a5;
-            transition: 0.1s;
+
+        .card-header h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #1a3c5c;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 12px 0;
+            border-bottom: 1px dashed #e9edf2;
+            padding: 6px 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #2c5a7a;
+        }
+
+        .info-value {
+            color: #236b9b;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        /* 每日一题区域 */
+        .quiz-box {
+            background: #fafcfe;
+            border-radius: 1.5rem;
+            padding: 0.2rem;
+        }
+
+        .question-text {
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            font-weight: 500;
+            border-left: 4px solid #1f6392;
+        }
+
+        .btn-sm {
+            background: #2a5298;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9rem;
         }
-        .cute-link:hover {
-            background: #ffe3b5;
+
+        .btn-sm-outline {
+            background: #eef3fc;
+            color: #1f6392;
+        }
+
+        .btn-sm:hover {
+            background: #174078;
+            transform: scale(0.97);
+        }
+
+        .answer-area {
+            background: #eef3fc;
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 1.2rem;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .answer-area.show {
+            display: block;
+        }
+
+        /* 标签云 + 里程碑样式 */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0.8rem 0;
+        }
+
+        .tag {
+            background: #eef2f9;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f6392;
+        }
+
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .progress-ring {
+            width: 48px;
+            text-align: center;
+            font-weight: 700;
+            color: #1f6392;
+        }
+
+        /* 官方链接 */
+        .official-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ecf3f9;
+            padding: 6px 18px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #236b9b;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .official-link:hover {
+            background: #dce6f0;
             transform: translateY(-2px);
-            border-color: #f3b45b;
         }
 
         footer {
             text-align: center;
-            margin-top: 1rem;
+            margin-top: 2.2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #d0dfec;
+            color: #5f7f9c;
             font-size: 0.8rem;
-            font-weight: 600;
-            color: #b98f62;
-            padding: 12px;
-            border-top: 1px dashed #ffdaa0;
         }
-        button, .quiz-option-cute, .acc-header { cursor: pointer; }
-        i { margin-right: 8px; }
-        input, button {
-            font-family: 'Quicksand', sans-serif;
+
+        @media (max-width: 760px) {
+            body {
+                padding: 1rem;
+            }
+
+            .timer-digits {
+                font-size: 1.2rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .info-value {
+                text-align: left;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- 头部卡通 -->
-    <div class="hero-cute">
-        <div>
-            <h1><i class="fas fa-bear"></i> 八级卡通·教资备考乐园 <i class="fas fa-candy-cane"></i></h1>
-            <p><i class="fas fa-star"></i> 零基础轻松学 · 一次上岸 <i class="fas fa-heart"></i></p>
-        </div>
-        <div style="background: #ffefcf; border-radius: 60px; padding: 6px 20px;">
-            <i class="fas fa-smile-wink"></i> 快乐学习 每日精进
-        </div>
-    </div>
-
-    <!-- 倒计时区域 (动态天+时，数字动画 + 具体日期显示) -->
-    <div class="countdown-grid">
-        <!-- 上半年考季 -->
-        <div class="season-cute">
-            <h3><i class="fas fa-sun" style="color:#f9a95c;"></i> 上半年考季 <span class="badge-cute">报名·笔试·面试</span></h3>
-            <div class="cd-row">
-                <div class="cd-unit">
-                    <div class="cd-label"><i class="far fa-clock"></i> 报名倒计时</div>
-                    <div><span id="springRegDays" class="cd-number">--</span><span class="tiny-unit">天</span> <span id="springRegHours" class="cd-number">--</span><span class="tiny-unit">时</span></div>
-                    <div class="target-date">📅 预计1月10日报名</div>
-                </div>
-                <div class="cd-unit">
-                    <div class="cd-label"><i class="fas fa-pen-fancy"></i> 笔试倒计时</div>
-                    <div><span id="springWrittenDays" class="cd-number">--</span><span class="tiny-unit">天</span> <span id="springWrittenHours" class="cd-number">--</span><span class="tiny-unit">时</span></div>
-                    <div class="target-date">📅 预计3月12日笔试</div>
-                </div>
-                <div class="cd-unit">
-                    <div class="cd-label"><i class="fas fa-microphone"></i> 面试倒计时</div>
-                    <div><span id="springInterviewDays" class="cd-number">--</span><span class="tiny-unit">天</span> <span id="springInterviewHours" class="cd-number">--</span><span class="tiny-unit">时</span></div>
-                    <div class="target-date">📅 预计5月21日面试</div>
-                </div>
-            </div>
-        </div>
-        <!-- 下半年考季 -->
-        <div class="season-cute">
-            <h3><i class="fas fa-leaf" style="color:#5fad56;"></i> 下半年考季 <span class="badge-cute">报名·笔试·面试</span></h3>
-            <div class="cd-row">
-                <div class="cd-unit">
-                    <div class="cd-label"><i class="far fa-clock"></i> 报名倒计时</div>
-                    <div><span id="autumnRegDays" class="cd-number">--</span><span class="tiny-unit">天</span> <span id="autumnRegHours" class="cd-number">--</span><span class="tiny-unit">时</span></div>
-                    <div class="target-date">📅 预计9月5日报名</div>
-                </div>
-                <div class="cd-unit">
-                    <div class="cd-label"><i class="fas fa-pen-fancy"></i> 笔试倒计时</div>
-                    <div><span id="autumnWrittenDays" class="cd-number">--</span><span class="tiny-unit">天</span> <span id="autumnWrittenHours" class="cd-number">--</span><span class="tiny-unit">时</span></div>
-                    <div class="target-date">📅 预计10月28日笔试</div>
-                </div>
-                <div class="cd-unit">
-                    <div class="cd-label"><i class="fas fa-microphone"></i> 面试倒计时</div>
-                    <div><span id="autumnInterviewDays" class="cd-number">--</span><span class="tiny-unit">天</span> <span id="autumnInterviewHours" class="cd-number">--</span><span class="tiny-unit">时</span></div>
-                    <div class="target-date">📅 预计12月10日面试</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div style="text-align: center; margin-top: -1rem; margin-bottom: 1rem; font-size: 0.7rem; color:#c2894a;"><i class="fas fa-info-circle"></i> 以上时间参考往年安排，具体以官方公告为准</div>
-
-    <!-- 左右布局：今日学习任务清单 + 高频考点速记锦囊 -->
-    <div class="task-know-row">
-        <!-- 左侧任务清单 -->
-        <div class="cute-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 8px;">
-                <h3><i class="fas fa-clipboard-list"></i> 📋 今日学习任务清单</h3>
-                <button id="resetTasksBtn" class="btn-cute" style="background:#fcd7a0;"><i class="fas fa-undo-alt"></i> 重置</button>
-            </div>
-            <div class="progress-bg-cute"><div class="progress-fill-cute" id="taskProgressFill" style="width:0%"></div></div>
-            <div style="display: flex; justify-content: space-between; margin: 8px 0 12px;"><span>🏆 完成度</span><span id="taskPercentage">0</span>% (<span id="completedCount">0</span>/<span id="totalCount">0</span>)</div>
-            <div id="taskListContainer" style="max-height: 280px; overflow-y: auto;"></div>
-            <div class="add-task-form" style="display: flex; gap: 12px; margin-top: 18px;">
-                <input type="text" id="newTaskInput" placeholder="✨ 添加新任务，如背简答题" style="flex:1; border-radius: 60px; border: 2px solid #fcd49b; padding: 12px 18px; background:#fffaf2;">
-                <button id="addTaskBtn" class="btn-cute"><i class="fas fa-plus-circle"></i> 添加</button>
-            </div>
-        </div>
-
-        <!-- 右侧高频考点 手风琴 -->
-        <div class="cute-card">
-            <h3><i class="fas fa-graduation-cap"></i> 🧸 高频考点·速记锦囊</h3>
-            <div class="accordion-cute" id="accordionCute">
-                <div class="acc-item"><div class="acc-header">📌 素质教育观 <i class="fas fa-chevron-down"></i></div><div class="acc-content">面向全体学生、全面发展、创新实践、个性发展。口诀：全体面创个</div></div>
-                <div class="acc-item"><div class="acc-header">🧑‍🏫 教师职业道德 <i class="fas fa-chevron-down"></i></div><div class="acc-content">三爱两人一终身：爱国守法、爱岗敬业、关爱学生、教书育人、为人师表、终身学习。</div></div>
-                <div class="acc-item"><div class="acc-header">🧠 皮亚杰认知四阶段 <i class="fas fa-chevron-down"></i></div><div class="acc-content">感知运动(0-2岁)→前运算(2-7岁)→具体运算(7-11岁)→形式运算(11+)</div></div>
-                <div class="acc-item"><div class="acc-header">⚖️ 学生核心权利 <i class="fas fa-chevron-down"></i></div><div class="acc-content">受教育权、人格尊严权、隐私权、财产权。依法保障！</div></div>
-                <div class="acc-item"><div class="acc-header">📖 教学原则速记 <i class="fas fa-chevron-down"></i></div><div class="acc-content">直观启发性，巩固循序渐进，因材施教理论联实际。</div></div>
-            </div>
-            <div class="badge-cute" style="display: inline-block; margin-top: 16px;"><i class="fas fa-lightbulb"></i> 每天看一遍，记忆更深刻</div>
+    <!-- 头部区域 -->
+    <div class="hero">
+        <h1><i class="fas fa-gavel"></i> 法考领航员 · 零基础通关站</h1>
+        <p>客观题+主观题双倒计时 | 报名提醒 | 每日真题演练 | 备考规划全齐备</p>
+        <div class="hero-badge">
+            <i class="fas fa-calendar-week"></i> 2026法考季·实时更新
+            <i class="fas fa-chalkboard-user"></i> 零基础适配
         </div>
     </div>
 
-    <!-- 双栏模块：番茄钟 + 笔记 / 题库 -->
-    <div class="two-col-fun">
-        <!-- 左：番茄钟(自定义+特效按钮) + 笔记 -->
-        <div class="cute-card">
-            <h3><i class="fas fa-hourglass-start"></i> 🍅 番茄专注钟（可自定义时长）</h3>
-            <div class="timer-display-cute">
-                <div class="timer-clock-big" id="timerClock">25:00</div>
-                <div class="timer-custom">
-                    <input type="number" id="customMinutes" min="1" max="90" value="25" step="1"> <span>分钟</span>
-                    <button id="setCustomTimeBtn" class="btn-set-effect ripple-effect"><i class="fas fa-cog"></i> 设定</button>
-                </div>
-                <div class="timer-buttons" style="margin-top: 14px;">
-                    <button id="timerStartBtn" class="btn-cute"><i class="fas fa-play"></i> 开始</button>
-                    <button id="timerPauseBtn" class="btn-cute"><i class="fas fa-pause"></i> 暂停</button>
-                    <button id="timerResetBtn" class="btn-cute"><i class="fas fa-redo-alt"></i> 重置</button>
-                </div>
-                <p style="font-size: 0.7rem; margin-top: 12px;"><i class="fas fa-heart"></i> 专注学习，自动提醒休息</p>
+    <!-- 双倒计时卡片（完全对齐） -->
+    <div class="double-timer">
+        <div class="timer-card">
+            <div>
+                <div class="timer-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="timer-title">客观题考试</div>
+                <div class="exam-date" id="objectiveDateLabel">加载中...</div>
+                <div class="timer-digits" id="objectiveCountdown">--天 --时 --分 --秒</div>
             </div>
-            <h3 style="margin-top: 24px;"><i class="fas fa-pencil-alt"></i> 🍬 学习笔记·灵感收集</h3>
-            <div style="display: flex; gap: 10px; margin: 14px 0 8px;">
-                <input type="text" id="noteInput" placeholder="记录错题/口诀/心得..." style="flex:1; border-radius: 60px; border:2px solid #f7cf9f; padding: 12px 16px;">
-                <button id="addNoteBtn" class="btn-cute"><i class="fas fa-save"></i> 保存</button>
+            <div class="timer-status" id="objectiveStatusTag"><i class="far fa-clock"></i> 基础夯实黄金期</div>
+        </div>
+        <div class="timer-card">
+            <div>
+                <div class="timer-icon"><i class="fas fa-pen-fancy"></i></div>
+                <div class="timer-title">主观题考试</div>
+                <div class="exam-date" id="subjectiveDateLabel">加载中...</div>
+                <div class="timer-digits" id="subjectiveCountdown">--天 --时 --分 --秒</div>
             </div>
-            <div id="notesList" style="max-height: 210px; overflow-y: auto;"></div>
+            <div class="timer-status" id="subjectiveStatusTag"><i class="fas fa-rocket"></i> 客观后冲刺阶段</div>
+        </div>
+    </div>
+
+    <!-- 关键考务日程 + 报名提醒和报考指南 等高网格 -->
+    <div class="grid-equal">
+        <!-- 左侧：考务信息与动态 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-calendar-check"></i>
+                <h2>📋 关键考务·实时动态</h2>
+            </div>
+            <div class="info-row"><span class="info-label"><i class="far fa-calendar-alt"></i> 客观题报名</span><span class="info-value" id="regObjectivePeriod">——</span></div>
+            <div class="info-row"><span class="info-label"><i class="fas fa-gavel"></i> 主观题报名</span><span class="info-value" id="regSubjectivePeriod">客观题出分后开启</span></div>
+            <div class="info-row"><span class="info-label"><i class="fas fa-chart-simple"></i> 客观题成绩公布</span><span class="info-value" id="resultDateInfo">考后8-10天</span></div>
+            <div class="info-row"><span class="info-label"><i class="fas fa-hourglass-half"></i> 当前复习阶段</span><span class="info-value" id="phaseMessage">——</span></div>
+            <div class="info-row"><span class="info-label"><i class="fas fa-tasks"></i> 今日建议任务</span><span class="info-value" id="dailyTask">刷真题+民法精讲</span></div>
+            <div style="margin-top: 1rem; background: #eef2fa; border-radius: 28px; padding: 0.8rem;">
+                <i class="fas fa-bell"></i> <strong>报名特别提醒</strong><br>
+                <span id="registrationAlertMsg">关注中国法律服务网，报名未开启请提前准备材料。</span>
+            </div>
         </div>
 
-        <!-- 右：真题智趣闯关 -->
-        <div class="cute-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3><i class="fas fa-brain"></i> 🎯 真题智趣闯关</h3>
-                <span class="badge-cute" id="quizScoreBadge">得分 0/0</span>
+        <!-- 右侧：零基础报考指南 + 高频考点云 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-user-check"></i>
+                <h2>📌 零基础·上岸锦囊</h2>
             </div>
-            <div id="quizArea" style="margin-top: 8px;">
-                <div style="font-weight: 800; margin-bottom: 14px;" id="quizQuestion">加载题目中...</div>
-                <div id="quizOptions" class="quiz-options"></div>
-                <div id="quizFeedback" style="font-size: 0.85rem; margin: 12px 0; min-height: 55px;"></div>
-                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                    <button id="submitAnswerBtn" class="btn-cute">✅ 提交答案</button>
-                    <button id="nextQuestionBtn" class="btn-cute">⏩ 下一题</button>
-                    <button id="resetQuizBtn" class="btn-cute">🔄 重考</button>
-                </div>
+            <div class="info-row"><span class="info-label">🎓 学历/政策</span><span class="info-value">法学本科 / 非法本+法硕 / 放宽地区“老人老办法”</span></div>
+            <div class="info-row"><span class="info-label">📚 核心科目权重</span><span class="info-value">民法·刑法·刑诉·民诉·行政·理论法</span></div>
+            <div class="info-row"><span class="info-label">💡 高分策略</span><span class="info-value">近5年真题3遍 + 主观法条定位特训</span></div>
+            <div class="tag-cloud">
+                <span class="tag"><i class="fas fa-gavel"></i> 刑法观点展示</span>
+                <span class="tag"><i class="fas fa-balance-scale"></i> 请求权基础</span>
+                <span class="tag"><i class="fas fa-chart-line"></i> 新法必考</span>
+                <span class="tag"><i class="fas fa-file-alt"></i> 论述题模板</span>
+                <span class="tag"><i class="fas fa-database"></i> 法条定位</span>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between;">
+                <a href="https://www.moj.gov.cn" target="_blank" class="official-link"><i class="fas fa-balance-scale"></i> 司法部官网</a>
+                <a href="https://www.12348.gov.cn" target="_blank" class="official-link"><i class="fas fa-building"></i> 法律服务网</a>
+                <button id="mockReminderBtn" class="official-link" style="background:#e7edf5; border:none;"><i class="fas fa-envelope-open-text"></i> 报名预提醒</button>
             </div>
         </div>
     </div>
 
-    <!-- 教资实用链接 - 独立卡片，置于页尾上方 -->
-    <div class="cute-card footer-links">
-        <h4 style="margin: 0 0 6px 0; text-align: center;"><i class="fas fa-link"></i> 📌 教资实用链接</h4>
-        <div class="link-grid">
-            <a href="https://ntce.neea.edu.cn/" target="_blank" rel="noopener noreferrer" class="cute-link"><i class="fas fa-globe"></i> 中小学教师资格考试网</a>
-            <a href="https://www.neea.edu.cn/" target="_blank" rel="noopener noreferrer" class="cute-link"><i class="fas fa-file-alt"></i> 中国教育考试网</a>
-            <a href="https://ntce.neea.edu.cn/html1/folder/1507/1076-1.htm" target="_blank" rel="noopener noreferrer" class="cute-link"><i class="fas fa-calendar-check"></i> 考试日程查询</a>
-            <a href="https://www.chsi.com.cn/" target="_blank" rel="noopener noreferrer" class="cute-link"><i class="fas fa-id-card"></i> 学信网(学历认证)</a>
+    <!-- 第二行：每日一题 + 备考里程碑/月历 增强对齐 -->
+    <div class="grid-equal">
+        <!-- 每日一题区域 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-lightbulb"></i>
+                <h2>📖 真题·每日一练</h2>
+            </div>
+            <div class="quiz-box">
+                <div class="question-text" id="quizQuestion">加载经典真题中...</div>
+                <div style="display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap; margin-top: 8px;">
+                    <button class="btn-sm" id="newQuestionBtn"><i class="fas fa-sync-alt"></i> 换一题</button>
+                    <button class="btn-sm btn-sm-outline" id="showAnswerBtn" style="background:#eef3fc; color:#1f6392;"><i class="fas fa-eye"></i> 查看解析</button>
+                </div>
+                <div id="answerBox" class="answer-area"></div>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.85rem; background: #f7fafd; border-radius: 1.5rem; padding: 0.6rem 1rem;">
+                <i class="fas fa-chart-simple"></i> <strong>刷题心法</strong>：真题重复考查率高，每道题弄懂四个选项背后的原理。
+            </div>
         </div>
-        <div class="badge-cute" style="display: block; text-align: center; margin-top: 16px;"><i class="fas fa-info-circle"></i> 官方信息以最新公告为准</div>
+
+        <!-- 备考里程碑 + 学习任务清单 (完善内容) -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-calendar-alt"></i>
+                <h2>🎯 备考里程碑 & 月历</h2>
+            </div>
+            <div class="milestone-item"><div class="progress-ring"><i class="fas fa-check-circle" style="color:#2a7f6e;"></i></div><div><strong>⏳ 基础阶段 (3-5月)</strong><br>三大实体法一轮精讲，构建体系</div></div>
+            <div class="milestone-item"><div class="progress-ring"><i class="fas fa-spinner fa-pulse"></i></div><div><strong>📈 强化刷题 (6-7月)</strong><br>近五年客观真题二轮，错题归纳</div></div>
+            <div class="milestone-item"><div class="progress-ring"><i class="fas fa-bolt"></i></div><div><strong>⚡ 冲刺押题 (8-考前)</strong><br>模拟机考+背诵卷，巩固高频考点</div></div>
+            <div class="milestone-item"><div class="progress-ring"><i class="fas fa-pen-ruler"></i></div><div><strong>✍️ 主观特训 (客观后30天)</strong><br>每日大案例+法条定位集训</div></div>
+            <div style="margin-top: 1rem; background: #eef2f5; border-radius: 1.5rem; padding: 0.8rem;">
+                <i class="fas fa-flag-checkered"></i> <strong>本周复习目标</strong>：<span id="weeklyGoal">刑诉二轮+民诉对比记忆，开始主观小案例</span>
+            </div>
+        </div>
+
+        <!-- 新增卡片：法考工具推荐+每日鼓励语 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-tools"></i>
+                <h2>🛠️ 备考工具包</h2>
+            </div>
+            <div class="info-row"><span class="info-label"><i class="fas fa-tablet-alt"></i> 刷题APP</span><span class="info-value">竹马/觉晓/深蓝 真题库</span></div>
+            <div class="info-row"><span class="info-label"><i class="fas fa-video"></i> 名师课程</span><span class="info-value">B站免费精讲：柏浪涛/钟秀勇/李佳</span></div>
+            <div class="info-row"><span class="info-label"><i class="fas fa-head-side-vr"></i> AI计划表</span><span class="info-value">番茄工作法+艾宾浩斯记忆表</span></div>
+            <div style="margin-top: 1rem; border-radius: 1.5rem; background:#f8f3e8; padding: 0.8rem;">
+                <i class="fas fa-heart" style="color:#c56c2e;"></i> <strong>今日励志语</strong><br>
+                <span id="dailyMotivation" style="font-style: italic;">“法考之路，步履不停，零基础亦有无限可能”</span>
+            </div>
+        </div>
     </div>
 
-    <footer>⭐ 所有学习数据自动保存 (任务/笔记/自定义时长) | 动态倒计时每秒更新 | 可爱备考，一次上岸 🧸</footer>
+    <footer>
+        <i class="far fa-copyright"></i> 法考领航员 · 客观题9月第二个周六 / 主观题10月第三个周六 （基于历年规律自动推算）<br>
+        实时时间以司法部最终公告为准 | 专心备考，必过法考
+    </footer>
 </div>
 
 <script>
-    // ----------------------------- 1. 任务模块 (localStorage) -----------------------------
-    let tasks = [];
-    function loadTasks() {
-        const stored = localStorage.getItem('cuteTasks');
-        if(stored) tasks = JSON.parse(stored);
-        else tasks = [
-            { id: Date.now()+1, text: '🍎 背诵“素质教育”内涵5条', completed: false },
-            { id: Date.now()+2, text: '📚 刷《教育知识与能力》15道选择题', completed: false },
-            { id: Date.now()+3, text: '✏️ 整理教学设计万能模板', completed: false }
-        ];
-        renderTaskList();
-        updateTaskProgress();
+    // ======================= 智能日期核心 =======================
+    function getObjectiveExam(year) {
+        let firstSep = new Date(year, 8, 1);
+        let dow = firstSep.getDay();
+        let firstSat = (dow === 6) ? 1 : 1 + (6 - dow);
+        let secondSat = firstSat + 7;
+        return new Date(year, 8, secondSat, 9, 0, 0);
     }
-    function saveTasks() { localStorage.setItem('cuteTasks', JSON.stringify(tasks)); }
-    function renderTaskList() {
-        const container = document.getElementById('taskListContainer');
-        if(!container) return;
-        container.innerHTML = '';
-        tasks.forEach(task => {
-            const div = document.createElement('div');
-            div.className = `task-item ${task.completed ? 'completed-task' : ''}`;
-            div.style.opacity = task.completed ? '0.7' : '1';
-            div.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 14px;">
-                    <input type="checkbox" data-id="${task.id}" ${task.completed ? 'checked' : ''} style="width:20px;height:20px; accent-color:#f39c12;">
-                    <span style="font-weight:600;">${escapeHtml(task.text)}</span>
-                </div>
-                <button class="delete-task" data-id="${task.id}" style="background:none; border:none; font-size:1.2rem; color:#f5b37a;"><i class="fas fa-trash-alt"></i></button>
-            `;
-            container.appendChild(div);
-        });
-        document.querySelectorAll('.task-item input[type="checkbox"]').forEach(cb => {
-            cb.addEventListener('change', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                const t = tasks.find(t => t.id === id);
-                if(t) { t.completed = e.target.checked; saveTasks(); renderTaskList(); updateTaskProgress(); }
-            });
-        });
-        document.querySelectorAll('.delete-task').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(btn.dataset.id);
-                tasks = tasks.filter(t => t.id !== id);
-                saveTasks(); renderTaskList(); updateTaskProgress();
-            });
-        });
-    }
-    function updateTaskProgress() {
-        const total = tasks.length;
-        const completed = tasks.filter(t => t.completed).length;
-        const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-        document.getElementById('taskPercentage').innerText = percent;
-        document.getElementById('taskProgressFill').style.width = `${percent}%`;
-        document.getElementById('completedCount').innerText = completed;
-        document.getElementById('totalCount').innerText = total;
-    }
-    document.getElementById('addTaskBtn')?.addEventListener('click', () => {
-        const inp = document.getElementById('newTaskInput');
-        if(inp.value.trim()) {
-            tasks.push({ id: Date.now(), text: inp.value.trim(), completed: false });
-            saveTasks(); renderTaskList(); updateTaskProgress();
-            inp.value = '';
-        }
-    });
-    document.getElementById('resetTasksBtn')?.addEventListener('click', () => {
-        if(confirm('重置为可爱初始任务？当前进度会消失哟')) {
-            tasks = [
-                { id: Date.now()+1, text: '🍎 背诵“素质教育”内涵5条', completed: false },
-                { id: Date.now()+2, text: '📚 刷《教育知识与能力》15道选择题', completed: false },
-                { id: Date.now()+3, text: '✏️ 整理教学设计万能模板', completed: false }
-            ];
-            saveTasks(); renderTaskList(); updateTaskProgress();
-        }
-    });
-    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ return m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'); }); }
 
-    // ----------------------------- 2. 笔记模块 -----------------------------
-    let notes = [];
-    function loadNotes() {
-        const stored = localStorage.getItem('cuteNotes');
-        if(stored) notes = JSON.parse(stored);
-        else notes = ['🧸 综合素质“三观”必背: 学生观/教师观/教育观', '🍭 辨析题步骤: 判断对错+理论依据+总结'];
-        renderNotes();
+    function getSubjectiveExam(year) {
+        let firstOct = new Date(year, 9, 1);
+        let dow = firstOct.getDay();
+        let firstSat = (dow === 6) ? 1 : 1 + (6 - dow);
+        let thirdSat = firstSat + 14;
+        return new Date(year, 9, thirdSat, 9, 0, 0);
     }
-    function saveNotes() { localStorage.setItem('cuteNotes', JSON.stringify(notes)); }
-    function renderNotes() {
-        const container = document.getElementById('notesList');
-        if(!container) return;
-        if(notes.length === 0) { container.innerHTML = '<div style="padding:12px;text-align:center;">✨ 添加学习笔记吧~</div>'; return; }
-        container.innerHTML = '';
-        notes.forEach((note, idx) => {
-            const div = document.createElement('div');
-            div.className = 'note-item';
-            div.innerHTML = `<span>📝 ${escapeHtml(note)}</span><button class="delete-note" data-index="${idx}" style="background:none; border:none; color:#dd9f5c;"><i class="fas fa-times-circle"></i></button>`;
-            container.appendChild(div);
-        });
-        document.querySelectorAll('.delete-note').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.dataset.index);
-                notes.splice(idx,1);
-                saveNotes(); renderNotes();
-            });
-        });
-    }
-    document.getElementById('addNoteBtn')?.addEventListener('click', () => {
-        const inp = document.getElementById('noteInput');
-        if(inp.value.trim()) { notes.push(inp.value.trim()); saveNotes(); renderNotes(); inp.value = ''; }
-    });
 
-    // ----------------------------- 3. 番茄钟 (自定义时长 + 特效按钮与toast) -----------------------------
-    let timerInterval = null;
-    let currentSeconds = 25 * 60;
-    let isTimerRunning = false;
-    let customMinutes = 25;
-    function showToast(message) {
-        const existing = document.querySelector('.toast-msg');
-        if(existing) existing.remove();
-        const toast = document.createElement('div');
-        toast.className = 'toast-msg';
-        toast.innerText = message;
-        document.body.appendChild(toast);
-        setTimeout(() => { if(toast) toast.remove(); }, 2000);
-    }
-    function loadCustomTime() {
-        const saved = localStorage.getItem('cuteTimerMinutes');
-        if(saved && !isNaN(parseInt(saved))) {
-            customMinutes = parseInt(saved);
-            document.getElementById('customMinutes').value = customMinutes;
-            currentSeconds = customMinutes * 60;
-            updateTimerDisplay();
+    let currentExamYear, objectiveDate, subjectiveDate, objectiveRegStart, objectiveRegEnd;
+
+    function refreshDateVariables() {
+        const now = new Date();
+        const thisYear = now.getFullYear();
+        let subjThisYear = getSubjectiveExam(thisYear);
+        if (now > subjThisYear) {
+            currentExamYear = thisYear + 1;
         } else {
-            customMinutes = 25;
-            document.getElementById('customMinutes').value = 25;
-            currentSeconds = 25 * 60;
-            updateTimerDisplay();
+            currentExamYear = thisYear;
         }
+        objectiveDate = getObjectiveExam(currentExamYear);
+        subjectiveDate = getSubjectiveExam(currentExamYear);
+        objectiveRegStart = new Date(currentExamYear, 5, 10);
+        objectiveRegEnd = new Date(currentExamYear, 5, 25, 23, 59, 59);
     }
-    function updateTimerDisplay() {
-        const mins = Math.floor(currentSeconds / 60);
-        const secs = currentSeconds % 60;
-        document.getElementById('timerClock').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-    }
-    function stopTimerInternal() {
-        if(timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-        isTimerRunning = false;
-    }
-    function startTimer() {
-        if(isTimerRunning) return;
-        stopTimerInternal();
-        isTimerRunning = true;
-        timerInterval = setInterval(() => {
-            if(currentSeconds <= 1) {
-                stopTimerInternal();
-                alert('🍅 番茄时间到啦！超级棒！休息一下继续冲~');
-                currentSeconds = customMinutes * 60;
-                updateTimerDisplay();
-                isTimerRunning = false;
-            } else {
-                currentSeconds--;
-                updateTimerDisplay();
-            }
-        }, 1000);
-    }
-    function pauseTimer() { stopTimerInternal(); }
-    function resetTimer() {
-        stopTimerInternal();
-        currentSeconds = customMinutes * 60;
-        updateTimerDisplay();
-        isTimerRunning = false;
-    }
-    function setCustomTimer() {
-        let newMin = parseInt(document.getElementById('customMinutes').value);
-        if(isNaN(newMin) || newMin < 1) newMin = 1;
-        if(newMin > 120) newMin = 120;
-        customMinutes = newMin;
-        localStorage.setItem('cuteTimerMinutes', customMinutes);
-        stopTimerInternal();
-        currentSeconds = customMinutes * 60;
-        updateTimerDisplay();
-        isTimerRunning = false;
-        showToast(`✨ 专注时长已设为 ${customMinutes} 分钟 ✨`);
-        const btn = document.getElementById('setCustomTimeBtn');
-        btn.style.transform = 'scale(0.95)';
-        setTimeout(() => { if(btn) btn.style.transform = ''; }, 150);
-    }
-    document.getElementById('timerStartBtn')?.addEventListener('click', startTimer);
-    document.getElementById('timerPauseBtn')?.addEventListener('click', pauseTimer);
-    document.getElementById('timerResetBtn')?.addEventListener('click', resetTimer);
-    const setBtn = document.getElementById('setCustomTimeBtn');
-    if(setBtn) setBtn.addEventListener('click', setCustomTimer);
 
-    // ----------------------------- 4. 题库模块 -----------------------------
-    const quizBank = [
-        { question: "【综合素质】“以人为本”学生观的核心不包括？", options: ["学生是发展的人", "学生是独特的人", "学生是机器", "学生是独立意义的人"], answer: 2, explanation: "学生是独立、发展、独特的人，不是机器。" },
-        { question: "【教育知识】提出“教育即生活”的教育家是？", options: ["赫尔巴特", "杜威", "夸美纽斯", "洛克"], answer: 1, explanation: "杜威提出教育即生活，学校即社会。" },
-        { question: "【法律法规】教师最基本的权利是？", options: ["教育教学权", "学术交流权", "报酬权", "参与管理权"], answer: 0, explanation: "教育教学权是教师核心权利。" },
-        { question: "【心理学】“最近发展区”理论的提出者是？", options: ["皮亚杰", "维果茨基", "布鲁纳", "斯金纳"], answer: 1, explanation: "维果茨基提出最近发展区。" },
-        { question: "【班级管理】班主任工作的中心环节是？", options: ["了解学生", "组织培养班集体", "个别教育", "协调关系"], answer: 1, explanation: "组织和培养班集体是班主任中心工作。" }
-    ];
-    let quizIndex = 0, quizScore = 0, userAnswers = new Array(quizBank.length).fill(null);
-    let currentSelectedIdx = null, hasAnsweredCurrent = false;
-    function renderQuizUI() {
-        const q = quizBank[quizIndex];
-        document.getElementById('quizQuestion').innerHTML = `<i class="fas fa-question-circle"></i> ${q.question}`;
-        const optsDiv = document.getElementById('quizOptions');
-        optsDiv.innerHTML = '';
-        q.options.forEach((opt, idx) => {
-            const optDiv = document.createElement('div');
-            optDiv.className = `quiz-option-cute ${ (!hasAnsweredCurrent && currentSelectedIdx === idx) ? 'selected' : '' }`;
-            optDiv.innerHTML = `${String.fromCharCode(65+idx)}. ${opt}`;
-            if(!hasAnsweredCurrent) {
-                optDiv.addEventListener('click', () => {
-                    if(hasAnsweredCurrent) return;
-                    currentSelectedIdx = idx;
-                    document.querySelectorAll('.quiz-option-cute').forEach(el => el.classList.remove('selected'));
-                    optDiv.classList.add('selected');
-                });
-            } else {
-                if(idx === q.answer) optDiv.style.backgroundColor = "#cbe6b0";
-                if(userAnswers[quizIndex] === idx && userAnswers[quizIndex] !== q.answer) optDiv.style.backgroundColor = "#ffcfb0";
-            }
-            optsDiv.appendChild(optDiv);
-        });
-        const fbDiv = document.getElementById('quizFeedback');
-        if(hasAnsweredCurrent) {
-            const correct = (userAnswers[quizIndex] === q.answer);
-            fbDiv.innerHTML = `<i class="fas ${correct ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${correct ? '正确！' : '错误！'} ${q.explanation}`;
-        } else fbDiv.innerHTML = '🎈 选择一个答案，点击提交吧！';
-        document.getElementById('quizScoreBadge').innerHTML = `得分 ${quizScore} / ${quizBank.length}`;
+    function formatYMD(date) {
+        return `${date.getFullYear()}年${(date.getMonth()+1).toString().padStart(2,'0')}月${date.getDate().toString().padStart(2,'0')}日`;
     }
-    function submitQuizAnswer() {
-        if(hasAnsweredCurrent) { alert("这题已经答过啦，进入下一题吧"); return; }
-        if(currentSelectedIdx === null) { alert("请先选择一个选项～"); return; }
-        const q = quizBank[quizIndex];
-        const isCorrect = (currentSelectedIdx === q.answer);
-        if(isCorrect && userAnswers[quizIndex] === null) quizScore++;
-        userAnswers[quizIndex] = currentSelectedIdx;
-        hasAnsweredCurrent = true;
-        renderQuizUI();
-    }
-    function nextQuizQuestion() {
-        if(!hasAnsweredCurrent && userAnswers[quizIndex] === null) { alert("请先提交本题答案～"); return; }
-        if(quizIndex + 1 < quizBank.length) {
-            quizIndex++;
-            currentSelectedIdx = (userAnswers[quizIndex] !== null) ? userAnswers[quizIndex] : null;
-            hasAnsweredCurrent = (userAnswers[quizIndex] !== null);
-            renderQuizUI();
-        } else { alert(`🎉 完成所有题目！得分:${quizScore}/${quizBank.length} 继续加油，小可爱！`); }
-    }
-    function resetQuizAll() {
-        quizScore = 0;
-        userAnswers = new Array(quizBank.length).fill(null);
-        quizIndex = 0;
-        currentSelectedIdx = null;
-        hasAnsweredCurrent = false;
-        renderQuizUI();
-    }
-    document.getElementById('submitAnswerBtn')?.addEventListener('click', submitQuizAnswer);
-    document.getElementById('nextQuestionBtn')?.addEventListener('click', nextQuizQuestion);
-    document.getElementById('resetQuizBtn')?.addEventListener('click', resetQuizAll);
 
-    // ----------------------------- 5. 动态倒计时 (每秒刷新 + 数字动画 + 具体日期已展示) -----------------------------
-    function getTargetDate(year, month, day) { return new Date(year, month-1, day, 0, 0, 0); }
-    function getRemainDaysHours(target) {
-        const now = new Date();
-        const diffMs = target - now;
-        if(diffMs <= 0) return { days: 0, hours: 0 };
-        const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const days = Math.floor(totalHours / 24);
-        const hours = totalHours % 24;
-        return { days, hours };
+    function getCountdownStr(target) {
+        const diff = target - new Date();
+        if (diff <= 0) return "🏁 考季已结束 · 备战新季";
+        let d = Math.floor(diff / 86400000);
+        let h = Math.floor((diff % 86400000) / 3600000);
+        let m = Math.floor((diff % 3600000) / 60000);
+        let s = Math.floor((diff % 60000) / 1000);
+        return `${d}天 ${h}时 ${m}分 ${s}秒`;
     }
-    function animateNumberElement(elem, newValue) {
-        if(!elem) return;
-        const oldVal = parseInt(elem.innerText);
-        if(oldVal !== newValue) {
-            elem.classList.add('number-pop');
-            setTimeout(() => elem.classList.remove('number-pop'), 150);
-        }
-        elem.innerText = newValue;
-    }
-    function updateAllCountdownsDetailed() {
+
+    function getRegistrationStatus() {
         const now = new Date();
-        let year = now.getFullYear();
-        // 上半年日期: 报名1月10日，笔试3月12日，面试5月21日
-        let sprReg = getTargetDate(year, 1, 10);
-        let sprWri = getTargetDate(year, 3, 12);
-        let sprInt = getTargetDate(year, 5, 21);
-        if(now > sprReg) sprReg = getTargetDate(year+1, 1, 10);
-        if(now > sprWri) sprWri = getTargetDate(year+1, 3, 12);
-        if(now > sprInt) sprInt = getTargetDate(year+1, 5, 21);
-        // 下半年: 报名9月5日，笔试10月28日，面试12月10日
-        let autReg = getTargetDate(year, 9, 5);
-        let autWri = getTargetDate(year, 10, 28);
-        let autInt = getTargetDate(year, 12, 10);
-        if(now > autReg) autReg = getTargetDate(year+1, 9, 5);
-        if(now > autWri) autWri = getTargetDate(year+1, 10, 28);
-        if(now > autInt) autInt = getTargetDate(year+1, 12, 10);
+        if (now < objectiveRegStart) return { type: "upcoming", target: objectiveRegStart, msg: "距报名开始", status: "🔜 报名未开始" };
+        if (now <= objectiveRegEnd) return { type: "active", target: objectiveRegEnd, msg: "报名截止还剩", status: "🔥 报名进行中" };
+        return { type: "closed", target: null, msg: "", status: "✅ 报名已截止" };
+    }
+
+    // UI全面更新
+    function updateAllUI() {
+        refreshDateVariables();
+        const now = new Date();
+        // 客观题倒计时显示
+        document.getElementById("objectiveCountdown").innerHTML = getCountdownStr(objectiveDate);
+        document.getElementById("objectiveDateLabel").innerHTML = formatYMD(objectiveDate) + " (机考)";
+        document.getElementById("subjectiveCountdown").innerHTML = getCountdownStr(subjectiveDate);
+        document.getElementById("subjectiveDateLabel").innerHTML = formatYMD(subjectiveDate) + " (机考/笔答)";
+
+        const objDiff = objectiveDate - now;
+        const subDiff = subjectiveDate - now;
+        document.getElementById("objectiveStatusTag").innerHTML = objDiff > 0 ? "<i class='fas fa-hourglass-half'></i> 详细备考规划中" : "<i class='fas fa-flag-checkered'></i> 新考季筹备";
+        document.getElementById("subjectiveStatusTag").innerHTML = subDiff > 0 ? "<i class='fas fa-rocket'></i> 主观冲刺倒计时" : "<i class='fas fa-clock'></i> 新一轮备战";
+
+        // 考务文本
+        document.getElementById("regObjectivePeriod").innerHTML = `${formatYMD(objectiveRegStart)} 至 ${formatYMD(objectiveRegEnd)}`;
+        let subjRegHint = `客观题出分后（约${formatYMD(new Date(objectiveDate.getTime() + 25*86400000))}左右）开放报名`;
+        document.getElementById("regSubjectivePeriod").innerHTML = subjRegHint;
+        let resultEst = new Date(objectiveDate);
+        resultEst.setDate(objectiveDate.getDate() + 9);
+        document.getElementById("resultDateInfo").innerHTML = `预计 ${formatYMD(resultEst)} (司法部公告为准)`;
         
-        function applySpan(dayId, hourId, target) {
-            const { days, hours } = getRemainDaysHours(target);
-            const daySpan = document.getElementById(dayId);
-            const hourSpan = document.getElementById(hourId);
-            if(daySpan) animateNumberElement(daySpan, days);
-            if(hourSpan) animateNumberElement(hourSpan, hours);
+        // 当前复习阶段动态
+        let phase = "";
+        if (objDiff > 90) phase = "🌱 基础夯实 · 民刑先修";
+        else if (objDiff > 45) phase = "📈 真题强化 · 重点突破";
+        else if (objDiff > 0) phase = "⚡ 冲刺押题 · 全真模考";
+        else if (subDiff > 0) phase = "✍️ 主观题黄金特训期";
+        else phase = "🎯 新考季启动 · 规划先行";
+        document.getElementById("phaseMessage").innerHTML = phase;
+        
+        // 动态今日任务
+        const tasks = ["刑法总则错题复盘", "民法合同编真题20道", "刑诉强制措施背诵", "民诉主管与管辖练习", "理论法·法治思想框架"];
+        const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+        document.getElementById("dailyTask").innerHTML = randomTask;
+        
+        // 报名提醒增强
+        const reg = getRegistrationStatus();
+        let alertHtml = "";
+        if (reg.type === "active") {
+            let remain = reg.target - now;
+            let d = Math.floor(remain / 86400000);
+            alertHtml = `<i class="fas fa-bell" style="color:#d9534f;"></i> <strong>⚠️ 客观题报名进行中！截止还剩 ${d} 天，请尽快缴费！</strong>`;
+        } else if (reg.type === "upcoming") {
+            let days = Math.floor((reg.target - now) / 86400000);
+            alertHtml = `<i class="far fa-bell"></i> 距客观题报名开始还有 ${days} 天，提前准备证件照及学历认证。`;
+        } else {
+            alertHtml = `<i class="fas fa-check-circle"></i> 报名已截止，全力准备客观题考试！`;
         }
-        applySpan('springRegDays', 'springRegHours', sprReg);
-        applySpan('springWrittenDays', 'springWrittenHours', sprWri);
-        applySpan('springInterviewDays', 'springInterviewHours', sprInt);
-        applySpan('autumnRegDays', 'autumnRegHours', autReg);
-        applySpan('autumnWrittenDays', 'autumnWrittenHours', autWri);
-        applySpan('autumnInterviewDays', 'autumnInterviewHours', autInt);
-    }
-    // 手风琴
-    function initAccordion() {
-        const headers = document.querySelectorAll('.acc-header');
-        headers.forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isOpen = content.style.display === 'block';
-                document.querySelectorAll('.acc-content').forEach(c => c.style.display = 'none');
-                if(!isOpen) content.style.display = 'block';
-            });
-        });
+        document.getElementById("registrationAlertMsg").innerHTML = alertHtml;
+        // 每周目标更新
+        const weeklyQuota = ["完成民诉与刑诉对比表", "近3年真题第二遍纠错", "主观题官方案例指导用书2个案例", "理论法背诵手册Day4", "商经知高频考点法条定位"];
+        document.getElementById("weeklyGoal").innerHTML = weeklyQuota[Math.floor(Math.random() * weeklyQuota.length)];
     }
 
-    function init() {
-        loadTasks();
-        loadNotes();
-        loadCustomTime();
-        updateAllCountdownsDetailed();
-        // 每秒动态刷新倒计时
-        setInterval(updateAllCountdownsDetailed, 1000);
-        renderQuizUI();
-        initAccordion();
-        quizIndex = 0; currentSelectedIdx = null; hasAnsweredCurrent = false; renderQuizUI();
+    // =============== 每日一题题库（丰富且完整） ===============
+    const questionBank = [
+        { q: "【刑法】关于自首，下列哪一说法是正确的？", a: "犯罪以后自动投案，如实供述自己的罪行的，是自首。被采取强制措施的犯罪嫌疑人如实供述司法机关尚未掌握的本人其他罪行的，以自首论。" },
+        { q: "【民法】甲向乙借款100万，丙为保证人。后甲乙协商将借款数额增加到120万，未征得丙书面同意。丙的责任如何？", a: "丙仍按照原100万承担保证责任，对增加的20万不承担保证责任。" },
+        { q: "【刑诉】认罪认罚从宽制度中，下列哪项不属于犯罪嫌疑人、被告人享有的权利？", a: "无权要求人民法院必须采纳量刑建议。法院经审理认为量刑建议明显不当可依法判决。" },
+        { q: "【行政法】下列哪项行为不属于行政诉讼受案范围？", a: "行政机关对行政机关工作人员的奖惩、任免等内部行为。" },
+        { q: "【理论法】法律面前人人平等原则的具体内容不包括？", a: "允许合理的差别对待，但禁止不合理歧视。" },
+        { q: "【商经法】根据《公司法》，某有限责任公司未设董事会，仅设一名执行董事，该执行董事兼任经理。请问可以同时兼任监事吗？", a: "不可以。董事、高级管理人员不得兼任监事。" }
+    ];
+    let curQIdx = 0;
+    function loadQuestion() {
+        const newIdx = Math.floor(Math.random() * questionBank.length);
+        curQIdx = newIdx;
+        document.getElementById('quizQuestion').innerHTML = `<i class="fas fa-question-circle" style="color:#1f6392;"></i> ${questionBank[curQIdx].q}`;
+        const ansDiv = document.getElementById('answerBox');
+        ansDiv.classList.remove('show');
+        ansDiv.innerHTML = "";
     }
-    init();
+    function showAnswerFunc() {
+        const ansDiv = document.getElementById('answerBox');
+        ansDiv.innerHTML = `<i class="fas fa-gavel"></i> <strong>📖 答案与解析：</strong><br>${questionBank[curQIdx].a}`;
+        ansDiv.classList.add('show');
+    }
+
+    // 励志语句库
+    const quotes = [
+        "“法考是体力战，坚持到最后就是胜利”",
+        "“零基础不可怕，每日3小时+真题=可能”",
+        "“刑法重逻辑，民法爱生活，诉讼法靠细节”",
+        "“主观题多练案例，法条定位是高分密钥”",
+        "“乾坤未定，你我皆是黑马 — 专注当下”"
+    ];
+    function updateMotivation() {
+        const randomIdx = Math.floor(Math.random() * quotes.length);
+        document.getElementById("dailyMotivation").innerHTML = quotes[randomIdx];
+    }
+
+    // 提醒按钮
+    document.addEventListener('DOMContentLoaded', () => {
+        const remindBtn = document.getElementById('mockReminderBtn');
+        if(remindBtn) remindBtn.addEventListener('click', () => alert("📢 法考小贴士：提前准备一寸电子证件照（白底），学历证书编号，保持关注中国法律服务网报名公告。"));
+        document.getElementById('newQuestionBtn').addEventListener('click', loadQuestion);
+        document.getElementById('showAnswerBtn').addEventListener('click', showAnswerFunc);
+        loadQuestion();
+        updateAllUI();
+        setInterval(() => {
+            updateAllUI();
+        }, 1000);
+        setInterval(updateMotivation, 3600000);
+        updateMotivation();
+    });
 </script>
 </body>
 </html>

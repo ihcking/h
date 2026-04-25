@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>零基础英语大师 | 顶部音标专区 + 双栏词句库 + 智能测验</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fef5e9;
+            color: #2d3e2b;
+            padding: 1.5rem;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        /* 头部 */
+        .hero {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #2b6e2a, #c0a33b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero p {
+            background: #fff1e0cc;
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            margin-top: 6px;
+        }
+
+        /* 国际音标专区 - 全宽独立区域 */
+        .ipa-full-width {
+            background: #fff5e8;
+            border-radius: 2rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #ffdebc;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+        }
+        .ipa-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+            color: #b45f1b;
+        }
+        .ipa-category-block {
+            margin-bottom: 1.2rem;
+        }
+        .ipa-category-title {
+            font-size: 1rem;
+            font-weight: 600;
+            background: #eedbbc;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            margin-bottom: 0.6rem;
+            color: #6b3f0e;
+        }
+        .ipa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+        .ipa-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 0.6rem 0.3rem;
+            text-align: center;
+            transition: 0.1s;
+            border: 1px solid #f0d8bc;
+            cursor: pointer;
+        }
+        .ipa-card:hover {
+            background: #fffbee;
+            transform: translateY(-2px);
+        }
+        .ipa-symbol {
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: monospace;
+            color: #c4511b;
+        }
+        .ipa-desc {
+            font-size: 0.7rem;
+            color: #a47e53;
+            margin-top: 4px;
+        }
+
+        /* 主区域：左侧词句库 + 右侧测验 */
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        /* 左侧：双栏词句库 */
+        .words-section {
+            flex: 1.4;
+            min-width: 300px;
+            background: #fffef7;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            border: 1px solid #f5e5ce;
+        }
+        .two-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .col {
+            flex: 1;
+            min-width: 220px;
+            background: #fefaf2;
+            border-radius: 1.5rem;
+            padding: 0.8rem;
+            border-left: 5px solid #f5b042;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .col h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b45f1b;
+        }
+        /* 统一单词卡片样式，保证词义对齐 */
+        .word-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 0.7rem;
+            margin-bottom: 0.8rem;
+            border: 1px solid #ffe1bd;
+            transition: 0.1s;
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .eng-text {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #3a6b2f;
+        }
+        .sound-icon-small {
+            background: #f2e5d4;
+            border: none;
+            border-radius: 30px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            color: #e67e22;
+            font-size: 0.8rem;
+        }
+        .phonetic-mini {
+            font-size: 0.7rem;
+            color: #a07c4b;
+            background: #fff3e6;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+        .meaning-cn {
+            font-weight: 500;
+            color: #7c5e3a;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        .example-mini {
+            font-size: 0.7rem;
+            color: #9b7c57;
+            margin-top: 6px;
+            padding-left: 6px;
+            border-left: 2px solid #f0c48b;
+        }
+
+        /* 右侧测验区 */
+        .quiz-section {
+            flex: 1;
+            min-width: 320px;
+            background: #ffffffec;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 20px 30px rgba(70,40,10,0.08);
+            border: 1px solid #ffefdb;
+            align-self: start;
+            position: sticky;
+            top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        /* 动态添加单词模块（移到右侧顶部） */
+        .dynamic-add {
+            background: #f9efdf;
+            border-radius: 1.5rem;
+            padding: 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .dynamic-add input, .dynamic-add button {
+            padding: 6px 10px;
+            border-radius: 60px;
+            border: 1px solid #e2caa4;
+            background: white;
+            font-size: 0.8rem;
+        }
+        .dynamic-add button {
+            background: #e7b874;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .dict-links {
+            display: flex;
+            gap: 12px;
+            font-size: 0.7rem;
+        }
+        .dict-links a {
+            color: #8a6e47;
+            text-decoration: none;
+        }
+        .quiz-header-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .score-box {
+            background: #ebddc9;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: 700;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .nav-btn {
+            background: #f5e8da;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .question-card {
+            background: #fffbf2;
+            border-radius: 1.8rem;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        /* 修复 🤔 词义： 水平对齐 */
+        .meaning-header {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .meaning-label {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #7c5e3a;
+        }
+        .question-chinese-big {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #d45a1a;
+            background: #ffefdd;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 60px;
+        }
+        .quiz-audio-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 12px 0;
+        }
+        .quiz-sound-btn {
+            background: #ffe2bf;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .option {
+            background: white;
+            border: 2px solid #eadbba;
+            border-radius: 60px;
+            padding: 10px 18px;
+            text-align: left;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .option:hover:not(.disabled-opt) {
+            background: #e9f5e1;
+            border-color: #8bc34a;
+        }
+        .feedback {
+            padding: 8px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .wrong-extra {
+            background: #fff0e0;
+            border-radius: 1rem;
+            padding: 8px;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .next-quiz-btn {
+            background: #7cb342;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .disabled-opt {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .history-mode-badge {
+            font-size: 0.7rem;
+            background: #e7cfb0;
+            border-radius: 20px;
+            padding: 4px 12px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        /* 每日一句模块（移到右侧测验区下方） */
+        .daily-tip-right {
+            background: #fff2e2;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            border-left: 6px solid #f5b042;
+            margin-top: 0.5rem;
+        }
+        .daily-tip-right h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            color: #b45f1b;
+            margin-bottom: 8px;
+        }
+        .tip-content {
+            font-size: 0.9rem;
+            color: #5a3e1b;
+            line-height: 1.4;
+        }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #b5946b;
+        }
+        @media (max-width: 900px) {
+            .two-columns { flex-direction: column; }
+            .quiz-section { position: static; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1><i class="fas fa-chalkboard-user"></i> 零基础·全能英语工坊 <i class="fas fa-microphone-alt"></i></h1>
+        <p>🎵 国际音标纯享·点击即发音 | 双栏词句库 | 测验错误自动提供发音+解释</p>
+    </div>
+
+    <!-- 国际音标专区 - 完整独立上方区域 -->
+    <div class="ipa-full-width">
+        <div class="ipa-title"><i class="fas fa-universal-access"></i> 🌐 国际音标 · 纯音标发声（点击符号直接学发音）</div>
+        <div id="ipaFullContainer"></div>
+        <div style="font-size:0.7rem; margin-top:12px; text-align:center; color:#b48b54;">
+            ✨ 每个音标卡片都可以点击，发音为标准音标读音（非示例单词），适合初学者模仿。
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <!-- 左侧：双栏词句库 (日常短语 + 常用口语) -->
+        <div class="words-section">
+            <div class="two-columns">
+                <!-- 列1：日常短语 -->
+                <div class="col">
+                    <h3><i class="fas fa-comments"></i> 💬 日常短语</h3>
+                    <div id="dailyPhrasesList"></div>
+                </div>
+                <!-- 列2：常用口语 -->
+                <div class="col">
+                    <h3><i class="fas fa-message"></i> 🗣️ 常用口语</h3>
+                    <div id="dailySentencesList"></div>
+                </div>
+            </div>
+            <!-- 左侧原本的动态添加模块已移除，现在只保留词句库 -->
+            <div style="font-size:0.7rem; text-align:center; margin-top:8px;">✨ 点击喇叭听发音 | 右侧可自由添加新单词到测验</div>
+        </div>
+
+        <!-- 右侧测验区 -->
+        <div class="quiz-section">
+            <!-- 动态添加单词模块（移到右侧顶部） -->
+            <div class="dynamic-add">
+                <input type="text" id="newWordInput" placeholder="新单词, e.g., computer" style="flex:2">
+                <input type="text" id="newMeaningInput" placeholder="中文, e.g., 电脑" style="flex:2">
+                <input type="text" id="newPhoneticInput" placeholder="音标, e.g., /kəmˈpjuːtər/" style="flex:2">
+                <button id="addWordBtn"><i class="fas fa-plus"></i> 添加</button>
+                <button id="importSampleBtn"><i class="fas fa-database"></i> 示例库</button>
+                <div class="dict-links">
+                    <a href="https://www.oxfordlearnersdictionaries.com/" target="_blank">📘 牛津词典</a>
+                    <a href="https://www.ldoceonline.com/" target="_blank">📙 朗文词典</a>
+                </div>
+            </div>
+            <div class="quiz-header-buttons">
+                <div class="score-box"><i class="fas fa-trophy"></i> 得分: <span id="quizScore">0</span> / <span id="quizTotal">0</span></div>
+                <div class="nav-buttons">
+                    <button id="prevQuestionBtn" class="nav-btn"><i class="fas fa-arrow-left"></i> 上一题</button>
+                    <button id="resetQuizBtn" class="nav-btn"><i class="fas fa-sync-alt"></i> 重置</button>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="meaning-header">
+                    <span class="meaning-label">🤔 词义：</span>
+                    <span class="question-chinese-big" id="quizChineseMeaning">苹果</span>
+                </div>
+                <div class="quiz-audio-row">
+                    <button id="speakQuizWordBtn" class="quiz-sound-btn"><i class="fas fa-head-side-vr"></i> 🔊 读单词</button>
+                    <button id="speakQuizChineseBtn" class="quiz-sound-btn"><i class="fas fa-language"></i> 🗣️ 读释义</button>
+                </div>
+                <div id="quizOptions" class="options-grid"></div>
+                <div id="quizFeedback" class="feedback">✨ 选择一个选项，开始挑战 ✨</div>
+                <div id="wrongExtraPanel" style="min-height: 55px;"></div>
+                <button id="nextQuizBtn" class="next-quiz-btn" disabled>➡️ 下一题</button>
+                <div id="historyBadge" class="history-mode-badge"></div>
+            </div>
+
+            <!-- 每日一句模块（移至右侧测验区下方） -->
+            <div class="daily-tip-right" id="dailyTipModule">
+                <h4><i class="fas fa-star-of-life"></i> 📖 每日一句 · 励志英语</h4>
+                <div class="tip-content" id="tipContent">
+                    "Practice makes perfect." — 熟能生巧
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>⭐ 国际音标点击直接发音 | 答错时自动展示正确单词的发音按钮+释义 | 右侧可自由添加单词扩充测验题库</footer>
+</div>
+
+<script>
+    // ================= 1. 国际音标数据集 (纯音标发声映射) =================
+    const ipaSoundMap = {
+        "/i:/": "ee", "/ɑ:/": "ah", "/ɔ:/": "aw", "/u:/": "oo", "/ɜː/": "er",
+        "/ɪ/": "ih", "/e/": "eh", "/æ/": "a", "/ʌ/": "uh", "/ɒ/": "o", "/ʊ/": "uu", "/ə/": "uh",
+        "/eɪ/": "ay", "/aɪ/": "eye", "/ɔɪ/": "oy", "/əʊ/": "oh", "/aʊ/": "ow", "/ɪə/": "ear", "/eə/": "air",
+        "/p/": "p", "/t/": "t", "/k/": "k", "/f/": "f", "/θ/": "th", "/s/": "s", "/ʃ/": "sh", "/h/": "h", "/tʃ/": "ch",
+        "/b/": "b", "/d/": "d", "/g/": "g", "/v/": "v", "/ð/": "dh", "/z/": "z", "/ʒ/": "zh", "/dʒ/": "j", 
+        "/m/": "m", "/n/": "n", "/ŋ/": "ng", "/l/": "l", "/r/": "r", "/j/": "y", "/w/": "w"
+    };
+    const ipaCategoriesFull = [
+        { name: "长元音", items: ["/i:/","/ɑ:/","/ɔ:/","/u:/","/ɜː/"] },
+        { name: "短元音", items: ["/ɪ/","/e/","/æ/","/ʌ/","/ɒ/","/ʊ/","/ə/"] },
+        { name: "双元音", items: ["/eɪ/","/aɪ/","/ɔɪ/","/əʊ/","/aʊ/","/ɪə/","/eə/"] },
+        { name: "清辅音", items: ["/p/","/t/","/k/","/f/","/θ/","/s/","/ʃ/","/h/","/tʃ/"] },
+        { name: "浊辅音", items: ["/b/","/d/","/g/","/v/","/ð/","/z/","/ʒ/","/dʒ/","/m/","/n/","/ŋ/","/l/","/r/","/j/","/w/"] }
+    ];
+
+    function speakIpaSymbol(symbol) {
+        let pronounceText = ipaSoundMap[symbol];
+        if (!pronounceText) pronounceText = symbol.replace(/[\/]/g,'');
+        if (pronounceText && window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(pronounceText);
+            utter.lang = 'en-US';
+            utter.rate = 0.8;
+            window.speechSynthesis.speak(utter);
+        } else {
+            alert("发音暂不支持该音标");
+        }
+    }
+
+    function renderIPAPure() {
+        const container = document.getElementById('ipaFullContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        ipaCategoriesFull.forEach(cat => {
+            const catDiv = document.createElement('div');
+            catDiv.className = 'ipa-category-block';
+            catDiv.innerHTML = `<div class="ipa-category-title">${cat.name}</div><div class="ipa-grid"></div>`;
+            const grid = catDiv.querySelector('.ipa-grid');
+            cat.items.forEach(sym => {
+                const card = document.createElement('div');
+                card.className = 'ipa-card';
+                card.innerHTML = `<div class="ipa-symbol">${sym}</div><div class="ipa-desc">点击发声</div>`;
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    speakIpaSymbol(sym);
+                });
+                grid.appendChild(card);
+            });
+            container.appendChild(catDiv);
+        });
+    }
+
+    // ================= 2. 词库数据 (只保留短语和句子) =================
+    let dailyPhrases = [
+        { phrase: "Good morning", meaning: "早上好", phonetic: "/ɡʊd ˈmɔː.nɪŋ/", example: "Good morning, teacher!" },
+        { phrase: "Thank you", meaning: "谢谢你", phonetic: "/ˈθæŋk juː/", example: "Thank you for your help." },
+        { phrase: "You're welcome", meaning: "不客气", phonetic: "/jɔːr ˈwel.kəm/", example: "You're welcome!" },
+        { phrase: "Excuse me", meaning: "打扰一下", phonetic: "/ɪkˈskjuːz miː/", example: "Excuse me, where is the station?" },
+        { phrase: "I'm sorry", meaning: "对不起", phonetic: "/aɪm ˈsɒr.i/", example: "I'm sorry for being late." }
+    ];
+
+    let dailySentences = [
+        { sentence: "How are you?", meaning: "你好吗？", phoneticHint: "[haʊ ɑːr juː]", example: "I'm fine, thank you." },
+        { sentence: "What's your name?", meaning: "你叫什么名字？", phoneticHint: "[wʌts jʊər neɪm]", example: "My name is Li Hua." },
+        { sentence: "I love English", meaning: "我爱英语", phoneticHint: "[aɪ lʌv ˈɪŋ.ɡlɪʃ]", example: "Learning is fun." },
+        { sentence: "Let's go", meaning: "我们走吧", phoneticHint: "[lets ɡoʊ]", example: "Let's go to school." },
+        { sentence: "Nice to meet you", meaning: "很高兴见到你", phoneticHint: "[naɪs tə miːt juː]", example: "Nice to meet you too." }
+    ];
+
+    // 测验词库（为了测验，使用一个独立的单词数组，初始包含一些常用词）
+    let quizWordBank = [
+        { word: "morning", meaning: "早晨", phonetic: "/ˈmɔː.nɪŋ/", example: "Good morning" },
+        { word: "thank", meaning: "感谢", phonetic: "/θæŋk/", example: "Thank you" },
+        { word: "sorry", meaning: "抱歉", phonetic: "/ˈsɒr.i/", example: "I'm sorry" },
+        { word: "love", meaning: "爱", phonetic: "/lʌv/", example: "I love English" },
+        { word: "meet", meaning: "遇见", phonetic: "/miːt/", example: "Nice to meet you" },
+        { word: "apple", meaning: "苹果", phonetic: "/ˈæp.əl/", example: "An apple a day." },
+        { word: "happy", meaning: "快乐的", phonetic: "/ˈhæp.i/", example: "Happy day." },
+        { word: "big", meaning: "大的", phonetic: "/bɪɡ/", example: "Big house." }
+    ];
+
+    // 通用发音
+    function speakText(text, lang = 'en-US') {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = lang;
+        utter.rate = 0.9;
+        window.speechSynthesis.speak(utter);
+    }
+
+    // 渲染双栏内容（日常短语 + 常用口语），确保词义对齐
+    function renderWordModules() {
+        // 日常短语列
+        const phraseDiv = document.getElementById('dailyPhrasesList');
+        phraseDiv.innerHTML = '';
+        dailyPhrases.forEach(ph => {
+            const div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = `
+                <div class="item-header">
+                    <span class="eng-text">${ph.phrase}</span>
+                    <button class="sound-icon-small" data-text="${ph.phrase}" data-lang="en"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="phonetic-mini">🔊 ${ph.phonetic}</div>
+                <div class="meaning-cn">📖 ${ph.meaning}</div>
+                <div class="example-mini">✨ ${ph.example}</div>
+            `;
+            phraseDiv.appendChild(div);
+        });
+        // 常用口语列
+        const sentenceDiv = document.getElementById('dailySentencesList');
+        sentenceDiv.innerHTML = '';
+        dailySentences.forEach(sen => {
+            const div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = `
+                <div class="item-header">
+                    <span class="eng-text">${sen.sentence}</span>
+                    <button class="sound-icon-small" data-text="${sen.sentence}" data-lang="en"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="phonetic-mini">🎵 ${sen.phoneticHint}</div>
+                <div class="meaning-cn">📖 ${sen.meaning}</div>
+                <div class="example-mini">✏️ ${sen.example}</div>
+            `;
+            sentenceDiv.appendChild(div);
+        });
+
+        // 绑定所有发音按钮
+        document.querySelectorAll('.sound-icon-small').forEach(btn => {
+            btn.removeEventListener('click', btn._handler);
+            const handler = (e) => {
+                e.stopPropagation();
+                const txt = btn.getAttribute('data-text');
+                if (txt) speakText(txt, 'en-US');
+            };
+            btn.addEventListener('click', handler);
+            btn._handler = handler;
+        });
+    }
+
+    // 每日一句模块内容轮换
+    const tipList = [
+        "🌟 \"Believe you can and you're halfway there.\" — 相信自己，你已经成功一半。",
+        "📚 \"The only way to do great work is to love what you do.\" — 成就伟业的唯一途径是热爱你的工作。",
+        "💪 \"Don't watch the clock; do what it does. Keep going.\" — 不要只看时钟，要像它一样不停前行。",
+        "🌱 \"Every day is a new opportunity to learn and grow.\" — 每一天都是学习和成长的新机会。"
+    ];
+    let tipIndex = 0;
+    function updateDailyTip() {
+        const tipDiv = document.getElementById('tipContent');
+        if (tipDiv) {
+            tipDiv.innerHTML = tipList[tipIndex % tipList.length];
+            tipIndex++;
+        }
+    }
+    setInterval(updateDailyTip, 8000);
+    updateDailyTip();
+
+    // ================= 3. 测验逻辑 (支持错误时额外发音和解释) =================
+    let currentQuestionObj = null, currentOptionsList = [], answered = false;
+    let quizScoreVal = 0, quizTotalAnswered = 0;
+    let historyStack = [], currentHistoryIndex = -1, isReviewMode = false;
+
+    const quizChineseSpan = document.getElementById('quizChineseMeaning');
+    const optionsDiv = document.getElementById('quizOptions');
+    const feedbackSpan = document.getElementById('quizFeedback');
+    const wrongExtraPanel = document.getElementById('wrongExtraPanel');
+    const nextBtn = document.getElementById('nextQuizBtn');
+    const resetQuizBtn = document.getElementById('resetQuizBtn');
+    const prevBtn = document.getElementById('prevQuestionBtn');
+    const speakWordBtn = document.getElementById('speakQuizWordBtn');
+    const speakChineseBtn = document.getElementById('speakQuizChineseBtn');
+    const scoreSpan = document.getElementById('quizScore');
+    const totalSpan = document.getElementById('quizTotal');
+    const historyBadge = document.getElementById('historyBadge');
+
+    function updateScoreUI() {
+        scoreSpan.innerText = quizScoreVal;
+        totalSpan.innerText = quizTotalAnswered;
+    }
+
+    function generateRandomQuestion() {
+        if (quizWordBank.length === 0) return null;
+        const randIdx = Math.floor(Math.random() * quizWordBank.length);
+        const correct = quizWordBank[randIdx];
+        let candidates = quizWordBank.filter(w => w.word !== correct.word).map(w => w.word);
+        if (candidates.length < 3) candidates = ['apple','dog','cat','sun','big','love','happy'].filter(c => c !== correct.word);
+        let shuffled = [...candidates];
+        for (let i=shuffled.length-1; i>0; i--) {
+            const j = Math.floor(Math.random()*(i+1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        let opts = [correct.word, ...shuffled.slice(0,3)];
+        for (let i=opts.length-1; i>0; i--) {
+            const j = Math.floor(Math.random()*(i+1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+        return { questionObj: correct, options: opts };
+    }
+
+    function renderCurrentQuiz() {
+        if (!currentQuestionObj) return;
+        quizChineseSpan.innerText = currentQuestionObj.meaning;
+        optionsDiv.innerHTML = '';
+        currentOptionsList.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            if (answered || isReviewMode) btn.classList.add('disabled-opt');
+            btn.innerText = opt.charAt(0).toUpperCase() + opt.slice(1);
+            btn.addEventListener('click', () => {
+                if (answered || isReviewMode) return;
+                handleQuizAnswer(opt);
+            });
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function showWrongExtra(correctWordObj) {
+        wrongExtraPanel.innerHTML = `
+            <div class="wrong-extra">
+                <div style="flex:1">
+                    <strong>📘 正确答案：${correctWordObj.word}</strong><br>
+                    <span style="font-size:0.8rem;">${correctWordObj.meaning} &nbsp;|&nbsp; 音标 ${correctWordObj.phonetic}</span>
+                </div>
+                <button id="speakWrongWordBtn" class="quiz-sound-btn" style="padding:4px 12px;"><i class="fas fa-volume-up"></i> 听发音</button>
+            </div>
+        `;
+        const speakBtn = document.getElementById('speakWrongWordBtn');
+        if (speakBtn) {
+            speakBtn.addEventListener('click', () => {
+                speakText(correctWordObj.word, 'en-US');
+            });
+        }
+    }
+
+    function handleQuizAnswer(selected) {
+        if (answered) return;
+        answered = true;
+        const isCorrect = (selected === currentQuestionObj.word);
+        if (isCorrect) {
+            quizScoreVal++;
+            feedbackSpan.innerHTML = '🎉 正确！ +1分 很棒！ <i class="fas fa-laugh-beam"></i>';
+            feedbackSpan.style.color = '#2c6e2c';
+            wrongExtraPanel.innerHTML = '';
+            speakText(currentQuestionObj.word, 'en-US');
+        } else {
+            feedbackSpan.innerHTML = `❌ 错误！ 正确答案是 “${currentQuestionObj.word}” (${currentQuestionObj.meaning})`;
+            feedbackSpan.style.color = '#b45116';
+            showWrongExtra(currentQuestionObj);
+            speakText(currentQuestionObj.word, 'en-US');
+        }
+        quizTotalAnswered++;
+        updateScoreUI();
+        if (!isReviewMode) {
+            historyStack.push({
+                questionObj: { ...currentQuestionObj },
+                options: [...currentOptionsList],
+                correctAnswer: currentQuestionObj.word,
+                userCorrect: isCorrect
+            });
+            if (historyStack.length > 30) historyStack.shift();
+        }
+        document.querySelectorAll('.option').forEach(btn => btn.classList.add('disabled-opt'));
+        nextBtn.disabled = false;
+    }
+
+    function loadNewQuestion() {
+        if (isReviewMode) {
+            isReviewMode = false;
+            currentHistoryIndex = -1;
+            historyBadge.innerText = '';
+        }
+        const newQ = generateRandomQuestion();
+        if (!newQ) return;
+        currentQuestionObj = newQ.questionObj;
+        currentOptionsList = newQ.options;
+        answered = false;
+        renderCurrentQuiz();
+        nextBtn.disabled = true;
+        feedbackSpan.innerHTML = '🤔 选择一个英文单词吧！';
+        feedbackSpan.style.color = '#8b6b42';
+        wrongExtraPanel.innerHTML = '';
+    }
+
+    function resetQuiz() {
+        quizScoreVal = 0;
+        quizTotalAnswered = 0;
+        answered = false;
+        isReviewMode = false;
+        historyStack = [];
+        currentHistoryIndex = -1;
+        historyBadge.innerText = '';
+        updateScoreUI();
+        wrongExtraPanel.innerHTML = '';
+        const newQ = generateRandomQuestion();
+        if (newQ) {
+            currentQuestionObj = newQ.questionObj;
+            currentOptionsList = newQ.options;
+            answered = false;
+            renderCurrentQuiz();
+            nextBtn.disabled = true;
+            feedbackSpan.innerHTML = '✨ 新的一轮！开始挑战 ✨';
+        }
+    }
+
+    function showPreviousQuestion() {
+        if (historyStack.length === 0) {
+            feedbackSpan.innerHTML = '📭 还没有答题历史，请先完成几道题～';
+            return;
+        }
+        if (!isReviewMode) {
+            isReviewMode = true;
+            currentHistoryIndex = historyStack.length - 1;
+        } else {
+            if (currentHistoryIndex > 0) currentHistoryIndex--;
+            else {
+                feedbackSpan.innerHTML = '⏮️ 已经是第一道历史题目了';
+                return;
+            }
+        }
+        const snap = historyStack[currentHistoryIndex];
+        if (snap) {
+            currentQuestionObj = snap.questionObj;
+            currentOptionsList = snap.options;
+            answered = true;
+            renderCurrentQuiz();
+            nextBtn.disabled = false;
+            feedbackSpan.innerHTML = `📜 回顾模式: 当时正确答案是 “${snap.correctAnswer}” ${snap.userCorrect ? '(你答对了✔️)' : '(答错了)'}`;
+            historyBadge.innerText = '📖 历史回顾模式 (不可答题，点下一题继续测验)';
+            document.querySelectorAll('.option').forEach(opt => opt.classList.add('disabled-opt'));
+            if (!snap.userCorrect) showWrongExtra(snap.questionObj);
+            else wrongExtraPanel.innerHTML = '';
+        }
+    }
+
+    function exitReviewAndNext() {
+        if (isReviewMode) {
+            isReviewMode = false;
+            currentHistoryIndex = -1;
+            historyBadge.innerText = '';
+            loadNewQuestion();
+        } else {
+            if (!answered) {
+                feedbackSpan.innerHTML = '⚠️ 请先回答当前题目';
+                return;
+            }
+            loadNewQuestion();
+        }
+    }
+
+    function syncQuizBank() {
+        // 重置测验以刷新题库（保留分数会重置，但为了题库同步，最好重置）
+        resetQuiz();
+    }
+
+    function addCustomWord() {
+        const word = document.getElementById('newWordInput').value.trim();
+        const meaning = document.getElementById('newMeaningInput').value.trim();
+        const phonetic = document.getElementById('newPhoneticInput').value.trim();
+        if (!word || !meaning) { alert("请填写单词和中文释义"); return; }
+        quizWordBank.push({
+            word: word.toLowerCase(),
+            meaning: meaning,
+            phonetic: phonetic || "/自定义音标/",
+            example: `自定义: ${word}`
+        });
+        syncQuizBank();
+        document.getElementById('newWordInput').value = '';
+        document.getElementById('newMeaningInput').value = '';
+        document.getElementById('newPhoneticInput').value = '';
+        alert(`✅ 单词“${word}”已加入测验词库！`);
+    }
+
+    function loadSampleExtend() {
+        const extra = [
+            { word: "beautiful", meaning: "美丽的", phonetic: "/ˈbjuː.tɪ.fəl/", example: "Beautiful flower." },
+            { word: "student", meaning: "学生", phonetic: "/ˈstjuː.dənt/", example: "I am a student." },
+            { word: "wonderful", meaning: "极好的", phonetic: "/ˈwʌn.də.fəl/", example: "Wonderful day!" }
+        ];
+        extra.forEach(e => quizWordBank.push(e));
+        syncQuizBank();
+        alert("📚 示例词库已扩充 (beautiful/student/wonderful)");
+    }
+
+    // 事件绑定
+    nextBtn.addEventListener('click', exitReviewAndNext);
+    resetQuizBtn.addEventListener('click', resetQuiz);
+    prevBtn.addEventListener('click', showPreviousQuestion);
+    speakWordBtn.addEventListener('click', () => { if (currentQuestionObj) speakText(currentQuestionObj.word, 'en'); });
+    speakChineseBtn.addEventListener('click', () => { if (currentQuestionObj) speakText(currentQuestionObj.meaning, 'zh-CN'); });
+    document.getElementById('addWordBtn').addEventListener('click', addCustomWord);
+    document.getElementById('importSampleBtn').addEventListener('click', loadSampleExtend);
+
+    // 初始化
+    renderIPAPure();
+    renderWordModules();
+    resetQuiz();
+</script>
+</body>
+</html>

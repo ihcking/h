@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🍭 卡通小管家 · 时间事件排版优化版</title>
+    <!-- Font Awesome 6 免费图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 圆润可爱字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', 'Comic Neue', 'Segoe UI Emoji', sans-serif;
+        }
+
+        /* 固定页尾：body 采用弹性列布局，最小高度占满视口 */
+        body {
+            background: linear-gradient(145deg, #fff9e8 0%, #ffe6c9 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 可爱漂浮装饰 (不影响布局) */
+        body::before {
+            content: "⭐ 🧸 🍭 🎈 ✨";
+            font-size: 60px;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.1;
+            pointer-events: none;
+            white-space: pre;
+            transform: rotate(-5deg);
+            z-index: 0;
+        }
+
+        body::after {
+            content: "🌸 🐼 🐰 🌈";
+            font-size: 70px;
+            position: fixed;
+            top: 20px;
+            left: 10px;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 主容器 占据剩余空间 */
+        .container {
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 卡通大标题区 */
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #F9A26C, #FF6F61, #F7D44A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 6px 6px 0 rgba(255, 215, 150, 0.5);
+            letter-spacing: -0.5px;
+            display: inline-block;
+            padding: 0 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            background-color: #FFF2D7;
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            box-shadow: 0 5px 0 #FBCB8B;
+            color: #C35E3A;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* 三卡片网格 —— 等高度自动对齐，且每个模块长度加长 */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+            align-items: stretch;
+        }
+
+        /* 卡通卡片风格：圆角加大，长度加长 */
+        .card {
+            background: #FFFFF2;
+            border-radius: 56px 40px 64px 40px;
+            box-shadow: 20px 20px 35px rgba(0, 0, 0, 0.1), 0 5px 0 0 #FFD966 inset, 0 -3px 0 0 #FFF0C0 inset;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            backdrop-filter: blur(1px);
+            display: flex;
+            flex-direction: column;
+            min-height: 580px;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 25px 25px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        /* 卡片头部 */
+        .card-header {
+            background: #FFE9BF;
+            padding: 1.3rem 1.6rem;
+            border-bottom: 4px dotted #FFB882;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-radius: 56px 40px 0 0;
+        }
+
+        .card-header i {
+            font-size: 2.2rem;
+            filter: drop-shadow(2px 2px 0 #FFB06E);
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #AA5E2E;
+            letter-spacing: -0.3px;
+        }
+
+        .card-header .emoji-badge {
+            margin-left: auto;
+            font-size: 1.8rem;
+        }
+
+        /* 列表区域 加长内容区 */
+        .list-container {
+            flex: 1;
+            max-height: 960px;
+            overflow-y: auto;
+            padding: 1rem 1.2rem;
+            background: #FFFCF5;
+            scrollbar-width: thin;
+        }
+
+        /* 每个条目统一对齐，优化时间和事件的排版 */
+        .list-item {
+            background: white;
+            margin-bottom: 14px;
+            padding: 12px 16px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03), 0 1px 0 #FFE0B5 inset;
+            transition: all 0.1s;
+            border: 1px solid #FFE1B9;
+        }
+
+        .list-item:hover {
+            background: #FFF6EA;
+            border-color: #FFC48A;
+        }
+
+        /* 内容区域：突出时间在前，事件后跟，且时间更醒目 */
+        .item-content {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        /* 时间样式：更大更醒目的气泡 */
+        .item-time, .item-date {
+            font-size: 1rem;
+            font-weight: 700;
+            background: #FFE0B5;
+            padding: 6px 16px;
+            border-radius: 40px;
+            color: #B4521C;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            letter-spacing: 0.5px;
+        }
+
+        .item-time i, .item-date i {
+            font-size: 0.95rem;
+            color: #E07C3A;
+        }
+
+        /* 任务/活动/目标 内容样式：圆润清新 */
+        .item-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #5B3C1E;
+            background: #FFEFDB;
+            padding: 6px 16px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .item-activity {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #AD5A2A;
+            background: #FFF1E0;
+            padding: 6px 16px;
+            border-radius: 40px;
+        }
+
+        .completed-text {
+            text-decoration: line-through;
+            opacity: 0.65;
+            background-color: #E9DFCF;
+        }
+
+        /* 按钮组 */
+        .item-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .item-actions button, .check-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.1s;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #E08E4A;
+        }
+
+        .item-actions button:hover {
+            background: #FFDDB5;
+            transform: scale(1.05);
+            color: #C95F2A;
+        }
+
+        .delete-btn:hover {
+            color: #E34234;
+            background: #FFE2D6;
+        }
+
+        .edit-btn:hover {
+            color: #459E8C;
+            background: #E0F2EF;
+        }
+
+        /* 自定义checkbox */
+        .custom-check {
+            width: 26px;
+            height: 26px;
+            accent-color: #F9B46B;
+            cursor: pointer;
+            transform: scale(1.1);
+            flex-shrink: 0;
+        }
+
+        /* 添加表单 */
+        .add-form {
+            padding: 1.2rem 1.4rem 1.6rem;
+            background: #FFF9EE;
+            border-top: 2px dashed #FFDAB9;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-top: auto;
+            border-radius: 0 0 56px 40px;
+        }
+
+        .add-form input, .add-form .date-input {
+            flex: 2;
+            min-width: 120px;
+            padding: 10px 16px;
+            border: 2px solid #FFD8A8;
+            border-radius: 50px;
+            background: white;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.1s;
+            outline: none;
+        }
+
+        .add-form input:focus {
+            border-color: #FFA559;
+            box-shadow: 0 0 0 3px #FFE0B3;
+        }
+
+        .add-btn {
+            background: #FFB571;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            transition: 0.1s;
+            box-shadow: 0 3px 0 #B4622A;
+        }
+
+        .add-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #B4622A;
+        }
+
+        .empty-msg {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #C49A6C;
+            font-weight: 600;
+            background: #FFF7E8;
+            border-radius: 60px;
+            font-size: 1rem;
+        }
+
+        /* 滚动条可爱 */
+        .list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .list-container::-webkit-scrollbar-track {
+            background: #F7E5D3;
+            border-radius: 20px;
+        }
+
+        .list-container::-webkit-scrollbar-thumb {
+            background: #FFC28C;
+            border-radius: 20px;
+        }
+
+        /* 固定页尾样式 */
+        .fixed-footer {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 241, 220, 0.85);
+            backdrop-filter: blur(4px);
+            font-weight: 600;
+            color: #E1A46B;
+            font-size: 0.85rem;
+            border-top: 2px solid #FFDFB3;
+            width: 100%;
+            z-index: 5;
+        }
+
+        /* 响应式：较小屏幕调整间距 */
+        @media (max-width: 750px) {
+            .container {
+                padding: 1rem;
+            }
+            .card-header h2 {
+                font-size: 1.4rem;
+            }
+            .card {
+                min-height: 500px;
+            }
+            .list-container {
+                max-height: 380px;
+            }
+            .item-content {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .add-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .item-time, .item-date, .item-title, .item-activity {
+                font-size: 0.85rem;
+                padding: 4px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1>🐣 噗噗规划事务所 🧸</h1>
+        <p>✏️ 日程 · 🌙 作息 · 🎯 目标 | 时间醒目·排版舒适</p>
+    </div>
+
+    <div class="dashboard">
+        <!-- 日程规划表卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-calendar-check" style="color:#F59F5C;"></i>
+                <h2>📋 日程规划表</h2>
+                <span class="emoji-badge">⏰</span>
+            </div>
+            <div class="list-container" id="scheduleList">
+                <div class="empty-msg">✨ 添加你的今日任务吧 ✨</div>
+            </div>
+            <div class="add-form">
+                <input type="text" id="scheduleTaskInput" placeholder="做什么事？ 例：学画画" autocomplete="off">
+                <input type="text" id="scheduleTimeInput" placeholder="时间 例：14:30" autocomplete="off">
+                <button class="add-btn" id="addScheduleBtn"><i class="fas fa-plus-circle"></i> 添加日程</button>
+            </div>
+        </div>
+
+        <!-- 作息规划表卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-clock" style="color:#79BFA5;"></i>
+                <h2>🌙 作息规划表</h2>
+                <span class="emoji-badge">🛌🧘</span>
+            </div>
+            <div class="list-container" id="routineList">
+                <div class="empty-msg">🐣 规律作息，活力满满～</div>
+            </div>
+            <div class="add-form">
+                <input type="text" id="routineTimeInput" placeholder="时间 例：07:30" autocomplete="off">
+                <input type="text" id="routineActivityInput" placeholder="活动 例：晨间拉伸">
+                <button class="add-btn" id="addRoutineBtn"><i class="fas fa-plus-circle"></i> 添加作息</button>
+            </div>
+        </div>
+
+        <!-- 目标规划表卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-bullseye" style="color:#E9965E;"></i>
+                <h2>🎯 目标规划表</h2>
+                <span class="emoji-badge">🏆</span>
+            </div>
+            <div class="list-container" id="goalList">
+                <div class="empty-msg">⭐ 设定小目标，靠近大梦想</div>
+            </div>
+            <div class="add-form">
+                <input type="text" id="goalNameInput" placeholder="目标名称 例：读完2本书">
+                <input type="date" id="goalDateInput" class="date-input">
+                <button class="add-btn" id="addGoalBtn"><i class="fas fa-plus-circle"></i> 添加目标</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="fixed-footer">
+    🌟 点击 ✔️ 标记完成 | ✏️ 编辑内容 | 🗑️ 删除项目 | 所有数据自动保存 | 时间/日期均置前且更醒目 🧸
+</footer>
+
+<script>
+    // ---------- 卡通规划表核心逻辑 ----------
+    const STORAGE_SCHEDULE = 'cartoon_schedule_list';
+    const STORAGE_ROUTINE = 'cartoon_routine_list';
+    const STORAGE_GOAL = 'cartoon_goal_list';
+
+    let schedules = [];
+    let routines = [];
+    let goals = [];
+
+    function genId() {
+        return Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+    }
+
+    function saveSchedules() { localStorage.setItem(STORAGE_SCHEDULE, JSON.stringify(schedules)); }
+    function saveRoutines() { localStorage.setItem(STORAGE_ROUTINE, JSON.stringify(routines)); }
+    function saveGoals() { localStorage.setItem(STORAGE_GOAL, JSON.stringify(goals)); }
+
+    function loadDefaultData() {
+        const defaultSchedules = [
+            { id: genId(), task: "📖 阅读绘本", time: "09:00", completed: false },
+            { id: genId(), task: "🎨 完成插画", time: "14:30", completed: true },
+            { id: genId(), task: "🧸 整理房间", time: "17:00", completed: false },
+            { id: genId(), task: "📝 写日记", time: "21:00", completed: false }
+        ];
+        const defaultRoutines = [
+            { id: genId(), time: "07:30", activity: "🌞 起床 + 喝温水" },
+            { id: genId(), time: "08:00", activity: "🥣 营养早餐" },
+            { id: genId(), time: "12:30", activity: "🍱 午餐充电" },
+            { id: genId(), time: "15:00", activity: "🧘 午后拉伸" },
+            { id: genId(), time: "19:00", activity: "🏃 散步运动" },
+            { id: genId(), time: "22:30", activity: "😴 美美睡觉" }
+        ];
+        const defaultGoals = [
+            { id: genId(), name: "🎨 学会画水彩风景", dueDate: "2026-05-20", completed: false },
+            { id: genId(), name: "📚 每周读一本书", dueDate: "2026-06-01", completed: false },
+            { id: genId(), name: "🧸 早睡早起30天", dueDate: "2026-05-15", completed: true }
+        ];
+        schedules = defaultSchedules;
+        routines = defaultRoutines;
+        goals = defaultGoals;
+        saveSchedules(); saveRoutines(); saveGoals();
+    }
+
+    function initData() {
+        const storedSchedules = localStorage.getItem(STORAGE_SCHEDULE);
+        const storedRoutines = localStorage.getItem(STORAGE_ROUTINE);
+        const storedGoals = localStorage.getItem(STORAGE_GOAL);
+        if (storedSchedules) schedules = JSON.parse(storedSchedules);
+        else schedules = [];
+        if (storedRoutines) routines = JSON.parse(storedRoutines);
+        else routines = [];
+        if (storedGoals) goals = JSON.parse(storedGoals);
+        else goals = [];
+
+        if (schedules.length === 0 && routines.length === 0 && goals.length === 0) {
+            loadDefaultData();
+        } else {
+            if (schedules.length === 0) schedules.push({ id: genId(), task: "🐣 试试添加任务", time: "随时", completed: false });
+            if (routines.length === 0) routines.push({ id: genId(), time: "08:00", activity: "🥞 活力早餐" });
+            if (goals.length === 0) goals.push({ id: genId(), name: "🌟 每天快乐打卡", dueDate: "2026-12-31", completed: false });
+            saveSchedules(); saveRoutines(); saveGoals();
+        }
+        sortRoutinesByTime();
+    }
+
+    function sortRoutinesByTime() {
+        routines.sort((a, b) => (a.time || "00:00").localeCompare(b.time || "00:00"));
+        saveRoutines();
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // ========== 日程渲染：时间在前，突出显示 ==========
+    function renderSchedule() {
+        const container = document.getElementById('scheduleList');
+        if (!container) return;
+        if (schedules.length === 0) {
+            container.innerHTML = '<div class="empty-msg">🍬 暂无日程，添加一项吧！</div>';
+            return;
+        }
+        let html = '';
+        schedules.forEach(item => {
+            const isCompleted = item.completed;
+            const titleClass = isCompleted ? 'item-title completed-text' : 'item-title';
+            html += `
+                <div class="list-item" data-id="${item.id}" data-type="schedule">
+                    <input type="checkbox" class="custom-check" data-id="${item.id}" data-action="toggleSchedule" ${isCompleted ? 'checked' : ''}>
+                    <div class="item-content">
+                        <span class="item-time"><i class="far fa-clock"></i> ${escapeHtml(item.time)}</span>
+                        <span class="${titleClass}">${escapeHtml(item.task)}</span>
+                    </div>
+                    <div class="item-actions">
+                        <button class="edit-btn" data-id="${item.id}" data-action="editSchedule"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="delete-btn" data-id="${item.id}" data-action="deleteSchedule"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function editScheduleById(id) {
+        const item = schedules.find(s => s.id === id);
+        if (!item) return;
+        const newTask = prompt("✏️ 修改日程任务", item.task);
+        if (newTask !== null && newTask.trim() !== "") item.task = newTask.trim();
+        const newTime = prompt("⏰ 修改时间 (例: 15:30)", item.time);
+        if (newTime !== null && newTime.trim() !== "") item.time = newTime.trim();
+        saveSchedules();
+        renderSchedule();
+    }
+
+    function deleteScheduleById(id) {
+        if (confirm("🧸 确定要删除这个日程吗？")) {
+            schedules = schedules.filter(s => s.id !== id);
+            saveSchedules();
+            renderSchedule();
+        }
+    }
+
+    function toggleScheduleComplete(id, checked) {
+        const item = schedules.find(s => s.id === id);
+        if (item) { item.completed = checked; saveSchedules(); renderSchedule(); }
+    }
+
+    function addSchedule(task, time) {
+        if (!task || task.trim() === "") { alert("🐣 日程内容不能为空哟~"); return false; }
+        if (!time || time.trim() === "") { alert("🕒 记得填写时间呀～"); return false; }
+        schedules.push({ id: genId(), task: task.trim(), time: time.trim(), completed: false });
+        saveSchedules();
+        renderSchedule();
+        return true;
+    }
+
+    // ========== 作息渲染 ==========
+    function renderRoutine() {
+        const container = document.getElementById('routineList');
+        if (!container) return;
+        if (routines.length === 0) {
+            container.innerHTML = '<div class="empty-msg">🌙 规划你的健康作息吧～</div>';
+            return;
+        }
+        let html = '';
+        routines.forEach(item => {
+            html += `
+                <div class="list-item" data-id="${item.id}" data-type="routine">
+                    <div class="item-content">
+                        <span class="item-time"><i class="fas fa-bell"></i> ${escapeHtml(item.time)}</span>
+                        <span class="item-activity">✨ ${escapeHtml(item.activity)}</span>
+                    </div>
+                    <div class="item-actions">
+                        <button class="edit-btn" data-id="${item.id}" data-action="editRoutine"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="delete-btn" data-id="${item.id}" data-action="deleteRoutine"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function editRoutineById(id) {
+        const item = routines.find(r => r.id === id);
+        if (!item) return;
+        const newTime = prompt("⏲️ 修改作息时间 (例: 08:30)", item.time);
+        if (newTime !== null && newTime.trim() !== "") item.time = newTime.trim();
+        const newActivity = prompt("🧘 修改活动内容", item.activity);
+        if (newActivity !== null && newActivity.trim() !== "") item.activity = newActivity.trim();
+        sortRoutinesByTime();
+        saveRoutines();
+        renderRoutine();
+    }
+
+    function deleteRoutineById(id) {
+        if (confirm("🧸 删除这个作息安排吗？")) {
+            routines = routines.filter(r => r.id !== id);
+            saveRoutines();
+            renderRoutine();
+        }
+    }
+
+    function addRoutine(time, activity) {
+        if (!time || time.trim() === "") { alert("🐣 时间不能空着～ 比如 20:00"); return false; }
+        if (!activity || activity.trim() === "") { alert("🌸 活动内容不能为空哦"); return false; }
+        routines.push({ id: genId(), time: time.trim(), activity: activity.trim() });
+        sortRoutinesByTime();
+        saveRoutines();
+        renderRoutine();
+        return true;
+    }
+
+    // ========== 目标渲染：截止日期在前 ==========
+    function renderGoals() {
+        const container = document.getElementById('goalList');
+        if (!container) return;
+        if (goals.length === 0) {
+            container.innerHTML = '<div class="empty-msg">🎯 设定新目标，每天进步一点点～</div>';
+            return;
+        }
+        let html = '';
+        goals.forEach(item => {
+            const isCompleted = item.completed;
+            const nameClass = isCompleted ? 'item-title completed-text' : 'item-title';
+            const dueDisplay = item.dueDate ? item.dueDate : '未设日期';
+            html += `
+                <div class="list-item" data-id="${item.id}" data-type="goal">
+                    <input type="checkbox" class="custom-check" data-id="${item.id}" data-action="toggleGoal" ${isCompleted ? 'checked' : ''}>
+                    <div class="item-content">
+                        <span class="item-date"><i class="far fa-calendar-alt"></i> ${escapeHtml(dueDisplay)}</span>
+                        <span class="${nameClass}">${escapeHtml(item.name)}</span>
+                    </div>
+                    <div class="item-actions">
+                        <button class="edit-btn" data-id="${item.id}" data-action="editGoal"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="delete-btn" data-id="${item.id}" data-action="deleteGoal"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function editGoalById(id) {
+        const item = goals.find(g => g.id === id);
+        if (!item) return;
+        const newName = prompt("🏆 修改目标名称", item.name);
+        if (newName !== null && newName.trim() !== "") item.name = newName.trim();
+        const newDue = prompt("📅 修改截止日期 (YYYY-MM-DD)", item.dueDate);
+        if (newDue !== null && newDue.trim() !== "") item.dueDate = newDue.trim();
+        saveGoals();
+        renderGoals();
+    }
+
+    function deleteGoalById(id) {
+        if (confirm("🎯 确定删除这个目标吗？")) {
+            goals = goals.filter(g => g.id !== id);
+            saveGoals();
+            renderGoals();
+        }
+    }
+
+    function toggleGoalComplete(id, checked) {
+        const item = goals.find(g => g.id === id);
+        if (item) { item.completed = checked; saveGoals(); renderGoals(); }
+    }
+
+    function addGoal(name, dueDate) {
+        if (!name || name.trim() === "") { alert("🎯 目标名称不能为空～ 加油设立目标吧"); return false; }
+        if (!dueDate) { alert("📅 请填写截止日期～ 任何伟大目标都需要期限✨"); return false; }
+        goals.push({ id: genId(), name: name.trim(), dueDate: dueDate, completed: false });
+        saveGoals();
+        renderGoals();
+        return true;
+    }
+
+    // ---------- 全局事件委托 ----------
+    function bindGlobalEvents() {
+        const scheduleContainer = document.getElementById('scheduleList');
+        if (scheduleContainer) {
+            scheduleContainer.addEventListener('click', (e) => {
+                const target = e.target;
+                const btn = target.closest('button');
+                if (btn) {
+                    const action = btn.getAttribute('data-action');
+                    const id = btn.getAttribute('data-id');
+                    if (action === 'editSchedule' && id) editScheduleById(id);
+                    if (action === 'deleteSchedule' && id) deleteScheduleById(id);
+                    e.stopPropagation();
+                }
+                const chk = target.closest('.custom-check');
+                if (chk && chk.getAttribute('data-action') === 'toggleSchedule') {
+                    const id = chk.getAttribute('data-id');
+                    if (id) toggleScheduleComplete(id, chk.checked);
+                }
+            });
+        }
+
+        const routineContainer = document.getElementById('routineList');
+        if (routineContainer) {
+            routineContainer.addEventListener('click', (e) => {
+                const btn = e.target.closest('button');
+                if (btn) {
+                    const action = btn.getAttribute('data-action');
+                    const id = btn.getAttribute('data-id');
+                    if (action === 'editRoutine' && id) editRoutineById(id);
+                    if (action === 'deleteRoutine' && id) deleteRoutineById(id);
+                }
+            });
+        }
+
+        const goalContainer = document.getElementById('goalList');
+        if (goalContainer) {
+            goalContainer.addEventListener('click', (e) => {
+                const btn = e.target.closest('button');
+                if (btn) {
+                    const action = btn.getAttribute('data-action');
+                    const id = btn.getAttribute('data-id');
+                    if (action === 'editGoal' && id) editGoalById(id);
+                    if (action === 'deleteGoal' && id) deleteGoalById(id);
+                }
+                const chk = e.target.closest('.custom-check');
+                if (chk && chk.getAttribute('data-action') === 'toggleGoal') {
+                    const id = chk.getAttribute('data-id');
+                    if (id) toggleGoalComplete(id, chk.checked);
+                }
+            });
+        }
+
+        document.getElementById('addScheduleBtn')?.addEventListener('click', () => {
+            const task = document.getElementById('scheduleTaskInput').value;
+            const time = document.getElementById('scheduleTimeInput').value;
+            if (addSchedule(task, time)) {
+                document.getElementById('scheduleTaskInput').value = '';
+                document.getElementById('scheduleTimeInput').value = '';
+            }
+        });
+        document.getElementById('addRoutineBtn')?.addEventListener('click', () => {
+            const time = document.getElementById('routineTimeInput').value;
+            const act = document.getElementById('routineActivityInput').value;
+            if (addRoutine(time, act)) {
+                document.getElementById('routineTimeInput').value = '';
+                document.getElementById('routineActivityInput').value = '';
+            }
+        });
+        document.getElementById('addGoalBtn')?.addEventListener('click', () => {
+            const name = document.getElementById('goalNameInput').value;
+            const due = document.getElementById('goalDateInput').value;
+            if (addGoal(name, due)) {
+                document.getElementById('goalNameInput').value = '';
+                document.getElementById('goalDateInput').value = '';
+            }
+        });
+    }
+
+    function fullRender() {
+        renderSchedule();
+        renderRoutine();
+        renderGoals();
+    }
+
+    function init() {
+        initData();
+        fullRender();
+        bindGlobalEvents();
+    }
+    init();
+</script>
+</body>
+</html>

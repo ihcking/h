@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>灵悦·臻享大转盘 | 概率可视化 精致UI</title>
+    <!-- 字体 & 图标库 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(ellipse at 25% 20%, #0b1721, #03080e);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 28px 24px;
+        }
+
+        /* 主容器 — 奢华玻璃质感 */
+        .master-container {
+            max-width: 1600px;
+            width: 100%;
+            background: rgba(8, 18, 26, 0.55);
+            backdrop-filter: blur(20px);
+            border-radius: 88px;
+            padding: 28px 32px;
+            box-shadow: 0 40px 70px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 210, 130, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        /* 双栏黄金比例 */
+        .premium-double {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 38px;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        /* ========= 转盘左侧区域 ========= */
+        .wheel-luxury {
+            flex: 2;
+            min-width: 340px;
+            background: rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(6px);
+            border-radius: 72px;
+            padding: 24px 20px 32px;
+            box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.5), 0 18px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .canvas-stage {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+            background: #fef5e6;
+            border-radius: 50%;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6), 0 0 0 10px rgba(255, 200, 100, 0.65), 0 0 0 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+        }
+
+        /* 指针 — 新派钻石切割质感 */
+        .pointer-crystal {
+            position: absolute;
+            top: -38px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-top: 86px solid #ffdfa5;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+            z-index: 15;
+        }
+        .pointer-crystal::before {
+            content: "✨";
+            position: absolute;
+            font-size: 42px;
+            top: -94px;
+            left: -29px;
+            color: #fff7e6;
+            text-shadow: 0 2px 12px #ffac49;
+            letter-spacing: 4px;
+        }
+        .pointer-crystal::after {
+            content: "";
+            position: absolute;
+            top: -14px;
+            left: -24px;
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, #ffecbc, #ffbc62);
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        /* 抽奖结果区 + 按钮 */
+        .golden-result {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            margin-top: 18px;
+        }
+        .result-card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 14px 28px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 190, 80, 0.8);
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #fff5e2;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+        }
+        .result-card i {
+            font-size: 1.8rem;
+            color: #ffcf7a;
+        }
+        .result-card span {
+            color: #ffe2a4;
+            font-size: 1.48rem;
+            font-weight: 800;
+            margin-left: 8px;
+            letter-spacing: 1px;
+        }
+        .btn-spin-glam {
+            background: linear-gradient(135deg, #ffb74d, #ff7120);
+            border: none;
+            padding: 15px 52px;
+            border-radius: 80px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            box-shadow: 0 12px 0 #9b3f0c;
+            transition: all 0.08s linear;
+            font-family: inherit;
+            letter-spacing: 3px;
+        }
+        .btn-spin-glam:active {
+            transform: translateY(5px);
+            box-shadow: 0 6px 0 #9b3f0c;
+        }
+        .btn-spin-glam:disabled {
+            opacity: 0.6;
+            transform: translateY(0);
+            cursor: not-allowed;
+            filter: grayscale(0.1);
+        }
+        .wheel-tip {
+            font-size: 0.75rem;
+            color: #d6c294;
+            text-align: center;
+            margin-top: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========= 右侧高级工坊 ========= */
+        .workshop-pro {
+            flex: 1.4;
+            min-width: 350px;
+            background: rgba(18, 28, 38, 0.88);
+            backdrop-filter: blur(20px);
+            border-radius: 68px;
+            padding: 28px 26px;
+            border: 1px solid rgba(255, 195, 100, 0.45);
+            box-shadow: 0 20px 42px rgba(0, 0, 0, 0.4);
+        }
+        .workshop-header {
+            font-size: 1.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff2ce;
+            border-bottom: 2px dashed #ffb458;
+            padding-bottom: 14px;
+            margin-bottom: 26px;
+        }
+        /* 奖品列表滚动区 */
+        .prize-scroll-area {
+            max-height: 430px;
+            overflow-y: auto;
+            padding-right: 6px;
+            margin-bottom: 24px;
+        }
+        /* 每个奖品的卡片带概率条 */
+        .prize-card-pro {
+            background: rgba(0, 0, 0, 0.55);
+            border-radius: 56px;
+            margin-bottom: 18px;
+            padding: 12px 16px 14px 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 185, 75, 0.35);
+            transition: all 0.2s ease;
+        }
+        .prize-card-pro:hover {
+            background: rgba(0, 0, 0, 0.75);
+            border-color: #ffb458;
+            transform: translateX(3px);
+        }
+        .prize-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .prize-input {
+            flex: 3;
+            background: #fffcf3;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 48px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1c2a2f;
+            font-family: inherit;
+            transition: 0.1s;
+        }
+        .prize-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px #ffb347;
+        }
+        .color-wheel {
+            width: 48px;
+            height: 48px;
+            border-radius: 32px;
+            border: 2px solid white;
+            cursor: pointer;
+            box-shadow: 0 2px 10px black;
+        }
+        .del-icon {
+            background: #bc3f2e;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .del-icon:hover {
+            background: #ff5e4a;
+            transform: scale(0.96);
+        }
+        /* 权重控制区域 */
+        .weight-zone {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-left: 8px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .weight-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #ffdeae;
+            background: #1e2e2e80;
+            padding: 4px 12px;
+            border-radius: 36px;
+        }
+        .weight-number {
+            width: 85px;
+            background: #253b3f;
+            border: none;
+            color: #ffecb3;
+            font-weight: bold;
+            padding: 8px 10px;
+            border-radius: 36px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .weight-percent-badge {
+            font-size: 0.7rem;
+            color: #ffcd94;
+            background: #00000055;
+            padding: 4px 10px;
+            border-radius: 32px;
+            min-width: 70px;
+            text-align: center;
+        }
+        /* 概率进度条 */
+        .prob-bar-container {
+            width: 100%;
+            background: #2c3b3f;
+            border-radius: 40px;
+            height: 7px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .prob-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffb347, #ffd966);
+            border-radius: 40px;
+            transition: width 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 10px 0 18px;
+        }
+        .btn-add {
+            background: linear-gradient(95deg, #2b8252, #1f9a55);
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-reset {
+            background: #2e4853;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #ffeaae;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-add:hover, .btn-reset:hover {
+            filter: brightness(1.08);
+            transform: scale(0.99);
+        }
+        .stats-chip {
+            background: #101d22aa;
+            border-radius: 40px;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #ffeaaf;
+            margin-bottom: 20px;
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-card {
+            background: rgba(0, 0, 0, 0.55);
+            border-radius: 48px;
+            padding: 16px;
+            margin-top: 6px;
+        }
+        .history-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+            padding: 0 6px;
+        }
+        .clear-history {
+            background: none;
+            border: 1px solid #ffae60;
+            padding: 6px 18px;
+            border-radius: 32px;
+            color: #ffce92;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: 0.1s;
+        }
+        .history-list {
+            list-style: none;
+            max-height: 125px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .history-list li {
+            background: #1a2b30;
+            border-radius: 32px;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            color: #fff2cf;
+            border-left: 5px solid #ffaa55;
+            transition: 0.1s;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f3136;
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffbc6e;
+            border-radius: 12px;
+        }
+        @media (max-width: 860px) {
+            .master-container { padding: 20px; }
+            .btn-spin-glam { font-size: 1.4rem; padding: 10px 28px; }
+            .result-card { font-size: 1rem; padding: 8px 20px; }
+            .workshop-header { font-size: 1.6rem; }
+        }
+        /* 轻提示魔法 */
+        .toast-magic {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2f2cee;
+            backdrop-filter: blur(16px);
+            color: #fff3cf;
+            padding: 14px 34px;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            z-index: 1000;
+            border: 1px solid #ffc285;
+            box-shadow: 0 10px 28px black;
+            animation: glowRise 0.25s ease;
+            white-space: nowrap;
+        }
+        @keyframes glowRise {
+            from { opacity: 0; transform: translateX(-50%) scale(0.9); bottom: 10px;}
+            to { opacity: 1; transform: translateX(-50%) scale(1); bottom: 40px;}
+        }
+        button, input, .color-wheel { cursor: pointer; }
+        .fas, .far, .fab { pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<div class="master-container">
+    <div class="premium-double">
+        <!-- 左侧转盘区域 -->
+        <div class="wheel-luxury">
+            <div class="canvas-stage">
+                <canvas id="wheelCanvas" width="620" height="620" style="width:100%; height:auto; max-width:620px; max-height:620px"></canvas>
+                <div class="pointer-crystal"></div>
+            </div>
+            <div class="golden-result">
+                <div class="result-card">
+                    <i class="fas fa-gem"></i> 天命所归
+                    <span id="lastWin">✨ 转出好运 ✨</span>
+                </div>
+                <button class="btn-spin-glam" id="spinButton">
+                    <i class="fas fa-fan"></i> 抽 奖 <i class="fas fa-bolt"></i>
+                </button>
+            </div>
+            <div class="wheel-tip">
+                <i class="fas fa-chart-pie"></i> 扇形面积 = 权重占比 · 实时动态概率
+            </div>
+        </div>
+
+        <!-- 右侧：奖品权重工坊 & 历史 -->
+        <div class="workshop-pro">
+            <div class="workshop-header">
+                <i class="fas fa-sliders-h"></i> 概率工坊
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div id="prizeEditorList" class="prize-scroll-area">
+                <!-- 动态奖品卡片呈现 -->
+            </div>
+            <div class="action-buttons">
+                <button id="addPrizeBtn" class="btn-add"><i class="fas fa-plus-circle"></i> 添加奖项 (默认权重1.0)</button>
+                <button id="resetDefaultBtn" class="btn-reset"><i class="fas fa-undo-alt"></i> 重置默认奖品6项</button>
+            </div>
+            <div class="stats-chip">
+                <span><i class="fas fa-weight-hanging"></i> 总权重值</span>
+                <strong id="totalWeightSpan" style="font-size:1.2rem; color:#ffd966;">0</strong>
+                <span><i class="fas fa-percent"></i> 扇形按比例分配</span>
+            </div>
+            <div class="history-card">
+                <div class="history-head">
+                    <span><i class="fas fa-history"></i> 荣誉轨迹</span>
+                    <button id="clearHistoryBtn" class="clear-history"><i class="fas fa-trash-alt"></i> 清空记录</button>
+                </div>
+                <ul id="historyList" class="history-list">
+                    <li><i class="fas fa-star-of-life"></i> 转动轮盘，幸运转折</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ---------- 数据结构：奖品含权重 ----------
+        let prizes = [];       // { name, color, weight }
+        let rotationAngle = 0;
+        let isAnimating = false;
+        let animFrame = null;
+        let targetRotation = 0;
+        let animStartTime = 0;
+        const animDuration = 1800;
+        let startRotation = 0;
+        let historyRecords = [];
+
+        // canvas 元素
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        let size = 620;
+        canvas.width = size;
+        canvas.height = size;
+        let centerX = size/2, centerY = size/2;
+        let radius = size * 0.44;
+
+        // 默认奖品（权重初始均为1，视觉精美）
+        const DEFAULT_PRIZES = [
+            { name: "🏆 至尊特等奖", color: "#FADB67", weight: 1.0 },
+            { name: "💎 永恒钻石", color: "#C5E0D4", weight: 1.0 },
+            { name: "📱 旗舰潮机", color: "#F8B572", weight: 1.0 },
+            { name: "🍫 奢享礼赞", color: "#D4A373", weight: 1.0 },
+            { name: "🎫 光影通兑", color: "#B290C5", weight: 1.0 },
+            { name: "🌸 轻悦参与", color: "#FBC8B5", weight: 1.0 }
+        ];
+
+        function randomPastel() {
+            const hue = Math.floor(Math.random() * 360);
+            return `hsl(${hue}, 70%, 68%)`;
+        }
+
+        function loadDefaultPrizes() {
+            prizes = DEFAULT_PRIZES.map(p => ({ name: p.name, color: p.color, weight: p.weight }));
+            renderPrizeEditorList();
+            updateWeightStatsAndBars();
+            resetRotationAndRedraw();
+        }
+
+        function resetRotationAndRedraw() {
+            rotationAngle = 0;
+            drawWheel();
+        }
+
+        // 获取总权重
+        function getTotalWeight() {
+            return prizes.reduce((sum, p) => sum + Math.max(0.001, p.weight), 0);
+        }
+
+        // 绘制转盘: 每个扇形角度正比于权重，并加入光泽渐变
+        function drawWheel() {
+            if (!ctx) return;
+            if (!prizes.length) {
+                ctx.clearRect(0, 0, size, size);
+                ctx.font = "bold 24px 'Inter'";
+                ctx.fillStyle = "#ffeecc";
+                ctx.shadowBlur = 0;
+                ctx.fillText("✨ 添加奖品 ✨", centerX-100, centerY);
+                return;
+            }
+            const totalWeight = getTotalWeight();
+            if (totalWeight <= 0) return;
+            ctx.clearRect(0, 0, size, size);
+            let currentStart = rotationAngle;
+            for (let i = 0; i < prizes.length; i++) {
+                const weight = Math.max(0.001, prizes[i].weight);
+                const angleRad = (weight / totalWeight) * Math.PI * 2;
+                const end = currentStart + angleRad;
+                // 创建渐变扇形（径向增强质感）
+                const grad = ctx.createLinearGradient(
+                    centerX + Math.cos(currentStart) * radius * 0.2,
+                    centerY + Math.sin(currentStart) * radius * 0.2,
+                    centerX + Math.cos(end) * radius * 0.7,
+                    centerY + Math.sin(end) * radius * 0.7
+                );
+                grad.addColorStop(0, prizes[i].color);
+                grad.addColorStop(1, this.adjustColorBrightness?.(prizes[i].color, -15) || prizes[i].color);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentStart, end);
+                ctx.closePath();
+                ctx.fillStyle = grad;
+                ctx.fill();
+                ctx.save();
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = "#FFF9E8";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                // 内高光边
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius * 0.92, currentStart, end);
+                ctx.strokeStyle = "#FFEACA";
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+                ctx.restore();
+                
+                // 绘制文字（智能居中于扇形）
+                const midAngle = currentStart + angleRad / 2;
+                const textRadius = radius * 0.69;
+                const x = centerX + Math.cos(midAngle) * textRadius;
+                const y = centerY + Math.sin(midAngle) * textRadius;
+                let shortName = prizes[i].name;
+                const cnt = prizes.length;
+                const maxLen = cnt > 9 ? 5 : (cnt > 7 ? 6 : 10);
+                if (shortName.length > maxLen) shortName = shortName.slice(0, maxLen-1) + "..";
+                ctx.save();
+                ctx.font = `600 ${Math.min(26, Math.max(11, Math.floor(220 / (cnt+2))))}px 'Inter'`;
+                ctx.fillStyle = "#15242b";
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = "rgba(0,0,0,0)";
+                ctx.translate(x, y);
+                ctx.rotate(midAngle + (midAngle > Math.PI/2 && midAngle < 3*Math.PI/2 ? Math.PI : 0));
+                ctx.fillText(shortName, -ctx.measureText(shortName).width/2, 6);
+                ctx.restore();
+                currentStart = end;
+            }
+            // 中央豪华徽章
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.13, 0, 2 * Math.PI);
+            ctx.fillStyle = "#F9D689";
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.09, 0, 2 * Math.PI);
+            ctx.fillStyle = "#FFE6A9";
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.045, 0, 2 * Math.PI);
+            ctx.fillStyle = "#D8932E";
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            // 装饰高光圆环
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius + 6, 0, 2 * Math.PI);
+            ctx.strokeStyle = "#FFD58C";
+            ctx.lineWidth = 3.5;
+            ctx.stroke();
+        }
+        // 辅助亮度调整 (简易)
+        function adjustColorBrightness(hex, percent) { return hex; } // 占位，渐变已经美观
+
+        // 获取指针指向奖品 (基于权重弧度)
+        function getPrizeIndexByRotation() {
+            if (!prizes.length) return -1;
+            const pointerAngle = -Math.PI / 2;
+            let localAngle = pointerAngle - rotationAngle;
+            localAngle = ((localAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+            const totalWeight = getTotalWeight();
+            if (totalWeight <= 0) return -1;
+            let acc = 0;
+            for (let i = 0; i < prizes.length; i++) {
+                const w = Math.max(0.001, prizes[i].weight);
+                const sector = (w / totalWeight) * Math.PI * 2;
+                if (localAngle >= acc && localAngle < acc + sector) return i;
+                acc += sector;
+            }
+            return prizes.length - 1;
+        }
+
+        function showToast(msg) {
+            let toast = document.createElement('div');
+            toast.className = 'toast-magic';
+            toast.innerHTML = `<i class="fas fa-gift"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2100);
+        }
+
+        // 动画抽奖
+        function startSpin() {
+            if (isAnimating) return;
+            if (!prizes.length) { showToast("⚠️ 请先添加奖项"); return; }
+            const totalWeight = getTotalWeight();
+            if (totalWeight <= 0) { showToast("无效的权重总和"); return; }
+            const extraRounds = Math.floor(Math.random() * 12) + 10; // 10~21圈
+            const randomRad = Math.random() * Math.PI * 2;
+            let delta = extraRounds * 2 * Math.PI + randomRad;
+            targetRotation = rotationAngle + delta;
+            startRotation = rotationAngle;
+            animStartTime = performance.now();
+            isAnimating = true;
+            const spinBtn = document.getElementById('spinButton');
+            spinBtn.disabled = true;
+            function step(now) {
+                const elapsed = now - animStartTime;
+                let t = Math.min(1, elapsed / animDuration);
+                const easeOut = 1 - Math.pow(1 - t, 3);
+                const newRot = startRotation + (targetRotation - startRotation) * easeOut;
+                rotationAngle = newRot;
+                drawWheel();
+                if (t < 1) {
+                    animFrame = requestAnimationFrame(step);
+                } else {
+                    rotationAngle = targetRotation % (Math.PI * 2);
+                    drawWheel();
+                    const prizeIdx = getPrizeIndexByRotation();
+                    if (prizeIdx !== -1 && prizes[prizeIdx]) {
+                        const winPrize = prizes[prizeIdx];
+                        document.getElementById('lastWin').innerHTML = winPrize.name;
+                        addHistoryRecord(winPrize.name);
+                        showToast(`🎉 恭喜斩获：${winPrize.name} 🎉`);
+                        triggerFlashEffect();
+                    } else {
+                        document.getElementById('lastWin').innerHTML = "✨ 鸿运当头 ✨";
+                    }
+                    isAnimating = false;
+                    spinBtn.disabled = false;
+                    cancelAnimationFrame(animFrame);
+                }
+            }
+            if (animFrame) cancelAnimationFrame(animFrame);
+            animFrame = requestAnimationFrame(step);
+        }
+        function triggerFlashEffect() {
+            const canvasDiv = document.querySelector('.canvas-stage');
+            if(canvasDiv){
+                canvasDiv.style.transition = '0.1s';
+                canvasDiv.style.filter = 'drop-shadow(0 0 8px gold)';
+                setTimeout(()=> canvasDiv.style.filter = '', 200);
+            }
+        }
+
+        function addHistoryRecord(prizeName) {
+            const timeStr = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+            historyRecords.unshift(`${timeStr}  🎲  ${prizeName}`);
+            if (historyRecords.length > 12) historyRecords.pop();
+            updateHistoryUI();
+        }
+        function updateHistoryUI() {
+            const historyList = document.getElementById('historyList');
+            if (!historyList) return;
+            if (historyRecords.length === 0) {
+                historyList.innerHTML = '<li><i class="fas fa-fan"></i> 旋转转盘，谱写好运~</li>';
+                return;
+            }
+            historyList.innerHTML = historyRecords.map(rec => `<li><i class="fas fa-crown"></i> ${rec}</li>`).join('');
+        }
+        function clearHistory() { historyRecords = []; updateHistoryUI(); showToast("历史记录已清空"); }
+
+        // 更新权重总显示 & 刷新进度条
+        function updateWeightStatsAndBars() {
+            const total = getTotalWeight();
+            const totalSpan = document.getElementById('totalWeightSpan');
+            if (totalSpan) totalSpan.innerText = total.toFixed(2);
+            // 刷新所有进度条
+            document.querySelectorAll('.prize-card-pro').forEach((card, idx) => {
+                if (idx < prizes.length) {
+                    const fillDiv = card.querySelector('.prob-fill');
+                    if (fillDiv) {
+                        const percent = total > 0 ? (prizes[idx].weight / total * 100) : 0;
+                        fillDiv.style.width = `${percent}%`;
+                        const badge = card.querySelector('.weight-percent-badge');
+                        if(badge) badge.innerText = `占比 ${percent.toFixed(1)}%`;
+                    }
+                }
+            });
+        }
+
+        // 渲染奖品编辑器（带概率条）
+        function renderPrizeEditorList() {
+            const container = document.getElementById('prizeEditorList');
+            if (!container) return;
+            if (prizes.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:30px;">✨ 点击添加奖项 ✨</div>';
+                return;
+            }
+            container.innerHTML = '';
+            prizes.forEach((prize, idx) => {
+                const card = document.createElement('div');
+                card.className = 'prize-card-pro';
+                const row = document.createElement('div');
+                row.className = 'prize-row';
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.value = prize.name;
+                nameInput.className = 'prize-input';
+                nameInput.addEventListener('change', (e) => {
+                    prizes[idx].name = e.target.value.trim() || "神秘赏";
+                    drawWheel();
+                });
+                const colorPicker = document.createElement('input');
+                colorPicker.type = 'color';
+                colorPicker.value = prize.color;
+                colorPicker.className = 'color-wheel';
+                colorPicker.addEventListener('input', (e) => {
+                    prizes[idx].color = e.target.value;
+                    drawWheel();
+                });
+                const delBtn = document.createElement('button');
+                delBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                delBtn.className = 'del-icon';
+                delBtn.addEventListener('click', () => {
+                    if (prizes.length <= 1) { showToast("至少需要一个奖项"); return; }
+                    prizes.splice(idx, 1);
+                    renderPrizeEditorList();
+                    updateWeightStatsAndBars();
+                    resetRotationAndRedraw();
+                    drawWheel();
+                });
+                row.appendChild(nameInput);
+                row.appendChild(colorPicker);
+                row.appendChild(delBtn);
+                
+                const weightZone = document.createElement('div');
+                weightZone.className = 'weight-zone';
+                const weightLabel = document.createElement('span');
+                weightLabel.innerHTML = '<i class="fas fa-balance-scale"></i> 权重';
+                weightLabel.className = 'weight-label';
+                const weightInput = document.createElement('input');
+                weightInput.type = 'number';
+                weightInput.value = prize.weight;
+                weightInput.step = 0.5;
+                weightInput.min = 0.1;
+                weightInput.className = 'weight-number';
+                weightInput.addEventListener('change', (e) => {
+                    let newW = parseFloat(e.target.value);
+                    if (isNaN(newW)) newW = 1;
+                    if (newW < 0.1) newW = 0.1;
+                    prizes[idx].weight = newW;
+                    updateWeightStatsAndBars();
+                    drawWheel();
+                });
+                const percentSpan = document.createElement('span');
+                percentSpan.className = 'weight-percent-badge';
+                const probBar = document.createElement('div');
+                probBar.className = 'prob-bar-container';
+                const fillBar = document.createElement('div');
+                fillBar.className = 'prob-fill';
+                probBar.appendChild(fillBar);
+                weightZone.appendChild(weightLabel);
+                weightZone.appendChild(weightInput);
+                weightZone.appendChild(percentSpan);
+                card.appendChild(row);
+                card.appendChild(weightZone);
+                card.appendChild(probBar);
+                container.appendChild(card);
+                // 存储fill引用以便刷新
+                card.probFill = fillBar;
+            });
+            updateWeightStatsAndBars();
+        }
+
+        function addNewPrize() {
+            prizes.push({ name: `🎁 宝藏${prizes.length+1}`, color: randomPastel(), weight: 1.0 });
+            renderPrizeEditorList();
+            updateWeightStatsAndBars();
+            resetRotationAndRedraw();
+            drawWheel();
+            showToast(`✨ 新奖项加入，默认权重1.0`);
+        }
+        function resetToDefault() {
+            prizes = DEFAULT_PRIZES.map(p => ({ name: p.name, color: p.color, weight: 1.0 }));
+            renderPrizeEditorList();
+            updateWeightStatsAndBars();
+            resetRotationAndRedraw();
+            drawWheel();
+            showToast("🏆 重置为精美默认奖项 (等权重)");
+        }
+        function bindEvents() {
+            document.getElementById('spinButton').addEventListener('click', startSpin);
+            document.getElementById('addPrizeBtn').addEventListener('click', addNewPrize);
+            document.getElementById('resetDefaultBtn').addEventListener('click', resetToDefault);
+            document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+        }
+        function init() {
+            loadDefaultPrizes();
+            bindEvents();
+            drawWheel();
+            historyRecords = [];
+            updateHistoryUI();
+            document.getElementById('lastWin').innerHTML = '✨ 转出高光 ✨';
+        }
+        window.addEventListener('resize', () => drawWheel());
+        init();
+    })();
+</script>
+</body>
+</html>

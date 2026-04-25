@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>星选CPS | 领券中心 · 大额优惠限时抢</title>
+    <!-- Google Fonts & Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 页面整体布局：flex 列，保证 footer 始终在底部 */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050b1a;
+            color: #f0f3fa;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 主内容区自动撑开，footer 会贴在底部 */
+        .main-content {
+            flex: 1;
+        }
+
+        /* 动态粒子画布背景 */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* 跟随鼠标的光晕 */
+        .glow-cursor {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(120, 80, 255, 0.3) 0%, rgba(80, 60, 210, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: transform 0.08s ease-out;
+            filter: blur(35px);
+            will-change: transform;
+        }
+
+        /* 主内容区容器 */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        /* 头部 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(4px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 1.2rem;
+        }
+        .logo h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF, #b6a9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-size: 0.85rem;
+            color: #a0a8d0;
+            display: block;
+            font-weight: 500;
+        }
+        .countdown-tag {
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.15);
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .countdown-tag i {
+            color: #ffcc4d;
+            margin-right: 8px;
+        }
+        #timer {
+            font-weight: 800;
+            background: linear-gradient(45deg, #FFD966, #FF9966);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-left: 5px;
+        }
+
+        /* 主优惠券卡片 */
+        .hero-card {
+            background: rgba(15, 25, 45, 0.65);
+            backdrop-filter: blur(16px);
+            border-radius: 3rem;
+            padding: 2.5rem 2rem;
+            margin-bottom: 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05) inset;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 180%;
+            height: 180%;
+            background: radial-gradient(circle, rgba(255,200,100,0.1), transparent 70%);
+            animation: pulseGlow 8s infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes pulseGlow {
+            0% { opacity: 0.4; transform: scale(1);}
+            100% { opacity: 0.9; transform: scale(1.1);}
+        }
+        .coupon-badge {
+            display: inline-block;
+            background: #ff4d4d;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 4px 12px rgba(255,77,77,0.3);
+        }
+        .hero-card h2 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFF5E0, #FFD6A5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .hero-discount {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0.8rem 0;
+        }
+        .hero-discount span {
+            font-size: 3.5rem;
+            background: linear-gradient(145deg, #FFB347, #FF8C42);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero-desc {
+            font-size: 1rem;
+            color: #cbd5ff;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .btn-coupon {
+            background: linear-gradient(105deg, #ff7e3a 0%, #ff4d6d 100%);
+            border: none;
+            padding: 1.1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 12px 25px -8px rgba(255,77,77,0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-coupon:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(255,77,77,0.7);
+        }
+
+        /* ========= 模块通用样式 (可折叠标题 + 商品网格 + 分页) ========= */
+        .module {
+            margin-bottom: 3rem;
+        }
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0 1.5rem 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .module-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .module-title i:first-child {
+            background: #2a2f4b;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+        .toggle-arrow {
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 60px;
+            backdrop-filter: blur(8px);
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .toggle-arrow i {
+            transition: transform 0.3s;
+            pointer-events: none;
+        }
+        .module-content {
+            transition: all 0.3s ease;
+        }
+        .module-content.collapsed {
+            display: none;
+        }
+
+        /* 商品网格 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+        /* 全新霓虹玻璃卡片样式 */
+        .product-card {
+            background: rgba(12, 20, 35, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(0,255,255,0.2) inset;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,255,0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        .product-card:hover::after {
+            opacity: 0.5;
+        }
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: #ff9f4a;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.5), 0 0 0 2px rgba(255, 159, 74, 0.5) inset;
+            background: rgba(25, 40, 60, 0.9);
+        }
+        .product-img {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(145deg, #FFD966, #FF884D);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: transform 0.2s;
+        }
+        .product-card:hover .product-img {
+            transform: scale(1.08);
+        }
+        .product-card h3 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+        .price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ffbc6e;
+            margin: 0.5rem 0;
+        }
+        .price small {
+            font-size: 0.8rem;
+            color: #9aa3c9;
+            text-decoration: line-through;
+            margin-left: 8px;
+            font-weight: 400;
+        }
+        .btn-buy {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,140,70,0.6);
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+            width: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+        .btn-buy:hover {
+            background: linear-gradient(95deg, #ff7e3a, #ff4d6d);
+            border-color: transparent;
+            transform: scale(0.98);
+            box-shadow: 0 6px 16px rgba(255,77,77,0.5);
+        }
+
+        /* 分页器 */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .page-btn {
+            background: rgba(20, 30, 55, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #f0f3fa;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            min-width: 44px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .page-btn.active {
+            background: linear-gradient(135deg, #ff7e3a, #ff4d6d);
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(255,77,77,0.4);
+            color: white;
+        }
+        .page-btn:hover:not(.disabled) {
+            background: rgba(255, 100, 70, 0.7);
+            transform: translateY(-2px);
+        }
+        .page-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* 返回顶部按钮 */
+        .go-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 52px;
+            height: 52px;
+            background: rgba(30, 40, 70, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 99;
+            border: 1px solid rgba(255,140,70,0.6);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+        .go-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        .go-top:hover {
+            background: linear-gradient(135deg, #ff7e3a, #ff4d6d);
+            border-color: transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255,77,77,0.4);
+        }
+        .go-top i {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        /* 浮动星星装饰 */
+        .floating-star {
+            position: absolute;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            animation: floatStar 6s infinite ease-in-out;
+            pointer-events: none;
+        }
+        @keyframes floatStar {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.2;}
+            50% { transform: translateY(-15px) rotate(10deg); opacity: 0.6;}
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.2;}
+        }
+
+        /* 页脚 - 固定在底部由 flex 保证 */
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #7d86b3;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            background: rgba(5, 11, 26, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .footer a {
+            color: #bbaaff;
+            text-decoration: none;
+        }
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple-effect:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.6s;
+        }
+        .ripple-effect:active:after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                padding: 1rem 1.2rem 1rem;
+            }
+            .hero-card h2 {
+                font-size: 2rem;
+            }
+            .hero-discount span {
+                font-size: 2.4rem;
+            }
+            .module-title {
+                font-size: 1.5rem;
+            }
+            .toggle-arrow {
+                width: 36px;
+                height: 36px;
+            }
+            .go-top {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+<div class="glow-cursor" id="glowCursor"></div>
+
+<div class="main-content">
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <h1><i class="fas fa-ticket-alt"></i> 星选·CPS领券</h1>
+                <span>官方合作 · 超高返佣专享</span>
+            </div>
+            <div class="countdown-tag">
+                <i class="fas fa-hourglass-half"></i> 限时狂欢结束倒计时 
+                <span id="timer">23:59:59</span>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="coupon-badge"><i class="fas fa-gem"></i> 限时神券 · 仅此一天</div>
+            <h2>全平台通用神券</h2>
+            <div class="hero-discount">
+                立减 <span>¥100</span> 无门槛
+            </div>
+            <div class="hero-desc">
+                全场通用｜可叠加店铺优惠｜大牌爆款折上折，点击立即领取，限量5000张！
+            </div>
+            <button class="btn-coupon ripple-effect" id="mainCouponBtn">
+                <i class="fas fa-hand-peace"></i> 立即领取 ¥100 优惠券
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <div style="margin-top: 1rem; font-size: 0.7rem; opacity: 0.7;">
+                <i class="fas fa-shield-alt"></i> 领券后自动跳转官方领取页，安全可靠
+            </div>
+        </div>
+
+        <!-- 所有动态模块将追加到此容器中 -->
+        <div id="modulesRoot"></div>
+    </div>
+</div>
+
+<div class="footer">
+    <p><i class="fas fa-link"></i> 所有优惠券及商品链接均为合作推广渠道，点击即领券/跳转官方商城。链接可在代码中自由替换。</p>
+    <p>© 星选CPS 超值好物 | 活动最终解释权归合作品牌所有</p>
+</div>
+
+<!-- 返回顶部按钮 -->
+<div class="go-top" id="goTopBtn">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<script>
+    // ======================= 全局配置 =======================
+    const CONFIG = {
+        mainCouponUrl: "https://s.click.taobao.com/t?e=m%3D2%26s%3D5x8tRc9kP4w%2FbZ5pP1Q8jKx9fL0cD3aG6hJ7kL2zXcVbN",  // 主优惠券链接
+    };
+
+    // 定义所有商品模块 (后续只需在此数组增加新模块即可轻松扩展)
+    // 每个模块包含: id, 标题, 图标, 每页商品数, 商品列表
+    const modulesConfig = [
+        {
+            id: "hotModule",
+            title: "热门爆款 · 领券下单更省",
+            icon: "fas fa-fire-flame-curved",
+            itemsPerPage: 3,
+            products: [
+                { id: 1, name: "【爆款】无线降噪耳机", icon: "fas fa-headphones", price: "¥199", oldPrice: "¥499", desc: "ANC主动降噪+30h续航", link: "https://s.click.taobao.com/example1" },
+                { id: 2, name: "极简运动手表", icon: "fas fa-clock", price: "¥269", oldPrice: "¥699", desc: "血氧监测/14天续航", link: "https://s.click.taobao.com/example2" },
+                { id: 3, name: "高定联名卫衣", icon: "fas fa-tshirt", price: "¥99", oldPrice: "¥299", desc: "潮牌限定·柔软透气", link: "https://s.click.taobao.com/example3" },
+                { id: 4, name: "4K 投影仪", icon: "fas fa-video", price: "¥1299", oldPrice: "¥2499", desc: "智能系统/家庭影院", link: "https://s.click.taobao.com/example4" },
+                { id: 5, name: "智享AI音箱", icon: "fas fa-music", price: "¥159", oldPrice: "¥399", desc: "Hi-Fi音质/语音助手", link: "https://s.click.taobao.com/example5" },
+                { id: 6, name: "机械电竞键盘", icon: "fas fa-keyboard", price: "¥189", oldPrice: "¥459", desc: "RGB光效/青轴手感", link: "https://s.click.taobao.com/example6" },
+                { id: 7, name: "快充移动电源", icon: "fas fa-battery-full", price: "¥79", oldPrice: "¥199", desc: "20000mAh/双向快充", link: "https://s.click.taobao.com/example7" },
+                { id: 8, name: "偏光太阳镜", icon: "fas fa-glasses", price: "¥128", oldPrice: "¥358", desc: "UV400/经典蛤蟆镜", link: "https://s.click.taobao.com/example8" }
+            ]
+        },
+        {
+            id: "recommendModule",
+            title: "🔥 编辑推荐 · 口碑爆款 🔥",
+            icon: "fas fa-star",
+            itemsPerPage: 2,
+            products: [
+                { id: 101, name: "高端真无线耳机Pro", icon: "fas fa-headphones", price: "¥299", oldPrice: "¥799", desc: "Hi-Res认证/无线充电", link: "https://s.click.taobao.com/rec1" },
+                { id: 102, name: "智能扫地机器人", icon: "fas fa-robot", price: "¥999", oldPrice: "¥1999", desc: "激光导航/扫拖一体", link: "https://s.click.taobao.com/rec2" },
+                { id: 103, name: "轻奢风骨瓷杯套装", icon: "fas fa-mug-hot", price: "¥89", oldPrice: "¥269", desc: "北欧设计/礼盒装", link: "https://s.click.taobao.com/rec3" },
+                { id: 104, name: "男士氨基酸洗面奶", icon: "fas fa-hand-sparkles", price: "¥49", oldPrice: "¥129", desc: "温和控油/敏感肌可用", link: "https://s.click.taobao.com/rec4" },
+                { id: 105, name: "户外折叠露营椅", icon: "fas fa-campground", price: "¥79", oldPrice: "¥199", desc: "承重200斤/轻便收纳", link: "https://s.click.taobao.com/rec5" },
+                { id: 106, name: "ins风复古台灯", icon: "fas fa-lamp", price: "¥119", oldPrice: "¥299", desc: "三色变光/USB充电", link: "https://s.click.taobao.com/rec6" }
+            ]
+        }
+        // 后续需要增加更多模块，只需在这里继续添加对象即可，例如：
+        // { id: "newModule", title: "新品首发", icon: "fas fa-gem", itemsPerPage: 3, products: [...] }
+    ];
+
+    // 存储每个模块的独立状态 (当前页, 折叠状态)
+    let modulesState = {};
+
+    // 公用跳转函数
+    function openLink(url) {
+        if (!url) return;
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+            console.error("无效链接", url);
+            alert("链接配置无效，请检查商品链接");
+        }
+    }
+
+    // 为指定模块渲染商品网格 (根据当前页码)
+    function renderProductsForModule(moduleId, page) {
+        const module = modulesConfig.find(m => m.id === moduleId);
+        if (!module) return;
+        const start = (page - 1) * module.itemsPerPage;
+        const end = start + module.itemsPerPage;
+        const pageProducts = module.products.slice(start, end);
+        const gridContainer = document.getElementById(`grid-${moduleId}`);
+        if (!gridContainer) return;
+        
+        gridContainer.innerHTML = '';
+        pageProducts.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="product-img">
+                    <i class="${product.icon}" style="font-size: 3.2rem;"></i>
+                </div>
+                <h3>${product.name}</h3>
+                <div class="price">${product.price} <small>${product.oldPrice}</small></div>
+                <p style="font-size:0.8rem; margin-bottom:0.8rem; color:#b7c0e0;">${product.desc}</p>
+                <button class="btn-buy ripple-effect" data-link="${product.link}">
+                    <i class="fas fa-gift"></i> 领券立减 · 立即抢
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            `;
+            gridContainer.appendChild(card);
+        });
+        
+        // 绑定卡片内按钮事件
+        gridContainer.querySelectorAll('.btn-buy').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const url = btn.getAttribute('data-link');
+                if (url && url !== "#") {
+                    openLink(url);
+                } else {
+                    alert("提示：当前链接为示例占位，您可在模块配置中替换为真实推广链接。");
+                }
+            });
+        });
+        
+        // 重新挂载3D倾斜效果
+        attachTiltEffect(gridContainer);
+    }
+    
+    // 渲染指定模块的分页器
+    function renderPaginationForModule(moduleId, currentPage, totalPages) {
+        const paginationContainer = document.getElementById(`pagination-${moduleId}`);
+        if (!paginationContainer) return;
+        if (totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            return;
+        }
+        
+        let html = '';
+        html += `<button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" data-action="prev"><i class="fas fa-chevron-left"></i> 上一页</button>`;
+        
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+        for (let i = startPage; i <= endPage; i++) {
+            html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+        
+        html += `<button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" data-action="next">下一页 <i class="fas fa-chevron-right"></i></button>`;
+        paginationContainer.innerHTML = html;
+        
+        // 绑定分页事件
+        paginationContainer.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let newPage = currentPage;
+                if (btn.hasAttribute('data-action')) {
+                    const action = btn.getAttribute('data-action');
+                    if (action === 'prev' && currentPage > 1) newPage = currentPage - 1;
+                    if (action === 'next' && currentPage < totalPages) newPage = currentPage + 1;
+                } else if (btn.hasAttribute('data-page')) {
+                    newPage = parseInt(btn.getAttribute('data-page'), 10);
+                }
+                if (newPage !== currentPage) {
+                    modulesState[moduleId].currentPage = newPage;
+                    renderProductsForModule(moduleId, newPage);
+                    renderPaginationForModule(moduleId, newPage, totalPages);
+                }
+            });
+        });
+    }
+    
+    // 切换模块折叠状态 (供箭头和头部点击调用)
+    function toggleModule(moduleId) {
+        const state = modulesState[moduleId];
+        if (!state) return;
+        state.collapsed = !state.collapsed;
+        const contentDiv = document.getElementById(`content-${moduleId}`);
+        const arrowIcon = document.querySelector(`#module-${moduleId} .toggle-arrow i`);
+        if (contentDiv) {
+            if (state.collapsed) {
+                contentDiv.classList.add('collapsed');
+                if (arrowIcon) arrowIcon.classList.remove('fa-chevron-down');
+                if (arrowIcon) arrowIcon.classList.add('fa-chevron-right');
+            } else {
+                contentDiv.classList.remove('collapsed');
+                if (arrowIcon) arrowIcon.classList.remove('fa-chevron-right');
+                if (arrowIcon) arrowIcon.classList.add('fa-chevron-down');
+            }
+        }
+    }
+    
+    // 动态创建所有模块的DOM并初始化状态
+    function buildModules() {
+        const root = document.getElementById('modulesRoot');
+        root.innerHTML = '';
+        modulesConfig.forEach((module, idx) => {
+            const totalPages = Math.ceil(module.products.length / module.itemsPerPage);
+            // 初始化状态
+            modulesState[module.id] = {
+                currentPage: 1,
+                collapsed: false,
+                totalPages: totalPages
+            };
+            
+            const moduleDiv = document.createElement('div');
+            moduleDiv.className = 'module';
+            moduleDiv.id = `module-${module.id}`;
+            moduleDiv.innerHTML = `
+                <div class="module-header" id="header-${module.id}">
+                    <div class="module-title">
+                        <i class="${module.icon}"></i> ${module.title}
+                    </div>
+                    <div class="toggle-arrow">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="module-content" id="content-${module.id}">
+                    <div class="product-grid" id="grid-${module.id}"></div>
+                    <div class="pagination-container" id="pagination-${module.id}"></div>
+                </div>
+            `;
+            root.appendChild(moduleDiv);
+            
+            // 渲染商品和分页
+            renderProductsForModule(module.id, 1);
+            renderPaginationForModule(module.id, 1, totalPages);
+            
+            // 绑定折叠事件: 头部整体点击（但不包括箭头内部，避免重复触发），箭头单独点击
+            const header = document.getElementById(`header-${module.id}`);
+            const arrowDiv = moduleDiv.querySelector('.toggle-arrow');
+            
+            // 头部点击（如果点击的目标是箭头或其子元素，不触发，由箭头独立处理）
+            header.addEventListener('click', (e) => {
+                // 如果点击的是箭头区域，则不处理，避免重复
+                if (arrowDiv && arrowDiv.contains(e.target)) return;
+                toggleModule(module.id);
+            });
+            // 箭头独立点击，并阻止冒泡
+            if (arrowDiv) {
+                arrowDiv.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleModule(module.id);
+                });
+            }
+        });
+    }
+    
+    // 3D倾斜效果 (对指定容器内的卡片生效)
+    function attachTiltEffect(container) {
+        const cards = container.querySelectorAll('.product-card');
+        cards.forEach(card => {
+            if (card._tiltMove) card.removeEventListener('mousemove', card._tiltMove);
+            if (card._tiltLeave) card.removeEventListener('mouseleave', card._tiltLeave);
+            const handleMove = (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+            };
+            const handleLeave = () => {
+                card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+            };
+            card.addEventListener('mousemove', handleMove);
+            card.addEventListener('mouseleave', handleLeave);
+            card._tiltMove = handleMove;
+            card._tiltLeave = handleLeave;
+        });
+    }
+    
+    // 全局倒计时
+    let countdownInterval;
+    function initCountdown() {
+        let endTime = new Date();
+        endTime.setDate(endTime.getDate() + 3);
+        endTime.setHours(23, 59, 59, 999);
+        function updateTimer() {
+            const now = new Date();
+            const diff = endTime - now;
+            if (diff <= 0) {
+                document.getElementById('timer').innerHTML = "00:00:00";
+                clearInterval(countdownInterval);
+                return;
+            }
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (3600000)) / (1000 * 60));
+            const seconds = Math.floor((diff % 60000) / 1000);
+            document.getElementById('timer').innerHTML = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+        }
+        updateTimer();
+        countdownInterval = setInterval(updateTimer, 1000);
+    }
+    
+    // 主按钮
+    function bindMainButton() {
+        const mainBtn = document.getElementById('mainCouponBtn');
+        if (mainBtn) {
+            mainBtn.addEventListener('click', () => {
+                if (CONFIG.mainCouponUrl) openLink(CONFIG.mainCouponUrl);
+                else alert("未配置主优惠券链接");
+            });
+        }
+    }
+    
+    // 返回顶部功能
+    function initGoTop() {
+        const goTopBtn = document.getElementById('goTopBtn');
+        if (!goTopBtn) return;
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                goTopBtn.classList.add('show');
+            } else {
+                goTopBtn.classList.remove('show');
+            }
+        });
+        goTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+    
+    // 粒子背景 (简化版)
+    class ParticleBackground {
+        constructor(canvas) {
+            this.canvas = canvas;
+            this.ctx = canvas.getContext('2d');
+            this.particles = [];
+            this.particleCount = 120;
+            this.resizeHandler = this.resizeCanvas.bind(this);
+            this.init();
+        }
+        init() {
+            this.resizeCanvas();
+            this.createParticles();
+            window.addEventListener('resize', this.resizeHandler);
+            this.animate();
+        }
+        resizeCanvas() {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        }
+        createParticles() {
+            for (let i = 0; i < this.particleCount; i++) {
+                this.particles.push({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    radius: Math.random() * 2.2 + 1,
+                    alpha: Math.random() * 0.5 + 0.2,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.2 + 0.1,
+                    color: `hsl(${Math.random() * 40 + 240}, 70%, 65%)`
+                });
+            }
+        }
+        draw() {
+            if (!this.ctx) return;
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            for (let p of this.particles) {
+                this.ctx.beginPath();
+                this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                this.ctx.fillStyle = p.color;
+                this.ctx.globalAlpha = p.alpha;
+                this.ctx.fill();
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0) p.x = this.canvas.width;
+                if (p.x > this.canvas.width) p.x = 0;
+                if (p.y < 0) p.y = this.canvas.height;
+                if (p.y > this.canvas.height) p.y = 0;
+            }
+            this.ctx.globalAlpha = 1.0;
+            requestAnimationFrame(() => this.draw());
+        }
+        animate() { this.draw(); }
+    }
+    
+    function initGlowCursor() {
+        const glow = document.getElementById('glowCursor');
+        if (!glow) return;
+        document.addEventListener('mousemove', (e) => {
+            glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+        if ('ontouchstart' in window) glow.style.display = 'none';
+    }
+    
+    function addFloatingStars() {
+        const container = document.querySelector('.container');
+        if (!container) return;
+        for (let i = 0; i < 12; i++) {
+            const star = document.createElement('div');
+            star.className = 'floating-star';
+            star.innerHTML = '<i class="fas fa-star"></i>';
+            star.style.position = 'absolute';
+            star.style.left = Math.random() * 90 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            star.style.fontSize = (Math.random() * 12 + 8) + 'px';
+            star.style.opacity = Math.random() * 0.4;
+            star.style.zIndex = '5';
+            container.appendChild(star);
+        }
+    }
+    
+    // 页面启动
+    window.addEventListener('DOMContentLoaded', () => {
+        initCountdown();
+        bindMainButton();
+        initGlowCursor();
+        addFloatingStars();
+        buildModules();   // 动态构建所有模块（热门爆款 + 推荐爆款 + 未来可扩展）
+        initGoTop();      // 返回顶部按钮
+        const canvas = document.getElementById('particle-canvas');
+        if (canvas) new ParticleBackground(canvas);
+    });
+</script>
+</body>
+</html>

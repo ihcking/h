@@ -95,34 +95,53 @@
             cursor: pointer;
         }
 
-        /* ---- 全部分类模块 (Tab + 网格自动换行) ---- */
+        /* 全部分类模块 - Tab区域 (动态网格化，水平排列，自动换行，移动端完整显示) */
         .category-tabs {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 12px;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-            scrollbar-width: thin;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+            gap: 12px 10px;
+            margin-bottom: 24px;
+            background: transparent;
         }
         .tab-btn {
             flex-shrink: 0;
-            padding: 8px 24px;
+            padding: 10px 6px;
             background: #f1f3f9;
-            border-radius: 40px;
-            font-size: 15px;
+            border-radius: 48px;
+            font-size: 14px;
             font-weight: 600;
             color: #4b5b6e;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             white-space: nowrap;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .tab-btn i {
+            font-size: 14px;
         }
         .tab-btn.active {
             background: #ff7846;
             color: white;
-            box-shadow: 0 6px 12px rgba(255, 120, 70, 0.25);
+            box-shadow: 0 8px 18px rgba(255, 120, 70, 0.28);
         }
-        /* 网格布局：溢出自动换行 动态对齐 */
+        /* 针对极小屏保持文字完整可见 */
+        @media (max-width: 440px) {
+            .category-tabs {
+                grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+                gap: 10px 8px;
+            }
+            .tab-btn {
+                font-size: 13px;
+                padding: 8px 4px;
+                white-space: nowrap;
+            }
+        }
+        /* 确保所有子项网格完整显示 */
         .subcat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(98px, 1fr));
@@ -155,8 +174,19 @@
             color: #ff7846;
             margin-bottom: 10px;
         }
-        .grid-icon-item span { font-size: 13px; font-weight: 600; color: #2d3e50; }
-        .grid-icon-item small { font-size: 10px; color: #ff8a5c; margin-top: 5px; }
+        .grid-icon-item span { 
+            font-size: 13px; 
+            font-weight: 600; 
+            color: #2d3e50;
+            word-break: break-word;
+            max-width: 100%;
+        }
+        .grid-icon-item small { 
+            font-size: 10px; 
+            color: #ff8a5c; 
+            margin-top: 5px;
+            word-break: break-word;
+        }
 
         /* 醒目常用分类 (6个 两行依然保持网格整齐) */
         .featured-grid {
@@ -246,7 +276,7 @@
             color: #ff946b;
         }
         .mix-info { padding: 12px 12px 16px; }
-        .mix-info h4 { font-size: 15px; font-weight: 700; }
+        .mix-info h4 { font-size: 15px; font-weight: 700; word-break: break-word; }
         .price { font-weight: 800; color: #f25c2c; font-size: 16px; margin-top: 5px; }
         .old-price { font-size: 11px; text-decoration: line-through; color: #9aa6b5; margin-left: 6px; }
         .coupon-badge { background: #fee8e0; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: #ff7846; display: inline-block; margin-top: 8px; }
@@ -280,18 +310,32 @@
 
         @media (max-width: 640px) {
             .section { padding: 20px 16px; }
-            .subcat-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 14px 8px; }
+            .subcat-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); 
+                gap: 14px 8px; 
+            }
             .grid-icon-item .icon-bg { width: 52px; height: 52px; font-size: 26px; }
             .featured-grid { gap: 12px; }
             .feature-card i { width: 56px; height: 56px; line-height: 56px; font-size: 30px; }
             .coupon-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
             .mix-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .category-tabs {
+                gap: 8px;
+            }
+            .tab-btn {
+                padding: 8px 4px;
+                font-size: 12.5px;
+            }
         }
         @media (min-width: 1024px) {
             .grid-icon-item:hover { transform: translateY(-4px); background: #fffaf5; border-color: #ffd9cb; }
             .coupon-card:hover { transform: translateY(-4px); border-color: #ffc2ab; }
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        /* 保证所有卡片内容无文字截断 */
+        .grid-icon-item span, .grid-icon-item small, .mix-info h4, .brand-item h4, .coupon-card h4 {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
     </style>
 </head>
 <body>
@@ -310,7 +354,7 @@
         </div>
     </div>
 
-    <!-- 全部分类 (Tab + 网格自适应换行) -->
+    <!-- 全部分类 (Tab动态网格 + 子项网格自适应换行, 移动端完整显示所有分类) -->
     <div class="section">
         <div class="section-header">
             <h2><i class="fas fa-grid-2"></i> 全部分类 · 海量优惠直达</h2>
@@ -367,7 +411,7 @@
 	
     <div class="section">
         <div class="section-header">
-            <h2><i class="fas fa-heart"></i> 友情链接 · 口碑优选</h2>
+            <h2><i class="fas fa-link"></i> 友情链接 · 口碑优选</h2>
             <span>发现好链></span>
         </div>
         <div id="Like" class="mix-grid"></div>
@@ -391,7 +435,7 @@
         { img: "https://picsum.photos/id/38/1200/400", link: "https://s.click.taobao.com/banner_life", alt: "生活服务狂欢" }
     ];
 
-    // 2. 全部分类数据 (大分类 + 每个分类下的子项) 网格溢出自动换行
+    // 2. 全部分类数据 (大分类 + 每个分类下的子项) 网格溢出自动换行，现在Tab采用grid网格显示，完全支持新增动态排列
     const majorCategories = [
         {
             name: "美食外卖",
@@ -499,10 +543,10 @@
     ];
 	
     const LikeData = [
-        { name: "口碑到店5折券", icon: "fas fa-smile", price: "", old: "", desc: "限时抢", link: "https://s.click.taobao.com/guess_kb" },
-        { name: "高德打车8元券", icon: "fas fa-map", price: "¥0", old: "¥8", desc: "新人专享", link: "https://s.click.taobao.com/guess_gd" },
-        { name: "朴朴满39减10", icon: "fas fa-store", price: "¥29", old: "¥39", desc: "生鲜必备", link: "https://s.click.taobao.com/guess_pp" },
-        { name: "闲鱼闲置免邮", icon: "fas fa-exchange-alt", price: "", old: "", desc: "限量名额", link: "https://s.click.taobao.com/guess_xy" }
+        { name: "口碑到店5折券", icon: "fas fa-smile", price: "", old: "", desc: "直接领", link: "https://s.click.taobao.com/guess_kb2" },
+        { name: "高德打车8元券", icon: "fas fa-map", price: "¥0", old: "¥8", desc: "新人专享", link: "https://s.click.taobao.com/guess_gd2" },
+        { name: "朴朴满39减10", icon: "fas fa-store", price: "¥29", old: "¥39", desc: "生鲜必备", link: "https://s.click.taobao.com/guess_pp2" },
+        { name: "闲鱼闲置免邮", icon: "fas fa-exchange-alt", price: "", old: "", desc: "限量名额", link: "https://s.click.taobao.com/guess_xy2" }
     ];
 
     // --------------------- 渲染函数 动态对齐 ---------------------
@@ -630,24 +674,23 @@
     }
 	
 	function renderLike() {
-    const container = document.getElementById('Like');
-    if (!container) return; // 容错：容器不存在则直接返回
-    container.innerHTML = LikeData.map(g => `
-        <div class="mix-card" data-link="${g.link}">
-            <div class="mix-img"><i class="${g.icon}"></i></div>
-            <div class="mix-info">
-                <h4>${g.name}</h4>
-                <div class="coupon-badge">${g.desc}</div>
-                ${g.price ? `<span class="price">${g.price}</span>` : ''}
+        const container = document.getElementById('Like');
+        if (!container) return;
+        container.innerHTML = LikeData.map(g => `
+            <div class="mix-card" data-link="${g.link}">
+                <div class="mix-img"><i class="${g.icon}"></i></div>
+                <div class="mix-info">
+                    <h4>${g.name}</h4>
+                    <div class="coupon-badge">${g.desc}</div>
+                    ${g.price ? `<span class="price">${g.price}</span>` : ''}
+                </div>
             </div>
-        </div>
-    `).join('');
-    // 绑定点击跳转事件
-    document.querySelectorAll('#Like .mix-card').forEach(card => {
-        const link = card.getAttribute('data-link');
-        card.addEventListener('click', () => window.open(link, '_blank'));
-    });
-}
+        `).join('');
+        document.querySelectorAll('#Like .mix-card').forEach(card => {
+            const link = card.getAttribute('data-link');
+            card.addEventListener('click', () => window.open(link, '_blank'));
+        });
+    }
 
     // 轮播逻辑
     let currentSlide = 0, autoInterval;

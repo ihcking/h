@@ -95,7 +95,7 @@
             cursor: pointer;
         }
 
-        /* 全部分类模块 - Tab区域 (动态网格化，水平排列，自动换行，移动端完整显示) */
+        /* 全部分类模块 - Tab区域 (动态网格) */
         .category-tabs {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
@@ -121,27 +121,21 @@
             gap: 6px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
-        .tab-btn i {
-            font-size: 14px;
-        }
+        .tab-btn i { font-size: 14px; }
         .tab-btn.active {
             background: #ff7846;
             color: white;
             box-shadow: 0 8px 18px rgba(255, 120, 70, 0.28);
         }
-        /* 针对极小屏保持文字完整可见 */
         @media (max-width: 440px) {
             .category-tabs {
                 grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
                 gap: 10px 8px;
             }
-            .tab-btn {
-                font-size: 13px;
-                padding: 8px 4px;
-                white-space: nowrap;
-            }
+            .tab-btn { font-size: 13px; padding: 8px 4px; white-space: nowrap; }
         }
-        /* 确保所有子项网格完整显示 */
+        
+        /* 子分类网格（全部分类卡片）自适应换行 */
         .subcat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(98px, 1fr));
@@ -174,21 +168,10 @@
             color: #ff7846;
             margin-bottom: 10px;
         }
-        .grid-icon-item span { 
-            font-size: 13px; 
-            font-weight: 600; 
-            color: #2d3e50;
-            word-break: break-word;
-            max-width: 100%;
-        }
-        .grid-icon-item small { 
-            font-size: 10px; 
-            color: #ff8a5c; 
-            margin-top: 5px;
-            word-break: break-word;
-        }
+        .grid-icon-item span { font-size: 13px; font-weight: 600; color: #2d3e50; word-break: break-word; }
+        .grid-icon-item small { font-size: 10px; color: #ff8a5c; margin-top: 5px; }
 
-        /* 醒目常用分类 (6个 两行依然保持网格整齐) */
+        /* 醒目常用分类 */
         .featured-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -281,7 +264,7 @@
         .old-price { font-size: 11px; text-decoration: line-through; color: #9aa6b5; margin-left: 6px; }
         .coupon-badge { background: #fee8e0; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: #ff7846; display: inline-block; margin-top: 8px; }
 
-        /* 品牌特惠 & 推荐好店模块 (全新) */
+        /* 品牌特惠模块 */
         .brand-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -299,6 +282,99 @@
         .brand-item i { font-size: 38px; color: #ff7846; margin-bottom: 8px; display: block; }
         .brand-item h4 { font-size: 14px; font-weight: 600; }
 
+        /* ========= 友情链接模块 - 动态网格化排列（自适应换行） ========= */
+        .friends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+            gap: 20px 14px;
+            margin-top: 8px;
+        }
+        /* 友情链接卡片样式（优雅圆润，适应网格） */
+        .friend-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 18px 8px 16px;
+            text-align: center;
+            border: 1px solid #ffe0d0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 12px rgba(255, 87, 34, 0.04);
+            width: 100%;  /* 让卡片占满网格单元格，宽度自适应 */
+            display: block;
+        }
+        .friend-card:active {
+            transform: scale(0.96);
+            background: #fffaf5;
+            border-color: #ffaa7a;
+            box-shadow: 0 8px 18px rgba(255, 88, 34, 0.12);
+        }
+        .friend-card i {
+            font-size: 44px;
+            background: linear-gradient(145deg, #fff3ec, #ffe6db);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 60px;
+            color: #ff7846;
+            margin-bottom: 12px;
+            display: inline-block;
+            transition: 0.2s;
+        }
+        .friend-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 8px 0 4px;
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            letter-spacing: -0.2px;
+        }
+        .friend-card p {
+            font-size: 11px;
+            color: #ff7846;
+            background: #fff0e8;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        /* 移动端适配：卡片稍微缩小内边距 */
+        @media (max-width: 560px) {
+            .friends-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 14px 10px;
+            }
+            .friend-card {
+                padding: 14px 6px 12px;
+            }
+            .friend-card i {
+                width: 64px;
+                height: 64px;
+                line-height: 64px;
+                font-size: 36px;
+                margin-bottom: 8px;
+            }
+            .friend-card h4 {
+                font-size: 13px;
+                white-space: normal;
+                word-break: keep-all;
+                overflow-x: visible;
+            }
+            .friend-card p {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .friend-card:hover {
+                transform: translateY(-5px);
+                border-color: #ffb48a;
+                box-shadow: 0 16px 24px rgba(255, 88, 34, 0.12);
+            }
+        }
+
         .footer {
             text-align: center;
             padding: 30px 20px;
@@ -310,31 +386,12 @@
 
         @media (max-width: 640px) {
             .section { padding: 20px 16px; }
-            .subcat-grid { 
-                grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); 
-                gap: 14px 8px; 
-            }
+            .subcat-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 14px 8px; }
             .grid-icon-item .icon-bg { width: 52px; height: 52px; font-size: 26px; }
             .featured-grid { gap: 12px; }
             .feature-card i { width: 56px; height: 56px; line-height: 56px; font-size: 30px; }
             .coupon-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
             .mix-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-            .category-tabs {
-                gap: 8px;
-            }
-            .tab-btn {
-                padding: 8px 4px;
-                font-size: 12.5px;
-            }
-        }
-        @media (min-width: 1024px) {
-            .grid-icon-item:hover { transform: translateY(-4px); background: #fffaf5; border-color: #ffd9cb; }
-            .coupon-card:hover { transform: translateY(-4px); border-color: #ffc2ab; }
-        }
-        /* 保证所有卡片内容无文字截断 */
-        .grid-icon-item span, .grid-icon-item small, .mix-info h4, .brand-item h4, .coupon-card h4 {
-            overflow-wrap: break-word;
-            word-break: break-word;
         }
     </style>
 </head>
@@ -354,7 +411,7 @@
         </div>
     </div>
 
-    <!-- 全部分类 (Tab动态网格 + 子项网格自适应换行, 移动端完整显示所有分类) -->
+    <!-- 全部分类 (Tab动态网格 + 子项网格自适应换行) -->
     <div class="section">
         <div class="section-header">
             <h2><i class="fas fa-grid-2"></i> 全部分类 · 海量优惠直达</h2>
@@ -382,7 +439,7 @@
         <div id="couponZone" class="coupon-grid"></div>
     </div>
 
-    <!-- 新增模块一：品牌特惠 · 大牌折上折 -->
+    <!-- 品牌特惠 · 大牌折上折 -->
     <div class="section">
         <div class="section-header">
             <h2><i class="fas fa-crown"></i> 品牌特惠 · 大牌专享</h2>
@@ -391,7 +448,7 @@
         <div id="brandZone" class="brand-grid"></div>
     </div>
 
-    <!-- 新增模块二：今日必抢热门推荐 (混合商品+服务) -->
+    <!-- 今日必抢热门推荐 -->
     <div class="section">
         <div class="section-header">
             <h2><i class="fas fa-bolt"></i> 今日必抢 · 人气爆款</h2>
@@ -400,7 +457,7 @@
         <div id="hotProducts" class="mix-grid"></div>
     </div>
 
-    <!-- 新增模块三：猜你喜欢 / 甄选好店 -->
+    <!-- 猜你喜欢 / 口碑优选 -->
     <div class="section">
         <div class="section-header">
             <h2><i class="fas fa-heart"></i> 猜你喜欢 · 口碑优选</h2>
@@ -409,12 +466,13 @@
         <div id="guessLike" class="mix-grid"></div>
     </div>
 	
+    <!-- ========= 友情链接模块 · 动态网格化设计 (网格自适应，支持新增任意数量) ========= -->
     <div class="section">
         <div class="section-header">
-            <h2><i class="fas fa-link"></i> 友情链接 · 口碑优选</h2>
-            <span>发现好链></span>
+            <h2><i class="fas fa-handshake"></i> 友情链接 · 合作伙伴</h2>
+            <span>友好互联></span>
         </div>
-        <div id="Like" class="mix-grid"></div>
+        <div id="friendLinksContainer" class="friends-grid"></div>
     </div>
 
     <div class="footer">
@@ -425,7 +483,7 @@
 
 <script>
     // ============================================================
-    // 完全可配置数据区 (方便自定义添加/减少内容，支持动态对齐)
+    // 完全可配置数据区 (支持动态新增、网格自动排列)
     // ============================================================
     
     // 1. 轮播图数据
@@ -435,7 +493,7 @@
         { img: "https://picsum.photos/id/38/1200/400", link: "https://s.click.taobao.com/banner_life", alt: "生活服务狂欢" }
     ];
 
-    // 2. 全部分类数据 (大分类 + 每个分类下的子项) 网格溢出自动换行，现在Tab采用grid网格显示，完全支持新增动态排列
+    // 2. 全部分类数据 (大分类 + 子项，网格自动换行)
     const majorCategories = [
         {
             name: "美食外卖",
@@ -492,7 +550,7 @@
         }
     ];
 
-    // 3. 醒目常用分类6个 (自定义)
+    // 3. 醒目常用分类6个
     const featuredItems = [
         { name: "美团外卖红包", icon: "fas fa-hamburger", tag: "无门槛¥10", link: "https://s.click.taobao.com/feature_mt" },
         { name: "滴滴打车5折", icon: "fas fa-taxi", tag: "最高减20", link: "https://s.click.taobao.com/feature_dd" },
@@ -514,7 +572,7 @@
         { name: "瑞幸咖啡", icon: "fas fa-mug-saucer", tag: "3.8折券", link: "https://s.click.taobao.com/cpn_lk" }
     ];
 
-    // 5. 品牌特惠数据 (新增模块)
+    // 5. 品牌特惠数据
     const brandItems = [
         { name: "麦当劳", icon: "fab fa-buffer", link: "https://s.click.taobao.com/brand_mcd", desc: "麦辣鸡腿堡套餐" },
         { name: "海底捞", icon: "fas fa-fan", link: "https://s.click.taobao.com/brand_hdl", desc: "菜品8折券" },
@@ -524,7 +582,7 @@
         { name: "小米有品", icon: "fas fa-microchip", link: "https://s.click.taobao.com/brand_xm", desc: "生态链直降" }
     ];
 
-    // 6. 今日必抢热门商品/服务
+    // 6. 今日必抢热门商品
     const hotProductsData = [
         { name: "美团月卡", icon: "fas fa-ticket-alt", price: "¥8.9", old: "¥30", desc: "领6张5元券", link: "https://s.click.taobao.com/hot_mty" },
         { name: "滴滴快车礼包", icon: "fas fa-gem", price: "¥0.1", old: "¥50", desc: "秒杀", link: "https://s.click.taobao.com/hot_ddc" },
@@ -534,7 +592,7 @@
         { name: "饿了么超级吃货", icon: "fas fa-bowl-food", price: "¥6.9", old: "¥18", desc: "爆款券包", link: "https://s.click.taobao.com/hot_eleme" }
     ];
 
-    // 7. 猜你喜欢 (口碑优选)
+    // 7. 猜你喜欢数据
     const guessLikeData = [
         { name: "口碑到店5折券", icon: "fas fa-smile", price: "", old: "", desc: "限时抢", link: "https://s.click.taobao.com/guess_kb" },
         { name: "高德打车8元券", icon: "fas fa-map", price: "¥0", old: "¥8", desc: "新人专享", link: "https://s.click.taobao.com/guess_gd" },
@@ -542,14 +600,20 @@
         { name: "闲鱼闲置免邮", icon: "fas fa-exchange-alt", price: "", old: "", desc: "限量名额", link: "https://s.click.taobao.com/guess_xy" }
     ];
 	
-    const LikeData = [
-        { name: "口碑到店5折券", icon: "fas fa-smile", price: "", old: "", desc: "直接领", link: "https://s.click.taobao.com/guess_kb2" },
-        { name: "高德打车8元券", icon: "fas fa-map", price: "¥0", old: "¥8", desc: "新人专享", link: "https://s.click.taobao.com/guess_gd2" },
-        { name: "朴朴满39减10", icon: "fas fa-store", price: "¥29", old: "¥39", desc: "生鲜必备", link: "https://s.click.taobao.com/guess_pp2" },
-        { name: "闲鱼闲置免邮", icon: "fas fa-exchange-alt", price: "", old: "", desc: "限量名额", link: "https://s.click.taobao.com/guess_xy2" }
+    // ========= 友情链接独立数据（动态网格化，支持任意增删，自动排列） =========
+    const friendLinksData = [
+        { name: "淘宝联盟", icon: "fab fa-taobao", desc: "官方推广", link: "https://pub.alimama.com/" },
+        { name: "京东联盟", icon: "fab fa-jd", desc: "品质优选", link: "https://union.jd.com/" },
+        { name: "美团联盟", icon: "fas fa-utensils", desc: "团购优惠", link: "https://meituan.com/" },
+        { name: "饿了么星选", icon: "fas fa-pizza-slice", desc: "吃货福利", link: "https://ele.me/" },
+        { name: "拼多多优惠", icon: "fab fa-pagelines", desc: "百亿补贴", link: "https://pinduoduo.com/" },
+        { name: "携程旅行网", icon: "fas fa-plane", desc: "机酒特惠", link: "https://ctrip.com/" },
+        { name: "滴滴出行", icon: "fas fa-car", desc: "打车立减", link: "https://didiglobal.com/" },
+        { name: "唯品会", icon: "fas fa-shopping-bag", desc: "品牌特卖", link: "https://vip.com/" },
+        { name: "肯德基", icon: "fab fa-fort-awesome", desc: "疯狂星期四", link: "https://kfc.com.cn/" }
     ];
 
-    // --------------------- 渲染函数 动态对齐 ---------------------
+    // ---------- 渲染函数 ----------
     let activeTabIndex = 0;
 
     function renderCategoryTabs() {
@@ -579,26 +643,16 @@
             const card = document.createElement('div');
             card.className = 'grid-icon-item';
             card.setAttribute('data-url', item.link);
-            card.innerHTML = `
-                <div class="icon-bg"><i class="${item.icon}"></i></div>
-                <span>${item.name}</span>
-                <small>${item.desc}</small>
-            `;
+            card.innerHTML = `<div class="icon-bg"><i class="${item.icon}"></i></div><span>${item.name}</span><small>${item.desc}</small>`;
             card.addEventListener('click', () => window.open(item.link, '_blank'));
             gridContainer.appendChild(card);
         });
     }
-    // 渲染常用醒目区
+
     function renderFeatured() {
         const container = document.getElementById('featuredSix');
         if (!container) return;
-        container.innerHTML = featuredItems.map(item => `
-            <div class="feature-card" data-link="${item.link}">
-                <i class="${item.icon}"></i>
-                <h4>${item.name}</h4>
-                <div class="tag">${item.tag}</div>
-            </div>
-        `).join('');
+        container.innerHTML = featuredItems.map(item => `<div class="feature-card" data-link="${item.link}"><i class="${item.icon}"></i><h4>${item.name}</h4><div class="tag">${item.tag}</div></div>`).join('');
         document.querySelectorAll('#featuredSix .feature-card').forEach(card => {
             const link = card.getAttribute('data-link');
             card.addEventListener('click', () => window.open(link, '_blank'));
@@ -608,13 +662,7 @@
     function renderCoupons() {
         const zone = document.getElementById('couponZone');
         if (!zone) return;
-        zone.innerHTML = couponItems.map(c => `
-            <div class="coupon-card" data-link="${c.link}">
-                <div class="icon-lg"><i class="${c.icon}"></i></div>
-                <h4>${c.name}</h4>
-                <div class="tag">${c.tag}</div>
-            </div>
-        `).join('');
+        zone.innerHTML = couponItems.map(c => `<div class="coupon-card" data-link="${c.link}"><div class="icon-lg"><i class="${c.icon}"></i></div><h4>${c.name}</h4><div class="tag">${c.tag}</div></div>`).join('');
         document.querySelectorAll('#couponZone .coupon-card').forEach(el => {
             const link = el.getAttribute('data-link');
             el.addEventListener('click', () => window.open(link, '_blank'));
@@ -624,13 +672,7 @@
     function renderBrands() {
         const zone = document.getElementById('brandZone');
         if (!zone) return;
-        zone.innerHTML = brandItems.map(b => `
-            <div class="brand-item" data-link="${b.link}">
-                <i class="${b.icon}"></i>
-                <h4>${b.name}</h4>
-                <small>${b.desc}</small>
-            </div>
-        `).join('');
+        zone.innerHTML = brandItems.map(b => `<div class="brand-item" data-link="${b.link}"><i class="${b.icon}"></i><h4>${b.name}</h4><small>${b.desc}</small></div>`).join('');
         document.querySelectorAll('#brandZone .brand-item').forEach(el => {
             const link = el.getAttribute('data-link');
             el.addEventListener('click', () => window.open(link, '_blank'));
@@ -639,16 +681,7 @@
 
     function renderHotProducts() {
         const container = document.getElementById('hotProducts');
-        container.innerHTML = hotProductsData.map(p => `
-            <div class="mix-card" data-link="${p.link}">
-                <div class="mix-img"><i class="${p.icon}"></i></div>
-                <div class="mix-info">
-                    <h4>${p.name}</h4>
-                    <div><span class="price">${p.price}</span><span class="old-price">${p.old}</span></div>
-                    <div class="coupon-badge">${p.desc}</div>
-                </div>
-            </div>
-        `).join('');
+        container.innerHTML = hotProductsData.map(p => `<div class="mix-card" data-link="${p.link}"><div class="mix-img"><i class="${p.icon}"></i></div><div class="mix-info"><h4>${p.name}</h4><div><span class="price">${p.price}</span><span class="old-price">${p.old}</span></div><div class="coupon-badge">${p.desc}</div></div></div>`).join('');
         document.querySelectorAll('#hotProducts .mix-card').forEach(card => {
             const link = card.getAttribute('data-link');
             card.addEventListener('click', () => window.open(link, '_blank'));
@@ -657,59 +690,46 @@
 
     function renderGuessLike() {
         const container = document.getElementById('guessLike');
-        container.innerHTML = guessLikeData.map(g => `
-            <div class="mix-card" data-link="${g.link}">
-                <div class="mix-img"><i class="${g.icon}"></i></div>
-                <div class="mix-info">
-                    <h4>${g.name}</h4>
-                    <div class="coupon-badge">${g.desc}</div>
-                    ${g.price ? `<span class="price">${g.price}</span>` : ''}
-                </div>
-            </div>
-        `).join('');
+        container.innerHTML = guessLikeData.map(g => `<div class="mix-card" data-link="${g.link}"><div class="mix-img"><i class="${g.icon}"></i></div><div class="mix-info"><h4>${g.name}</h4><div class="coupon-badge">${g.desc}</div>${g.price ? `<span class="price">${g.price}</span>` : ''}</div></div>`).join('');
         document.querySelectorAll('#guessLike .mix-card').forEach(card => {
             const link = card.getAttribute('data-link');
             card.addEventListener('click', () => window.open(link, '_blank'));
         });
     }
-	
-	function renderLike() {
-        const container = document.getElementById('Like');
+
+    // 动态网格化友情链接渲染 (完全基于网格)
+    function renderFriendLinks() {
+        const container = document.getElementById('friendLinksContainer');
         if (!container) return;
-        container.innerHTML = LikeData.map(g => `
-            <div class="mix-card" data-link="${g.link}">
-                <div class="mix-img"><i class="${g.icon}"></i></div>
-                <div class="mix-info">
-                    <h4>${g.name}</h4>
-                    <div class="coupon-badge">${g.desc}</div>
-                    ${g.price ? `<span class="price">${g.price}</span>` : ''}
-                </div>
+        container.innerHTML = friendLinksData.map(link => `
+            <div class="friend-card" data-url="${link.link}">
+                <i class="${link.icon}"></i>
+                <h4>${link.name}</h4>
+                <p>${link.desc}</p>
             </div>
         `).join('');
-        document.querySelectorAll('#Like .mix-card').forEach(card => {
-            const link = card.getAttribute('data-link');
-            card.addEventListener('click', () => window.open(link, '_blank'));
+        // 绑定跳转事件
+        document.querySelectorAll('#friendLinksContainer .friend-card').forEach(card => {
+            const url = card.getAttribute('data-url');
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (url) window.open(url, '_blank');
+            });
         });
     }
 
-    // 轮播逻辑
+    // 轮播脚本 (完整保留)
     let currentSlide = 0, autoInterval;
     const wrapper = document.getElementById('carouselWrapper');
     const dotsContainer = document.getElementById('dotsContainer');
     function renderCarousel() {
-        wrapper.innerHTML = banners.map((b, idx) => `
-            <div class="carousel-slide">
-                <a href="${b.link}" target="_blank"><img src="${b.img}" alt="${b.alt}" loading="lazy"></a>
-            </div>
-        `).join('');
+        wrapper.innerHTML = banners.map((b, idx) => `<div class="carousel-slide"><a href="${b.link}" target="_blank"><img src="${b.img}" alt="${b.alt}" loading="lazy"></a></div>`).join('');
         updateDots();
         updateTransform();
     }
     function updateDots() {
         dotsContainer.innerHTML = banners.map((_, i) => `<div class="dot ${i === currentSlide ? 'active' : ''}" data-index="${i}"></div>`).join('');
-        document.querySelectorAll('.dot').forEach(dot => {
-            dot.addEventListener('click', (e) => { goToSlide(parseInt(dot.dataset.index)); resetAuto(); });
-        });
+        document.querySelectorAll('.dot').forEach(dot => dot.addEventListener('click', (e) => { goToSlide(parseInt(dot.dataset.index)); resetAuto(); }));
     }
     function updateTransform() { if(wrapper) wrapper.style.transform = `translateX(-${currentSlide * 100}%)`; }
     function goToSlide(idx) { currentSlide = Math.min(Math.max(idx,0), banners.length-1); updateTransform(); updateDots(); }
@@ -721,12 +741,7 @@
         const cont = document.querySelector('.carousel-container');
         let startX=0;
         cont.addEventListener('touchstart', e => startX = e.changedTouches[0].clientX);
-        cont.addEventListener('touchend', e => {
-            const endX = e.changedTouches[0].clientX;
-            if(endX - startX > 40) prevSlide();
-            else if(startX - endX > 40) nextSlide();
-            resetAuto();
-        });
+        cont.addEventListener('touchend', e => { const endX = e.changedTouches[0].clientX; if(endX - startX > 40) prevSlide(); else if(startX - endX > 40) nextSlide(); resetAuto(); });
     }
     function initCarousel() { renderCarousel(); document.getElementById('prevBtn')?.addEventListener('click', prevSlide); document.getElementById('nextBtn')?.addEventListener('click', nextSlide); startAuto(); bindSwipe(); window.addEventListener('resize', updateTransform); }
 
@@ -738,7 +753,7 @@
         renderBrands();
         renderHotProducts();
         renderGuessLike();
-		renderLike(); 
+        renderFriendLinks();      // 友情链接全新网格渲染
         initCarousel();
     });
 </script>

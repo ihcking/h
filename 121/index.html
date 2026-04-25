@@ -57,6 +57,14 @@
             backdrop-filter: blur(4px); border-radius: 50%; display: flex;
             align-items: center; justify-content: center; cursor: pointer;
             color: white; font-size: 20px; z-index: 10;
+            transition: all 0.2s ease;
+        }
+        .carousel-btn:hover {
+            background: rgba(0,0,0,0.55);
+            transform: translateY(-50%) scale(1.05);
+        }
+        .carousel-btn:active {
+            transform: translateY(-50%) scale(0.96);
         }
         .btn-prev { left: 12px; }
         .btn-next { right: 12px; }
@@ -64,8 +72,9 @@
             position: absolute; bottom: 12px; left: 0; right: 0;
             display: flex; justify-content: center; gap: 10px; z-index: 10;
         }
-        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.6); border-radius: 50%; cursor: pointer; }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.6); border-radius: 50%; cursor: pointer; transition: all 0.2s; }
         .dot.active { width: 22px; background: #ff7846; border-radius: 12px; }
+        .dot:hover { background: #ffaa7a; transform: scale(1.1); }
 
         /* 分区共用 */
         .section {
@@ -93,6 +102,11 @@
             color: #ff7846;
             font-weight: 500;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        .section-header span:hover {
+            color: #ff5722;
+            text-decoration: underline;
         }
 
         /* 全部分类模块 - Tab区域 (动态网格) */
@@ -112,7 +126,7 @@
             font-weight: 600;
             color: #4b5b6e;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             white-space: nowrap;
             text-align: center;
             display: flex;
@@ -121,11 +135,25 @@
             gap: 6px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
-        .tab-btn i { font-size: 14px; }
+        .tab-btn i { font-size: 14px; transition: transform 0.2s; }
+        .tab-btn:hover {
+            background: #ffe5d9;
+            color: #ff7846;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255,120,70,0.12);
+        }
+        .tab-btn:active {
+            transform: scale(0.96);
+            background: #ffd9c9;
+        }
         .tab-btn.active {
             background: #ff7846;
             color: white;
             box-shadow: 0 8px 18px rgba(255, 120, 70, 0.28);
+        }
+        .tab-btn.active:hover {
+            background: #ff6328;
+            transform: translateY(-1px);
         }
         @media (max-width: 440px) {
             .category-tabs {
@@ -135,7 +163,7 @@
             .tab-btn { font-size: 13px; padding: 8px 4px; white-space: nowrap; }
         }
         
-        /* 子分类网格（全部分类卡片）自适应换行 */
+        /* 子分类网格（全部分类卡片）自适应换行 + 交互特效 */
         .subcat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(98px, 1fr));
@@ -150,12 +178,24 @@
             background: #ffffff;
             border-radius: 28px;
             padding: 14px 6px;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             cursor: pointer;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
             border: 1px solid #f7f0ea;
         }
-        .grid-icon-item:active { transform: scale(0.96); background: #fff7f2; }
+        /* 停留选中特效 */
+        .grid-icon-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 28px -8px rgba(255, 120, 70, 0.25);
+            border-color: #ffccb5;
+            background: #fffefc;
+        }
+        /* 点击特效 */
+        .grid-icon-item:active {
+            transform: scale(0.95);
+            background: #fff3ec;
+            transition: transform 0.08s;
+        }
         .grid-icon-item .icon-bg {
             width: 64px;
             height: 64px;
@@ -167,11 +207,16 @@
             font-size: 32px;
             color: #ff7846;
             margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        .grid-icon-item:hover .icon-bg {
+            background: linear-gradient(145deg, #ffefe5, #ffded0);
+            transform: scale(1.02);
         }
         .grid-icon-item span { font-size: 13px; font-weight: 600; color: #2d3e50; word-break: break-word; }
         .grid-icon-item small { font-size: 10px; color: #ff8a5c; margin-top: 5px; }
 
-        /* 醒目常用分类 */
+        /* 醒目常用分类 卡片特效 */
         .featured-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -186,9 +231,17 @@
             box-shadow: 0 12px 22px -10px rgba(255, 120, 70, 0.2);
             border: 1px solid rgba(255, 120, 70, 0.3);
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
-        .feature-card:active { transform: scale(0.96); }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 34px -12px rgba(255, 88, 34, 0.35);
+            border-color: #ffaa7a;
+        }
+        .feature-card:active {
+            transform: scale(0.96);
+            background: #fff4ec;
+        }
         .feature-card i {
             font-size: 44px;
             background: #ffefe5;
@@ -198,11 +251,17 @@
             border-radius: 50%;
             color: #ff7846;
             margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        .feature-card:hover i {
+            transform: scale(1.05);
+            background: #ffe3d6;
         }
         .feature-card h4 { font-size: 15px; font-weight: 800; margin: 8px 0 4px; }
-        .feature-card .tag { font-size: 11px; background: #ff784610; color: #ff7846; border-radius: 30px; padding: 4px 12px; display: inline-block; font-weight: 600; }
+        .feature-card .tag { font-size: 11px; background: #ff784610; color: #ff7846; border-radius: 30px; padding: 4px 12px; display: inline-block; font-weight: 600; transition: 0.2s; }
+        .feature-card:hover .tag { background: #ff7846; color: white; }
 
-        /* 限时神券 */
+        /* 限时神券卡片特效 */
         .coupon-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -215,9 +274,18 @@
             text-align: center;
             border: 1px solid #ffe1d4;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.25s ease;
         }
-        .coupon-card:active { transform: scale(0.96); background: #fff9f5; }
+        .coupon-card:hover {
+            transform: translateY(-6px);
+            border-color: #ff9966;
+            box-shadow: 0 18px 28px -12px rgba(255, 87, 34, 0.28);
+            background: #fffaf7;
+        }
+        .coupon-card:active {
+            transform: scale(0.95);
+            background: #fff2ea;
+        }
         .coupon-card .icon-lg {
             font-size: 36px;
             width: 68px;
@@ -228,9 +296,15 @@
             display: inline-block;
             color: #ff7846;
             margin-bottom: 8px;
+            transition: 0.2s;
+        }
+        .coupon-card:hover .icon-lg {
+            background: #ffe6db;
+            transform: scale(1.04);
         }
         .coupon-card h4 { font-size: 14px; font-weight: 700; margin: 6px 0; }
-        .coupon-card .tag { font-size: 11px; background: #ff78460c; padding: 3px 12px; border-radius: 40px; display: inline-block; }
+        .coupon-card .tag { font-size: 11px; background: #ff78460c; padding: 3px 12px; border-radius: 40px; display: inline-block; transition: 0.2s; }
+        .coupon-card:hover .tag { background: #ff7846; color: white; }
 
         /* 热门推荐 / 最新上线混合模块 */
         .mix-grid {
@@ -244,10 +318,18 @@
             overflow: hidden;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             border: 1px solid #f2eae5;
         }
-        .mix-card:active { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(255, 120, 70, 0.12); }
+        .mix-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 32px -12px rgba(255, 88, 34, 0.25);
+            border-color: #ffc8b0;
+        }
+        .mix-card:active {
+            transform: scale(0.97);
+            transition: transform 0.08s;
+        }
         .mix-img {
             width: 100%;
             aspect-ratio: 1/1;
@@ -257,12 +339,18 @@
             justify-content: center;
             font-size: 48px;
             color: #ff946b;
+            transition: all 0.2s;
+        }
+        .mix-card:hover .mix-img {
+            background: #ffe8df;
+            color: #ff7846;
         }
         .mix-info { padding: 12px 12px 16px; }
         .mix-info h4 { font-size: 15px; font-weight: 700; word-break: break-word; }
         .price { font-weight: 800; color: #f25c2c; font-size: 16px; margin-top: 5px; }
         .old-price { font-size: 11px; text-decoration: line-through; color: #9aa6b5; margin-left: 6px; }
-        .coupon-badge { background: #fee8e0; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: #ff7846; display: inline-block; margin-top: 8px; }
+        .coupon-badge { background: #fee8e0; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: #ff7846; display: inline-block; margin-top: 8px; transition: 0.2s; }
+        .mix-card:hover .coupon-badge { background: #ff7846; color: white; }
 
         /* 品牌特惠模块 */
         .brand-grid {
@@ -276,20 +364,30 @@
             padding: 16px 8px;
             text-align: center;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.25s ease;
             border: 1px solid #ffe3d8;
         }
-        .brand-item i { font-size: 38px; color: #ff7846; margin-bottom: 8px; display: block; }
+        .brand-item:hover {
+            transform: translateY(-5px);
+            border-color: #ffaa7a;
+            background: #ffffff;
+            box-shadow: 0 14px 24px -8px rgba(255, 88, 34, 0.2);
+        }
+        .brand-item:active {
+            transform: scale(0.96);
+            background: #fff5ef;
+        }
+        .brand-item i { font-size: 38px; color: #ff7846; margin-bottom: 8px; display: block; transition: transform 0.2s; }
+        .brand-item:hover i { transform: scale(1.08); }
         .brand-item h4 { font-size: 14px; font-weight: 600; }
 
-        /* ========= 友情链接模块 - 动态网格化排列（自适应换行） ========= */
+        /* ========= 友情链接模块 - 动态网格化 + 交互特效 ========= */
         .friends-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
             gap: 20px 14px;
             margin-top: 8px;
         }
-        /* 友情链接卡片样式（优雅圆润，适应网格） */
         .friend-card {
             background: #ffffff;
             border-radius: 28px;
@@ -297,16 +395,23 @@
             text-align: center;
             border: 1px solid #ffe0d0;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.2, 0.85, 0.4, 1);
             box-shadow: 0 6px 12px rgba(255, 87, 34, 0.04);
-            width: 100%;  /* 让卡片占满网格单元格，宽度自适应 */
+            width: 100%;
             display: block;
         }
+        /* 停留选中特效（悬浮/触摸悬停） */
+        .friend-card:hover {
+            transform: translateY(-6px);
+            border-color: #ff946b;
+            background: #fffefa;
+            box-shadow: 0 20px 28px -12px rgba(255, 88, 34, 0.28);
+        }
+        /* 点击特效（瞬间反馈） */
         .friend-card:active {
             transform: scale(0.96);
-            background: #fffaf5;
-            border-color: #ffaa7a;
-            box-shadow: 0 8px 18px rgba(255, 88, 34, 0.12);
+            background: #fff2ea;
+            transition: transform 0.06s;
         }
         .friend-card i {
             font-size: 44px;
@@ -318,7 +423,11 @@
             color: #ff7846;
             margin-bottom: 12px;
             display: inline-block;
-            transition: 0.2s;
+            transition: all 0.2s;
+        }
+        .friend-card:hover i {
+            background: linear-gradient(145deg, #ffe7dc, #ffd9c8);
+            transform: scale(1.05);
         }
         .friend-card h4 {
             font-size: 15px;
@@ -339,39 +448,25 @@
             border-radius: 40px;
             font-weight: 500;
             margin-top: 8px;
+            transition: 0.2s;
         }
-        /* 移动端适配：卡片稍微缩小内边距 */
+        .friend-card:hover p {
+            background: #ff7846;
+            color: white;
+        }
+
         @media (max-width: 560px) {
             .friends-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
                 gap: 14px 10px;
             }
-            .friend-card {
-                padding: 14px 6px 12px;
-            }
-            .friend-card i {
-                width: 64px;
-                height: 64px;
-                line-height: 64px;
-                font-size: 36px;
-                margin-bottom: 8px;
-            }
-            .friend-card h4 {
-                font-size: 13px;
-                white-space: normal;
-                word-break: keep-all;
-                overflow-x: visible;
-            }
-            .friend-card p {
-                font-size: 10px;
-                padding: 3px 8px;
-            }
+            .friend-card { padding: 14px 6px 12px; }
+            .friend-card i { width: 64px; height: 64px; line-height: 64px; font-size: 36px; margin-bottom: 8px; }
+            .friend-card h4 { font-size: 13px; white-space: normal; word-break: keep-all; }
         }
         @media (min-width: 1024px) {
             .friend-card:hover {
-                transform: translateY(-5px);
-                border-color: #ffb48a;
-                box-shadow: 0 16px 24px rgba(255, 88, 34, 0.12);
+                transform: translateY(-8px);
             }
         }
 
@@ -392,6 +487,10 @@
             .feature-card i { width: 56px; height: 56px; line-height: 56px; font-size: 30px; }
             .coupon-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
             .mix-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+        }
+        /* 统一 transition 提升丝滑感 */
+        .grid-icon-item, .feature-card, .coupon-card, .mix-card, .brand-item, .friend-card, .tab-btn {
+            will-change: transform;
         }
     </style>
 </head>
@@ -466,7 +565,7 @@
         <div id="guessLike" class="mix-grid"></div>
     </div>
 	
-    <!-- ========= 友情链接模块 · 动态网格化设计 (网格自适应，支持新增任意数量) ========= -->
+    <!-- ========= 友情链接模块 · 动态网格化设计 + 交互特效 ========= -->
     <div class="section">
         <div class="section-header">
             <h2><i class="fas fa-handshake"></i> 友情链接 · 合作伙伴</h2>
@@ -493,7 +592,7 @@
         { img: "https://picsum.photos/id/38/1200/400", link: "https://s.click.taobao.com/banner_life", alt: "生活服务狂欢" }
     ];
 
-    // 2. 全部分类数据 (大分类 + 子项，网格自动换行)
+    // 2. 全部分类数据
     const majorCategories = [
         {
             name: "美食外卖",
@@ -600,7 +699,7 @@
         { name: "闲鱼闲置免邮", icon: "fas fa-exchange-alt", price: "", old: "", desc: "限量名额", link: "https://s.click.taobao.com/guess_xy" }
     ];
 	
-    // ========= 友情链接独立数据（动态网格化，支持任意增删，自动排列） =========
+    // 友情链接独立数据（动态网格化）
     const friendLinksData = [
         { name: "淘宝联盟", icon: "fab fa-taobao", desc: "官方推广", link: "https://pub.alimama.com/" },
         { name: "京东联盟", icon: "fab fa-jd", desc: "品质优选", link: "https://union.jd.com/" },
@@ -697,7 +796,6 @@
         });
     }
 
-    // 动态网格化友情链接渲染 (完全基于网格)
     function renderFriendLinks() {
         const container = document.getElementById('friendLinksContainer');
         if (!container) return;
@@ -708,7 +806,6 @@
                 <p>${link.desc}</p>
             </div>
         `).join('');
-        // 绑定跳转事件
         document.querySelectorAll('#friendLinksContainer .friend-card').forEach(card => {
             const url = card.getAttribute('data-url');
             card.addEventListener('click', (e) => {
@@ -718,7 +815,7 @@
         });
     }
 
-    // 轮播脚本 (完整保留)
+    // 轮播脚本
     let currentSlide = 0, autoInterval;
     const wrapper = document.getElementById('carouselWrapper');
     const dotsContainer = document.getElementById('dotsContainer');
@@ -753,7 +850,7 @@
         renderBrands();
         renderHotProducts();
         renderGuessLike();
-        renderFriendLinks();      // 友情链接全新网格渲染
+        renderFriendLinks();
         initCarousel();
     });
 </script>

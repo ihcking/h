@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>常用网址收藏</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M20 17h24v34l-12-7.5L20 51z' fill='%23ffffff'/%3E%3C/svg%3E">
+<script>
+  (function () {
+    var t = 'light';
+    try {
+      t = localStorage.getItem('theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    } catch (e) {}
+    document.documentElement.dataset.theme = t;
+  })();
+</script>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --text: #111318;
+    --text-2: #6b7280;
+    --border: #e6e8ec;
+    --chip: #f3f4f6;
+    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 10px 28px -16px rgba(16,24,40,.35);
+    --shadow-hover: 0 2px 4px rgba(16,24,40,.05), 0 18px 40px -20px rgba(16,24,40,.45);
+  }
+  html[data-theme="dark"] {
+    --bg: #0d0f12;
+    --card: #16191e;
+    --text: #f2f4f7;
+    --text-2: #98a1af;
+    --border: #262c35;
+    --chip: #1e232a;
+    --shadow: 0 1px 2px rgba(0,0,0,.5);
+    --shadow-hover: 0 14px 36px -18px rgba(0,0,0,.9);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(900px 480px at 12% -12%, rgba(99,102,241,.10), transparent 62%),
+      radial-gradient(760px 420px at 96% -6%, rgba(236,72,153,.08), transparent 62%);
+    background-attachment: fixed;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    transition: background-color .3s ease, color .3s ease;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 72px; }
+
+  /* ---------- 头部 ---------- */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 4px 0 22px;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo {
+    width: 46px; height: 46px; border-radius: 14px; flex: none;
+    display: grid; place-items: center; color: #fff;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    box-shadow: 0 8px 20px -10px rgba(99,102,241,.9);
+  }
+  .logo svg { width: 22px; height: 22px; display: block; }
+  .brand h1 { margin: 0; font-size: 20px; letter-spacing: -.015em; font-weight: 700; }
+  .brand p { margin: 3px 0 0; font-size: 13px; color: var(--text-2); }
+
+  .header-right {
+    display: flex; align-items: center; gap: 20px;
+    flex-wrap: wrap; justify-content: flex-end;
+  }
+
+  .nav { display: flex; align-items: center; gap: 20px; }
+  .nav a {
+    position: relative; font-size: 13.5px; font-weight: 500;
+    color: var(--text-2); text-decoration: none; padding: 6px 0;
+    transition: color .18s ease;
+  }
+  .nav a:hover { color: var(--text); }
+  .nav a::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2px; border-radius: 2px; background: var(--text);
+    transform: scaleX(0); transform-origin: left; transition: transform .22s ease;
+  }
+  .nav a:hover::after { transform: scaleX(1); }
+
+  .clock {
+    display: flex; flex-direction: column; align-items: flex-end;
+    line-height: 1.25; font-variant-numeric: tabular-nums;
+    padding-left: 20px; border-left: 1px solid var(--border);
+  }
+  .clock-date { font-size: 11.5px; color: var(--text-2); white-space: nowrap; }
+  .clock-time {
+    font-size: 15px; font-weight: 600; letter-spacing: .02em; white-space: nowrap;
+  }
+
+  .theme-btn {
+    width: 42px; height: 42px; border-radius: 12px; flex: none;
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    font-size: 16px; cursor: pointer; display: grid; place-items: center;
+    transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .theme-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+
+  /* ---------- Banner 轮播（居中，整张可点击） ---------- */
+  .banner {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 26px;
+    min-height: 252px;
+    box-shadow: 0 22px 52px -30px rgba(99,102,241,.95);
+    animation: cardIn .4s cubic-bezier(.2,.7,.3,1) both;
+    isolation: isolate;
+  }
+
+  .slides { position: relative; min-height: 252px; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    padding: 34px 28px 52px;
+    text-decoration: none; color: #fff;
+    opacity: 0; transform: scale(1.02);
+    pointer-events: none;
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .slide.active { opacity: 1; transform: none; pointer-events: auto; }
+
+  .slide.s1 { background: linear-gradient(120deg, #5b5bf5 0%, #8b5cf6 50%, #ec4899 100%); }
+  .slide.s2 { background: linear-gradient(120deg, #b91c1c 0%, #f43f5e 50%, #f59e0b 100%); }
+  .slide.s3 { background: linear-gradient(120deg, #0f766e 0%, #0ea5e9 55%, #6366f1 100%); }
+
+  .slide::before,
+  .slide::after {
+    content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+  }
+  .slide::before {
+    width: 430px; height: 430px; right: -140px; top: -190px;
+    background: rgba(255,255,255,.13);
+  }
+  .slide::after {
+    width: 300px; height: 300px; left: -120px; bottom: -180px;
+    background: rgba(255,255,255,.10);
+  }
+
+  .slide-inner {
+    position: relative; z-index: 1;
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+  }
+
+  .slide h2 {
+    margin: 0 0 12px;
+    font-size: clamp(21px, 3vw, 30px);
+    line-height: 1.28; letter-spacing: -.02em; font-weight: 700;
+  }
+  .slide p {
+    margin: 0; font-size: 13.5px; line-height: 1.6;
+    color: rgba(255,255,255,.86);
+  }
+
+  /* ---------- 邀请码徽章 ---------- */
+  .invite-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .invite {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 8px 7px 13px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.34);
+    color: #fff;
+    font-size: 12.5px;
+    line-height: 1.2;
+    cursor: pointer;
+    user-select: text;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: background .18s ease, transform .18s ease, border-color .18s ease;
+  }
+  .invite:hover {
+    background: rgba(255,255,255,.26);
+    border-color: rgba(255,255,255,.6);
+    transform: translateY(-1px);
+  }
+  .invite:active { transform: scale(.985); }
+  .invite:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .invite-label {
+    font-size: 11.5px;
+    font-weight: 500;
+    opacity: .88;
+    white-space: nowrap;
+  }
+  .invite-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+    font-size: 12px;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    user-select: all;
+    border-bottom: 1px dashed rgba(255,255,255,.5);
+    padding-bottom: 1px;
+  }
+  .invite-act {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.92);
+    color: #111318;
+    white-space: nowrap;
+    transition: background .18s ease, color .18s ease;
+  }
+  .invite.copied {
+    background: rgba(255,255,255,.30);
+    border-color: rgba(255,255,255,.75);
+  }
+  .invite.copied .invite-act {
+    background: #16a34a;
+    color: #fff;
+  }
+
+  .dots {
+    position: absolute; left: 50%; bottom: 16px;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 8px;
+    z-index: 3;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 999px;
+    border: none; padding: 0; cursor: pointer;
+    background: rgba(255,255,255,.42);
+    transition: width .3s ease, background .25s ease, transform .2s ease;
+  }
+  .dot:hover { background: rgba(255,255,255,.72); transform: scale(1.15); }
+  .dot.active {
+    width: 24px;
+    background: #fff;
+    transform: none;
+  }
+
+  /* ---------- 控制区 ---------- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    position: relative;
+  }
+
+  .tabs {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tab {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 13px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--card); color: var(--text-2);
+    font-size: 13px; font-weight: 500; font-family: inherit;
+    transition: all .18s ease; white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); border-color: #cbd2dc; transform: translateY(-1px); }
+  html[data-theme="dark"] .tab:hover { border-color: #3a424e; }
+  .tab .n {
+    font-size: 11px; padding: 1px 6px; border-radius: 999px;
+    background: var(--chip); color: var(--text-2);
+  }
+  .tab.active {
+    background: var(--text); color: var(--bg); border-color: var(--text);
+  }
+  .tab.active .n { background: rgba(255,255,255,.18); color: inherit; }
+  html[data-theme="dark"] .tab.active .n { background: rgba(0,0,0,.22); }
+
+  .search {
+    position: relative;
+    flex: 0 0 260px;
+    width: 260px;
+  }
+  .search svg {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px; color: var(--text-2); pointer-events: none;
+  }
+  .search input {
+    width: 100%; height: 38px;
+    padding: 0 14px 0 38px;
+    border-radius: 10px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text);
+    font-size: 13.5px; font-family: inherit; outline: none;
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  .search input::placeholder { color: var(--text-2); opacity: .85; }
+  .search input:focus {
+    border-color: #a5b0c0;
+    box-shadow: 0 0 0 4px rgba(99,102,241,.12);
+  }
+  html[data-theme="dark"] .search input:focus { border-color: #4b5563; }
+
+  .search-toggle {
+    display: none; flex: none;
+    width: 38px; height: 38px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--text-2); cursor: pointer; place-items: center;
+    transition: color .18s ease, transform .18s ease, border-color .18s ease;
+  }
+  .search-toggle:hover { color: var(--text); transform: translateY(-1px); }
+  .search-toggle svg { width: 17px; height: 17px; }
+
+  .result-bar {
+    margin: 18px 2px 12px;
+    font-size: 13px; color: var(--text-2);
+  }
+
+  /* ---------- 卡片网格 ---------- */
+  .grid {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+
+  /* 卡片：左侧信息 + 右侧下载列表 */
+  .card {
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease;
+    animation: cardIn .34s cubic-bezier(.2,.7,.3,1) both;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: transparent;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* 左侧模块：站点信息 */
+  .card-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    padding: 18px 16px 18px 18px;
+  }
+
+  .card-top { display: flex; align-items: center; gap: 12px; }
+  .app-icon {
+    width: 46px; height: 46px; border-radius: 13px; flex: none;
+    display: grid; place-items: center; font-size: 22px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.22);
+  }
+  .titles { min-width: 0; }
+  .titles h3 {
+    margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -.01em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .titles span {
+    display: block; margin-top: 2px; font-size: 12px; color: var(--text-2);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .desc {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-2);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 右侧模块：平台入口列表（固定宽度，行内高亮） */
+  .card-links {
+    flex: 0 0 136px;
+    width: 136px;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-left: 1px solid var(--border);
+    background: color-mix(in srgb, var(--chip) 42%, transparent);
+  }
+
+  .chips {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+  }
+
+  .chip {
+    --c: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    color: var(--text-2);
+    background: transparent;
+    border: none;
+    white-space: nowrap;
+    transition: background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .chip .pip {
+    width: 7px; height: 7px; border-radius: 50%;
+    flex: none;
+    background: var(--c);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 15%, transparent);
+    transition: box-shadow .15s ease;
+  }
+  .chip:hover {
+    background: color-mix(in srgb, var(--c) 10%, transparent);
+    color: color-mix(in srgb, var(--c) 78%, var(--text));
+  }
+  .chip:hover .pip {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent);
+  }
+  .chip:active { transform: scale(.985); }
+
+  .chip[data-p="windows"] { --c: #0078D4; }
+  .chip[data-p="mac"]     { --c: #8E8E93; }
+  .chip[data-p="ios"]     { --c: #0A84FF; }
+  .chip[data-p="android"] { --c: #12A150; }
+  .chip[data-p="tv"]      { --c: #A855F7; }
+  .chip[data-p="web"]     { --c: #E11D48; }
+
+  .empty {
+    grid-column: 1 / -1; text-align: center;
+    padding: 70px 20px; color: var(--text-2); font-size: 14px;
+  }
+  .empty b { display: block; font-size: 28px; margin-bottom: 10px; opacity: .5; }
+
+  .footer {
+    margin-top: 52px; text-align: center;
+    font-size: 12px; color: var(--text-2); opacity: .85; line-height: 1.8;
+  }
+
+  /* ---------- 右下角浮动按钮 ---------- */
+  .fab-group {
+    position: fixed; right: 22px; bottom: 24px;
+    display: flex; flex-direction: column; gap: 10px; z-index: 60;
+  }
+  .fab {
+    width: 46px; height: 46px; border-radius: 14px;
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    cursor: pointer; display: grid; place-items: center;
+    box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .22s ease,
+                opacity .25s ease, visibility .25s ease;
+  }
+  .fab svg { width: 19px; height: 19px; }
+  .fab:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  #fabTop {
+    opacity: 0; visibility: hidden; transform: translateY(10px);
+  }
+  #fabTop.show { opacity: 1; visibility: visible; transform: none; }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 1024px) {
+    .controls { position: relative; }
+    .search-toggle { display: grid; }
+
+    .search {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: min(340px, calc(100vw - 40px));
+      flex: none;
+      z-index: 40;
+    }
+    body.search-open .search { display: block; }
+    .search input {
+      height: 44px;
+      background: var(--card);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .nav { display: none; }
+    .banner { min-height: 236px; }
+    .slides { min-height: 236px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); }
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 20px 16px 60px; }
+    .grid { grid-template-columns: 1fr; gap: 12px; }
+    .card { border-radius: 14px; }
+    .card-main { padding: 14px 12px 14px 14px; gap: 9px; }
+    .card-links { flex: 0 0 126px; width: 126px; padding: 10px; }
+    .chip { font-size: 12px; padding: 5px 7px; gap: 7px; }
+    .desc { font-size: 12.5px; -webkit-line-clamp: 2; }
+    .brand h1 { font-size: 18px; }
+    .clock-date { display: none; }
+    .clock { padding-left: 12px; }
+    .header-right { gap: 12px; }
+    .fab-group { right: 16px; bottom: 18px; }
+    .banner { min-height: 262px; border-radius: 18px; }
+    .slides { min-height: 262px; }
+    .slide { padding: 26px 18px 46px; }
+    .slide p { font-size: 12.5px; }
+    .invite-row { gap: 8px; margin-top: 14px; }
+    .invite { padding: 6px 6px 6px 11px; gap: 7px; }
+    .invite-label { font-size: 10.5px; }
+    .invite-code { font-size: 11px; }
+    .invite-act { font-size: 10.5px; padding: 3px 8px; }
+  }
+
+  /* 极窄屏：卡片改回纵向，链接列表横排成小标签 */
+  @media (max-width: 420px) {
+    .card { flex-direction: column; }
+    .card-links {
+      flex: 1 1 auto;
+      width: auto;
+      border-left: none;
+      border-top: 1px solid var(--border);
+      padding: 12px 14px;
+      background: color-mix(in srgb, var(--chip) 32%, transparent);
+    }
+    .chips {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .chip {
+      width: auto;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--c) 9%, transparent);
+    }
+    .chip:hover { background: color-mix(in srgb, var(--c) 18%, transparent); }
+
+    .invite { padding: 5px 5px 5px 10px; gap: 6px; }
+    .invite-label { font-size: 10px; }
+    .invite-code { font-size: 10px; }
+    .invite-act { font-size: 10px; padding: 2px 7px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap" id="top">
+
+  <header class="header">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 2.6h12a.9.9 0 0 1 .9.9v17.2a.6.6 0 0 1-.94.5L12 17.4l-5.96 3.8a.6.6 0 0 1-.94-.5V3.5a.9.9 0 0 1 .9-.9z"/>
+        </svg>
+      </div>
+      <div>
+        <h1>常用网址收藏</h1>
+        <p>精选常用网站 · 一键直达官方入口</p>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <nav class="nav">
+        <a href="#top">首页</a>
+        <a href="#apps">全部网址</a>
+        <a href="#about">关于</a>
+      </nav>
+      <div class="clock">
+        <span class="clock-date" id="clockDate">—</span>
+        <span class="clock-time" id="clockTime">--:--:--</span>
+      </div>
+      <button class="theme-btn" id="themeBtn" aria-label="切换主题">🌙</button>
+    </div>
+  </header>
+
+  <section class="banner" aria-label="推荐轮播">
+    <div class="slides">
+
+      <a class="slide s1 active" href="https://www.kkys01.com" target="_blank" rel="noopener noreferrer">
+        <div class="slide-inner">
+          <h2>看看影视</h2>
+          <p>影视资源在线观看 · 点击卡片直达首页</p>
+        </div>
+      </a>
+
+      <a class="slide s2" href="https://hongguo.235698.xyz/download" target="_blank" rel="noopener noreferrer">
+        <div class="slide-inner">
+          <h2>红果短剧</h2>
+          <p>客户端下载页 · 多端安装一键直达</p>
+        </div>
+      </a>
+
+      <a class="slide s3" href="https://www.kezongsyst.com" target="_blank" rel="noopener noreferrer">
+        <div class="slide-inner">
+          <h2>国钓导航</h2>
+          <p>站点入口 · 点击下方邀请码即可复制</p>
+          <div class="invite-row">
+            <span class="invite" role="button" tabindex="0"
+                  data-copy="INV-1C859DFD0607F4B1D1D8">
+              <span class="invite-label">三区邀请码</span>
+              <span class="invite-code">INV-1C859DFD0607F4B1D1D8</span>
+              <span class="invite-act">复制</span>
+            </span>
+            <span class="invite" role="button" tabindex="0"
+                  data-copy="INV-BAE0A73AE33BA11BA4ED">
+              <span class="invite-label">四区邀请码</span>
+              <span class="invite-code">INV-BAE0A73AE33BA11BA4ED</span>
+              <span class="invite-act">复制</span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="dots" role="tablist" aria-label="轮播切换">
+      <button class="dot active" role="tab" aria-label="第 1 张"></button>
+      <button class="dot" role="tab" aria-label="第 2 张"></button>
+      <button class="dot" role="tab" aria-label="第 3 张"></button>
+    </div>
+  </section>
+
+  <div class="controls">
+    <div class="tabs" id="tabs"></div>
+
+    <button class="search-toggle" id="searchToggle" aria-label="搜索">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.6-3.6"></path>
+      </svg>
+    </button>
+
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.6-3.6"></path>
+      </svg>
+      <input id="search" type="search" placeholder="搜索网址…" autocomplete="off">
+    </div>
+  </div>
+
+  <div class="result-bar" id="apps"><span id="count"></span></div>
+
+  <main class="grid" id="grid"></main>
+
+  <footer class="footer" id="about">
+    所有链接均指向对应站点 · 本页仅作整理与索引
+  </footer>
+
+</div>
+
+<div class="fab-group">
+  <button class="fab" id="fabSearch" aria-label="搜索">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="m20 20-3.6-3.6"></path>
+    </svg>
+  </button>
+  <button class="fab" id="fabTop" aria-label="返回顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5"></path>
+      <path d="m5 12 7-7 7 7"></path>
+    </svg>
+  </button>
+</div>
+
+<script>
+/* ============ 分类定义 ============ */
+const CATEGORIES = [
+  { id: 'all',     label: '全部',       icon: '🗂' },
+  { id: 'windows', label: 'Windows',    icon: '🪟' },
+  { id: 'mac',     label: 'Mac',        icon: '🍎' },
+  { id: 'ios',     label: 'iOS',        icon: '📱' },
+  { id: 'android', label: 'Android',    icon: '🤖' },
+  { id: 'tv',      label: 'Android TV', icon: '📺' },
+  { id: 'web',     label: '网页版',     icon: '🌐' }
+];
+
+/* ============ 站点数据（全部为网页版） ============ */
+const APPS = [
+  {
+    name: 'KOOK', vendor: 'kookapp.cn', icon: '🎙️',
+    color: ['#5B6BF0', '#8B5CF6'],
+    desc: '面向游戏玩家的语音开黑与社群平台，支持频道、小队语音与屏幕分享。',
+    links: {
+      web: 'https://www.kookapp.cn/app/discover?t=1794565292040'
+    }
+  },
+  {
+    name: '签到 · 聊天中心', vendor: 'qiandao.com', icon: '📌',
+    color: ['#F97316', '#FBBF24'],
+    desc: '在线聊天与互动中心，登录后即可进入消息与群聊页面。',
+    links: {
+      web: 'https://qiandao.com/chat-im/home'
+    }
+  },
+  {
+    name: '闲鱼 · 消息', vendor: 'goofish.com', icon: '🐟',
+    color: ['#FFC300', '#FF8A00'],
+    desc: '二手交易平台的消息中心，直接与买家卖家沟通宝贝细节。',
+    links: {
+      web: 'https://www.goofish.com/im?spm=a21ybx.home.sidebar.2.4c053da6JhBcjJ'
+    }
+  },
+  {
+    name: '签到助手', vendor: 'qiandaoapp.com', icon: '✅',
+    color: ['#0EA5E9', '#22D3EE'],
+    desc: '移动端助手入口，登录后可直接跳转到暗黑破坏神 4 发布插件页面。',
+    links: {
+      web: 'https://m.qiandaoapp.com/assist/#/login?redirectUrl=https%3A%2F%2Fm.qiandaoapp.com%2Fplugin%2Fdiablo4-publish%3Ffrom%3Dpc'
+    }
+  },
+  {
+    name: '暗黑核 D4', vendor: 'd2core.com', icon: '⚔️',
+    color: ['#7C2D12', '#DC2626'],
+    desc: '暗黑破坏神 4 的攻略、数据与配装查询站点。',
+    links: {
+      web: 'https://www.d2core.com/d4'
+    }
+  },
+  {
+    name: 'Cloudflare', vendor: 'cloudflare.com', icon: '🛡️',
+    color: ['#F6821F', '#FAAD3F'],
+    desc: '域名解析、CDN、Workers 与安全防护的控制台入口。',
+    links: {
+      web: 'https://dash.cloudflare.com'
+    }
+  },
+  {
+    name: '看看影视', vendor: 'kkys01.com', icon: '🎬',
+    color: ['#6366F1', '#EC4899'],
+    desc: '影视资源在线观看站点，首页直达最新内容。',
+    links: {
+      web: 'https://www.kkys01.com'
+    }
+  },
+  {
+    name: '看看影视 · 下载', vendor: 'kkys03.com', icon: '⬇️',
+    color: ['#0F766E', '#22C55E'],
+    desc: '影视站点下载专用线路，提供客户端与资源下载入口。',
+    links: {
+      web: 'https://dl.kkys03.com'
+    }
+  },
+  {
+    name: '红果短剧', vendor: 'hongguo', icon: '🍎',
+    color: ['#E11D48', '#FB7185'],
+    desc: '红果短剧客户端下载页，支持多端安装。',
+    links: {
+      web: 'https://hongguo.235698.xyz/download'
+    }
+  },
+  {
+    name: '可总系统', vendor: 'kezongsyst.com', icon: '🧭',
+    color: ['#2563EB', '#38BDF8'],
+    desc: '可总系统站点入口，页面顶部横幅内含三区、四区邀请码信息。',
+    links: {
+      web: 'https://www.kezongsyst.com'
+    }
+  },
+  {
+    name: '国家高等教育智慧教育平台', vendor: 'smartedu.cn', icon: '🎓',
+    color: ['#1D4ED8', '#22D3EE'],
+    desc: '高等教育优质课程与学习资源聚合平台。',
+    links: {
+      web: 'https://higher.smartedu.cn'
+    }
+  },
+  {
+    name: '夸克', vendor: 'quark.cn', icon: '☁️',
+    color: ['#2563EB', '#7C3AED'],
+    desc: '网盘、浏览器与 AI 搜索一体的效率工具入口。',
+    links: {
+      web: 'https://www.quark.cn'
+    }
+  },
+  {
+    name: 'DeepSeek', vendor: 'deepseek.com', icon: '🤖',
+    color: ['#1E40AF', '#4F46E5'],
+    desc: '大模型对话助手，网页端直接开始问答。',
+    links: {
+      web: 'https://www.deepseek.com'
+    }
+  },
+  {
+    name: 'GitHub', vendor: 'github.com', icon: '🐙',
+    color: ['#24292F', '#57606A'],
+    desc: '全球最大的代码托管与协作平台。',
+    links: {
+      web: 'https://github.com'
+    }
+  },
+  {
+    name: 'RF4 中文站', vendor: 'rf4-cafe.ru', icon: '🎣',
+    color: ['#0E7490', '#14B8A6'],
+    desc: '俄罗斯钓鱼 4 相关资讯与社区站点，支持中文界面。',
+    links: {
+      web: 'https://rf4-cafe.ru/?lang=cn'
+    }
+  },
+  {
+    name: 'Aipiaxi', vendor: 'aipiaxi.com', icon: '✨',
+    color: ['#9333EA', '#EC4899'],
+    desc: '在线工具与设计处理平台入口。',
+    links: {
+      web: 'https://www.aipiaxi.com'
+    }
+  },
+  
+  
+  
+    {
+    name: 'VLC 媒体播放器', vendor: 'VideoLAN', icon: '🎬',
+    color: ['#FF7A18', '#FFB300'],
+    desc: '全能开源播放器，几乎支持所有音视频格式与流媒体协议，跨平台体验一致。',
+    links: {
+      windows: 'https://www.videolan.org/vlc/download-windows.html',
+      mac:     'https://www.videolan.org/vlc/download-macosx.html',
+      ios:     'https://apps.apple.com/app/vlc-for-mobile/id650377962',
+      android: 'https://www.videolan.org/vlc/download-android.html',
+      tv:      'https://play.google.com/store/apps/details?id=org.videolan.vlc',
+      web:     'https://www.videolan.org/vlc/'
+    }
+  }
+];
+
+/* ============ 渲染逻辑 ============ */
+const state = { cat: 'all', q: '' };
+
+const tabsEl       = document.getElementById('tabs');
+const gridEl       = document.getElementById('grid');
+const countEl      = document.getElementById('count');
+const searchEl     = document.getElementById('search');
+const themeBtn     = document.getElementById('themeBtn');
+const clockDateEl  = document.getElementById('clockDate');
+const clockTimeEl  = document.getElementById('clockTime');
+const searchToggle = document.getElementById('searchToggle');
+const fabSearch    = document.getElementById('fabSearch');
+const fabTop       = document.getElementById('fabTop');
+
+const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
+
+/* 卡片：左侧信息模块 + 右侧入口列表 */
+function cardHTML(app) {
+  const chips = CATEGORIES
+    .filter(c => c.id !== 'all' && app.links[c.id])
+    .map(c => `<a class="chip" data-p="${c.id}" href="${app.links[c.id]}"
+        target="_blank" rel="noopener noreferrer"><span class="pip"></span>${c.label}</a>`)
+    .join('');
+
+  return `<article class="card">
+    <div class="card-main">
+      <div class="card-top">
+        <div class="app-icon" style="background:linear-gradient(135deg,${app.color[0]},${app.color[1]})">${app.icon}</div>
+        <div class="titles">
+          <h3>${app.name}</h3>
+          <span>${app.vendor}</span>
+        </div>
+      </div>
+      <p class="desc">${app.desc}</p>
+    </div>
+    <div class="card-links">
+      <div class="chips">${chips}</div>
+    </div>
+  </article>`;
+}
+
+function matches(app) {
+  if (state.cat !== 'all' && !app.links[state.cat]) return false;
+  if (!state.q) return true;
+  const hay = (app.name + ' ' + app.vendor + ' ' + app.desc).toLowerCase();
+  return hay.includes(state.q);
+}
+
+/* 每个分类下的站点数量 */
+const catCount = id => id === 'all'
+  ? APPS.length
+  : APPS.filter(a => a.links[id]).length;
+
+function render() {
+  /* 只展示有内容的分类，避免出现空标签 */
+  const visibleCats = CATEGORIES.filter(c => catCount(c.id) > 0);
+  if (!visibleCats.some(c => c.id === state.cat)) state.cat = 'all';
+
+  tabsEl.innerHTML = visibleCats.map(c => {
+    const active = state.cat === c.id ? ' active' : '';
+    return `<button class="tab${active}" data-cat="${c.id}">${c.icon} ${c.label}<span class="n">${catCount(c.id)}</span></button>`;
+  }).join('');
+
+  const list = APPS.filter(matches);
+  if (list.length) {
+    gridEl.innerHTML = list.map(cardHTML).join('');
+  } else {
+    gridEl.innerHTML = '<div class="empty"><b>🔍</b>没有找到相关网址，换个关键词试试</div>';
+  }
+
+  const catLabel = catMap[state.cat] ? catMap[state.cat].label : '全部';
+  countEl.textContent = `${catLabel} · ${list.length} 个结果`;
+}
+
+tabsEl.addEventListener('click', e => {
+  const btn = e.target.closest('.tab');
+  if (!btn) return;
+  state.cat = btn.dataset.cat;
+  render();
+});
+
+searchEl.addEventListener('input', e => {
+  state.q = e.target.value.trim().toLowerCase();
+  render();
+});
+
+themeBtn.addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+  try { localStorage.setItem('theme', next); } catch (e) {}
+});
+themeBtn.textContent = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
+
+/* ============ 时钟 ============ */
+const WEEK = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+const pad2 = n => String(n).padStart(2, '0');
+
+function tickClock() {
+  const d = new Date();
+  clockDateEl.textContent = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 · ${WEEK[d.getDay()]}`;
+  clockTimeEl.textContent = `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+}
+tickClock();
+setInterval(tickClock, 1000);
+
+/* ============ 返回顶部 ============ */
+window.addEventListener('scroll', () => {
+  fabTop.classList.toggle('show', window.scrollY > 320);
+}, { passive: true });
+
+fabTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ============ 搜索展开/收起 ============ */
+const isNarrow = () => window.matchMedia('(max-width: 1024px)').matches;
+
+function openSearch() {
+  if (isNarrow()) {
+    document.body.classList.add('search-open');
+    setTimeout(() => searchEl.focus(), 60);
+  } else {
+    const top = document.getElementById('apps').getBoundingClientRect().top + window.scrollY - 90;
+    if (window.scrollY > top) {
+      window.scrollTo({ top, behavior: 'smooth' });
+      setTimeout(() => searchEl.focus({ preventScroll: true }), 320);
+    } else {
+      searchEl.focus({ preventScroll: true });
+    }
+  }
+}
+function closeSearch() {
+  document.body.classList.remove('search-open');
+}
+
+fabSearch.addEventListener('click', openSearch);
+
+searchToggle.addEventListener('click', () => {
+  if (document.body.classList.contains('search-open')) closeSearch();
+  else openSearch();
+});
+
+document.addEventListener('click', e => {
+  if (!document.body.classList.contains('search-open')) return;
+  if (e.target.closest('.search') ||
+      e.target.closest('#searchToggle') ||
+      e.target.closest('#fabSearch')) return;
+  closeSearch();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSearch();
+});
+
+window.addEventListener('resize', () => {
+  if (!isNarrow()) closeSearch();
+});
+
+/* ============ 邀请码点击复制 ============ */
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  }
+  return new Promise((resolve, reject) => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      resolve();
+    } catch (err) {
+      reject(err);
+    } finally {
+      document.body.removeChild(ta);
+    }
+  });
+}
+
+document.querySelectorAll('.invite').forEach(el => {
+  const act = el.querySelector('.invite-act');
+  const origin = act.textContent;
+  let timer = null;
+
+  function doCopy(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    copyText(el.dataset.copy).then(() => {
+      el.classList.add('copied');
+      act.textContent = '已复制 ✓';
+    }).catch(() => {
+      el.classList.remove('copied');
+      act.textContent = '复制失败';
+    }).then(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        el.classList.remove('copied');
+        act.textContent = origin;
+      }, 1500);
+    });
+  }
+
+  el.addEventListener('click', doCopy);
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') doCopy(e);
+  });
+});
+
+/* ============ Banner 轮播 ============ */
+(function initBanner() {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dots   = Array.from(document.querySelectorAll('.dot'));
+  const bannerEl = document.querySelector('.banner');
+  if (!slides.length || !dots.length) return;
+
+  const DURATION = 4500;
+  let idx = 0;
+  let timer = null;
+
+  function go(i) {
+    idx = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle('active', k === idx));
+    dots.forEach((d, k) => d.classList.toggle('active', k === idx));
+  }
+  function next() { go(idx + 1); }
+  function start() { stop(); timer = setInterval(next, DURATION); }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+  dots.forEach((dot, k) => {
+    dot.addEventListener('click', e => {
+      e.preventDefault();
+      go(k);
+      start();
+    });
+  });
+
+  bannerEl.addEventListener('mouseenter', stop);
+  bannerEl.addEventListener('mouseleave', start);
+  bannerEl.addEventListener('focusin', stop);
+  bannerEl.addEventListener('focusout', start);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else start();
+  });
+
+  go(0);
+  start();
+})();
+
+/* 初始化 */
+render();
+</script>
+</body>
+</html>
